@@ -1,0 +1,45 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: waredly-api
+  namespace: '576455422304'
+  selfLink: /apis/serving.knative.dev/v1/namespaces/576455422304/services/waredly-api
+  uid: f3ef62f7-9dc2-41ee-9384-00074859867d
+  resourceVersion: AAXjkLVj7IA
+  generation: 1
+  creationTimestamp: '2022-07-12T00:23:58.015305Z'
+  labels:
+    cloud.googleapis.com/location: us-central1
+  annotations:
+    run.googleapis.com/client-name: Cloud Code for VS Code
+    serving.knative.dev/creator: osama.kofahi@gmail.com
+    serving.knative.dev/lastModifier: osama.kofahi@gmail.com
+    client.knative.dev/user-image: gcr.io/waredly/waredly-api
+    run.googleapis.com/client-version: 1.19.0
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+spec:
+  template:
+    metadata:
+      name: waredly-api-00001-rez
+      annotations:
+        run.googleapis.com/client-name: Cloud Code for VS Code
+        client.knative.dev/user-image: gcr.io/waredly/waredly-api
+        run.googleapis.com/client-version: 1.19.0
+        autoscaling.knative.dev/maxScale: '100'
+    spec:
+      containerConcurrency: 80
+      timeoutSeconds: 300
+      serviceAccountName: 576455422304-compute@developer.gserviceaccount.com
+      containers:
+      - image: gcr.io/waredly/waredly-api
+        ports:
+        - name: http1
+          containerPort: 8080
+        resources:
+          limits:
+            cpu: '1'
+            memory: 256Mi
+  traffic:
+  - percent: 100
+    latestRevision: true

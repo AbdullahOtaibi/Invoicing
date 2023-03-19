@@ -1,0 +1,44 @@
+[
+    {
+        "cartItemId": "1678297039680",
+        "name": {
+            "english": "Barcelona Sofa Set 3+3+1 Brown",
+            "arabic": "طقم كنب برشلونة 3 + 3 + 1 بني",
+            "turkish": "Barselona Koltuk Takımı 3+3+1 Kahve",
+            "_id": "640138f64918781333eecaba"
+        },
+        "_id": "63ffca25a3d8761dd04ffa83",
+        "code": "KTS-00112-0006850",
+        "sellingPrice": {
+            "amount": 18886,
+            "currencyCode": "TRY"
+        },
+        "qty": 1,
+        "images": [
+            {
+                "uploadFolder": "products/63ffca25a3d8761dd04ffa83/",
+                "thumbnailUrl": "thumb_1000606565_0.jpg",
+                "url": "1000606565_0.jpg",
+                "_id": "63ffca25a3d8761dd04ffa87"
+            },
+            {
+                "uploadFolder": "products/63ffca25a3d8761dd04ffa83/",
+                "thumbnailUrl": "thumb_1000606565_1.jpg",
+                "url": "1000606565_1.jpg",
+                "_id": "63ffca25a3d8761dd04ffa88"
+            },
+            {
+                "uploadFolder": "products/63ffca25a3d8761dd04ffa83/",
+                "thumbnailUrl": "thumb_1000606565_2.jpg",
+                "url": "1000606565_2.jpg",
+                "_id": "63ffca25a3d8761dd04ffa89"
+            },
+            {
+                "uploadFolder": "products/63ffca25a3d8761dd04ffa83/",
+                "thumbnailUrl": "thumb_1000606565_3.jpg",
+                "url": "1000606565_3.jpg",
+                "_id": "63ffca25a3d8761dd04ffa8a"
+            }
+        ]
+    }
+]
