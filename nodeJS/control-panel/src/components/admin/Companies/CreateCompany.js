@@ -26,6 +26,7 @@ const CreateCompany = (props) => {
     const [countries, setCountries] = useState([]);
     const [contentLocale, setContentLocale] = useState('ar');
     const [loading, setLoading] = useState(false);
+    const [wasValidated, setValidated] = useState(false);
     const { t } = useTranslation();
     const setLocalTextValue = (textObject, newValue) => {
         let result = '';
@@ -161,6 +162,9 @@ const CreateCompany = (props) => {
 
 
     const doPost = data => {
+        if(!isFormValid()){
+            return;
+        }
         setLoading(true);
         createcompany(company).then(res => {
             setLoading(false);
@@ -189,6 +193,21 @@ const CreateCompany = (props) => {
 
     // }
 
+
+    const isFormValid = () =>{
+        setValidated(true);
+        return company.name && company.name.arabic &&
+        company.companyInvoiceID && 
+        company.incomeSourceSequence && 
+        company.clientId && 
+        company.clientSecret;
+    }
+
+    const fieldClass = (value) => {
+        if(!wasValidated)
+        return 'form-control';
+        return value?'form-control is-valid':'form-control is-invalid';
+    }
 
     return (
         <div className="card">
@@ -241,13 +260,13 @@ const CreateCompany = (props) => {
                     
                     <div className="mb-3">
                         <label htmlFor="companyInvoiceID" className="form-label">{t("companies.companyInvoiceID")} </label>
-                        <input type="number" className="form-control" placeholder={t("companies.companyInvoiceID")} id="companyInvoiceID" name="companyInvoiceID" value={company.companyInvoiceID} onChange={updateCompanyInvoiceID} />
+                        <input type="number" className={fieldClass(company.companyInvoiceID)} placeholder={t("companies.companyInvoiceID")} id="companyInvoiceID" name="companyInvoiceID" value={company.companyInvoiceID} onChange={updateCompanyInvoiceID} />
                     </div>
 
 
                     <div className="mb-3">
                         <label htmlFor="incomeSourceSequence" className="form-label">{t("companies.incomeSourceSequence")} </label>
-                        <input type="number" className="form-control" placeholder={t("companies.incomeSourceSequence")} id="incomeSourceSequence" name="incomeSourceSequence" value={company.incomeSourceSequence} onChange={updateIncomeSourceSequence} />
+                        <input type="number" className={fieldClass(company.incomeSourceSequence)} placeholder={t("companies.incomeSourceSequence")} id="incomeSourceSequence" name="incomeSourceSequence" value={company.incomeSourceSequence} onChange={updateIncomeSourceSequence} />
                     </div>
 
 
@@ -269,13 +288,13 @@ const CreateCompany = (props) => {
 
                     <div className="mb-3">
                         <label htmlFor="clientId" className="form-label">{t("companies.clientId")} </label>
-                        <input type="text" className="form-control" placeholder={t("companies.clientId")} id="clientId" name="clientId" value={company.clientId} onChange={updateClientId} />
+                        <input type="text" className={fieldClass(company.clientId)} placeholder={t("companies.clientId")} id="clientId" name="clientId" value={company.clientId} onChange={updateClientId} />
                     </div>
 
 
                     <div className="mb-3">
                         <label htmlFor="clientSecret" className="form-label">{t("companies.clientSecret")} </label>
-                        <input type="text" className="form-control" placeholder={t("companies.clientSecret")} id="clientSecret" name="clientSecret" value={company.clientSecret} onChange={updateClientSecret} />
+                        <input type="text" className={fieldClass(company.clientSecret)} placeholder={t("companies.clientSecret")} id="clientSecret" name="clientSecret" value={company.clientSecret} onChange={updateClientSecret} />
                     </div>
 
 
