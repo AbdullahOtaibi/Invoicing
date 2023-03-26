@@ -34,9 +34,9 @@ const CreateInvoice = (props) => {
         setCurrentEditableItem(cloned);
     }
 
-    const updateQty = (event) => {
+    const updateinvoicedQuantity = (event) => {
         let cloned = JSON.parse(JSON.stringify(currentEditableItem));
-        cloned.qty = event.target.value;
+        cloned.invoicedQuantity = event.target.value;
         setCurrentEditableItem(cloned);
     }
 
@@ -79,7 +79,7 @@ const CreateInvoice = (props) => {
             toast.error('check unit price');
             return;
         }
-        if(isBlank(currentEditableItem.qty) || currentEditableItem.qty <= 0 ){
+        if(isBlank(currentEditableItem.invoicedQuantity) || currentEditableItem.invoicedQuantity <= 0 ){
             toast.error('check unit quantity');
             return;
         }
@@ -88,7 +88,7 @@ const CreateInvoice = (props) => {
 
         let cloned = JSON.parse(JSON.stringify(invoice));
         cloned.items.push({id: (new Date()).getTime(), ...currentEditableItem});
-        setCurrentEditableItem({ description: '', unitPrice: null, qty: 1, allowance: 0 });
+        setCurrentEditableItem({ description: '', unitPrice: null, invoicedQuantity: 1, allowance: 0 });
         setInvoice(cloned);
     }
 
@@ -128,7 +128,7 @@ const CreateInvoice = (props) => {
     const taxExclusiveAmount = () =>{
         let amount = 0;
         invoice.items.forEach(item => {
-            amount += parseFloat(item.unitPrice * item.qty);
+            amount += parseFloat(item.unitPrice * item.invoicedQuantity);
         })
         return amount;
     }
@@ -136,7 +136,7 @@ const CreateInvoice = (props) => {
     const taxInclusiveAmount = () =>{
         let amount = 0;
         invoice.items.forEach(item => {
-            amount += parseFloat(item.unitPrice * item.qty);
+            amount += parseFloat(item.unitPrice * item.invoicedQuantity);
         })
         return amount;
     }
@@ -145,7 +145,7 @@ const CreateInvoice = (props) => {
     const payableAmount = () => {
         let amount = 0;
         invoice.items.forEach(item => {
-            amount += parseFloat(item.unitPrice * item.qty);
+            amount += parseFloat(item.unitPrice * item.invoicedQuantity);
         })
         return amount;
     }
@@ -342,7 +342,7 @@ const CreateInvoice = (props) => {
                                         Unit Price
                                     </th>
                                     <th>
-                                        Qty.
+                                        invoicedQuantity.
                                     </th>
                                     <th>
                                         Allowance
@@ -365,10 +365,10 @@ const CreateInvoice = (props) => {
                                         <td> {seq++} </td>
                                         <td>{item.description}</td>
                                         <td>{item.unitPrice} JOD</td>
-                                        <td>{item.qty} </td>
+                                        <td>{item.invoicedQuantity} </td>
                                         <td>{item.allowance} JOD </td>
-                                        <td>{(item.unitPrice * item.qty)} JOD</td>
-                                        <td>{(item.unitPrice * item.qty - item.allowance)} JOD</td>
+                                        <td>{(item.unitPrice * item.invoicedQuantity)} JOD</td>
+                                        <td>{(item.unitPrice * item.invoicedQuantity - item.allowance)} JOD</td>
                                         <td>
                                             <button type='button' className='btn btn-sm btn-danger d-print-none' onClick={() => { removeItem(item.id); }}> <MdDelete /> </button>
                                         </td>
@@ -386,13 +386,13 @@ const CreateInvoice = (props) => {
                                         <input type='number' className='form-control' value={currentEditableItem.unitPrice} onChange={updateUnitPrice} required={true} min={1} />
                                     </td>
                                     <td>
-                                        <input type='number' className='form-control' value={currentEditableItem.qty} onChange={updateQty} />
+                                        <input type='number' className='form-control' value={currentEditableItem.invoicedQuantity} onChange={updateinvoicedQuantity} />
                                     </td>
                                     <td>
                                         <input type='number' className='form-control' value={currentEditableItem.allowance} onChange={updateAllowance} />
                                     </td>
-                                    <td>{(currentEditableItem.unitPrice * currentEditableItem.qty)} JOD</td>
-                                        <td>{(currentEditableItem.unitPrice * currentEditableItem.qty - currentEditableItem.allowance)} JOD
+                                    <td>{(currentEditableItem.unitPrice * currentEditableItem.invoicedQuantity)} JOD</td>
+                                        <td>{(currentEditableItem.unitPrice * currentEditableItem.invoicedQuantity - currentEditableItem.allowance)} JOD
                                     
                                      
 

@@ -242,7 +242,7 @@ const MainContent = ({notification, onHandleNotification}) => {
 
                     <Route path="/invoices" exact element={<ListInvoices />} />
                     <Route path="/invoices/create" element={<CreateInvoice />} />
-                    <Route path="/invoices/edit/:companyId" element={<EditInvoice />} />
+                    <Route path="/invoices/edit/:invoiceId" element={<EditInvoice />} />
                    
 
 

@@ -9,7 +9,10 @@ import Loader from "react-loader-spinner";
 import { hasPermission } from '../utils/auth';
 import { getLocalizedText } from '../utils/utils'
 
+
 const ListCompanies = () => {
+
+    //const [contentLocale, setContentLocale] = useState('ar');
 
     let navigate = useNavigate();
     if(!hasPermission('vendors.view')){
@@ -38,7 +41,7 @@ const ListCompanies = () => {
 
     const deletecompany = (id) => {
         removecompany(id).then(res => {
-            setCompanies(companies.filter(a => a._id != id));
+            setCompanies(companies.filter(a => a._id !== id));
         });
     }
 
@@ -78,26 +81,36 @@ const ListCompanies = () => {
                                         {t("companies.name")}
                                     </th>
                                     <th> {t("users.email")} </th>
+
+                                    <th> {t("companies.companyInvoiceID")} </th>
+                                    
+                                    <th>{t("companies.incomeSourceSequence")}  </th>
                                     <th className="text-center">
                                         {t("users.active")}
                                     </th>
+
                                     <th></th>
 
                                 </tr>
                             </thead>
                             <tbody>
                                 {
+
                                     companies.map(item => (
                                         <tr key={item._id}>
 
                                             <td>
                                                 {getLocalizedText(item.name, i18n)}
                                                 
+                                                
 
                                             </td>
                                             <td>
                                                 {item.contactDetails ? item.contactDetails.infoEmail : null}
                                             </td>
+
+                                            <td>{item.companyInvoiceID}</td>
+                                            <td>{item.incomeSourceSequence}</td>
                                             <td className="text-center">
                                                 <div className="custom-control custom-checkbox">
                                                     <input type="checkbox" className="custom-control-input" id="customCheck1" checked={item.published} disabled />
@@ -112,7 +125,7 @@ const ListCompanies = () => {
                                                 <Link className="btn btn-primary" to={"/admin/users/bycompany/" + item._id} title={t("dashboard.users")}> <MdGroup /> </Link> &nbsp;
                                                 <Link className="btn btn-primary" to={"/admin/companies/categories/" + item._id} title={t("sidebar.productCategories")}> <MdAccountTree /> </Link> &nbsp;
 
-                                                {hasPermission('vendors.modify') ? (<Link className="btn btn-danger" to="#" title={t("dashboard.delete")} onClick={e => deletecompany(item._id)}> <MdDelete /> </Link>) : null}
+                                                {hasPermission('vendors.modify') ? (<Link className="btn btn-danger" to="#" title={t("dashboard.delete")} onClick={() => {let result = window.confirm('are you sure');if(result){deletecompany(item._id)}}  } > <MdDelete /> </Link>) : null}
 
                                             </td>
                                         </tr>

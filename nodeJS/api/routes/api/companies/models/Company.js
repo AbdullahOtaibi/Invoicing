@@ -48,6 +48,7 @@ const CompanySchema = new Schema({
 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ProductCategory'
+        
 
     }],
     published: Boolean,

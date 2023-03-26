@@ -30,6 +30,7 @@ const EditCompany = (props) => {
     const [editorReady, setEditorReady] = useState(false);
     const [contentReady, setContentReady] = useState(false);
     let contentNeesUpdate = true;
+    const[wasValidated, setValidated] = useState(false); 
 
 
 
@@ -69,6 +70,23 @@ const EditCompany = (props) => {
         editorRef.current.setContent(getLocalizedTextByLocale(company.description, newLocale));
     }
 
+
+    const isFormValid = () =>{
+        setValidated(true);
+        return company.name && company.name.arabic &&
+        company.companyInvoiceID && 
+        company.incomeSourceSequence && 
+        company.clientId && 
+        company.clientSecret &&
+        company.contactDetails.phone; 
+    }
+
+     
+    const fieldClass = (value) => {
+        if(!wasValidated)
+        return 'form-control';
+        return value?'form-control is-valid':'form-control is-invalid';
+    }
 
 
     useEffect(() => {
@@ -227,6 +245,10 @@ const EditCompany = (props) => {
 
 
     const doPost = data => {
+
+        if(!isFormValid()){
+            return;
+        }
         setLoading(true);
         let cloned = JSON.parse(JSON.stringify(company));
         
@@ -287,57 +309,13 @@ const EditCompany = (props) => {
                             onLocalChanged={changeLocale} onChange={updatecompanyName} />
                     </div>
 
-                    <div className="mb-3">
-                        <label htmlFor="description" className="form-label">{t("product.description")}</label>
-                        <Editor
-                            apiKey='qnh6wwtrn2assdut2aukvl4690bx354iz3vul03ht16f7qmu'
-                            onInit={(evt, editor) => { editorRef.current = editor; setEditorReady(true) }}
-                            init={{
-                                forced_root_block:"div",
-                                height: 500,
-                                menubar: false,
-                                automatic_uploads: true,
-                                file_picker_types: 'image',
-                                plugins: [
-                                    'advlist',
-                                    'lists',
-                                    'image',
-                                    'preview',
-                                    'anchor',
-                                    'link',
-                                    'searchreplace',
-                                    'visualblocks',
-                                    'fullscreen',
-                                    'insertdatetime',
-                                    'media',
-                                    'table',
-                                    'paste',
-                                    'code',
-                                    'wordcount',
-                                    'directionality'
-                                ],
-                                toolbar:
-                                    'undo redo |fontfamily  blocks | fontsize bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat ltr rtl | link table image code',
-                                    font_size_formats: '8pt 10pt 12pt 14pt 16pt 18pt 24pt 36pt 48pt'
-                            }
-                            }
-                            onEditorChange={conentChanged}
-                        >
-                        </Editor>
-
-
-
-
-
-                    </div>
-
-
+   
 
 
 
                     <div className="mb-3">
                         <label htmlFor="phone" className="form-label">{t("companies.phone")} </label>
-                        <input type="number" className="form-control" placeholder={t("companies.phone")} id="phone" name="phone" value={company.contactDetails.phone} onChange={updatePhoneNumber} />
+                        <input type="number"  className={fieldClass(company.contactDetails.phone)}  placeholder={t("companies.phone")} id="phone" name="phone" value={company.contactDetails.phone} onChange={updatePhoneNumber} />
 
                     </div>
 
@@ -354,20 +332,20 @@ const EditCompany = (props) => {
 
                     <div className="mb-3">
                         <label htmlFor="companyInvoiceID" className="form-label">{t("companies.companyInvoiceID")} </label>
-                        <input type="number" className="form-control" placeholder={t("companies.companyInvoiceID")} id="companyInvoiceID" name="companyInvoiceID" value={company.companyInvoiceID} onChange={updateCompanyInvoiceID} />
+                        <input type="number" className={fieldClass(company.companyInvoiceID)} placeholder={t("companies.companyInvoiceID")} id="companyInvoiceID" name="companyInvoiceID" value={company.companyInvoiceID} onChange={updateCompanyInvoiceID} />
                     </div>
 
 
                     
                     <div className="mb-3">
                         <label htmlFor="incomeSourceSequence" className="form-label">{t("companies.incomeSourceSequence")} </label>
-                        <input type="number" className="form-control" placeholder={t("companies.incomeSourceSequence")} id="incomeSourceSequence" name="incomeSourceSequence" value={company.incomeSourceSequence} onChange={updateIncomeSourceSequence} />
+                        <input type="number" className={fieldClass(company.incomeSourceSequence)}  placeholder={t("companies.incomeSourceSequence")} id="incomeSourceSequence" name="incomeSourceSequence" value={company.incomeSourceSequence} onChange={updateIncomeSourceSequence} />
                     </div>
 
 
 
                     <div className="mb-3">
-                        <label htmlFor="invoiceCategory" className="form-label">{t("companies.invoiceCategory")} </label>
+                        <label htmlFor="invoiceCategory"  className={fieldClass(company.invoiceCategory)}>{t("companies.invoiceCategory")} </label>
           
                    
                         <select type="text" className="form-control" id="invoiceCategory" name="title"  value = {company.invoiceCategory} onChange={updateInvoiceCategory}   >
@@ -385,13 +363,13 @@ const EditCompany = (props) => {
 
                     <div className="mb-3">
                         <label htmlFor="clientId" className="form-label">{t("companies.clientId")} </label>
-                        <input type="text" className="form-control" placeholder={t("companies.clientId")} id="clientId" name="clientId" value={company.clientId} onChange={updateClientId} />
+                        <input type="text" className={fieldClass(company.clientId)} placeholder={t("companies.clientId")} id="clientId" name="clientId" value={company.clientId} onChange={updateClientId} />
                     </div>
 
 
                     <div className="mb-3">
                         <label htmlFor="clientSecret" className="form-label">{t("companies.clientSecret")} </label>
-                        <input type="text" className="form-control" placeholder={t("companies.clientSecret")} id="clientSecret" name="clientSecret" value={company.clientSecret} onChange={updateClientSecret} />
+                        <input type="text" className={fieldClass(company.clientSecret)} placeholder={t("companies.clientSecret")} id="clientSecret" name="clientSecret" value={company.clientSecret} onChange={updateClientSecret} />
                     </div>
 
 

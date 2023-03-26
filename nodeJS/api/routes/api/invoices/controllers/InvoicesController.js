@@ -4,15 +4,14 @@ const mongoose = require('mongoose');
 const verifyToken = require('../../utils/auth');
 
 const Invoice = require('../models/Invoice');
-const InvoiceItem = require('../models/InvoiceItem');
 const InvoiceStatus = require('../models/InvoiceStatus');
 
 
 const { query } = require('express');
 const Invoices = require('../data-access/Invoices');
 const { json } = require('body-parser');
-const  getInvoiceXML  = require('../data-access/ubl');
-const xmlFormat =require('xml-formatter');
+const getInvoiceXML = require('../data-access/ubl');
+const xmlFormat = require('xml-formatter');
 
 
 
@@ -67,77 +66,82 @@ router.post('/filter', verifyToken, async (req, res) => {
         res.json({ success: false, message: "Unauthorized" });
     }
     var result = {};
+    try {
 
+        let filters = req.body || {};
+        let page = filters.page || 0;
+        let pageSize = filters.pageSize || 20;
+        let vendorId = filters.vendorId || null;
+        let clientId = filters.clientId || null;
+        let deleted = filters.deleted || false;
+        let status = filters.status || 'pending';
+        let InvoiceBy = filters.InvoiceBy || '_idDesc';
+        //pending, 1=new, 2=Partially Confirmed, 3=All Items Confirmed, 4=Partially Available, 5=All Items Available, 100=Closed
+        //0-incomplete
 
-    let filters = req.body || {};
-    let page = filters.page || 0;
-    let pageSize = filters.pageSize || 20;
-    let vendorId = filters.vendorId || null;
-    let clientId = filters.clientId || null;
-    let deleted = filters.deleted || false;
-    let status = filters.status || 'pending';
-    let InvoiceBy = filters.InvoiceBy || '_idDesc';
-    //pending, 1=new, 2=Partially Confirmed, 3=All Items Confirmed, 4=Partially Available, 5=All Items Available, 100=Closed
-    //0-incomplete
-
-    result.page = page;
-    let queryParams = {
-        '$and': []
-    };
-    let sortParams = {
-        _id: -1
-    }
-    let InvoiceNumber = filters.InvoiceNumber || null;
-
-    if (deleted) {
-        queryParams['$and'].push({ "deleted": { $eq: true } });
-    } else {
-        queryParams['$and'].push({ "deleted": { $ne: true } });
-    }
-
-    if (InvoiceNumber && InvoiceNumber.length > 0) {
-        queryParams['$and'].push({ "_id": InvoiceNumber });
-
-    }
-  
-
-
-    let query = Invoice.find({ deleted: false });
-    let countQuery = Invoice.find({ deleted: false });
-    if (InvoiceBy == '_id') {
-        sortParams = {
-            _id: 1
+        result.page = page;
+        let queryParams = {
+            '$and': []
+        };
+        let sortParams = {
+            _id: -1
         }
-    } else if (InvoiceBy == 'amount') {
-        sortParams = {
-            'totalAmount.amount': 1
+        let InvoiceNumber = filters.InvoiceNumber || null;
+
+        if (deleted) {
+            queryParams['$and'].push({ "deleted": { $eq: true } });
+        } else {
+            queryParams['$and'].push({ "deleted": { $ne: true } });
         }
-    } else if (InvoiceBy == 'amountDesc') {
-        sortParams = {
-            'totalAmount.amount': -1
+
+        if (InvoiceNumber && InvoiceNumber.length > 0) {
+            queryParams['$and'].push({ "_id": InvoiceNumber });
+
         }
-    }
-
-
-    query = Invoice.find(queryParams).populate("user", "-password").populate("status").sort(sortParams);
-
-    countQuery = Invoice.find(queryParams).populate("user", "-password").populate("status").sort(sortParams);
 
 
 
+        let query = Invoice.find({ deleted: false });
+        let countQuery = Invoice.find({ deleted: false });
+        if (InvoiceBy == '_id') {
+            sortParams = {
+                _id: 1
+            }
+        } else if (InvoiceBy == 'amount') {
+            sortParams = {
+                'totalAmount.amount': 1
+            }
+        } else if (InvoiceBy == 'amountDesc') {
+            sortParams = {
+                'totalAmount.amount': -1
+            }
+        }
 
-    //console.log(JSON.stringify(query));
 
-    var count = await countQuery.countDocuments();
-    result.count = count;
-    result.pages = Math.ceil(count / pageSize);
+        query = Invoice.find(queryParams).populate("user", "-password").populate("status").sort(sortParams);
+
+        countQuery = Invoice.find(queryParams).populate("user", "-password").populate("status").sort(sortParams);
 
 
-    query.skip(page * pageSize).limit(pageSize).exec('find', function (err, items) {
-        result.items = items;
+
+
+        //console.log(JSON.stringify(query));
+
+        var count = await countQuery.countDocuments();
+        result.count = count;
+        result.pages = Math.ceil(count / pageSize);
+
+
+        query.skip(page * pageSize).limit(pageSize).exec('find', function (err, items) {
+            result.items = items;
+            res.json(result);
+        });
+
+    } catch (ex) {
+        console.log(ex);
+        result.error = ex.message;
         res.json(result);
-    });
-
+    }
 
 });
 
@@ -164,10 +168,10 @@ router.get('/clientInvoices', verifyToken, async (req, res) => {
 });
 
 
-router.get('/get/:id',  async (req, res) => {
+router.get('/get/:id', async (req, res) => {
 
     let invoice = await Invoices.getInvoiceById(req.params.id);
-   
+
     res.json(invoice);
 });
 
@@ -190,11 +194,12 @@ router.post('/create', verifyToken, async (req, res, next) => {
     const newObject = new Invoice({
         user: req.user.id,
         items: []
-       
+
     });
 
     newObject.deleted = false;
     newObject._id = new mongoose.Types.ObjectId();
+    newObject.invoiceLines = req.body.items;
     let savedInvoice = await newObject.save();
     res.notify = { code: 'Invoices', extra: 'new-Invoice' };
     console.log("New Invoice Saved Into Database With ID: " + savedInvoice._id);
@@ -226,33 +231,8 @@ router.post('/create', verifyToken, async (req, res, next) => {
             let netItemPrice = product.price.amount - discount + profitPercentage;
             total += netItemPrice * req.body.cart[index].qty;
             currencyCode = product.price.currencyCode;
-            const newInvoiceItem = new InvoiceItem({
-                _id: new mongoose.Types.ObjectId(),
-                Invoice: savedInvoice._id,
-                vendor: product.vendor._id,
-                product: req.body.cart[index]._id,
-                qty: req.body.cart[index].qty,
-                itemPrice: {
-                    amount: product.price.amount,
-                    discount: discount,
-                    margin: profitPercentage,
-                    net: Math.ceil(netItemPrice),
-                    subtotal: Math.ceil(netItemPrice * req.body.cart[index].qty),
-                    vendorSubtotal: Math.ceil((product.price.amount - discount) * req.body.cart[index].qty),
-                    currencyCode: product.price.currencyCode
-
-                }
-            });
-            if (!newInvoiceItem.status) {
-                newInvoiceItem.status = { deleted: false }
-            }
-            try {
-                let savedInvoiceItem = await newInvoiceItem.save();
-                savedInvoice.items.push(savedInvoiceItem._id);
-
-            } catch (e) {
-                console.log('Invoice Item Error', e);
-            }
+           
+            
 
         }
     }
@@ -302,11 +282,11 @@ router.get('/deleteItem/:id', verifyToken, async (req, res) => {
 
 
 
-router.get("/test", async(req,res) => {
+router.get("/test", async (req, res) => {
 
     let xml = getInvoiceXML({});
     console.log(xml);
-   
+
     //res.setHeader('Content-Type',"text/xml");
     //res.send(xml);
     res.header("Content-Type", "text/html");

@@ -200,10 +200,12 @@ const CreateCompany = (props) => {
         company.companyInvoiceID && 
         company.incomeSourceSequence && 
         company.clientId && 
-        company.clientSecret;
+        company.clientSecret &&
+        company.contactDetails.phone; 
     }
 
     const fieldClass = (value) => {
+        //console.log("phone value:" + value) ;
         if(!wasValidated)
         return 'form-control';
         return value?'form-control is-valid':'form-control is-invalid';
@@ -236,12 +238,13 @@ const CreateCompany = (props) => {
 
                     <div className="mb-3">
                         <label htmlFor="name" className="form-label">{t("companies.name")}</label>
-                        <LocalizedTextEditor placeholder={t("companies.name")} locale={contentLocale} textObject={company.name}
-                            onLocalChanged={changeLocale} onChange={updateCompanyName} />
+                        <LocalizedTextEditor placeholder={t("companies.name")} 
+                        locale={contentLocale} textObject={company.name} 
+                            onLocalChanged={changeLocale} onChange={updateCompanyName}  className={fieldClass(company.name.arabic)} />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="phone" className="form-label">{t("companies.phone")} </label>
-                        <input type="text" className="form-control" placeholder={t("companies.phone")} id="phone" name="phone" value={company.contactDetails.phone} onChange={updatePhoneNumber} />
+                        <input type="number" className={fieldClass(company.contactDetails.phone)} placeholder={t("companies.phone")} id="phone" name="phone" value={company.contactDetails.phone} onChange={updatePhoneNumber} />
 
                     </div>
            
@@ -274,7 +277,7 @@ const CreateCompany = (props) => {
                         <label htmlFor="invoiceCategory" className="form-label">{t("companies.invoiceCategory")} </label>
           
                    
-                        <select type="text" className="form-control" id="invoiceCategory" name="title"  onChange={updateInvoiceCategory}   >
+                        <select type="text" className={fieldClass(company.invoiceCategory)} id="invoiceCategory" name="title"  onChange={updateInvoiceCategory}   >
                                 <option value =""> Select  </option>
                                 <option value="Income"> Income </option>
                                 <option value="TAX"> TAX </option>

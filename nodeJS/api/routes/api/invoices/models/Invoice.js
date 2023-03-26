@@ -140,10 +140,7 @@ const InvoiceSchema = new Schema({
         ref: 'InvoiceStatus'
     },
 
-    items: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'InvoiceItem'
-    }],
+  
 
 
 

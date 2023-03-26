@@ -254,7 +254,9 @@
     "companyName":"Company Name" ,
     "companyInvoiceID" : "Company Invoice ID",
     "incomeSourceSequence" : "Income Source Sequence",
-    "invoiceCategory": "Invoice Category"
+    "invoiceCategory": "Invoice Category" ,
+    "clientId": "Client ID", 
+    "clientSecret": "Client Secret"
   },
   "countries":{
     "countryCode":"Country Code",

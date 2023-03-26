@@ -2,6 +2,7 @@ import React,{ useState, useEffect } from 'react'
 
 const LocalizedTextEditor = (props) => {
      
+   
     const getLocalizedValue = () => {
         let result = '';
         if(!props.textObject){
@@ -101,7 +102,7 @@ const LocalizedTextEditor = (props) => {
 
            
             <div className="col">
-                <input id="localizedText" className="form-control" placeholder={props.placeholder} value={displayText} onChange={textChanged} />
+                <input id="localizedText" className={props.className} placeholder={props.placeholder} value={displayText} onChange={textChanged} />
             </div>
             <div className="col col-2">
                 <select className="me-sm-2 form-select form-control" id="inlineFormCustomSelect" value={props.locale} onChange={changeLocale}>

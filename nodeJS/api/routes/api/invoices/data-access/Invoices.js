@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const verifyToken = require('../../utils/auth');
 
 const Invoice = require('../models/Invoice');
-const InvoiceItem = require('../models/InvoiceItem');
 const InvoiceStatus = require('../models/InvoiceStatus');
 const { query } = require('express');
 
