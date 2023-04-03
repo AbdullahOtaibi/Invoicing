@@ -12,8 +12,6 @@ const InvoiceSchema = new Schema({
 
     invoiceType: String,
 
-
-
     currencyCode: String,
     additionalDocumentReference:
     {
@@ -34,30 +32,32 @@ const InvoiceSchema = new Schema({
                 default: "VAT"
             },
             registrationName: String,
-        },
-        accountingCustomerParty:
-        {
-            partyIdentification: {
-                schemeID: {
-                    type: String,
-                    default: "NIN"
-                },
-                value: String
-            },
-            // setting on user level 
-            postalAddress: {
-                postalZone: String,
-                countrySubentityCode: String
-            },
-            taxSchemeId: {
-                type: String,
-                default: "VAT"
-            },
-            telephone: String
-        },
+        }
+       
     },
-
-    partyIdentification: {
+   
+    accountingCustomerParty:
+    {
+        partyIdentification: {
+            schemeID: {
+                type: String,
+                default: "NIN"
+            },
+            value: String
+        },
+        // setting on user level 
+        postalAddress: {
+            postalZone: String,
+            countrySubentityCode: String
+        },
+        taxSchemeId: {
+            type: String,
+            default: "VAT"
+        },
+        registrationName: String,
+        telephone: String
+    },
+    sellerSupplierPartyIdentification: {
         id: String
     },
 
@@ -103,14 +103,6 @@ const InvoiceSchema = new Schema({
         }
 
     }],
-
-
-
-
-
-
-
-
     serialNumber: Number,
     notesforClient: String,
     orderNumber: String,

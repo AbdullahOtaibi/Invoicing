@@ -193,51 +193,16 @@ router.post('/create', verifyToken, async (req, res, next) => {
     }
     const newObject = new Invoice({
         user: req.user.id,
-        items: []
+       ...req.body
+
 
     });
 
     newObject.deleted = false;
     newObject._id = new mongoose.Types.ObjectId();
-    newObject.invoiceLines = req.body.items;
+    //newObject.invoiceLines = req.body.items;
     let savedInvoice = await newObject.save();
-    res.notify = { code: 'Invoices', extra: 'new-Invoice' };
-    console.log("New Invoice Saved Into Database With ID: " + savedInvoice._id);
-
-    /*------------------------------ Add Invoice Items ------------------------------*/
-    //console.log(req.body.cart)
-    let total = 0;
-    let currencyCode = 'USD';
-    if (req.body.cart && req.body.cart.length > 0) {
-        console.log("Adding " + req.body.cart.length + " Invoice Items From Cart");
-        for (let index in req.body.cart) {
-
-            const product = await Product.findOne({ _id: req.body.cart[index]._id }).populate("vendor");
-            if (!product) {
-                continue;
-            }
-
-            let discount = 0;
-            if (product && product.discountPercentage && product.discountPercentage > 0) {
-                discount = product.price.amount * (product.discountPercentage / 100);
-            }
-            let profitPercentage = 0;
-            try {
-                if (product && product.vendor.profitPercentage && product.vendor.profitPercentage > 0) {
-                    profitPercentage = (product.price.amount - discount) * (product.vendor.profitPercentage / 100);
-                }
-            } catch (e) { }
-
-            let netItemPrice = product.price.amount - discount + profitPercentage;
-            total += netItemPrice * req.body.cart[index].qty;
-            currencyCode = product.price.currencyCode;
-           
-            
-
-        }
-    }
-    savedInvoice.totalAmount = { amount: Math.ceil(total), currencyCode: currencyCode };
-    savedInvoice = await Invoice.findByIdAndUpdate(savedInvoice._id, savedInvoice);
+    
     res.json(savedInvoice);
     next();
 });

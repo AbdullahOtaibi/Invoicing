@@ -13,48 +13,49 @@ function Dashboard() {
     const [notification, setNotification] = useState({});
 
     function connect() {
-        try {
-            console.log('connectiing ws to :' + process.env.REACT_APP_WEBSOCKET_URL);
-            let ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+        return;
+        // try {
+        //     console.log('connectiing ws to :' + process.env.REACT_APP_WEBSOCKET_URL);
+        //     let ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
            
-            ws.onopen = () => {
-                console.log('connected.');
-                ws.send(JSON.stringify({ email: localStorage.getItem('email'), command: 'bind-user', message: '' }));
-            }
+        //     ws.onopen = () => {
+        //         console.log('connected.');
+        //         ws.send(JSON.stringify({ email: localStorage.getItem('email'), command: 'bind-user', message: '' }));
+        //     }
 
-            ws.onmessage = (msg) => {
-                let msgObj = JSON.parse(msg.data);
-                console.log(msgObj);
-                try {
-                    if(msgObj.code === 'messages'){
-                        console.log('condition true.');
-                        if(msgObj.extra === 'new-message'){
-                        toast("🖅 " + t("communications.youGotNewMessage"));
-                        }
+        //     ws.onmessage = (msg) => {
+        //         let msgObj = JSON.parse(msg.data);
+        //         console.log(msgObj);
+        //         try {
+        //             if(msgObj.code === 'messages'){
+        //                 console.log('condition true.');
+        //                 if(msgObj.extra === 'new-message'){
+        //                 toast("🖅 " + t("communications.youGotNewMessage"));
+        //                 }
                         
-                    }
-                    setNotification(msgObj);
+        //             }
+        //             setNotification(msgObj);
                    
-                } catch (e) {
-                    console.error(e);
-                }
-            }
+        //         } catch (e) {
+        //             console.error(e);
+        //         }
+        //     }
 
-            ws.onclose = () => {
-                console.log('websocket destroyed!');
-                setTimeout(function() {
-                    console.log('reconnecting websocket.');
-                    connect();
-                  }, 1000);
-            }
-        } catch (e) {
-            console.error(e);
-        }
+        //     ws.onclose = () => {
+        //         console.log('websocket destroyed!');
+        //         setTimeout(function() {
+        //             console.log('reconnecting websocket.');
+        //             connect();
+        //           }, 1000);
+        //     }
+        // } catch (e) {
+        //     console.error(e);
+        // }
     }
 
     useEffect(() => {
         //Web Sockets.
-       connect();
+      // connect();
 
     }, []);
 

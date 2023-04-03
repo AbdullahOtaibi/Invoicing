@@ -109,7 +109,7 @@
     "addToCart":"Add To Cart",
     "alsoAvailableIn":"Also available in",
     "askForAQuote":"Ask for a quote",
-    "company":"company/Brand",
+    "company":"Company/Brand",
     "approved":"Approved",
     "stockKeepingUnit":"Stock Keeping Unit",
     "sku":"SKU",
@@ -151,13 +151,14 @@
     "files":"Files",
     "products":"Products",
     "users":"Users",
-    "companies":"companies/Brands",
+    "companies":"Companies",
     "productCategories":"Categories",
     "orders":"Orders",
     "clients":"Clients",
     "shippingCompanies":"Shipping Companies",
     "logistics":"Logistics",
-    "shipments":"Shipments"
+    "shipments":"Shipments",
+    "invoices":"Invoices"
   },
   "dashboard":{
     "code":"Code",
@@ -215,7 +216,7 @@
     "editUser":"Edit User Details",
     "active":"Active",
     "phone":"Phone Number",
-    "company":"company",
+    "company":"Company",
     "roles":"Roles",
     "newUser":"New User",
     "registerNow":"Register Now",
@@ -235,24 +236,27 @@
     "addedBy":"Added By"
   },
   "companies":{
-    "companies":"companies/Brands",
-    "editCompany":"Edit company Details",
-    "createCompany":"Create company",
+    "companies":"Companies",
+    "editCompany":"Edit Company Details",
+    "createCompany":"Create Company",
     "name":"Name",
     "phone":"Phone Number",
     "fax":"Fax",
     "infoEmail":"Info Email Address",
     "website":"Website URL",
     "showAsPartner":"Show As Partner",
-    "CompanyCategories":"company Categories",
+    "CompanyCategories":"Company Categories",
     "profitPercentage":"Profit Percentage",
     "otherCategories":"Other Categories",
     "otherCategoriesMessage":"If your products or items do not relate to any of these mentioned categories, please select a category name to add them",
     "CompanyCategoriesMessage":"Please choose the category your products belong to from the list.",
     "companyDetails":"Company Details",
-    "companyName":"Company Name"
-
-  
+    "companyName":"Company Name" ,
+    "companyInvoiceID" : "Company Invoice ID",
+    "incomeSourceSequence" : "Income Source Sequence",
+    "invoiceCategory": "Invoice Category" ,
+    "clientId": "Client ID", 
+    "clientSecret": "Client Secret"
   },
   "countries":{
     "countryCode":"Country Code",
@@ -279,7 +283,7 @@
     "available":"Available",
     "confirmed":"Confirmed",
     "notesForClient":"Notes For Client",
-    "sendForcompanies":"Send For companies",
+    "sendForCompanies":"Send For Companies",
     "returnToClient":"Return To Client"
 
   },
@@ -306,8 +310,8 @@
     "totalAmount":"Total Amount",
     "dateClosed":"Date Closed",
     "orderDetails":"Order Details",
-    "sendForcompanies":"Send For companies",
-    "sendForcompany":"Send For company",
+    "sendForCompanies":"Send For Companies",
+    "sendForCompany":"Send For Company",
     "addComment":"Add Comment",
     "history":"History",
     "available":"Available",

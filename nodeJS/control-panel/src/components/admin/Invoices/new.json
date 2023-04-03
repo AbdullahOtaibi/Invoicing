@@ -1,0 +1,46 @@
+{
+    "items": [],
+    "invoiceCategory": "Income",
+    "invoiceType": "xyz",
+    "invoiceTypeCode": "388",
+    "currencyCode": "JO",
+    "issuedDate": "2023-05-03T08:43:05.000Z",
+    "invoiceUUID": "aef22a3e-2788-4fc4-8862-bc12db202d33",
+    "AdditionalDocumentReference": {
+        "id": "ICV",
+        "uuid": "1cd62a85-a2d3-4f04-98cc-776e21b850d8"
+    },
+    "postalAddress": {
+        "identificationCode": "JO"
+    },
+    "AccountingSupplierParty": {
+        "postalAddress": {
+            "identificationCode": "JO"
+        },
+        "partyTaxScheme": {
+            "companyID": "22206140",
+            "taxSchemeId": "VAT",
+            "registrationName": "registrationName comp"
+        },
+        "accountingCustomerParty": {
+            "partyIdentification": {
+                "schemeID": "NIN",
+                "value": "9801026692"
+            },
+            "postalAddress": {
+                "postalZone": "33554",
+                "countrySubentityCode": "JO-AM"
+            },
+            "taxSchemeId": "VAT",
+            "telephone": "00999999999"
+        }
+    },
+    "PartyIdentification": {
+        "id": "14666120"
+    },
+    "allowanceCharge": {
+        "chargeIndicator": false,
+        "allowanceChargeReason": "",
+        "amount": 0
+    }
+}

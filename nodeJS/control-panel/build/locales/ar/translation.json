@@ -158,7 +158,8 @@
     "clients": "الزبائن",
     "shippingCompanies": "شركات الشحن",
     "logistics": "الشحن",
-    "shipments": "الشحنات"
+    "shipments": "الشحنات",
+    "invoices":"الفواتير"
   },
   "dashboard": {
     "code": "الرمز",
