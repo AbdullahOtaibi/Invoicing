@@ -1,12 +1,7 @@
 import axios from 'axios'
 import { getSecured, postSecured } from '../../../services/ApiClient'
 
-export const getInvoices = () => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/all", {
-        headers:
-            { "authorization": "Bearer " + localStorage.getItem("jwt") }, crossdomain: true
-    });
-}
+
 
 export const removeInvoice = (invoiceId) => {
     return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/remove/" + invoiceId);
@@ -25,12 +20,29 @@ export const sendTocompanies = (invoiceId) => {
 }
 
 
-export const getNewInvoices = (filters) => {
+export const getInvoices = (filters) => {
+    console.log("url:" +process.env.REACT_APP_API_BASE_URL + "/v1/invoices/filter") ;
     return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/filter", filters);
 }
 
-export const getClosedInvoices = (filters) => {
-    filters.status = 'closed';
+export const getNewInvoices = (filters) => {
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/filter", filters);
+    //return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/filter", {deleted:false , page:1});
+}
+
+export const getCountInvoices = (filter) => {
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/count", filter);
+    //return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/filter", {deleted:false , page:1});
+}
+
+export const getInvoiceSummary = (filter) => {
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/DachboardSummary", filter);
+    //return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/filter", {deleted:false , page:1});
+}
+
+
+export const getPostedInvoices = (filters) => {
+    filters.status = 'posted';
     return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/filter", filters);
 }
 
@@ -89,6 +101,9 @@ export const createInvoice = (invoice) => {
     return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/create", invoice);
 }
 
+export const updateInvoice = (invoice) => {
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/update", invoice);
+}
 
 export const customSearch = (searchText) => {
     return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/search/" + searchText);

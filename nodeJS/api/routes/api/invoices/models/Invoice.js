@@ -1,9 +1,11 @@
+const number_format = require('locutus/php/strings/number_format');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 const InvoiceSchema = new Schema({
     _id: ObjectId,
+    invoiceSequance:String, 
     invoiceUUID: String,
     incomeSourceSequence: String,
     invoiceCategory: String,
@@ -53,6 +55,7 @@ const InvoiceSchema = new Schema({
         taxSchemeId: {
             type: String,
             default: "VAT"
+            
         },
         registrationName: String,
         telephone: String
@@ -63,6 +66,7 @@ const InvoiceSchema = new Schema({
 
     allowanceCharge:
     {
+
         chargeIndicator:
         {
             type: Boolean,
@@ -81,63 +85,54 @@ const InvoiceSchema = new Schema({
         allowanceTotalAmount: Number,
         payableAmount: Number
     },
-    invoiceLines: [{
+    items: [{
 
-        iD: String,
-        invoicedQuantity: String,
-        lineExtensionAmount: String,
+        id: Number,
+        sequance:Number, 
+        unitPrice:Number,
+        qty:Number, 
+        allowance:Number, 
+        lineExtensionAmount:Number, 
         itemName: String,
-        price: {
-            priceAmount: Number,
-            allowanceCharge: {
-                chargeIndicator: {
-                    type: Boolean,
-                    default: false
-                },
-                allowanceChargeReason: {
-                    type: String,
-                    default: "DISCOUNT"
-                },
-                amount: Number
-            }
+        chargeIndicator: 
+        {
+            type:Boolean, 
+            default:false 
+        }, 
+        allowanceChargeReason: {
+            type: String,
+            default: "DISCOUNT"
         }
-
     }],
-    serialNumber: Number,
-    notesforClient: String,
-    orderNumber: String,
-    deleted: Boolean,
-
-    totalAmount: {
-        amount: Number,
-        vendorAmount: Number,
-        currencyCode: String
+    deleted: {
+        type:Boolean,
+        default:false
     },
 
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    dateAdded: {
+    
+    invoicePosted: {
+        type:Boolean,
+        default:false
+    },
+    postedXML: String, 
+    responseXML:String, 
+    createdDate: {
         type: Date,
         default: Date.now
+    }, 
+    updatedDate: Date,
+    serialNumber: Number ,
+    seqNumber: String ,
+    status:{
+        type:String, 
+        default: "new" 
     },
-    dateClosed: {
-        type: Date
-
-    },
-    status: {
-        type: Number,
-        default: 0,
-        ref: 'InvoiceStatus'
-    },
-
-  
-
-
-
-
-
+    postedXML:String, 
+    responseXML: String
 }, { collection: 'Invoices' });
 
 

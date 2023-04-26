@@ -6,8 +6,17 @@ import { MdPeople, MdOutlineCardGiftcard, MdOutlineFactCheck, MdOutlinePriceChan
 import { languages  } from '../../../globals';
 import { getEnabledLanguages } from '../../../services/TranslationsService';
 
+import {getInvoiceSummary} from '../../admin/Invoices/InvoicesAPI'
+
+
+
+
+
+
 const Summary = ({ notification, onHandleNotification }) => {
 
+
+    
     const { t } = useTranslation();
     const [summary, setSummary] = useState({
         orders: 0,
@@ -17,30 +26,41 @@ const Summary = ({ notification, onHandleNotification }) => {
         newOrders: 0,
         newClients:0
     });
+
+    const[countNewInvoices, setcountNewInvoices] = useState({}) ;
+    const[countPostedInvoices , setCountPostedInvoices] =useState({}) ;
+    const[countStuckInvoices , setcountStuckInvoices] =useState({}) ;
+useEffect(()=>{
+    getInvoiceSummary({status:"new" }) .
+    then((data)=> {
+        console.log("abd") ;
+        console.log(data[0]) ;
+        setcountNewInvoices(data[0])
+    }).catch(e=>{
+        console.log("error fetching count new invoices:" + e);
+    })
+
+    getInvoiceSummary({status:"posted" }) .
+    then((data)=> {
+        setCountPostedInvoices(data[0])
+    }).catch(e=>{
+        console.log("error fetching count posted invoices:" + e);
+    })
+
+    getInvoiceSummary({status:"stuck" }) .
+    then((data)=> {
+        setcountStuckInvoices(data[0])
+    }).catch(e=>{
+        console.log("error fetching count stuck invoices:" + e);
+    })
+},[]);
     console.log("Languages:=============");
     console.log(languages);
    
-    const reload = () => {
-        getSummary().then(data => {
-           
-           let tmp = {};
-           
-           data.forEach(item => tmp = {...tmp, ...item});
-           //alert(JSON.stringify(tmp));
-           setSummary(tmp);
-        }).catch(e => {
-            console.error(e);
-        });
-    }
-    useEffect(() => {
-        if (notification.code == 'users' || notification.code == 'orders' || notification.code == 'quotations' || notification.code == 'products') {
-            reload();
-        }
-    }, [notification]);
+   
 
-    useEffect(() => {
-        reload();
-    }, []);
+
+  
 
     return (
         <div className="conatiner">
@@ -54,32 +74,16 @@ const Summary = ({ notification, onHandleNotification }) => {
 
             </div>
             <br />
+            
             <div className="row row-cards-one">
-                <div className="col-md-12 col-lg-6 col-xl-3">
-                    <div className="mycard bg1">
-                        <div className="left">
-                            <h5 className="title"> {t("sidebar.products")} </h5>
-                            <span className="number">
-                                {summary.products?summary.products:0}
-                            </span>
-                            <a href="/admin/products" className="link">{t("viewAll")}</a>
-                        </div>
-                        <div className="right d-flex align-self-center">
-                            <div className="icon">
-                                <MdOutlineCardGiftcard />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="col-md-12 col-lg-6 col-xl-3">
+                <div className="col-md-12 col-lg-6 col-xl-4">
                     <div className="mycard bg2">
                         <div className="left">
-                            <h5 className="title">{t("sidebar.users")}</h5>
+                            <h5 className="title">{t("invoice.NewInvoices")}</h5>
                             <span className="number">
-                                {summary.users?summary.users:0}
+                            {countNewInvoices.count}
                             </span>
-                            <a href="/admin/users" className="link">{t("viewAll")}</a>
+                            <a href="/admin/invoices" className="link">{t("viewAll")}</a>
                         </div>
                         <div className="right d-flex align-self-center">
                             <div className="icon">
@@ -90,12 +94,12 @@ const Summary = ({ notification, onHandleNotification }) => {
                     </div>
                 </div>
 
-                <div className="col-md-12 col-lg-6 col-xl-3">
+                <div className="col-md-12 col-lg-6 col-xl-4">
                     <div className="mycard bg6">
                         <div className="left">
-                            <h5 className="title">{t("sidebar.orders")}</h5>
-                            <span className="number">{summary.orders?summary.orders:0}</span>
-                            <a href="/admin/orders" className="link">{t("viewAll")}</a>
+                            <h5 className="title">{t("invoice.PostedInvoices")}</h5>
+                            <span className="number">{countPostedInvoices.count}</span>
+                            <a href="/admin/invoices" className="link">{t("viewAll")}</a>
                         </div>
                         <div className="right d-flex align-self-center">
                             <div className="icon">
@@ -105,7 +109,24 @@ const Summary = ({ notification, onHandleNotification }) => {
                     </div>
                 </div>
 
-                <div className="col-md-12 col-lg-6 col-xl-3">
+                <div className="col-md-12 col-lg-6 col-xl-4">
+                    <div className="mycard bg1">
+                        <div className="left">
+                            <h5 className="title"> {t("invoice.StuckInvoices")} </h5>
+                            <span className="number">
+                               {countStuckInvoices.count}
+                            </span>
+                            <a href="/admin/invoices" className="link">{t("viewAll")}</a>
+                        </div>
+                        <div className="right d-flex align-self-center">
+                            <div className="icon">
+                                <MdOutlineCardGiftcard />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* <div className="col-md-12 col-lg-6 col-xl-3">
                     <div className="mycard bg4">
                         <div className="left">
                             <h5 className="title">{t("quotations")}</h5>
@@ -120,46 +141,101 @@ const Summary = ({ notification, onHandleNotification }) => {
                             </div>
                         </div>
                     </div>
-                </div>
+               
+                </div> */}
 
 
             </div>
 
             <div className="row row-cards-one">
-                <div className="col-md-6 col-xl-3">
-                    <div className="card c-info-box-area">
-                        <div className="c-info-box box1">
-                            <p>{summary.newClients?summary.newClients:0}</p>
-                        </div>
-                        <div className="c-info-box-content">
-                            <h6 className="title">New Customers</h6>
-                            <p className="text">Last 30 Days</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-md-6 col-xl-3">
+                
+                <div className="col-md-6 col-xl-4">
                     <div className="card c-info-box-area">
                         <div className="c-info-box box2">
-                            <p>{summary.allClients?summary.allClients:0}</p>
+                            <p>  {countNewInvoices.count} </p>
                         </div>
                         <div className="c-info-box-content">
-                            <h6 className="title">Total Customers</h6>
-                            <p className="text">All Time</p>
+                            <h6 className="title text-left text-info">Total Summary:</h6>
+                  
+                            <table className='text text-left'>
+                                <tbody>
+                                    <tr>
+                                        <td > {t("invoice.sumTaxInclusiveAmount")}  </td> 
+                                        <td>{ countNewInvoices.sumTaxInclusiveAmount}</td>
+                                    </tr>
+                                    <tr >
+                                        <td className='pr-2'>{t("invoice.sumAllowanceTotalAmount")}   </td> 
+                                        <td>{ countNewInvoices.sumAllowanceTotalAmount}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot className='font-weight-bold text-info'>
+                                <td> {t("invoice.taxExclusiveAmount")}  </td> 
+                                <td>{ countNewInvoices.taxExclusiveAmount}</td>
+                                </tfoot>
+                            </table>
+
+                        
                         </div>
                     </div>
                 </div>
-                <div className="col-md-6 col-xl-3">
+                <div className="col-md-6 col-xl-4">
                     <div className="card c-info-box-area">
                         <div className="c-info-box box4">
-                            <p>{summary.orders?summary.orders:0}</p>
+                            <p>{countPostedInvoices.count}</p>
                         </div>
                         <div className="c-info-box-content">
-                            <h6 className="title">Total Sales</h6>
-                            <p className="text">All Time</p>
+                            <h6 className="title text-left text-success">Total Summary:</h6>
+                     
+                            <table className='text text-left'>
+                                <tbody>
+                                    <tr>
+                                        <td > {t("invoice.sumTaxInclusiveAmount")}  </td> 
+                                        <td>{ countPostedInvoices.sumTaxInclusiveAmount}</td>
+                                    </tr>
+                                    <tr >
+                                        <td className='pr-2'>{t("invoice.sumAllowanceTotalAmount")}   </td> 
+                                        <td>{ countPostedInvoices.sumAllowanceTotalAmount}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot className='font-weight-bold text-success'>
+                                <td> {t("invoice.taxExclusiveAmount")}  </td> 
+                                <td>{ countPostedInvoices.taxExclusiveAmount }</td>
+                                </tfoot>
+                            </table>
+                       
                         </div>
                     </div>
                 </div>
-                <div className="col-md-6 col-xl-3">
+
+                <div className="col-md-6 col-xl-4">
+                    <div className="card c-info-box-area">
+                        <div className="c-info-box box1">
+                            <p>{countStuckInvoices.count}</p>
+                        </div>
+                        <div className="c-info-box-content">
+                            <h6 className="title text-left text-warning ">Total Summary:</h6>
+                            <table className='text text-left'>
+                                <tbody>
+                                    <tr>
+                                        <td > {t("invoice.sumTaxInclusiveAmount")}  </td> 
+                                        <td>{ countStuckInvoices.sumTaxInclusiveAmount}</td>
+                                    </tr>
+                                    <tr >
+                                        <td className='pr-2'>{t("invoice.sumAllowanceTotalAmount")}   </td> 
+                                        <td>{ countStuckInvoices.sumAllowanceTotalAmount}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot className='font-weight-bold text-warning'>
+                                <td> {t("invoice.taxExclusiveAmount")}  </td> 
+                                <td>{ countStuckInvoices.taxExclusiveAmount}</td>
+                                </tfoot>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+                {/* <div className="col-md-6 col-xl-3">
                     <div className="card c-info-box-area">
                         <div className="c-info-box box3">
                             <p> {summary.newOrders?summary.newOrders:0}  </p>
@@ -169,7 +245,7 @@ const Summary = ({ notification, onHandleNotification }) => {
                             <p className="text">Last 30 days</p>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
             </div>
 

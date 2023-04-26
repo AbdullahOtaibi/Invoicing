@@ -64,10 +64,15 @@ router.post('/update', verifyToken, async (req, res) => {
     if(req.body.vendorId && !req.body.vendor){
         req.body.vendor = req.body.vendorId;
     }
-    Company.findByIdAndUpdate(req.body._id, req.body, function (err, item) {
+   await  Company.findByIdAndUpdate(req.body._id, req.body, function (err, item) {
+        if(err){
+console.log("err:" + err) ;
+            return;
+        }
         console.log('saved into database...');
         res.json(item);
-    })
+    });
+   // console.log('abc');
    
 
 });

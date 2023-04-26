@@ -56,82 +56,94 @@ router.post('/login', async (req, res) => {
                 }
 
         }).populate("company");
+       
+
+
         var ip = req.connection.remoteAddress;
         logMessage('New Login Attempt for ' + req.body.email, ip);
         const userPermissions = [];
         let userRoleName = null;
         let userRole = {};
         if (user) {
-                const password = req.body.password;
-                const validPassword = await bcrypt.compare(password, user.password);
-                //&& user.emailConfirmed
-                if (validPassword) {
-                        console.log("validPassword true");
-
-                        if (user.roles && user.roles.length > 0) {
-                                userRoleName = user.roles[0].name.english;
-                                console.log("role found");
-
-                                user.roles.forEach(role => {
-                                        if (role.permissions && role.permissions.length > 0) {
-                                                role.permissions.forEach(permission => {
-                                                        userPermissions.push(permission.code);
-                                                })
-                                        }
-
-                                })
-
-
-                        }
-                        const accessToken = jwt.sign({
-                                id: user._id,
-                                email: user.email,
-                                name: user.name,
-                                firstName: user.firstName,
-                                surName: user.surName,
-                                phone: user.phone,
-                                countryCode: user.countryCode,
-                                avatarUrl: user.avatarUrl,
-                                register_date: user.register_date,
-                                permissions: userPermissions,
-                                role: userRoleName,
-                                companyName: user.company ? user.company.name.arabic : '',
-                                companyId: user.company ? user.company.companyInvoiceID : '',
-                                incomeSourceSequence: user.company ? user.company.incomeSourceSequence : '',
-                                invoiceCategory: user.company ? user.company.invoiceCategory : ''
-
-                        }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30 days' });
-
-                        res.json({
-                                jwt: accessToken,
-                                user: {
-                                        name: user.name,
+                if( req.body.SeqCompanyID == user.company.companyInvoiceID)
+                {
+                     
+                        const password = req.body.password;
+                        const validPassword = await bcrypt.compare(password, user.password);
+                        //&& user.emailConfirmed
+                        if (validPassword) {
+                                console.log("validPassword true");
+        
+                                if (user.roles && user.roles.length > 0) {
+                                        userRoleName = user.roles[0].name.english;
+                                        console.log("role found");
+        
+                                        user.roles.forEach(role => {
+                                                if (role.permissions && role.permissions.length > 0) {
+                                                        role.permissions.forEach(permission => {
+                                                                userPermissions.push(permission.code);
+                                                        })
+                                                }
+        
+                                        })
+        
+        
+                                }
+                                const accessToken = jwt.sign({
+                                        id: user._id,
                                         email: user.email,
+                                        name: user.name,
                                         firstName: user.firstName,
                                         surName: user.surName,
                                         phone: user.phone,
                                         countryCode: user.countryCode,
                                         avatarUrl: user.avatarUrl,
-                                        id: user._id,
+                                        register_date: user.register_date,
                                         permissions: userPermissions,
                                         role: userRoleName,
                                         companyName: user.company ? user.company.name.arabic : '',
                                         companyId: user.company ? user.company.companyInvoiceID : '',
                                         incomeSourceSequence: user.company ? user.company.incomeSourceSequence : '',
                                         invoiceCategory: user.company ? user.company.invoiceCategory : ''
-
-                                }
-                        });
-
-
+        
+                                }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30 days' });
+        
+                                res.json({
+                                        jwt: accessToken,
+                                        user: {
+                                                name: user.name,
+                                                email: user.email,
+                                                firstName: user.firstName,
+                                                surName: user.surName,
+                                                phone: user.phone,
+                                                countryCode: user.countryCode,
+                                                avatarUrl: user.avatarUrl,
+                                                id: user._id,
+                                                permissions: userPermissions,
+                                                role: userRoleName,
+                                                companyName: user.company ? user.company.name.arabic : '',
+                                                companyId: user.company ? user.company.companyInvoiceID : '',
+                                                incomeSourceSequence: user.company ? user.company.incomeSourceSequence : '',
+                                                invoiceCategory: user.company ? user.company.invoiceCategory : ''
+        
+                                        }
+                                });
+        
+        
+                        }
+        
+                        // else if(!user.emailConfirmed){
+                        //       res.json({message: "Please confirm your email address", success:false, confirmEmailAddress: true});
+                        //}
+                        else {
+                                res.json({ message: "Invalid Username Or Password!.", success: false });
+                        }
+                        
                 }
-
-                // else if(!user.emailConfirmed){
-                //       res.json({message: "Please confirm your email address", success:false, confirmEmailAddress: true});
-                //}
                 else {
-                        res.json({ message: "Invalid Username Or Password!.", success: false });
+                        res.json({ message: "Invalid Username Or Password Or Sequance Company ID.", success: false });
                 }
+
 
         } else {
                 res.json({ message: "Invalid Username Or Password!.", success: false })

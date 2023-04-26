@@ -159,6 +159,8 @@
     "logistics":"Logistics",
     "shipments":"Shipments",
     "invoices":"Invoices"
+    
+
   },
   "dashboard":{
     "code":"Code",
@@ -201,7 +203,8 @@
     "testimonialText":"Testimonial Text",
     "users":"Users",
     "clients":"Clients",
-    "quotations":"Quotations"
+    "quotations":"Quotations" 
+
   },
   "users":{
     "userName":"Name",
@@ -426,5 +429,53 @@
     "messageQueueItem":"Message Queue Item",
     "messages":"Messages",
     "youGotNewMessage":"You got a new message."
+  },
+  "invoice":
+  {
+    "Invoices": "Invoices", 
+    "newInvoices" : "New Invoices",
+    "postedInvoices": "Posted Invoices", 
+    "TaxExclusiveAmount": "Tax Exclusive Amount",
+    "AllowanceTotalAmount" : "Allowance Total Amount" ,
+    "TaxInclusiveAmount" : "Tax Inclusive Amount",
+    "fullName" :  "Full Name", 
+    "issuedDate": "Issued Date" ,
+    "PayableAmount": "Payable Amount",
+    "Type": "Type",
+    "InvoiceDetails": "Invoice Details",
+    "InvoiceSummery": "Invoice Summery",
+    "CustomerDetails" : "Customer Details",
+    "IdentificationType" : "Identification Type",
+    "IdentificationValue" : "Identification Value",
+    "PhoneNumber" : "Phone Number",
+    "Items" : "Items",
+    "Name" : "Name" , 
+    "Price" : "Price" ,
+    "Qty" : "Qty" ,
+    "Allowance" : "Allowance" ,
+    "Subtotal" : "Subtotal" , 
+    "Net" : "Net",
+    "confirmDelete" : "Confirm Delete",
+    "cancelDelete" : "Cancel Delete" , 
+    "BeingDeleteingTheInvoice" : "Being Deleteing The Invoice",
+    "editInvoice": "Edit Invoice",
+    "confirm": "Confirm",
+    "cancel": "Cancel" ,
+    "deleteingItem" : "Deleteing Item ...." ,
+    "add" : "Add",
+    "createInvoice" : "Create Invoice" ,
+    "stuckInvoices" : "Stuck Invoices",
+    "XMLTransactionError" : "XML Transaction Error",
+    "xmlRequest" : "XML Request",
+    "xmlResponse": "XML Response" ,
+    "invoiceNo" : "Invoice No.",
+    "SeqCompany": "Sequence Company ID",
+    "StuckInvoices" : "Stuck Invoices",
+    "NewInvoices" : "New Invoices",
+    "PostedInvoices" : "Posted Invoices",
+    "sumTaxInclusiveAmount" : "Sum Tax Inclusive Amount" ,
+    "sumAllowanceTotalAmount" : "Sum Allowance Total Amount", 
+    "taxExclusiveAmount" : "Sum Tax Exclusive Amount"
+    
   }
 }

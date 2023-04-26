@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next"
 import { MdCollectionsBookmark, MdDelete, MdEdit, MdAdd, MdLocalShipping } from "react-icons/md"
-import { getClosedInvoices, getNewInvoices, getIncompleteInvoices, removeInvoice } from './InvoicesAPI'
+import { getPostedInvoices, getNewInvoices, getIncompleteInvoices, removeInvoice } 
+from './InvoicesAPI'
 import Loader from "react-loader-spinner"
 import { Link, useNavigate } from 'react-router-dom'
 import { getLocalizedText } from '../utils/utils'
 import { Tabs, Tab } from 'react-bootstrap'
 import { hasPermission } from '../utils/auth';
 import { Helmet } from "react-helmet";
+import  Listinv from "./ListInv"
 
 const ListInvoices = (props) => {
-
     let navigate = useNavigate();
     if (!hasPermission('invoices.view')) {
         navigate("/admin", { replace: true });
@@ -18,7 +19,7 @@ const ListInvoices = (props) => {
 
     const { t, i18n } = useTranslation();
     const [newInvoices, setNewInvoices] = useState([]);
-    const [closedInvoices, setClosedInvoices] = useState([]);
+    const [postedInvoices, setPostedInvoices] = useState([]);
     const [incompleteInvoices, setIncompleteInvoices] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -26,30 +27,47 @@ const ListInvoices = (props) => {
     const [newInvoicesPage, setNewInvoicesPage] = useState(0);
     const [newInvoicesPages, setNewInvoicesPages] = useState(0);
 
-    const [closedInvoicesSort, setClosedInvoicesSort] = useState('_idDesc');
-    const [closedInvoicesPage, setClosedInvoicesPage] = useState(0);
-    const [closedInvoicesPages, setClosedInvoicesPages] = useState(0);
 
+    useEffect( ()=>{console.log('********test ....') ; 
+    console.log(JSON.stringify(newInvoices));
+ 
+
+} , setNewInvoices);
+
+
+/*
+    const [postedInvoicesSort, setPostedInvoicesSort] = useState('_idDesc');
+    const [postedInvoicesPage, setPostedInvoicesPage] = useState(0);
+    const [postedInvoicesPages, setPostedInvoicesPages] = useState(0);
+
+   
     const [incompleteInvoicesSort, setIncompleteInvoicesSort] = useState('_idDesc');
     const [incompleteInvoicesPage, setIncompleteInvoicesPage] = useState(0);
     const [incompleteInvoicesPages, setIncompleteInvoicesPages] = useState(0);
+    
+*/
 
 
 
-
+/*
     const loadNewPage = (newPage) => {
         if (newPage < 0 || (newPage >= newInvoicesPages && newInvoicesPages > 0)) {
             return;
         }
+        
+        console.log("newPage:" +newPage) ;
         setLoading(true);
+
         setNewInvoicesPage(newPage);
         getNewInvoices({
-            invoiceBy: newInvoicesSort,
-            page: newPage
+         page: newPage,
+        status: "new"
         }).then(data => {
             setLoading(false);
-            setNewInvoices(data.items);
-            setNewInvoicesPage(data.page);
+            setNewInvoices(data.items || []);
+            setNewInvoicesPage(data.page );
+            console.log("data.items:" +  JSON.stringify( data.items) ) ;
+            console.log("data.pages:" +data.pages) ;
             setNewInvoicesPages(data.pages);
         }).catch(e => {
             setLoading(false);
@@ -58,19 +76,21 @@ const ListInvoices = (props) => {
     }
 
     const loadClosedPage = (newPage) => {
-        if (newPage < 0 || (newPage >= closedInvoicesPages && closedInvoicesPages > 0)) {
+        if (newPage < 0 || (newPage >= postedInvoicesPages && postedInvoicesPages > 0)) {
             return;
         }
+
         setLoading(true);
-        setClosedInvoicesPage(newPage);
-        getClosedInvoices({
-            invoiceBy: closedInvoicesSort,
-            page: newPage
+        setPostedInvoicesPage(newPage);
+        getPostedInvoices({
+            invoiceBy: postedInvoicesSort,
+            page: newPage,
+            status: "posted"
         }).then(data => {
             setLoading(false);
-            setClosedInvoices(data.items);
-            setClosedInvoicesPage(data.page);
-            setClosedInvoicesPages(data.pages);
+            setPostedInvoices(data.items || []);
+            setPostedInvoicesPage(data.page);
+            setPostedInvoicesPages(data.pages);
         }).catch(e => {
             setLoading(false);
             console.log(e);
@@ -88,7 +108,7 @@ const ListInvoices = (props) => {
             page: newPage
         }).then(data => {
             setLoading(false);
-            setIncompleteInvoices(data.items);
+            setIncompleteInvoices(data.items || []);
             setIncompleteInvoicesPage(data.page);
             setIncompleteInvoicesPages(data.pages);
         }).catch(e => {
@@ -96,10 +116,10 @@ const ListInvoices = (props) => {
             console.log(e);
         });
     }
+*/
 
 
-
-
+/*
     useEffect(() => {
         loadNewPage(0);
         loadClosedPage(0);
@@ -112,7 +132,22 @@ const ListInvoices = (props) => {
         });
         
     }
+    */
 
+    /*
+    function getInvoiceDate(issuedDate) {
+        let d = new Date(issuedDate.toString());
+        let str =
+          d.getFullYear() +
+          "/" +
+          (d.getMonth().length == 2
+            ? parseInt(d.getMonth()) + 1
+            : "0" + (parseInt(d.getMonth()) + 1)) +
+          "/" +
+          d.getDate();
+        return str;
+      }
+*/
 
 
 
@@ -128,8 +163,8 @@ const ListInvoices = (props) => {
 
                     <div className='row'>
                         <div className='col-md-8 col-sm-6'>
-                            <h5 className="card-title"><MdCollectionsBookmark /> {t("sidebar.invoices")}
-                                &nbsp;
+                            <h5 className="card-title"><MdCollectionsBookmark /> 
+                                <span className='text-info px-2'> {t("sidebar.invoices")} </span>
                             </h5>
                         </div>
 
@@ -151,210 +186,28 @@ const ListInvoices = (props) => {
                     <br />
 
                     <Tabs
-                        defaultActiveKey="newInvoices"
+                        defaultActiveKey="postedInvoices"
                         transition={false}
                         id="noanim-tab-example"
-                        className="mb-3" >
-                        <Tab eventKey="newInvoices" title={t("invoice.newInvoices")} tabClassName="tab-item">
+                        className="mb-3 " >
+                        <Tab eventKey="newInvoices" title={t("invoice.newInvoices")} tabClassName="tab-item btn-warning  ">
                             <div className="table-responsive">
-                                <table className="table   table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                <a href="#" >
-                                                    {t("invoice.invoiceNumber")}
-                                                </a>
-
-                                            </th>
-                                            <th>
-                                                <a href="#" >
-                                                    {t("invoice.clientName")}
-                                                </a>
-                                            </th>
-                                            <th>
-                                                <a href="#" >
-                                                    {t("invoice.invoiceDate")}
-                                                </a>
-                                            </th>
-                                            <th className="text-center">
-                                                <a href="#">
-                                                    {t("invoice.invoiceStatus")}
-                                                </a>
-
-                                            </th>
-                                            <th className="text-center">
-                                                <a href="#">
-                                                    {t("product.products")}
-                                                </a>
-
-                                            </th>
-
-                                            <th className="text-center">
-                                                <a href="#">
-                                                    {t("invoice.totalAmount")}
-                                                </a>
-
-                                            </th>
-
-                                            <th></th>
-
-                                        </tr>
-
-
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            newInvoices.map(item => (
-                                                <tr key={'' + item.id}>
-                                                    <td>
-                                                        <Link to={'/admin/invoices/' + item._id}>
-                                                            #{("000000".substring(("" + item.serialNumber).length) + item.serialNumber)}
-
-                                                        </Link>
-                                                    </td>
-                                                    <td>
-                                                        {/* {item.client.firstName} {item.client.surName} */}
-                                                    </td>
-                                                    <td>
-                                                        {item.dateAdded.toString().substring(0, 19).replace('T', ' ')}
-                                                    </td>
-                                                    <td className="text-center">
-                                                        {/* {getLocalizedText(item.status.name, i18n)} */}
-                                                    </td>
-                                                    <td className="text-center">
-                                                        {item.items ? item.items.length : 0} 
-                                                    </td>
-
-                                                    <td className="text-center">
-                                                        {item.totalAmount ? item.totalAmount.amount : 0} $
-                                                    </td>
-
-                                                    <td className="justify-content-end" style={{textAlign:'end'}}>
-                                                        {/* <Link className="btn btn-primary" to={"/admin/products/options/" + item._id} title={t("product.productOptions")} ><MdTune /> </Link> &nbsp; */}
-
-                                                        {item.shipment ? (<><Link className="btn btn-primary" to={"/admin/shipments/" + item.shipment} title={t("dashboard.shipmentDetails")} ><MdLocalShipping /> </Link> &nbsp;</>) : null}
-                                                        <Link className="btn btn-primary" to={"/admin/invoices/edit/" + item._id} title={t("dashboard.edit")} ><MdEdit /> </Link> &nbsp;
-                                                        <Link className="btn btn-danger" to="#" title={t("dashboard.delete")} onClick={e => deleteInvoice(item._id)} ><MdDelete /></Link>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        }
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th colSpan="7" className="text-right">
-                                                <nav aria-label="Page navigation example">
-                                                    <ul className="pagination">
-
-                                                        {newInvoicesPages > 1 ? (<li className="page-item"><label className="page-link" href="#" onClick={() => loadNewPage(newInvoicesPage - 1)}>Previous</label></li>) : null}
-
-                                                        {Array.from(Array(newInvoicesPages), (e, i) => {
-                                                            return <li className={i == newInvoicesPage ? "page-item active" : "page-item"} key={i}>
-                                                                <label className="page-link" onClick={() => loadNewPage(i)}>
-                                                                    {i + 1}
-                                                                </label>
-                                                            </li>
-                                                        })}
-
-
-                                                        {newInvoicesPages > 1 ? (<li className="page-item"><label className="page-link" href="#" onClick={() => loadNewPage(newInvoicesPage + 1)}>Next</label></li>) : null}
-
-                                                    </ul>
-                                                </nav>
-                                            </th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                          <Listinv status= "new" />
                             </div>
                         </Tab>
-                        <Tab eventKey="closedInvoices" title={t("invoice.closedInvoices")} tabClassName="tab-item">
-                            <div className="table-responsive">
-                                <table className="table   table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                <a href="#" >
-                                                    {t("invoice.invoiceNumber")}
-                                                </a>
-
-                                            </th>
-                                            <th>
-                                                <a href="#" >
-                                                    {t("invoice.clientName")}
-                                                </a>
-                                            </th>
-                                            <th>
-                                                <a href="#" >
-                                                    {t("invoice.invoiceDate")}
-                                                </a>
-                                            </th>
-                                            <th className="text-center">
-                                                <a href="#">
-                                                    {t("invoice.dateClosed")}
-                                                </a>
-
-                                            </th>
-
-
-                                            <th className="text-center">
-                                                <a href="#">
-                                                    {t("invoice.totalAmount")}
-                                                </a>
-
-                                            </th>
-                                            <th>
-
-                                            </th>
-                                            <th></th>
-
-                                        </tr>
-
-
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            closedInvoices.map(item => (
-                                                <tr key={'' + item.id}>
-                                                    <td>
-                                                        <Link to={'/admin/invoices/' + item._id}>
-                                                            #{("000000".substring(("" + item.serialNumber).length) + item.serialNumber)}
-
-                                                        </Link>
-
-
-                                                    </td>
-                                                    <td>
-                                                        {/* {item.client.firstName} {item.client.surName} */}
-                                                    </td>
-                                                    <td>
-                                                        {item.dateAdded.toString().substring(0, 19).replace('T', ' ')}
-                                                    </td>
-                                                    <td className="text-center">
-                                                        {/* {item.dateClosed.toString().substring(0, 19).replace('T', ' ')} */}
-                                                    </td>
-
-                                                    <td className="justify-content-end" style={{textAlign:'end'}}>
-                                                        {/* <Link className="btn btn-primary" to={"/admin/products/options/" + item._id} title={t("product.productOptions")} ><MdTune /> </Link> &nbsp; */}
-                                                        <Link className="btn btn-primary" to={"/admin/invoices/edit/" + item._id} title={t("dashboard.edit")} ><MdEdit /> </Link> &nbsp;
-                                                        <Link className="btn btn-danger" to="#" title={t("dashboard.delete")} onClick={e => deleteInvoice(item._id)} ><MdDelete /></Link>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        }
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th colSpan="6" className="text-right">
-
-                                            </th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                       
+                        
+                        <Tab eventKey="postedInvoices" title={t("invoice.postedInvoices")} tabClassName="tab-item btn-success">
+                            <div className="table-responsive ">
+                            <Listinv status= "posted" />
                             </div>
                         </Tab>
-                        <Tab eventKey="incompleteInvoices" title={t("invoice.incompleteInvoices")} tabClassName="tab-item">
+
+                        <Tab eventKey="stuckInvoices" title={t("invoice.stuckInvoices")} tabClassName="tab-item btn-danger">
                             <div className="table-responsive">
-                                <table className="table   table-hover">
+                            <Listinv status= "stuck" />
+
+                                {/* <table className="table   table-hover">
                                     <thead>
                                         <tr>
 
@@ -363,12 +216,12 @@ const ListInvoices = (props) => {
                                             </th>
                                             <th>
                                                 <a href="#" >
-                                                    {t("invoice.clientName")}
+                                                    {t("invoice.fullName")}
                                                 </a>
                                             </th>
                                             <th>
                                                 <a href="#" >
-                                                    {t("invoice.invoiceDate")}
+                                                    {t("invoice.issuedDate")}
                                                 </a>
                                             </th>
 
@@ -403,11 +256,11 @@ const ListInvoices = (props) => {
                                                         </Link>
                                                     </td>
                                                     <td>
-                                                        {/* {item.client.firstName} {item.client.surName} */}
+                                                     
 
                                                     </td>
                                                     <td>
-                                                        {item.dateAdded.toString().substring(0, 19).replace('T', ' ')}
+                                                       
                                                     </td>
                                                     <td className="text-center">
                                                         {item.items ? item.items.length : 0} 
@@ -419,8 +272,8 @@ const ListInvoices = (props) => {
 
 
                                                     <td className="justify-content-end" style={{ textAlign: 'end' }}>
-                                                        {/* <Link className="btn btn-primary" to={"/admin/products/options/" + item._id} title={t("product.productOptions")} ><MdTune /> </Link> &nbsp; */}
-                                                        <Link className="btn btn-primary" to={"/admin/invoices/edit/" + item._id} title={t("dashboard.edit")} ><MdEdit /> </Link> &nbsp;
+                                                      
+                                                        <Link className="btn btn-primary" to={"/admin/invoices/ViewInvoice/" + item._id} title={t("dashboard.edit")} ><MdEdit /> </Link> &nbsp;
                                                         <Link className="btn btn-danger" to="#" title={t("dashboard.delete")} onClick={e => deleteInvoice(item._id)} ><MdDelete /></Link>
                                                     </td>
                                                 </tr>
@@ -434,9 +287,10 @@ const ListInvoices = (props) => {
                                             </th>
                                         </tr>
                                     </tfoot>
-                                </table>
+                                </table> */}
                             </div>
                         </Tab>
+
                     </Tabs>
 
 
@@ -446,7 +300,9 @@ const ListInvoices = (props) => {
                 </div>
             </div>
         </div>
-    )
+
+
+    );
 }
 
 export default ListInvoices;

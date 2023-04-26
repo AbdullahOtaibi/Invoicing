@@ -1,33 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { createInvoice } from "./InvoicesAPI";
+import { createInvoice , getInvoice} from "./InvoicesAPI";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import Loader from "react-loader-spinner";
 import { Editor } from "@tinymce/tinymce-react";
-import { MdAdd, MdDelete } from "react-icons/md";
+import { MdAdd, MdDelete, MdClose } from "react-icons/md";
 import { v4 as uuidv4 } from "uuid";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { event } from "jquery";
+import ConfirmButton from 'react-confirmation-button';
+
 
 const CreateInvoice = (props) => {
+  
+
+  
   const [invoice, setInvoice] = useState({
-    items: [],
     invoiceCategory: "Income",
     invoiceType: "", 
     invoiceTypeCode: "388",
     currencyCode: "JO",
     issuedDate: new Date() ,
     invoiceUUID: uuidv4(),
-    AdditionalDocumentReference: { id: "ICV", uuid: uuidv4() },
+    additionalDocumentReference: { id: "ICV", uuid: uuidv4() },
     postalAddress: { identificationCode: "JO" },
-    AccountingSupplierParty: {
+    accountingSupplierParty: {
       postalAddress: { identificationCode: "JO" },
       partyTaxScheme: {
-        companyID: "22206140",
+        companyID: localStorage.getItem("companyId"),
         taxSchemeId: "VAT",
-        registrationName: "registrationName comp",
+        registrationName: localStorage.getItem("companyName"),
       } 
     }, 
     accountingCustomerParty: {
@@ -38,13 +43,19 @@ const CreateInvoice = (props) => {
       registrationName: "", 
       telephone: "",
     },
-    sellerSupplierPartyIdentification: { id: "14666120" },
+    sellerSupplierPartyIdentification: { id: localStorage.getItem("incomeSourceSequence") },
     allowanceCharge: {
       chargeIndicator: false,
       allowanceChargeReason: "",
       amount: 0.0,
     },
+    items: [] ,
+    status: "new", 
+    postedXML: "",
+    responseXML: ""
   });
+
+  //#region useState
 
   const [loading, setLoading] = useState(false);
   const { invoiceId } = useParams();
@@ -53,15 +64,19 @@ const CreateInvoice = (props) => {
   const[checkCustomerNameIsRequired,setCheckCustomerNameIsRequired] =useState(false); 
   const { t } = useTranslation();
   let seq = 1;
-
   const [currentEditableItem, setCurrentEditableItem] = useState({
     unitPrice: 0,
     allowance: 0,
   });
 
-  const updateDescription = (event) => {
+  //#endregion
+
+
+//#region const
+
+  const updateItemName = (event) => {
     let cloned = JSON.parse(JSON.stringify(currentEditableItem));
-    cloned.description = event.target.value;
+    cloned.itemName = event.target.value;
     setCurrentEditableItem(cloned);
   };
 
@@ -91,10 +106,7 @@ const CreateInvoice = (props) => {
     setCheckCustomerNameIsRequired(true); 
    else
    setCheckCustomerNameIsRequired(false); 
-   
   };
-
-  
 
   const updateCustomerName = (event) => 
   {
@@ -110,13 +122,29 @@ const CreateInvoice = (props) => {
   }
 
   const setPhoneNumber = (event) => {
-   
     let cloned = JSON.parse( JSON.stringify(invoice));
     cloned.accountingCustomerParty.telephone = event.target.value;
     setInvoice(cloned) ;
 
   } 
 
+  const updateAccountingCustomerParty_value = (event) => 
+  {
+    let cloned = JSON.parse(JSON.stringify(invoice));
+    cloned.accountingCustomerParty.partyIdentification.value  = event.target.value;
+   setInvoice(cloned); 
+  }
+
+  const updateIssuedDate = (date) => {
+    let cloned = JSON.parse(JSON.stringify(invoice)) ;
+    cloned.issuedDate =date; 
+    setInvoice(cloned) ;
+
+  }
+
+//#endregion
+
+//#region useEffect
   
   useEffect(() => {
 
@@ -133,28 +161,6 @@ const CreateInvoice = (props) => {
   }, [updateAccountingCustomerParty_schemeID]);
   
 
-  const updateAccountingCustomerParty_value = (event) => 
-  {
-    let cloned = JSON.parse(JSON.stringify(invoice));
-    cloned.accountingCustomerParty.partyIdentification.value  = event.target.value;
-   setInvoice(cloned); 
-  }
-
-  const updateIssuedDate = (date) => {
-    let cloned = JSON.parse(JSON.stringify(invoice)) ;
-    cloned.issuedDate =date; 
-    setInvoice(cloned) ;
-
-  }
-
-  const fieldClass = (value) => {
-    if(!wasValidated)
-    return 'form-control';
-    return value?'form-control is-valid':'form-control is-invalid';
-}
-
-
-
 useEffect(() => {
   console.log(JSON.stringify(invoice)) ;
 },[invoice])
@@ -168,41 +174,90 @@ useEffect( ()=> {
 
 } , invoice);
 
+//#endregion
+
+
+//#region Total function Function 
+
+function  taxInclusiveAmount()
+{
+  return totalTaxExclusiveAmount() - totalAllowance() ;
+}
+
+function totalPayableAmount()
+{
+  return totalTaxExclusiveAmount() - totalAllowance() ;
+}
+  
+
+
+const totalAllowance = () => {
+  let totalAllowance = 0;
+  invoice.items.forEach((item) => {
+    totalAllowance += parseFloat(item.allowance);
+  });
+  return totalAllowance;
+};
+
+const totalTaxExclusiveAmount = () => {
+  let amount = 0;
+  invoice.items.forEach((item) => {
+    amount += parseFloat(item.unitPrice * item.qty);
+  });
+  return amount;
+};
+
+//#endregion
+
+//#region Function 
+const fieldClass = (value, minQuantity) => {
+  if(!wasValidated)
+  return 'form-control';
+  //console.log("minQuantity:"+ minQuantity) ;
+  if (isNaN(minQuantity) )
+  return value?'form-control is-valid':'form-control is-invalid';
+  else 
+  return parseFloat(value) >= parseFloat(minQuantity)?'form-control is-valid':'form-control is-invalid';
+  
+}
+
+
 
 
 
   function isBlank(str) {
     return !str || /^\s*$/.test(str);
+  };
+
+const viewItemValidMessage = (message) =>{
+  toast.warning( message , 
+  {
+    position: toast.POSITION.TOP_RIGHT
+  }
+  );
+};
+
+const addItem = (event) => {
+   
+  //setWasValidated(true);
+  
+  
+  if (!checkItemIsValid()) 
+  {
+    console.log("invoice item is not valid..."); 
+    return false; 
   }
 
-  const addItem = (event) => {
-    // if (!event.target.parent.checkValidity()) {
-    //     event.preventDefault()
-    //     event.stopPropagation()
-    //   }
-
-    if (isBlank(currentEditableItem.description)) {
-      toast.error("fill the  description");
-      return;
-    }
-
-    if (
-      isBlank(currentEditableItem.unitPrice) ||
-      currentEditableItem.unitPrice <= 0
-    ) {
-      toast.error("check unit price");
-      return;
-    }
-    if (isBlank(currentEditableItem.qty) || currentEditableItem.qty <= 0) {
-      toast.error("check unit quantity");
-      return;
-    }
-
     let cloned = JSON.parse(JSON.stringify(invoice));
-    cloned.items.push({ id: new Date().getTime(), ...currentEditableItem });
+    cloned.items.push({ id: new Date().getTime(),
+      sequance: (cloned.items.length +1)  , 
+      chargeIndicator: (currentEditableItem.allowance>0?true:false),
+      lineExtensionAmount: currentEditableItem.unitPrice * currentEditableItem.qty - currentEditableItem.allowance,
+      ...currentEditableItem });
+    
     setCurrentEditableItem({
-      description: "",
-      unitPrice: null,
+      itemName: "",
+      unitPrice: 0,
       qty: 1,
       allowance: 0,
     });
@@ -215,16 +270,15 @@ useEffect( ()=> {
     setInvoice(cloned);
   };
 
+
+
   const doPost = (data) => {
     setWasValidated(true);
-    return; 
-    if (invoice.items.length == 0) {
-      return;
-    }
-
-    if (isBlank(invoice.invoiceType)) {
-      toast.error("fill the invoice type");
-      return;
+    
+    
+    if(!checkInvoice()) //|| !checkItemIsValid())
+    {
+      return false; 
     }
 
     setLoading(true);
@@ -234,6 +288,8 @@ useEffect( ()=> {
       allowanceTotalAmount: totalAllowance(),
       payableAmount: totalPayableAmount(),
     };
+
+    invoice.allowanceCharge.value= totalAllowance(); 
     
     
 
@@ -242,7 +298,8 @@ useEffect( ()=> {
         setLoading(false);
         toast.success(t("succeed"));
         //setInvoice(res.data);
-        window.location.href = "/admin/invoices/edit/" + res.id;
+        window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
+
       })
       .catch((e) => {
         setLoading(false);
@@ -251,65 +308,82 @@ useEffect( ()=> {
     console.log(data);
   };
 
-  const totalTaxExclusiveAmount = () => {
-    let amount = 0;
-    invoice.items.forEach((item) => {
-      amount += parseFloat(item.unitPrice * item.qty);
-    });
-    return amount;
-  };
 
-  const taxInclusiveAmount = () => {
-    let amount = 0;
-    invoice.items.forEach((item) => {
-      amount += parseFloat(item.unitPrice * item.qty);
-    });
-    return amount;
-  };
+  function checkItemIsValid()
+  {
 
-  const totalPayableAmount = () => {
-    let amount = 0;
-    invoice.items.forEach((item) => {
-      amount += parseFloat(item.unitPrice * item.qty);
-    });
-    return amount;
-  };
+    let itemIsValid = true; 
 
-  const totalAllowance = () => {
-    let totalAllowance = 0;
-    invoice.items.forEach((item) => {
-      totalAllowance += parseFloat(item.allowance);
-    });
-    return totalAllowance;
-  };
+    if (isBlank(currentEditableItem.itemName)) {
+      viewItemValidMessage("Fill the item description")
+      itemIsValid=false; 
+    }
 
-  useEffect(() => {
-    "use strict";
+    if (
+      isBlank(currentEditableItem.unitPrice) ||
+      currentEditableItem.unitPrice <= 0
+    ) {
+      viewItemValidMessage("Item unit price must be greater than 0.10 JOD.")
+      itemIsValid=false;  
+    }
+    if (isBlank(currentEditableItem.qty) || currentEditableItem.qty <1) {
+      viewItemValidMessage("Item quantity must be greater than zero.")
+      itemIsValid=false; 
+    }
 
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.querySelectorAll(".needs-validation");
+    if(currentEditableItem.allowance <0)
+    {
+      viewItemValidMessage("Item alowance value must be greater than or equal zero.")
+      itemIsValid=false; 
+    }
 
-    // Loop over them and prevent submission
-    Array.prototype.slice.call(forms).forEach(function (form) {
-      form.addEventListener(
-        "submit",
-        function (event) {
-          if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
+    if(currentEditableItem.unitPrice * currentEditableItem.qty - currentEditableItem.allowance <=0)
+    {
+      viewItemValidMessage("Invoice amount must be greater than zero.")
+      itemIsValid=false; 
+    }
 
-          form.classList.add("was-validated");
-        },
-        false
-      );
-    });
-  }, []);
+
+    return itemIsValid; 
+
+  }
+
+
+  function checkInvoice()
+  {
+    let invoiceIsValid=true;
+
+    if(invoice.accountingCustomerParty.registrationName.trim().length==0 && 
+    ( invoice.invoiceType == "021" || totalTaxExclusiveAmount() >= 10000)
+    )
+    {
+      viewItemValidMessage("FullName is required.")
+      invoiceIsValid=false;
+
+    }
+
+    if (invoice.items.length == 0) {
+      viewItemValidMessage("Add the invoice line item.")
+      invoiceIsValid=false;
+    }
+
+    if (isBlank(invoice.invoiceType)) {
+      viewItemValidMessage("Select the invoice type.")
+      invoiceIsValid=false;
+    }
+
+    return invoiceIsValid
+
+  }
+//#endregion
+
+
 
   return (
+    
     <div className="card">
       <div className="card-body">
-        <h5 className="card-title">{t("dashboard.createInvoice")}</h5>
+        <h5 className="card-title">{t("invoice.createInvoice")}</h5>
         <div className="container text-center">
           <Loader
             type="ThreeDots"
@@ -324,7 +398,7 @@ useEffect( ()=> {
            {/* <h1> checkCustomerNameIsRequired: { checkCustomerNameIsRequired? 'true': 'false'} </h1> */}
 
           <div className="mb-3 row ">
-            <div className="col col-auto text-info">Invoice Summery</div>
+            <div className="col col-auto text-info">{t("invoice.InvoiceSummery")}</div>
             <div className="col">
               <hr />
             </div>
@@ -332,27 +406,29 @@ useEffect( ()=> {
 
           <div className="row totals">
             <div className="mb-3 col ">
-              <div className="col col-auto">TaxExclusiveAmount:</div>
+              <div className="col col-auto">{t("invoice.TaxExclusiveAmount")}</div>
 
               <div className="col">
                 JOD {totalTaxExclusiveAmount().toFixed(3)}
               </div>
             </div>
 
-            <div className="mb-3 col ">
-              <div className="col col-auto">TaxInclusiveAmount:</div>
-
-              <div className="col">JOD {taxInclusiveAmount().toFixed(3)}</div>
-            </div>
-
-            <div className="mb-3 col ">
-              <div className="col col-auto">AllowanceTotalAmount:</div>
+                <div className="mb-3 col ">
+              <div className="col col-auto">{t("invoice.AllowanceTotalAmount")}</div>
 
               <div className="col">JOD {totalAllowance().toFixed(3)}</div>
             </div>
 
             <div className="mb-3 col ">
-              <div className="col col-auto">PayableAmount:</div>
+              <div className="col col-auto">{t("invoice.TaxInclusiveAmount")}</div>
+
+              <div className="col">JOD {taxInclusiveAmount().toFixed(3)}</div>
+            </div>
+
+        
+
+            <div className="mb-3 col ">
+              <div className="col col-auto">{t("invoice.PayableAmount")}</div>
 
               <div className="col">JOD {totalPayableAmount().toFixed(3)}</div>
             </div>
@@ -364,7 +440,7 @@ useEffect( ()=> {
           <div className="col col-auto">Type:</div>
 
 
-          <div className="col">
+          <div className="col col-auto">
                   <select
                     type="text"
                     className={fieldClass(invoice.invoiceType)}
@@ -389,12 +465,12 @@ useEffect( ()=> {
               <DatePicker  className= {fieldClass(invoice.issuedDate)} dateFormat="dd/MM/yyyy" selected={new Date(invoice.issuedDate)} onChange={(date) => updateIssuedDate(date)} />
               </div>
             </div>
-
-
+            
+            <div className="mb-3 col "></div>
+            <div className="mb-3 col "></div>
           </div>
-
           <div className="mb-3 row ">
-            <div className="col col-auto text-info">Customer Details  </div>
+            <div className="col col-auto text-info">{t("invoice.CustomerDetails")}  </div>
             <div className="col">
               <hr />
             </div>
@@ -403,7 +479,7 @@ useEffect( ()=> {
           <div className="mb-3 row">
 
           <div className="mb-3 col ">
-          <div className="col col-auto">Identification Type:</div>
+          <div className="col col-auto">{t("invoice.IdentificationType")}</div>
             <div className="col col-auto">
               <select
                 type="text"
@@ -422,7 +498,7 @@ useEffect( ()=> {
           </div>
 
             <div className="mb-3 col ">
-          <div className="col col-auto">Identification Value:</div>
+          <div className="col col-auto">{t("invoice.IdentificationValue")}</div>
             <div className="col col">
               <input
                 type="text"
@@ -437,7 +513,7 @@ useEffect( ()=> {
             </div>
 
             <div className="mb-3 col ">
-          <div className="col col-auto">Full Name:</div>
+          <div className="col col-auto">{t("invoice.fullName")}</div>
             <div className="col">
               <input
                 type="text"
@@ -445,12 +521,12 @@ useEffect( ()=> {
                 id="customerName"
                 name="customerName"
                 onChange={updateCustomerName}
-                placeholder="Full Name"
+                placeholder={t("invoice.fullName")}
               />
             </div>
             </div>
             <div className="mb-3 col ">
-          <div className="col col-auto">Phone Number:</div>
+          <div className="col col-auto">{t("invoice.PhoneNumber")} </div>
             <div className="col">
               <input
                 type="text"
@@ -475,41 +551,51 @@ useEffect( ()=> {
 
           <div className="row">
             <div className="col table-responsive">
-              <table className="table table-sm needs-validation">
+              <table className="table table-sm needs-validation ">
                 <thead>
-                  <tr className="table-primary">
-                    <th>#</th>
-                    <th>Description</th>
-                    <th>Unit Price</th>
-                    <th>Qty.</th>
-                    <th>Allowance</th>
-                    <th>Subtotal</th>
-                    <th>Net</th>
-                    <th></th>
+                  <tr className="table-light">
+                    <th width ="5%">#</th>
+                    <th width ="20%" >{t("invoice.Name")} </th>
+                    <th width ="10%">{t("invoice.Price")}  </th>
+                    <th width ="10%">{t("invoice.Qty")} </th>
+                    <th width ="12%">{t("invoice.Allowance")}</th>
+                    <th width ="13%">{t("invoice.Subtotal")}</th>
+                    <th width ="15%">{t("invoice.Net")}</th>
+                    <th width ="15%"  ></th>
                   </tr>
                 </thead>
 
                 <tbody>
                   {invoice.items.map((item) => (
                     <tr>
-                      <td> {seq++} </td>
-                      <td>{item.description}</td>
-                      <td>{item.unitPrice} JOD</td>
+                      <td> {item.sequance} </td>
+                      <td>{item.itemName}</td>
+                      <td>{item.unitPrice} </td>
                       <td>{item.qty} </td>
-                      <td>{item.allowance} JOD </td>
-                      <td>{item.unitPrice * item.qty} JOD</td>
-                      <td>{item.unitPrice * item.qty - item.allowance} JOD</td>
-                      <td>
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-danger d-print-none"
-                          onClick={() => {
-                            removeItem(item.id);
-                          }}
-                        >
-                          {" "}
-                          <MdDelete />{" "}
-                        </button>
+                      <td>{item.allowance}  </td>
+                      <td>{item.unitPrice * item.qty} </td>
+                      <td>{item.unitPrice * item.qty - item.allowance} </td>
+                      <td >
+                        
+                        <ConfirmButton
+  onConfirm={() => removeItem(item.id)}
+  onCancel={() =>console.log('cancel')}
+  buttonText={t("dashboard.delete")}
+  confirmText={t("invoice.confirm")}
+  cancelText={t("invoice.cancel")}
+  loadingText={t("invoice.deleteingItem")}
+  wrapClass=""
+  buttonClass="btn d-print-none"
+  mainClass="btn-danger"
+  confirmClass="btn-warning"
+  cancelClass=" btn-success"
+  loadingClass="visually-hidden"
+  disabledClass=""
+  once
+>
+{"Delete "}
+                          <MdDelete />
+</ConfirmButton>
                       </td>
                     </tr>
                   ))}
@@ -519,53 +605,57 @@ useEffect( ()=> {
                     <td>
                       <input
                         type="text"
-                        className="form-control"
-                        value={currentEditableItem.description}
-                        onChange={updateDescription}
+                        className={fieldClass(currentEditableItem.itemName )}
+                        value={currentEditableItem.itemName}
+                        onChange={updateItemName}
                       />
                     </td>
                     <td>
                       <input
                         type="number"
-                        className="form-control"
+                        className={fieldClass(currentEditableItem.unitPrice, 0.1 )}
                         value={currentEditableItem.unitPrice}
                         onChange={updateUnitPrice}
                         required={true}
-                        min={1}
+                        min={.1}
                       />
                     </td>
                     <td>
                       <input
                         type="number"
-                        className="form-control"
+                        className={fieldClass(currentEditableItem.qty, 1)}
                         value={currentEditableItem.qty}
                         onChange={updateQty}
+                        min= {1}
                       />
                     </td>
                     <td>
                       <input
                         type="number"
-                        className="form-control"
+                     
                         value={currentEditableItem.allowance}
                         onChange={updateAllowance}
+                        className={fieldClass(currentEditableItem.allowance,0)}
+                        min={0}
                       />
                     </td>
                     <td>
-                      {currentEditableItem.unitPrice * currentEditableItem.qty}{" "}
+                      {!isNaN(currentEditableItem.unitPrice * currentEditableItem.qty)?currentEditableItem.unitPrice * currentEditableItem.qty: 0}{" "}
                       JOD
                     </td>
                     <td>
-                      {currentEditableItem.unitPrice * currentEditableItem.qty -
-                        currentEditableItem.allowance}{" "}
+                      {!isNaN(currentEditableItem.unitPrice * currentEditableItem.qty -
+                        currentEditableItem.allowance)? currentEditableItem.unitPrice * currentEditableItem.qty -
+                        currentEditableItem.allowance : 0}{" "}
                       JOD
                     </td>
-                    <td>
+                    <td >
                       <button
                         type="button"
-                        className="btn btn-outline-primary btn-sm mx-2 "
+                        className="btn  btn-success d-print-none "
                         onClick={addItem}
                       >
-                        <MdAdd size={30} />
+                     {t("invoice.add")}
                       </button>
                     </td>
                   </tr>
@@ -575,28 +665,18 @@ useEffect( ()=> {
             </div>
           </div>
 
-          <div className="row d-none d-print-block">
-            <div className="col text-end">
-              <br />
-              <br />
-              <img
-                src={
-                  "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=Test QR"
-                }
-              />
-            </div>
-          </div>
           <div className="mb-3 row col justify-content-end">
-            <Link className="btn btn-warning" to="/admin/invoices">
-              {t("dashboard.cancel")}
+            <Link className="btn btn-secondary btn-lg" to="/admin/invoices">
+            <MdClose size={20} /> &nbsp; {t("Cancel")}
             </Link>{" "}
             &nbsp;
-            <button type="button" className="btn btn-primary" onClick={doPost}>
+            <button type="button" className="btn btn-primary btn-lg" onClick={doPost}>
               {t("dashboard.submit")}
             </button>
           </div>
         </form>
       </div>
+      
     </div>
   );
 };

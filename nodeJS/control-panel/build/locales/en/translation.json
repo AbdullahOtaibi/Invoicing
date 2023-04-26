@@ -158,7 +158,11 @@
     "shippingCompanies":"Shipping Companies",
     "logistics":"Logistics",
     "shipments":"Shipments",
-    "invoices":"Invoices"
+    "invoices":"Invoices" ,
+    "StuckInvoices" : "Stuck Invoices", 
+    "NewInvoices" : "New Invoices" ,
+    "PostedInvoices" : "Posted Invoices"
+
   },
   "dashboard":{
     "code":"Code",

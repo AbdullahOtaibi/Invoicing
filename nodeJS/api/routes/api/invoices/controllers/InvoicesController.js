@@ -13,11 +13,10 @@ const { json } = require('body-parser');
 const getInvoiceXML = require('../data-access/ubl');
 const xmlFormat = require('xml-formatter');
 
-
-
 const getNewStatus = (Invoice) => {
     let newStatusId = Invoice.status;
     let allItemsConfirmed = true;
+
     let allItemsAvailable = true;
     let partiallyAvaiable = false;
     let partiallyConfırmed = false;
@@ -28,6 +27,7 @@ const getNewStatus = (Invoice) => {
             item.status = {}
         }
         if (!item.status.available) {
+
             allItemsAvailable = false;
         } else {
             partiallyAvaiable = true;
@@ -74,12 +74,15 @@ router.post('/filter', verifyToken, async (req, res) => {
         let vendorId = filters.vendorId || null;
         let clientId = filters.clientId || null;
         let deleted = filters.deleted || false;
-        let status = filters.status || 'pending';
+        let status = filters.status || null;
         let InvoiceBy = filters.InvoiceBy || '_idDesc';
+        // companyID: localStorage.getItem("companyId"),
+        //let companyId 
         //pending, 1=new, 2=Partially Confirmed, 3=All Items Confirmed, 4=Partially Available, 5=All Items Available, 100=Closed
         //0-incomplete
-
+//req.user.companyId
         result.page = page;
+        console.log("result.page:" + result.page ) ;
         let queryParams = {
             '$and': []
         };
@@ -98,11 +101,19 @@ router.post('/filter', verifyToken, async (req, res) => {
             queryParams['$and'].push({ "_id": InvoiceNumber });
 
         }
+        if(status)
+        {
+            queryParams['$and'].push({ "status": status }); 
+        }
+       
+        //read the company from the user session.
+        queryParams['$and'].push({ "accountingSupplierParty.partyTaxScheme.companyID": {$eq: req.user.companyId} });
 
 
 
         let query = Invoice.find({ deleted: false });
         let countQuery = Invoice.find({ deleted: false });
+
         if (InvoiceBy == '_id') {
             sortParams = {
                 _id: 1
@@ -117,25 +128,26 @@ router.post('/filter', verifyToken, async (req, res) => {
             }
         }
 
+        console.log("queryParams:" +queryParams);
+        query = Invoice.find(queryParams).populate("user", "-password").sort(sortParams);
 
-        query = Invoice.find(queryParams).populate("user", "-password").populate("status").sort(sortParams);
-
-        countQuery = Invoice.find(queryParams).populate("user", "-password").populate("status").sort(sortParams);
-
-
+        countQuery = Invoice.find(queryParams).populate("user", "-password").sort(sortParams);
 
 
-        //console.log(JSON.stringify(query));
+
+
+        console.log(JSON.stringify(queryParams['$and']));
 
         var count = await countQuery.countDocuments();
         result.count = count;
         result.pages = Math.ceil(count / pageSize);
 
+        console.log('getting data from db');
+       result.items = await query.skip(page * pageSize).limit(pageSize).exec('find')
+     
+      res.json(result);
 
-        query.skip(page * pageSize).limit(pageSize).exec('find', function (err, items) {
-            result.items = items;
-            res.json(result);
-        });
+        console.log('out.....');
 
     } catch (ex) {
         console.log(ex);
@@ -145,6 +157,120 @@ router.post('/filter', verifyToken, async (req, res) => {
 
 });
 
+//*************** */
+
+router.post('/count', verifyToken, async (req, res) => {
+
+    if (!req.user) {
+        res.json({ message: 'unauthorized access' });
+    }
+    if (req.user.role != "Administrator" && (req.user.role != "Company")) {
+        res.json({ success: false, message: "Unauthorized" });
+    }
+    var result = {};
+    try {
+        
+        let queryParams = {
+            '$and': []
+        };
+        let count = req.body || {};
+        let status = count.status || "new";
+   
+        if(status)
+        {
+            queryParams['$and'].push({ "status": status }); 
+        }
+       
+        queryParams['$and'].push({ "accountingSupplierParty.partyTaxScheme.companyID": {$eq: req.user.companyId} });
+        console.log("queryParams:" +queryParams);
+        countQuery = Invoice.find(queryParams);
+         count = await countQuery.countDocuments();
+        result.count = count;
+        result.status = status;
+      res.json(result);
+
+        console.log('out.....');
+
+    } catch (ex) {
+        console.log(ex);
+        result.error = ex.message;
+        res.json(result);
+    }
+
+});
+
+
+
+router.post('/DachboardSummary', verifyToken, async (req, res) => {
+
+    if (!req.user) {
+        res.json({ message: 'unauthorized access' });
+    }
+    if (req.user.role != "Administrator" && (req.user.role != "Company")) {
+        res.json({ success: false, message: "Unauthorized" });
+    }
+    var result = {};
+    try {
+        
+       console.log(JSON.stringify(req.body))
+        var status1 = req.body.status || "new";
+        console.log("status1:" +status1) ;
+       
+        
+        let q= [
+            {
+              $match: {
+                status: status1 ,
+                "accountingSupplierParty.partyTaxScheme.companyID":
+                  "22206140",
+              },
+            },
+            {
+              $group: {
+                _id: {
+                  companyID:
+                    "$accountingSupplierParty.partyTaxScheme.companyID",
+                },
+                sumTaxInclusiveAmount: {
+                  $sum: "$legalMonetaryTotal.taxInclusiveAmount",
+                },
+                sumAllowanceTotalAmount: {
+                  $sum: "$legalMonetaryTotal.allowanceTotalAmount",
+                },
+                taxExclusiveAmount: {
+                  $sum: "$legalMonetaryTotal.taxExclusiveAmount",
+                },
+                count: {
+                  $sum: 1,
+                },
+              },
+            },
+          ]
+console.log(JSON.stringify(q));
+          result  = await Invoice.aggregate(q);
+           
+ 
+          
+    /*
+        countQuery = Invoice.find(queryParams);
+        count = await countQuery.countDocuments();
+        result.count = count;
+        result.status = status;
+        */
+
+      res.json(result);
+
+        console.log('out.....');
+
+    } catch (ex) {
+        console.log(ex);
+        result.error = ex.message;
+        res.json(result);
+    }
+
+});
+
+//****************** */
 
 
 
@@ -171,11 +297,17 @@ router.get('/clientInvoices', verifyToken, async (req, res) => {
 router.get('/get/:id', async (req, res) => {
 
     let invoice = await Invoices.getInvoiceById(req.params.id);
-
+    console.log("get invoice info.");
     res.json(invoice);
 });
 
 
+function newSeq(x)
+{
+//d =new Date()
+//return d.getFullYear() + '-' +parseInt(d.getMonth() + 1) + "-" +d.getDate() + '-'+"0000".substring(0,4-x.toString().length)+x.toString()
+return "INV-" +  "00000".substring(0,5-x.toString().length)+x.toString()
+}
 
 router.post('/create', verifyToken, async (req, res, next) => {
     // console.log(req.user);
@@ -186,13 +318,20 @@ router.post('/create', verifyToken, async (req, res, next) => {
         res.json({ success: false, message: "Unauthorized" });
     }
 
+    /*
     let lastInvoice = await Invoice.findOne({}).sort({ serialNumber: -1 });
     let newSerial = 1;
     if (lastInvoice && lastInvoice.serialNumber) {
         newSerial = lastInvoice.serialNumber + 1;
     }
+    */
+
+    let count = await Invoice.countDocuments({ "accountingSupplierParty.partyTaxScheme.companyID": {$eq: req.user.companyId} });
+    let newSerial = count +1 ; 
     const newObject = new Invoice({
         user: req.user.id,
+        serialNumber: newSerial,
+        seqNumber: newSeq(newSerial),
        ...req.body
 
 
@@ -202,8 +341,15 @@ router.post('/create', verifyToken, async (req, res, next) => {
     newObject._id = new mongoose.Types.ObjectId();
     //newObject.invoiceLines = req.body.items;
     let savedInvoice = await newObject.save();
-    
+
+   
     res.json(savedInvoice);
+
+
+
+
+
+
     next();
 });
 
@@ -230,12 +376,29 @@ router.get('/remove/:id', verifyToken, async (req, res) => {
     })
 });
 
+//updte invoice added by abdullah ...... 
+
+router.post('/update/', verifyToken, async (req, res) => {
+
+
+    if (req.user.role != "Administrator" && (req.user.role != "Company")) {
+        res.json({ success: false, message: "Unauthorized" });
+    }
+
+    //TODO: if user is vendor check if item product belongs to the same vendor
+    Invoice.findOneAndUpdate( {_id:req.body._id} , req.body , function (err, item) {
+        console.log('marked  updated...');
+        res.json({ success: true, message: 'updated successfully ....' , _id:req.body._id });
+
+    })
+});
 
 
 router.get('/deleteItem/:id', verifyToken, async (req, res) => {
     if (req.user.role != "Administrator" && (req.user.role != "Company")) {
         res.json({ success: false, message: "Unauthorized" });
     }
+    console.log("delete invoice id:" + req.params.id);
     //TODO: if user is vendor check if item product belongs to the same vendor
     let deletedItem = await InvoiceItem.findByIdAndUpdate(req.params.id, { status: { deleted: true } }, function (err, item) {
         console.log('marked as deleted...');

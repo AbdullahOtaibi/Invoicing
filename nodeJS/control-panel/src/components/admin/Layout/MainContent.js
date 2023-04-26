@@ -110,7 +110,7 @@ const EditTranslation = lazy(() => import(/* webpackChunkName: "EditTranslation"
 const ListInvoices = lazy(() => import(/* webpackChunkName: "ListInvoices" */'../Invoices/ListInvoices'))
 const CreateInvoice = lazy(() => import(/* webpackChunkName: "CreateInvoice" */'../Invoices/CreateInvoice'))
 const EditInvoice = lazy(() => import(/* webpackChunkName: "EditInvoice" */'../Invoices/EditInvoice'))
-
+const ViewInvoice = lazy(() => import(/* webpackChunkName: "ViewInvoice" */'../Invoices/ViewInvoice'))
 
 const SignIn = lazy(() => import(/* webpackChunkName: "SignIn" */'../../SignIn/SignIn'));
 
@@ -219,10 +219,7 @@ const MainContent = ({notification, onHandleNotification}) => {
                     <Route path="/products/create" element={<CreateProduct />} />
                     <Route path="/products/edit/:productId" exact element={<EditProduct />} />
 
-                    <Route path="/users" exact element={<ListUsers />} />
-                    <Route path="/users/bycompany/:companyId" exact element={<ListUsers />} />
-                    <Route path="/users/create" element={<CreateUser />} />
-                    <Route path="/users/edit/:userId" element={<EditUser />} />
+                   
 
 
                     <Route path="/clients" exact element={<ListClients />} />
@@ -240,8 +237,16 @@ const MainContent = ({notification, onHandleNotification}) => {
                     <Route path="/companies/edit/:companyId" element={<EditCompany />} />
                     <Route path="/companies/categories/:companyId" element={<CompanyCategories />} />
 
+                    <Route path="/users" exact element={<ListUsers />} />
+                    <Route path="/users/bycompany/:companyId" exact element={<ListUsers />} />
+                    <Route path="/users/create" element={<CreateUser />} />
+                    <Route path="/users/edit/:userId" element={<EditUser />} />
+
+                    
                     <Route path="/invoices" exact element={<ListInvoices />} />
                     <Route path="/invoices/create" element={<CreateInvoice />} />
+                    <Route path="/invoices/ViewInvoice/:invoiceId" element={<ViewInvoice />} />
+                    
                     <Route path="/invoices/edit/:invoiceId" element={<EditInvoice />} />
                    
 
