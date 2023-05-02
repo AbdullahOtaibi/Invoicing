@@ -48,6 +48,7 @@
     "react-scripts": "^5.0.1",
     "react-snap": "^1.23.0",
     "react-toastify": "^7.0.4",
+    "react-transition-group": "^4.4.5",
     "rn-range-slider": "^2.1.1",
     "sharethis-reactjs": "^1.6.0",
     "spdy": "^4.0.2",

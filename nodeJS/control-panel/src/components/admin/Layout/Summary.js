@@ -83,7 +83,7 @@ useEffect(()=>{
                             <span className="number">
                             {countNewInvoices.count}
                             </span>
-                            <a href="/admin/invoices" className="link">{t("viewAll")}</a>
+                            <a href="/admin/invoices?status=new" className="link">{t("viewAll")}</a>
                         </div>
                         <div className="right d-flex align-self-center">
                             <div className="icon">
@@ -99,7 +99,7 @@ useEffect(()=>{
                         <div className="left">
                             <h5 className="title">{t("invoice.PostedInvoices")}</h5>
                             <span className="number">{countPostedInvoices.count}</span>
-                            <a href="/admin/invoices" className="link">{t("viewAll")}</a>
+                            <a href="/admin/invoices?status=posted" className="link">{t("viewAll")}</a>
                         </div>
                         <div className="right d-flex align-self-center">
                             <div className="icon">
@@ -116,7 +116,7 @@ useEffect(()=>{
                             <span className="number">
                                {countStuckInvoices.count}
                             </span>
-                            <a href="/admin/invoices" className="link">{t("viewAll")}</a>
+                            <a href="/admin/invoices?status=stuck" className="link">{t("viewAll")}</a>
                         </div>
                         <div className="right d-flex align-self-center">
                             <div className="icon">
@@ -161,16 +161,16 @@ useEffect(()=>{
                                 <tbody>
                                     <tr>
                                         <td > {t("invoice.sumTaxInclusiveAmount")}  </td> 
-                                        <td>{ countNewInvoices.sumTaxInclusiveAmount}</td>
+                                        <td>{ numericFormat(countNewInvoices.sumTaxInclusiveAmount)}</td>
                                     </tr>
                                     <tr >
                                         <td className='pr-2'>{t("invoice.sumAllowanceTotalAmount")}   </td> 
-                                        <td>{ countNewInvoices.sumAllowanceTotalAmount}</td>
+                                        <td>{ numericFormat(countNewInvoices.sumAllowanceTotalAmount)}</td>
                                     </tr>
                                 </tbody>
                                 <tfoot className='font-weight-bold text-info'>
                                 <td> {t("invoice.taxExclusiveAmount")}  </td> 
-                                <td>{ countNewInvoices.taxExclusiveAmount}</td>
+                                <td>{ numericFormat(countNewInvoices.taxExclusiveAmount)}</td>
                                 </tfoot>
                             </table>
 
@@ -190,16 +190,16 @@ useEffect(()=>{
                                 <tbody>
                                     <tr>
                                         <td > {t("invoice.sumTaxInclusiveAmount")}  </td> 
-                                        <td>{ countPostedInvoices.sumTaxInclusiveAmount}</td>
+                                        <td>{ numericFormat(countPostedInvoices.sumTaxInclusiveAmount)}</td>
                                     </tr>
                                     <tr >
                                         <td className='pr-2'>{t("invoice.sumAllowanceTotalAmount")}   </td> 
-                                        <td>{ countPostedInvoices.sumAllowanceTotalAmount}</td>
+                                        <td>{ numericFormat(countPostedInvoices.sumAllowanceTotalAmount)}</td>
                                     </tr>
                                 </tbody>
                                 <tfoot className='font-weight-bold text-success'>
                                 <td> {t("invoice.taxExclusiveAmount")}  </td> 
-                                <td>{ countPostedInvoices.taxExclusiveAmount }</td>
+                                <td>{ numericFormat(countPostedInvoices.taxExclusiveAmount)}</td>
                                 </tfoot>
                             </table>
                        
@@ -218,16 +218,16 @@ useEffect(()=>{
                                 <tbody>
                                     <tr>
                                         <td > {t("invoice.sumTaxInclusiveAmount")}  </td> 
-                                        <td>{ countStuckInvoices.sumTaxInclusiveAmount}</td>
+                                        <td>{ numericFormat(countStuckInvoices.sumTaxInclusiveAmount)}</td>
                                     </tr>
                                     <tr >
                                         <td className='pr-2'>{t("invoice.sumAllowanceTotalAmount")}   </td> 
-                                        <td>{ countStuckInvoices.sumAllowanceTotalAmount}</td>
+                                        <td>{ numericFormat(countStuckInvoices.sumAllowanceTotalAmount)}</td>
                                     </tr>
                                 </tbody>
                                 <tfoot className='font-weight-bold text-warning'>
                                 <td> {t("invoice.taxExclusiveAmount")}  </td> 
-                                <td>{ countStuckInvoices.taxExclusiveAmount}</td>
+                                <td>{ numericFormat(countStuckInvoices.taxExclusiveAmount)}</td>
                                 </tfoot>
                             </table>
 
@@ -258,6 +258,11 @@ useEffect(()=>{
 
         </div>
     )
+
+    function numericFormat(val)
+    {
+        return ! isNaN (val)? val.toFixed(3): val ; 
+    }
 }
 
 export default Summary

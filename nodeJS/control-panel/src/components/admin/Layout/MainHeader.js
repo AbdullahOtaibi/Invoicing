@@ -101,7 +101,7 @@ const MainHeader = ({ notification, onHandleNotification }) => {
       </div>
 
 <div lassNAme='col col-auto' style={{color:'white'}}>
-  الشركة:  {localStorage.getItem("companyName")}
+  {localStorage.getItem("companyName")}  :الشركة
 </div>
 
 <div lassNAme='col col-auto' style={{color:'white'}}>

@@ -132,7 +132,8 @@ const InvoiceSchema = new Schema({
         default: "new" 
     },
     postedXML:String, 
-    responseXML: String
+    responseXML: String ,
+    developerCommnet: String
 }, { collection: 'Invoices' });
 
 

@@ -475,7 +475,12 @@
     "PostedInvoices" : "Posted Invoices",
     "sumTaxInclusiveAmount" : "Sum Tax Inclusive Amount" ,
     "sumAllowanceTotalAmount" : "Sum Allowance Total Amount", 
-    "taxExclusiveAmount" : "Sum Tax Exclusive Amount"
+    "taxExclusiveAmount" : "Sum Tax Exclusive Amount",
+    "developerCommnet" : "Developer Commnet",
+    "seqNumber" : "Sequance Number",
+"status" : "Status" ,
+"postToTax" : "Post to Tax"
+
     
   }
 }

@@ -167,6 +167,14 @@ const EditInvoice = (props) => {
     return totalTaxExclusiveAmount() - totalAllowance();
   }
 
+  function numericFormat(val)
+{
+
+  //console.log("before:" + val ) ;
+  //console.log('after:' + val.toFixed(3))
+    return ! isNaN (val)? val.toFixed(3): val ; 
+}
+
   const totalAllowance = () => {
     let totalAllowance = 0;
     if (!invoice || !invoice.items) return 0;
@@ -224,8 +232,7 @@ const EditInvoice = (props) => {
       sequance: cloned.items.length + 1,
       chargeIndicator: currentEditableItem.allowance > 0 ? true : false,
       lineExtensionAmount:
-        currentEditableItem.unitPrice * currentEditableItem.qty -
-        currentEditableItem.allowance,
+      numericFormat((currentEditableItem.unitPrice * currentEditableItem.qty) - currentEditableItem.allowance),
       ...currentEditableItem,
     });
 
@@ -551,8 +558,8 @@ const EditInvoice = (props) => {
                           <td>{item.unitPrice} </td>
                           <td>{item.qty} </td>
                           <td>{item.allowance} </td>
-                          <td>{item.unitPrice * item.qty} </td>
-                          <td>{item.unitPrice * item.qty - item.allowance} </td>
+                          <td>{numericFormat(item.unitPrice * item.qty)} </td>
+                          <td>{numericFormat( (item.unitPrice * item.qty) - item.allowance)} </td>
                           <td>
                             <ConfirmButton
                               onConfirm={() => removeItem(item.id)}
@@ -660,7 +667,7 @@ const EditInvoice = (props) => {
               </div>
 
               <div className="mb-3 row col justify-content-end">
-                <Link className="btn btn-secondary btn-lg" to="/admin/invoices">
+                <Link className="btn btn-secondary btn-lg" to={"/admin/invoices?status=" + invoice.status}>
                   {t("dashboard.cancel")}
                 </Link>{" "}
                 &nbsp;

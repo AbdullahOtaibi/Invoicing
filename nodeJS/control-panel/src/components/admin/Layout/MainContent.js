@@ -111,6 +111,7 @@ const ListInvoices = lazy(() => import(/* webpackChunkName: "ListInvoices" */'..
 const CreateInvoice = lazy(() => import(/* webpackChunkName: "CreateInvoice" */'../Invoices/CreateInvoice'))
 const EditInvoice = lazy(() => import(/* webpackChunkName: "EditInvoice" */'../Invoices/EditInvoice'))
 const ViewInvoice = lazy(() => import(/* webpackChunkName: "ViewInvoice" */'../Invoices/ViewInvoice'))
+const PostToTax = lazy(() => import(/* webpackChunkName: "ViewInvoice" */'../Invoices/PostToTax'))
 
 const SignIn = lazy(() => import(/* webpackChunkName: "SignIn" */'../../SignIn/SignIn'));
 
@@ -248,6 +249,7 @@ const MainContent = ({notification, onHandleNotification}) => {
                     <Route path="/invoices/ViewInvoice/:invoiceId" element={<ViewInvoice />} />
                     
                     <Route path="/invoices/edit/:invoiceId" element={<EditInvoice />} />
+                    <Route path="/invoices/PostToTax/:invoiceId" element={<PostToTax/>} />
                    
 
 

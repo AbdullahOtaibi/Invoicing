@@ -188,7 +188,14 @@ function totalPayableAmount()
 {
   return totalTaxExclusiveAmount() - totalAllowance() ;
 }
-  
+
+function numericFormat(val)
+{
+
+  //console.log("before:" + val ) ;
+  //console.log('after:' + val.toFixed(3))
+    return ! isNaN (val)? val.toFixed(3): val ; 
+}
 
 
 const totalAllowance = () => {
@@ -252,7 +259,7 @@ const addItem = (event) => {
     cloned.items.push({ id: new Date().getTime(),
       sequance: (cloned.items.length +1)  , 
       chargeIndicator: (currentEditableItem.allowance>0?true:false),
-      lineExtensionAmount: currentEditableItem.unitPrice * currentEditableItem.qty - currentEditableItem.allowance,
+      lineExtensionAmount: numericFormat((currentEditableItem.unitPrice * currentEditableItem.qty) - currentEditableItem.allowance),
       ...currentEditableItem });
     
     setCurrentEditableItem({
@@ -573,8 +580,8 @@ const addItem = (event) => {
                       <td>{item.unitPrice} </td>
                       <td>{item.qty} </td>
                       <td>{item.allowance}  </td>
-                      <td>{item.unitPrice * item.qty} </td>
-                      <td>{item.unitPrice * item.qty - item.allowance} </td>
+                      <td>{numericFormat(item.unitPrice * item.qty)} </td>
+                      <td>{numericFormat( (item.unitPrice * item.qty) - item.allowance)} </td>
                       <td >
                         
                         <ConfirmButton

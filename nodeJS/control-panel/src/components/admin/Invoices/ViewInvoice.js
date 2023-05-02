@@ -1,8 +1,8 @@
-
+import { CSSTransition } from 'react-transition-group';
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { hasPermission } from "../utils/auth";
-import { getInvoice, removeInvoice } from "./InvoicesAPI";
+import { getInvoice, removeInvoice, updateInvoice, postToTax } from "./InvoicesAPI";
 import { Helmet } from "react-helmet";
 import {
   MdOutlineReceiptLong,
@@ -18,7 +18,14 @@ import Moment from "react-moment";
 import { getLocalizedText } from "../utils/utils";
 import ConfirmButton from "react-confirmation-button";
 import { MdAdd, MdDelete } from "react-icons/md";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+
+function numericFormat(val)
+{
+    return ! isNaN (val)? val.toFixed(3): val ; 
+}
 
 //const ViewOrder = (props) => {
 
@@ -85,6 +92,35 @@ const ViewInvoice = (props) => {
 
     return "";
   }
+  
+
+  const doPostToTax = (data) => {
+    setLoading(true);
+    postToTax(invoice._id).then(res => {
+      setLoading(false);
+      console.log(res.data);
+    }).catch(e => {
+      setLoading(false);
+     // console.log(res.data);
+    });
+    /*invoice.status="posted"
+    updateInvoice(invoice)
+      .then((res) => {
+        setLoading(false);
+        toast.success(t("succeed"));
+        //setInvoice(res.data);
+        window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+      */
+    console.log(invoice);
+    console.log(data);
+  };
+
+  const [showXML, setShowXML] = useState(false);
+
 
   return (
     <>
@@ -92,6 +128,7 @@ const ViewInvoice = (props) => {
         <div className="card">
           <h5 className="card-header">
             <MdOutlineReceiptLong /> {t("invoice.InvoiceDetails")}   <span className="text-info px-1">  ({  invoice.seqNumber} ) </span>
+          
           </h5>
           <div className="card-body">
             <div className="container text-center">
@@ -106,11 +143,58 @@ const ViewInvoice = (props) => {
             <br />
 
             <form>
+
+            {(invoice.status != "posted" ? 
+            <div className="row">
+       
+       <div class = "mb-3 row col justify-content-end">
+
+
+
+               <button
+                  type="button"
+                  className="btn btn-success btn-lg mx-2"
+                  onClick={doPostToTax}
+                
+                >
+                    <MdPayment size={20} />
+                 Post to Tax
+                </button>
+
+              
+               
+       </div>
+              
+                </div>
+                :  "")} 
+
               <div className="mb-3 row ">
                 <div className="col col-auto text-info">{t("invoice.InvoiceSummery")}</div>
                 <div className="col">
                   <hr />
                 </div>
+              </div>
+
+              
+
+              <div className="row">
+              <div className="mb-3 col ">
+                  <div className="col col-auto"> {t("invoice.seqNumber")}</div>
+                  <div className="col">
+                     {invoice.seqNumber}
+                  </div>
+                </div>
+
+                <div className="mb-3 col ">
+                  <div className="col col-auto"> {t("invoice.status")}</div>
+
+                  <div className="col">
+                  {invoice.status}
+                  </div>
+                </div>
+
+                <div className="mb-3 col "></div>
+                <div className="mb-3 col "></div>
               </div>
 
               <div className="row">
@@ -228,11 +312,11 @@ const ViewInvoice = (props) => {
           <tr>
                       <td> {item.sequance} </td>
                       <td>{item.itemName}</td>
-                      <td>{item.unitPrice} </td>
+                      <td>{numericFormat(item.unitPrice)} </td>
                       <td>{item.qty} </td>
-                      <td>{item.allowance}  </td>
-                      <td> { parseFloat(item.unitPrice) * parseFloat(item.qty)   }</td>
-                      <td> {item.lineExtensionAmount}</td>
+                      <td>{numericFormat(item.allowance)}  </td>
+                      <td> { numericFormat(parseFloat(item.unitPrice) * parseFloat(item.qty))   }</td>
+                      <td> {numericFormat(item.lineExtensionAmount)}</td>
 
           </tr>
 
@@ -244,16 +328,30 @@ const ViewInvoice = (props) => {
                     <td></td>
                     <td colSpan= "4" className="text-info" > Grand Total</td>
                     
-                    <td className="text-info" > {invoice.legalMonetaryTotal.taxExclusiveAmount}</td>
-                    <td className="text-info" > {invoice.legalMonetaryTotal.taxInclusiveAmount} </td>
+                    <td className="text-info" > {numericFormat(invoice.legalMonetaryTotal.taxExclusiveAmount)}</td>
+                    <td className="text-info" > {numericFormat(invoice.legalMonetaryTotal.taxInclusiveAmount)} </td>
                 </tfoot>
               </table>
             </div>
           </div>
 
-{ invoice.status = "stuck" ?
-<>
-          <div className="mb-3 row ">
+     
+
+{ invoice.status == "stuck" ?
+
+
+<div> 
+
+<button  type="button"  onClick={() => {console.log("click div"); setShowXML(!showXML)}} class="btn btn-primary btn-lg mt-3">{!showXML? 'View Transaction Dateils' : 'Hide Transaction Dateils'}</button>
+
+<CSSTransition
+        in={showXML}
+        timeout={700}
+        classNames="list-transition"
+        unmountOnExit
+      >
+        <div className='list-transition'>
+          <div className="mb-3 row alert">
                 <div className="col col-auto text-danger">{t("invoice.XMLTransactionError")}</div>
                 <div className="col">
                   <hr />
@@ -264,16 +362,31 @@ const ViewInvoice = (props) => {
                 <div className="mb-6 col ">
                   <div className="col col-auto  text-danger"> {t("invoice.xmlRequest")}</div>
 
-                  <div className="col mb-6"><textarea  className="col mb-6" style={{border:'3px solid #eee'}}> </textarea> </div>
+                  <div className="col mb-6"><textarea  className="col mb-6" style={{border:'3px solid #eee'}} value={invoice.postedXML}> </textarea> </div>
                 </div>
 
                 <div className="mb-6 col ">
                   <div className="col col-auto  text-danger">{t("invoice.xmlResponse")}</div>
 
-                  <div className="col mb-6"> <textarea  className="col mb-6" style={{border:'3px solid #eee'}} > </textarea>  </div>
+                  <div className="col mb-6"> <textarea  className="col mb-6" style={{border:'3px solid #eee'}}  value={invoice.responseXML} > </textarea>  </div>
                 </div>
           </div>
-          </>
+          <div className="row">
+
+          <div className="mb- col ">
+                  <div className="col col-auto  text-danger"> {t("invoice.developerCommnet")}</div>
+
+                  <div className="col mb-12"><textarea  className="col mb-6" style={{border:'3px solid #eee'}} value={invoice.developerCommnet}> </textarea> </div>
+                </div>
+
+          </div>
+
+          
+
+      </div> 
+    
+      </CSSTransition>
+      </div>       
            : 
            ""}
        
@@ -327,7 +440,7 @@ const ViewInvoice = (props) => {
                 ) : null}
 
                 <div className="mb-3 row col justify-content-end">
-                  <Link className="btn btn-secondary btn-lg mx-2" to="/admin/invoices">
+                  <Link className="btn btn-secondary btn-lg mx-2" to= {"/admin/invoices?status=" + invoice.status}>
                     <MdClose size={20} /> &nbsp; {t("close")}
                   </Link>
                   &nbsp;
