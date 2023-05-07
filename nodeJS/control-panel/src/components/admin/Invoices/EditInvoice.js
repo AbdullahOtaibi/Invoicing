@@ -644,9 +644,10 @@ const EditInvoice = (props) => {
                               currentEditableItem.qty -
                               currentEditableItem.allowance
                           )
-                            ? currentEditableItem.unitPrice *
+                            ? numericFormat( currentEditableItem.unitPrice *
                                 currentEditableItem.qty -
                               currentEditableItem.allowance
+                            )
                             : 0}{" "}
                           JOD
                         </td>

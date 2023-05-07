@@ -11,6 +11,7 @@ import {
   MdHistoryToggleOff,
   MdPayment,
   MdLocalShipping,
+  MdOutlineCancel,
 } from "react-icons/md";
 import Loader from "react-loader-spinner";
 import { useTranslation } from "react-i18next";
@@ -18,14 +19,12 @@ import Moment from "react-moment";
 import { getLocalizedText } from "../utils/utils";
 import ConfirmButton from "react-confirmation-button";
 import { MdAdd, MdDelete } from "react-icons/md";
+import { RiRefund2Fill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 
-function numericFormat(val)
-{
-    return ! isNaN (val)? val.toFixed(3): val ; 
-}
+
 
 //const ViewOrder = (props) => {
 
@@ -98,29 +97,23 @@ const ViewInvoice = (props) => {
     setLoading(true);
     postToTax(invoice._id).then(res => {
       setLoading(false);
-      console.log(res.data);
+      setInvoice({...invoice, status:'posted'});
+      // window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
+     // window.location.href =  "/admin/invoices/ViewInvoice/" +invoice._id;
+      //console.log(res.data);
     }).catch(e => {
       setLoading(false);
-     // console.log(res.data);
     });
-    /*invoice.status="posted"
-    updateInvoice(invoice)
-      .then((res) => {
-        setLoading(false);
-        toast.success(t("succeed"));
-        //setInvoice(res.data);
-        window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
-      })
-      .catch((e) => {
-        setLoading(false);
-      });
-      */
     console.log(invoice);
     console.log(data);
   };
 
   const [showXML, setShowXML] = useState(false);
 
+  function numericFormat(val)
+{
+    return ! isNaN (val)? val.toFixed(3): val ; 
+}
 
   return (
     <>
@@ -144,29 +137,42 @@ const ViewInvoice = (props) => {
 
             <form>
 
-            {(invoice.status != "posted" ? 
+          
             <div className="row">
        
        <div class = "mb-3 row col justify-content-end">
 
 
-
+              {
+               (invoice.status != "posted") &&
                <button
                   type="button"
                   className="btn btn-success btn-lg mx-2"
                   onClick={doPostToTax}
-                
                 >
                     <MdPayment size={20} />
-                 Post to Tax
+                    {t("invoice.postToTax")}
                 </button>
+}
 
-              
-               
+{
+               (invoice.status == "posted") &&
+               <button
+                  type="button"
+                  className="btn btn-success btn-lg mx-2"
+                  onClick={doPostToTax}
+                >
+                    <RiRefund2Fill size={20} />
+                    {t("invoice.revertInvoice")}
+                </button>
+}
+  
+            
+          
        </div>
               
                 </div>
-                :  "")} 
+              
 
               <div className="mb-3 row ">
                 <div className="col col-auto text-info">{t("invoice.InvoiceSummery")}</div>

@@ -5,7 +5,7 @@ import {
     MdCollections, MdBurstMode, MdCollectionsBookmark
     , MdBusinessCenter, MdInsertLink, MdGroup, MdLocalShipping,
     MdOutlineCategory, MdOutlineCardGiftcard, MdOutlineDashboard,
-    MdOutlineReceiptLong, MdReduceCapacity, MdRealEstateAgent, MdOutlineMarkAsUnread
+    MdOutlineReceiptLong, MdReduceCapacity, MdRealEstateAgent, MdOutlineMarkAsUnread, MdCalendarViewMonth
 } from "react-icons/md";
 import { BsMenuButtonFill, BsCreditCard } from 'react-icons/bs';
 
@@ -98,6 +98,15 @@ const Sidebar = () => {
                             <MdDescription size={18} /> &nbsp; {t("sidebar.invoices")}
                         </Link >
                     </li>) : null}
+
+
+                    {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("invoices.view") > -1 ? (
+                    <li className={getClass('/admin/FullCalendar')}>
+                        <Link className="wave-effect waves-effect waves-button" to="/admin/FullCalendar" >
+                            <MdCalendarViewMonth size={18} /> &nbsp; {t("sidebar.FullCalendar")}
+                        </Link >
+                    </li>) : null}
+
 
                 {/* {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("gallery.view") > -1 ? (
                     <li className={getClass('/admin/gallery')}>

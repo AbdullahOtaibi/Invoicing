@@ -114,10 +114,6 @@ const InvoiceSchema = new Schema({
         ref: 'User'
     },
     
-    invoicePosted: {
-        type:Boolean,
-        default:false
-    },
     postedXML: String, 
     responseXML:String, 
     createdDate: {
@@ -132,6 +128,7 @@ const InvoiceSchema = new Schema({
         default: "new" 
     },
     postedXML:String, 
+    encryptPostedXML: String,
     responseXML: String ,
     developerCommnet: String
 }, { collection: 'Invoices' });

@@ -158,7 +158,8 @@
     "shippingCompanies":"Shipping Companies",
     "logistics":"Logistics",
     "shipments":"Shipments",
-    "invoices":"Invoices"
+    "invoices":"Invoices",
+    "FullCalendar" : "Full Calendar"
     
 
   },
@@ -479,8 +480,7 @@
     "developerCommnet" : "Developer Commnet",
     "seqNumber" : "Sequance Number",
 "status" : "Status" ,
-"postToTax" : "Post to Tax"
-
-    
+"postToTax" : "Post to Tax" ,
+"revertInvoice" : "Revert Invoice" 
   }
 }

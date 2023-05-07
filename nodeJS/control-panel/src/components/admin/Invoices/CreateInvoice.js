@@ -193,7 +193,7 @@ function numericFormat(val)
 {
 
   //console.log("before:" + val ) ;
-  //console.log('after:' + val.toFixed(3))
+ 
     return ! isNaN (val)? val.toFixed(3): val ; 
 }
 
@@ -652,8 +652,8 @@ const addItem = (event) => {
                     </td>
                     <td>
                       {!isNaN(currentEditableItem.unitPrice * currentEditableItem.qty -
-                        currentEditableItem.allowance)? currentEditableItem.unitPrice * currentEditableItem.qty -
-                        currentEditableItem.allowance : 0}{" "}
+                        currentEditableItem.allowance)? numericFormat( currentEditableItem.unitPrice * currentEditableItem.qty -
+                        currentEditableItem.allowance) : 0}{" "}
                       JOD
                     </td>
                     <td >

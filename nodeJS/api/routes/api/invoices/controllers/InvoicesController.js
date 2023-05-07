@@ -11,7 +11,7 @@ const Invoices = require("../data-access/Invoices");
 const { json } = require("body-parser");
 const getInvoiceXML = require("../data-access/ubl");
 const xmlFormat = require("xml-formatter");
-const  postToTax  = require('../../utils/ubl-income-template');
+const postToTax = require("../../utils/ubl-income-template");
 
 const getNewStatus = (Invoice) => {
   let newStatusId = Invoice.status;
@@ -211,9 +211,18 @@ router.post("/DachboardSummary", verifyToken, async (req, res) => {
       {
         $match: {
           status: status1,
-          "accountingSupplierParty.partyTaxScheme.companyID": "22206140",
+          // "accountingSupplierParty.partyTaxScheme.companyID": "22206140",
+          "accountingSupplierParty.partyTaxScheme.companyID": {
+            $eq: req.user.companyId,
+          },
         },
       },
+      {
+        $match: {
+        "deleted": false
+        },
+      },
+
       {
         $group: {
           _id: {
@@ -243,7 +252,9 @@ router.post("/DachboardSummary", verifyToken, async (req, res) => {
         result.count = count;
         result.status = status;
         */
-
+    if(!result || result.length == 0){
+      result = [{"_id":{"companyID":req.user.companyId},"sumTaxInclusiveAmount":0,"sumAllowanceTotalAmount":0,"taxExclusiveAmount":0,"count":0}]
+    }
     res.json(result);
 
     console.log("out.....");
@@ -278,8 +289,8 @@ router.get("/get/:id", async (req, res) => {
   res.json(invoice);
 });
 
-router.get("/postToTax/:id",verifyToken,  async (req, res, next) => {
- let result = {success: false}
+router.get("/postToTax/:id", verifyToken, async (req, res, next) => {
+  let result = { success: false };
   let invoice = await Invoices.getInvoiceById(req.params.id);
   if (invoice) {
     if (invoice.status != "posted") {

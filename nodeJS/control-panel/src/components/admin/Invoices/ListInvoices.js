@@ -10,6 +10,8 @@ import { Tabs, Tab } from 'react-bootstrap'
 import { hasPermission } from '../utils/auth';
 import { Helmet } from "react-helmet";
 import  Listinv from "./ListInv"
+import  './ListInvoice.css'
+
 
 const ListInvoices = (props) => {
     let navigate = useNavigate();
@@ -46,7 +48,7 @@ const ListInvoices = (props) => {
                 <title>{'Invoicing | Admin | Invoices'} </title>
             </Helmet>
             <div className="card">
-                <div className="card-body">
+                <div className={"card-body"}>
 
                 
                     <div className='row'>
@@ -78,7 +80,8 @@ const ListInvoices = (props) => {
                         transition={false}
                         id="noanim-tab-example"
                         className="mb-3 " >
-                        <Tab eventKey="new" title={t("invoice.newInvoices")} tabClassName="tab-item btn-info  ">
+                        <Tab eventKey="new" title= {  t("invoice.newInvoices") 
+                    } tabClassName="tab-item btn-info  ">
                             <div className="table-responsive">
                           <Listinv status= "new" />
                             </div>
