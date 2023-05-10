@@ -120,6 +120,12 @@ const EditInvoice = (props) => {
     setInvoice(cloned);
   };
 
+  const updateNote = (event) =>{
+ let cloned = JSON.parse( JSON.stringify(invoice)) ;
+ cloned.note = event.target.value ;
+ setInvoice(cloned) ;
+
+  }
   //#endregion
 
   //#region useEffect
@@ -431,7 +437,7 @@ const EditInvoice = (props) => {
                 </div>
 
                 <div className="mb-3 col ">
-                  <div className="col col-auto">Invoice Date:</div>
+                  <div className="col col-auto">{t("invoice.invoiceDate")}</div>
 
                   <div className="col">
                     <DatePicker
@@ -443,6 +449,15 @@ const EditInvoice = (props) => {
                   </div>
                 </div>
 
+                <div className="mb-3 col ">
+                  <div className="col col-auto">{t("invoice.note")}</div>
+
+                  <div className="col">
+                  <textarea  className="form-control"  id = "note" name = "note"    onChange= {updateNote} placeholder = {t("invoice.note")}   >
+               {invoice.note}
+               </textarea>
+                  </div>
+                </div>
                 <div className="mb-3 col "></div>
                 <div className="mb-3 col "></div>
               </div>
@@ -666,8 +681,8 @@ const EditInvoice = (props) => {
                   </table>
                 </div>
               </div>
-
-              <div className="mb-3 row col justify-content-end">
+              <div class = "row text-right">
+              <div className="mb-3  col justify-content-end">
                 <Link className="btn btn-secondary btn-lg" to={"/admin/invoices?status=" + invoice.status}>
                   {t("dashboard.cancel")}
                 </Link>{" "}
@@ -679,6 +694,7 @@ const EditInvoice = (props) => {
                 >
                   {t("dashboard.submit")}
                 </button>
+              </div>
               </div>
             </form>
           </div>

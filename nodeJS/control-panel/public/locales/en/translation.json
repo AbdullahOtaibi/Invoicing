@@ -481,6 +481,21 @@
     "seqNumber" : "Sequance Number",
 "status" : "Status" ,
 "postToTax" : "Post to Tax" ,
-"revertInvoice" : "Revert Invoice" 
+"revertInvoice" : "Revert Invoice" ,
+"note" : "Note" ,
+"invoiceDate": "Invoice Date"
+  } ,
+  "FullCalendar" :{
+    "start" : "Start" ,
+    "end" : "End" ,
+    "title" : "Title" ,
+    "note" : "Note" ,
+    "newAppintement" : "New Appintement" ,
+    "contactName" : "Contact Name",
+    "allDay" : "All Day",
+    "editAppintement" : "Edit Appintement",
+    "BeingDeleteingTheAppointment" : "Being Deleteing The Appointment ..." ,
+    "mobile" : "Mobile"
+    
   }
 }

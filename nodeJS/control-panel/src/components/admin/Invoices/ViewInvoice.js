@@ -98,10 +98,13 @@ const ViewInvoice = (props) => {
     postToTax(invoice._id).then(res => {
       setLoading(false);
       setInvoice({...invoice, status:'posted'});
+      console.log("success invoice ......") ;
       // window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
      // window.location.href =  "/admin/invoices/ViewInvoice/" +invoice._id;
       //console.log(res.data);
     }).catch(e => {
+      console.log("error post to tax") ;
+      console.log( e) ;
       setLoading(false);
     });
     console.log(invoice);
@@ -138,9 +141,9 @@ const ViewInvoice = (props) => {
             <form>
 
           
-            <div className="row">
+            <div className="row text-right">
        
-       <div class = "mb-3 row col justify-content-end">
+       <div class = "mb-3  col justify-content-end">
 
 
               {
@@ -150,7 +153,7 @@ const ViewInvoice = (props) => {
                   className="btn btn-success btn-lg mx-2"
                   onClick={doPostToTax}
                 >
-                    <MdPayment size={20} />
+                    <MdPayment size={25} /> &nbsp;
                     {t("invoice.postToTax")}
                 </button>
 }
@@ -160,7 +163,7 @@ const ViewInvoice = (props) => {
                <button
                   type="button"
                   className="btn btn-success btn-lg mx-2"
-                  onClick={doPostToTax}
+                  onClick={()=>{console.log('reverted ....')}}
                 >
                     <RiRefund2Fill size={20} />
                     {t("invoice.revertInvoice")}
@@ -246,12 +249,18 @@ const ViewInvoice = (props) => {
                 </div>
 
                 <div className="mb-3 col ">
-                  <div className="col col-auto">Invoice Date:</div>
+                  <div className="col col-auto">{t("invoice.invoiceDate")}</div>
 
                   <div className="col"> {getInvoiceDate()}</div>
                 </div>
 
-                <div className="mb-3 col "></div>
+                <div className="mb-3 col ">
+            <div className="col col-auto">{t("invoice.note")} </div>
+
+            <div className="col">
+            {invoice.note}
+            </div>
+            </div>
                 <div className="mb-3 col "></div>
               </div>
 
@@ -444,8 +453,9 @@ const ViewInvoice = (props) => {
                     </tbody>
                   </table>
                 ) : null}
-
-                <div className="mb-3 row col justify-content-end">
+                 
+                 <div className = "row text-right">
+                <div className="mb-3  col justify-content-end">
                   <Link className="btn btn-secondary btn-lg mx-2" to= {"/admin/invoices?status=" + invoice.status}>
                     <MdClose size={20} /> &nbsp; {t("close")}
                   </Link>
@@ -458,6 +468,8 @@ const ViewInvoice = (props) => {
                   &nbsp; {t("dashboard.edit")}
                   </Link> : ""}
                    
+                  </div>
+                
                   {invoice.status != "posted" ?   
                             <ConfirmButton
                               onConfirm={() =>{removeInvoice(invoiceId) ; navigate("/admin/invoices/", { replace: true });   } }
@@ -466,7 +478,7 @@ const ViewInvoice = (props) => {
                               confirmText={t("invoice.confirmDelete")}
                               cancelText={t("invoice.cancelDelete")}
                               loadingText={t("invoice.BeingDeleteingTheInvoice")}
-                              wrapClass=""
+                              wrapClass="fdfdf"
                               buttonClass="btn btn-lg"
                               mainClass="btn-warning mx-2"
                               confirmClass="btn-danger mx-2"
@@ -479,9 +491,8 @@ const ViewInvoice = (props) => {
                               <MdDelete />
                             </ConfirmButton>
                            : ""}
-
-                </div>
-
+</div>
+                
               </div>
 
 

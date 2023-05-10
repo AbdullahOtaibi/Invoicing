@@ -113,7 +113,10 @@ const EditInvoice = lazy(() => import(/* webpackChunkName: "EditInvoice" */'../I
 const ViewInvoice = lazy(() => import(/* webpackChunkName: "ViewInvoice" */'../Invoices/ViewInvoice'))
 
 
-const FullCalendarList = lazy(() => import(/* webpackChunkName: "FullCalendarList" */'../FullCalendar/FullCalendarList'))
+const FullCalendarList = lazy(() => import(/* webpackChunkName: "FullCalendarList" */'../FullCalendar/FullCalendarList'));
+const FullCalendarNew = lazy(() => import(/* webpackChunkName: "FullCalendarNew" */'../FullCalendar/FullCalendarNew'));
+const FullCalendarEdit = lazy(() => import(/* webpackChunkName: "FullCalendarEdit" */'../FullCalendar/FullCalendarEdit'));
+const FullCalendarDelete = lazy(() => import(/* webpackChunkName: "FullCalendarDelete" */'../FullCalendar/FullCalendarDelete'));
 
 const SignIn = lazy(() => import(/* webpackChunkName: "SignIn" */'../../SignIn/SignIn'));
 
@@ -253,7 +256,9 @@ const MainContent = ({notification, onHandleNotification}) => {
                    
 
                     <Route path="/FullCalendar" exact element={<FullCalendarList />} />
-
+                    <Route path="/FullCalendar/New" exact element={<FullCalendarNew />} />
+                    <Route path="/FullCalendar/Edit" exact element={<FullCalendarEdit />} />
+                    <Route path="/FullCalendar/Delete" exact element={<FullCalendarDelete />} />
                    
 
 

@@ -51,6 +51,7 @@ const CreateInvoice = (props) => {
     },
     items: [] ,
     status: "new", 
+    note: "",
     postedXML: "",
     responseXML: ""
   });
@@ -141,6 +142,16 @@ const CreateInvoice = (props) => {
     setInvoice(cloned) ;
 
   }
+
+
+  const updateNote = (event) => {
+    
+   let cloned  =  JSON.parse(JSON.stringify(invoice)) ;
+   cloned.note = event.target.value
+   setInvoice(cloned) ; 
+   
+  console.log("note:" +event.target.value) ;
+  } ; 
 
 //#endregion
 
@@ -444,7 +455,7 @@ const addItem = (event) => {
           <div className="mb-3 row ">
             
           <div className="mb-3 col ">
-          <div className="col col-auto">Type:</div>
+          <div className="col col-auto">{t("invoice.Type")}</div>
 
 
           <div className="col col-auto">
@@ -465,7 +476,7 @@ const addItem = (event) => {
         
             
             <div className="mb-3 col ">
-              <div className="col col-auto">Invoice Date:</div>
+              <div className="col col-auto">{t("invoice.invoiceDate")}</div>
 
               <div className="col">
              
@@ -473,7 +484,15 @@ const addItem = (event) => {
               </div>
             </div>
             
-            <div className="mb-3 col "></div>
+            <div className="mb-3 col ">
+            <div className="col col-auto">{t("invoice.note")} </div>
+
+            <div className="col">
+               <textarea  className="form-control"  id = "note" name = "note"    onChange= {updateNote} placeholder = {t("invoice.note")}   >
+               {invoice.note}
+               </textarea>
+            </div>
+            </div>
             <div className="mb-3 col "></div>
           </div>
           <div className="mb-3 row ">
@@ -672,7 +691,8 @@ const addItem = (event) => {
             </div>
           </div>
 
-          <div className="mb-3 row col justify-content-end">
+          <div class = "row text-right">
+          <div className="mb-3  col justify-content-end">
             <Link className="btn btn-secondary btn-lg" to="/admin/invoices">
             <MdClose size={20} /> &nbsp; {t("Cancel")}
             </Link>{" "}
@@ -681,6 +701,8 @@ const addItem = (event) => {
               {t("dashboard.submit")}
             </button>
           </div>
+          </div>
+         
         </form>
       </div>
       

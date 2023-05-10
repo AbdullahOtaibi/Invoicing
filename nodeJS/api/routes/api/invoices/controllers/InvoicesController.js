@@ -290,15 +290,26 @@ router.get("/get/:id", async (req, res) => {
 });
 
 router.get("/postToTax/:id", verifyToken, async (req, res, next) => {
-  let result = { success: false };
+
+  let result = { success: false  };
+  console.log("req.params.id: " + req.params.id) ;
   let invoice = await Invoices.getInvoiceById(req.params.id);
   if (invoice) {
-    if (invoice.status != "posted") {
-      postToTax(invoice, req.user);
-      result.success = true;
-    }
+ 
+      let data =  postToTax(invoice, req.user).then(data => {
+        result.success = true;
+        console.log("data:" + data) ;
+        result.data = data; 
+        res.json(result);
+      }).catch(e => {
+        result.message = e;
+        console.log("data:" + data) ;
+        res.json(result);
+      });
+     
+ 
   }
-  res.json(result);
+ 
 });
 
 function newSeq(x) {

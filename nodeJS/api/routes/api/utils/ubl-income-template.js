@@ -20,59 +20,77 @@ function getInvoiceDate(issuedDate) {
 }
 
 async function postToTax(invoice, user) {
-  //let testInvoiceString = `{"additionalDocumentReference":{"id":"ICV","uuid":"09cf860f-75d8-4b6a-b3c9-6f7362a6f603"},"accountingSupplierParty":{"postalAddress":{"identificationCode":"JO"},"partyTaxScheme":{"companyID":"22206140","taxSchemeId":"VAT","registrationName":"Brother company"}},"accountingCustomerParty":{"partyIdentification":{"schemeID":"NIN","value":""},"postalAddress":{"postalZone":"","countrySubentityCode":""},"taxSchemeId":"VAT","registrationName":"","telephone":""},"sellerSupplierPartyIdentification":{"id":"14666120"},"allowanceCharge":{"chargeIndicator":false,"allowanceChargeReason":"","amount":0},"legalMonetaryTotal":{"taxExclusiveAmount":0.25,"taxInclusiveAmount":0.2,"allowanceTotalAmount":0.05,"payableAmount":0.2},"_id":"644d9da78421836b8d9187f6","invoiceUUID":"f1027da3-e4e8-4a42-8095-a882db84186b","invoiceCategory":"Income","issuedDate":"2023-04-29T22:42:51.973Z","invoiceTypeCode":"388","invoiceType":"011","currencyCode":"JO","items":[{"id":1682808183483,"sequance":1,"unitPrice":0.1,"qty":1,"allowance":0,"lineExtensionAmount":0.1,"itemName":"item1","chargeIndicator":false,"allowanceChargeReason":"DISCOUNT","_id":"644d9da78421836b8d9187f4"},{"id":1682808198092,"sequance":2,"unitPrice":0.15,"qty":1,"allowance":0.05,"lineExtensionAmount":0.1,"itemName":"item2","chargeIndicator":true,"allowanceChargeReason":"DISCOUNT","_id":"644d9da78421836b8d9187f5"}],"deleted":false,"user":{"_id":"6233a6d646c9bd3e8bfb8dda","email":"osama.kofahi@gmail.com","registerDate":"2022-03-17T21:23:34.279Z","__v":0,"avatarUrl":"proff2.webp","roles":["62333be769abb5a35233feb1"],"active":true,"firstName":"Osama","surName":"Al Kofahi","phone":"+962 789 12 9394","countryCode":"TR","address":"Avcilar","otp":"dsdsadsf5ds6fsd5f6sd5f4sdf","emailConfirmed":true,"shippingCompany":null,"vendor":"63efff7a42de79c862bc2ef5","company":"64198cc7309971483879c665"},"invoicePosted":false,"postedXML":"","responseXML":"","serialNumber":8,"seqNumber":"INV-00008","status":"new","createdDate":"2023-04-29T22:43:51.334Z","__v":0}`;
-  //let testInvoice = JSON.parse(testInvoiceString);
-  //invoice = testInvoice;
+  return new Promise((resolve, reject) => {
 
-  let xml = toXml(invoice);
-  let req = toBase64(xml).trim();
-  const httpsAgent = new https.Agent({
-    rejectUnauthorized: false,
-  });
+    if (invoice.status == "posted") {
+      reject("Invoice already posted");
+    }
 
-  let headers = {
-    "Client-Id": user.companyClientId,
-    "Secret-Key": user.companyClientSecret,
-    "Content-Type": "application/json",
-    Cookie:
-      "stickounet=4fdb7136e666916d0e373058e9e5c44e|7480c8b0e4ce7933ee164081a50488f1",
-  };
-  //console.log(headers);
-  axios
-    .post("https://backend.jofotara.gov.jo/core/invoices/", req, {
-      httpsAgent,
-      headers: headers,
-      crossdomain: true,
-    })
-    .then(async (res) => {
-      console.log("=====> res data");
-      console.log(res.data);
-      var result = res.data.EINV_RESULTS;
-      var newStatus = "";
-      newStatus = result.status == "PASS" ? "posted" : "stuck";
-      let _postedXml = xml;
-      let _encryptPostedXML = req;  
-      if (process.env.INCLUDE_REQUEST !== true) {
-        _encryptPostedXML = "";
-      }
-      await Invoice.findOneAndUpdate(
-        { _id: invoice._id },
-        { status: newStatus, postedXML: _postedXml , encryptPostedXML: _encryptPostedXML , responseXML: JSON.stringify(result)   }
-      );
-      console.log("Saved Post invoice to Tax ........., result.status: " + result.status  ) ;
+    console.log("insert post to tax method .......");
 
-    })
-    .catch((e) => {
-      if (e.response && e.response.status === 403) {
-        console.log("Unauthorized");
-      } else {
-        console.log("=====> catch");
-        console.log(JSON.stringify(e.stack));
-      }
+    let xml = toXml(invoice);
+    let req = toBase64(xml).trim();
+    const httpsAgent = new https.Agent({
+      rejectUnauthorized: false,
     });
 
-  console.log(xml);
-  console.log(req);
+    let headers = {
+      "Client-Id": user.companyClientId,
+      "Secret-Key": user.companyClientSecret,
+      "Content-Type": "application/json",
+      Cookie:
+        "stickounet=4fdb7136e666916d0e373058e9e5c44e|7480c8b0e4ce7933ee164081a50488f1",
+    };
+    //console.log(headers);
+    axios
+      .post("https://backend.jofotara.gov.jo/core/invoices/", req, {
+        httpsAgent,
+        headers: headers,
+        crossdomain: true,
+      })
+      .then(async (res) => {
+        console.log("=====> res data:");
+        console.log(res.data);
+        var result = res.data.EINV_RESULTS;
+        var newStatus = "";
+        newStatus = result.status == "PASS" ? "posted" : "stuck";
+        let _postedXml = xml;
+        let _encryptPostedXML = req;
+        if (process.env.INCLUDE_REQUEST !== true) {
+          _encryptPostedXML = "";
+        }
+
+       
+        await Invoice.findOneAndUpdate(
+          { _id: invoice._id },
+          {
+            status: newStatus,
+            postedXML: _postedXml,
+            encryptPostedXML: _encryptPostedXML,
+            responseXML: JSON.stringify(result),
+          }
+        );
+       
+        console.log(
+          "Saved Post invoice to Tax ........., result.status: " + result.status
+        );
+        resolve(result);
+
+      })
+      .catch( (e) => {
+        if (e.response && e.response.status === 403) {
+          console.log("Unauthorized");
+          reject("Unauthorized")
+        } else {
+          console.log("=====> catch");
+          console.log(JSON.stringify(e.stack));
+          reject(SON.stringify(e.stack)) ;
+        }
+      });
+
+    console.log(xml);
+    console.log(req);
+  });
 }
 
 function checkJSONProperty(obj, path, defaultValue) {
@@ -139,7 +157,7 @@ function toXml(invoice) {
     ""
   );
   //static value will removed after test
-  registrationName = "ثناء اسماعيل وعبد الله العتيبي";
+  //registrationName = "ثناء اسماعيل وعبد الله العتيبي";
   console.log("companyId:" + companyId);
   var PartyIdentification_schemeID_type = checkJSONProperty(
     invoice,
@@ -157,14 +175,8 @@ function toXml(invoice) {
   var PostalZone = checkJSONProperty(
     invoice,
     "accountingCustomerParty.postalAddress.postalZone",
-    "33554"
+    ""
   ); // "33554";
-  var CountrySubentityCode = checkJSONProperty(
-    invoice,
-    "accountingCustomerParty.postalAddress.countrySubentityCode",
-    "JO-AM"
-  ); //"JO-AM";
-  console.log("CountrySubentityCode:" + CountrySubentityCode);
   var Telephone = checkJSONProperty(
     invoice,
     "accountingCustomerParty.telephone",
@@ -172,7 +184,7 @@ function toXml(invoice) {
   ); //"+962789129394";
 
   //static value needs to remove after test
-  Telephone = "+962789129394";
+  //Telephone = "+962789129394";
   var SellerSupplierParty_PartyIdentification_id = checkJSONProperty(
     invoice,
     "sellerSupplierPartyIdentification.id",
@@ -213,6 +225,14 @@ function toXml(invoice) {
   console.log("PayableAmount:" + PayableAmount);
   // description--> itemName ,  unitPrice-> unitPrice, qty -->qty allowance -->allowance
 
+  var note =  checkJSONProperty(
+    invoice,
+    "note",
+    ""
+  );
+
+  console.log("note:::" +note) ;
+  
   let invoiceLines = invoice.items
     .map((item) => {
       return `<cac:InvoiceLine>
@@ -247,6 +267,7 @@ function toXml(invoice) {
   <cbc:UUID>${uuid}</cbc:UUID>
   <cbc:IssueDate>${issuedDate}</cbc:IssueDate>
   <cbc:InvoiceTypeCode name="${InvoiceTypeCode_name}">${InvoiceTypeCode_type}</cbc:InvoiceTypeCode>
+  <cbc:Note>${note}</cbc:Note>
   <cbc:DocumentCurrencyCode>${currency}</cbc:DocumentCurrencyCode>
   <cbc:TaxCurrencyCode>${currency}</cbc:TaxCurrencyCode>
   <cac:AdditionalDocumentReference>
