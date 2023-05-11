@@ -94,6 +94,7 @@ router.post("/login", async (req, res) => {
             register_date: user.register_date,
             permissions: userPermissions,
             role: userRoleName,
+            company: user.company?user.company._id: "", 
             companyName: user.company ? user.company.name.arabic : "",
             companyId: user.company ? user.company.companyInvoiceID : "",
             incomeSourceSequence: user.company
@@ -120,6 +121,7 @@ router.post("/login", async (req, res) => {
             id: user._id,
             permissions: userPermissions,
             role: userRoleName,
+            company: user.company?user.company._id: "", 
             companyName: user.company ? user.company.name.arabic : "",
             companyId: user.company ? user.company.companyInvoiceID : "",
             incomeSourceSequence: user.company

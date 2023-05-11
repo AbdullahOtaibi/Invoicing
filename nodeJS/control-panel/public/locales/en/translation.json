@@ -159,7 +159,8 @@
     "logistics":"Logistics",
     "shipments":"Shipments",
     "invoices":"Invoices",
-    "FullCalendar" : "Full Calendar"
+    "FullCalendar" : "Full Calendar",
+    "Contact" :"Contact"
     
 
   },
@@ -497,5 +498,21 @@
     "BeingDeleteingTheAppointment" : "Being Deleteing The Appointment ..." ,
     "mobile" : "Mobile"
     
-  }
+  } ,
+"contact" : {
+"ContactInformation" : "Contact Information",
+"newContact" : "New Contact",
+"contactName" : "Name",
+"contactType" : "Type" ,
+"mobile" : "Mobile" ,
+"identificationType" : "Identification Type",
+"identificationValue" : "identification Value" ,
+"email" : "Email",
+"subContactInformation" : "Sub Contact Information",
+"subContactName" : "Name", 
+"subContactMobile" : "Mobile", 
+"subContactEmail" : "Email" ,
+"note" : "Note"
+
+}
 }

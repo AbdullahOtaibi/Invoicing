@@ -29,14 +29,11 @@ const SignIn = () => {
                 }
                 localStorage.setItem("permissions", res.data.user.permissions);
                 localStorage.setItem("role", res.data.user.role);
-
                 localStorage.setItem("companyName", res.data.user.companyName);
                 localStorage.setItem("companyId", res.data.user.companyId);
                 localStorage.setItem("incomeSourceSequence", res.data.user.incomeSourceSequence);
                 localStorage.setItem("invoiceCategory", res.data.user.invoiceCategory);
-
-
-                
+                localStorage.setItem("company", res.data.user.company._id); 
                 setLoggedIn(true);
             }
 
