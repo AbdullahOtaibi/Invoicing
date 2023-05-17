@@ -155,7 +155,9 @@ router.post("/create", verifyToken, async (req, res, next) => {
   }
 
 const newObject = new FullCalendar({
-    user: req.user.id,
+  user: req.user.id,
+  company: req.user.company,
+  companyId: req.user.companyId,
     ...req.body
   });
 

@@ -502,17 +502,22 @@
 "contact" : {
 "ContactInformation" : "Contact Information",
 "newContact" : "New Contact",
-"contactName" : "Name",
-"contactType" : "Type" ,
-"mobile" : "Mobile" ,
+"contactName" : "Contact Name",
+"contactType" : "Contact Type" ,
+"mobile" : "Contact Mobile" ,
 "identificationType" : "Identification Type",
 "identificationValue" : "identification Value" ,
-"email" : "Email",
+"email" : "Contact Email",
 "subContactInformation" : "Sub Contact Information",
-"subContactName" : "Name", 
-"subContactMobile" : "Mobile", 
-"subContactEmail" : "Email" ,
-"note" : "Note"
+"subContactName" : "SubContact Name", 
+"subContactMobile" : "SubContact Mobile", 
+"subContactEmail" : "SubContact Email" ,
+"note" : "Note",
+"createdDate" : "Created Date",
+"BeingDeleteingTheContact" : "Being Deleteing The Contact",
+"searchContactEmpty" : "Not Found",
+"searchContactInfo" : "Contact Info:" ,
+"searchSubContactInfo" : "Sub contact Info:"
 
 }
 }

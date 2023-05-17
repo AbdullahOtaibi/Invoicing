@@ -74,7 +74,7 @@ const FullCalendarController = require('./routes/api/FullCalendar/controllers/Fu
 app.use('/v1/FullCalendars', FullCalendarController);
 
 
-const contactController = require('./routes/api/contacts/controllers/Contact');
+const contactController = require('./routes/api/contacts/controllers/ContactsController');
 app.use('/v1/contacts', contactController);
 
 

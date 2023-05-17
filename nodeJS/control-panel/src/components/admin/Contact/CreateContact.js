@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link,useParams } from "react-router-dom";
 import { createContact } from "./ContactAPI";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
@@ -15,8 +15,8 @@ const CreateContact = (props) => {
   const [contact, setContact] = useState({
     contactType: "Client",
     deleted: false, 
-    companyID: localStorage.getItem("companyId"),
-    company: localStorage.getItem("company") 
+    companyID: localStorage.getItem("companyId")
+   // company: localStorage.getItem("company") 
   });
   const [wasValidated, setWasValidated] = useState(false);
 
@@ -67,7 +67,7 @@ const CreateContact = (props) => {
   
   const setSubContactName = (event) => {
     let cloned = JSON.parse(JSON.stringify(contact));
-    cloned.subContactEmail = event.target.value;
+    cloned.subContactName = event.target.value;
     setContact(cloned);
   };
 

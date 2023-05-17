@@ -45,6 +45,7 @@
     "react-router-dom": "6.2.2",
     "react-router-sitemap-generator": "^0.0.8",
     "react-scripts": "^5.0.1",
+    "react-search-autocomplete": "^8.5.2",
     "react-snap": "^1.23.0",
     "react-toastify": "^7.0.4",
     "react-transition-group": "^4.4.5",

@@ -113,7 +113,14 @@ const InvoiceSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    
+   contact:{ 
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Contact'
+    },
+    company: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Company'
+    } ,
     postedXML: String, 
     responseXML:String, 
     createdDate: {

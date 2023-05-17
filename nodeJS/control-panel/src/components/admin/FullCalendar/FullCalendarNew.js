@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { creatFullCalendar } from "./FullCalendarAPI";
-
+import ContactSearchControl from "../Contact/ContactSearchControl";
 let startDate = new Date() ;
 if(startDate.getMinutes() >0 && startDate.getMinutes() < 30 ) 
 {
@@ -25,7 +25,11 @@ else
 }
 
 
+
+
+
 const FullCalendarNew = (props) => {
+
   const [fullCalendar, setFullCalendar] = useState({
     deleted: false,
     companyID: localStorage.getItem("companyId"),
@@ -153,10 +157,46 @@ const setMobile = (event) => {
     return true;
   }
 
+  const selectedConatct = (item) => {
+    if (item) {
+      let cloned = JSON.parse(JSON.stringify(fullCalendar));
+      cloned.contactName = item.contactName;
+      cloned.contact = item._id;
+      cloned.title = item.contactName;
+      cloned.mobile = item.mobile; 
+      setFullCalendar(cloned);
+      
+    }
+  };
+
   return (
     <>
       <form>
 
+      <div className="row">
+          <div className="mb-3 col ">
+            <div className="col col-auto">{t("FullCalendar.contactName")} </div>
+
+            <div className="col">
+              {/* <input
+                type="text"
+                className="form-control"
+                id="contactName"
+                name="contactName"
+                placeholder={t("FullCalendar.contactName")}
+                value={fullCalendar.contactName}
+                onChange={setContactName}
+              ></input> */}
+
+<ContactSearchControl
+                    handleSelectContact={selectedConatct}
+                    wasValidated={wasValidated}
+                    value = {fullCalendar.contactName}
+                  />
+
+            </div>
+          </div>
+        </div>
       <div className="row">
           <div className="mb-3 col ">
             <div className="col col-auto">{t("FullCalendar.title")} </div>
@@ -175,23 +215,7 @@ const setMobile = (event) => {
           </div>
         </div>
    
-        <div className="row">
-          <div className="mb-3 col ">
-            <div className="col col-auto">{t("FullCalendar.contactName")} </div>
-
-            <div className="col">
-              <input
-                type="text"
-                className="form-control"
-                id="contactName"
-                name="contactName"
-                placeholder={t("FullCalendar.contactName")}
-                value={fullCalendar.contactName}
-                onChange={setContactName}
-              ></input>
-            </div>
-          </div>
-        </div>
+      
 
         <div className="row">
           <div className="mb-3 col ">

@@ -272,6 +272,14 @@ const ViewInvoice = (props) => {
               </div>
 
               <div className="mb-3 row">
+
+              <div className="mb-3 col ">
+                  <div className="col col-auto">{t("invoice.fullName")}</div>
+                  <div className="col">
+                    {invoice.accountingCustomerParty.registrationName}
+                  </div>
+                </div>
+                
                 <div className="mb-3 col ">
                   <div className="col col-auto"> {t("invoice.IdentificationType")} </div>
                   <div className="col col-auto">{getIdentificationType()}</div>
@@ -284,12 +292,7 @@ const ViewInvoice = (props) => {
                   </div>
                 </div>
 
-                <div className="mb-3 col ">
-                  <div className="col col-auto">{t("invoice.fullName")}</div>
-                  <div className="col">
-                    {invoice.accountingCustomerParty.registrationName}
-                  </div>
-                </div>
+           
                 <div className="mb-3 col ">
                   <div className="col col-auto">{t("invoice.PhoneNumber")}</div>
                   <div className="col">

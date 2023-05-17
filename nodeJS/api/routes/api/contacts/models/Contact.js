@@ -12,7 +12,7 @@ const ContactSchema = new Schema({
     mobile:String, 
     identificationType:String,
     identificationValue:String,
-    contactEmail:String, 
+    email:String, 
     subContactName: String, 
     subContactMobile:String,
     subContactEmail:String,
@@ -34,6 +34,7 @@ const ContactSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
     } 
+   
  
 }, { collection: 'Contacts' });
 

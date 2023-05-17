@@ -35,6 +35,11 @@ export const updateContact = (invoice) => {
 
 
 
+export const searchContact = (value) => {
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/contacts/search/" + value);
+
+}
+
 
 
 

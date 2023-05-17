@@ -343,6 +343,8 @@ router.post("/create", verifyToken, async (req, res, next) => {
   let newSerial = count + 1;
   const newObject = new Invoice({
     user: req.user.id,
+    company: req.user.company,
+    companyId: req.user.companyId,
     serialNumber: newSerial,
     seqNumber: newSeq(newSerial),
     ...req.body,

@@ -5,13 +5,12 @@ const verifyToken = require('../../utils/auth');
 const Contact = require('../models/Contact');
 const { query } = require('express');
 
-function ContactEvents() {
+function Contacts() {
 
   this.getContactById = async function (ContactId) {
-    let Contact = await Contact.findOne({ _id: ContactId, deleted: false }).populate("user", "-password")
-      
+    let Contact = await Contact.findOne({ _id: ContactId, deleted: false }).populate("user", "-password") 
     return Contact;
   }
 
 }
-module.exports = new ContactEvents();  
+module.exports = new Contacts();  

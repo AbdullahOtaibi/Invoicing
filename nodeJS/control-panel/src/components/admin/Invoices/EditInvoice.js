@@ -12,6 +12,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { event } from "jquery";
 import ConfirmButton from "react-confirmation-button";
+import ContactSearchControl from "../Contact/ContactSearchControl";
 
 const EditInvoice = (props) => {
   const [loading, setLoading] = useState(false);
@@ -53,6 +54,22 @@ const EditInvoice = (props) => {
   //#endregion
 
   //#region const
+
+  
+  const selectedConatct = (item) => {
+    // alert(item);
+    if (item) {
+      console.log(JSON.stringify(item));
+      let cloned = JSON.parse(JSON.stringify(invoice));
+      cloned.accountingCustomerParty.partyIdentification.schemeID = item.identificationType;
+      cloned.accountingCustomerParty.partyIdentification.value = item.identificationValue
+      cloned.accountingCustomerParty.registrationName = item.contactName;
+      cloned.accountingCustomerParty.telephone = item.mobile;
+      cloned.contact  = item._id 
+      setInvoice(cloned);
+    }
+  };
+
 
   const updateItemName = (event) => {
     let cloned = JSON.parse(JSON.stringify(currentEditableItem));
@@ -469,6 +486,18 @@ const EditInvoice = (props) => {
               </div>
 
               <div className="mb-3 row">
+
+              <div className="mb-3 col ">
+                <div className="col col-auto">{t("invoice.fullName")} {invoice.accountingCustomerParty.registrationName}</div>
+                <div className="col col-auto">
+                  <ContactSearchControl
+                    handleSelectContact={selectedConatct}
+                    wasValidated={wasValidated}
+                    value = {invoice.accountingCustomerParty.registrationName}
+                  />
+                </div>
+              </div>
+
                 <div className="mb-3 col ">
                   <div className="col col-auto">{t("invoice.IdentificationType")}</div>
                   <div className="col col-auto">
@@ -506,7 +535,7 @@ const EditInvoice = (props) => {
                   </div>
                 </div>
 
-                <div className="mb-3 col ">
+                {/* <div className="mb-3 col ">
                   <div className="col col-auto">{t("invoice.fullName")}</div>
                   <div className="col">
                     <input
@@ -525,7 +554,7 @@ const EditInvoice = (props) => {
                       value={invoice.accountingCustomerParty.registrationName}
                     />
                   </div>
-                </div>
+                </div> */}
                 <div className="mb-3 col ">
                   <div className="col col-auto">{t("invoice.PhoneNumber")}</div>
                   <div className="col">

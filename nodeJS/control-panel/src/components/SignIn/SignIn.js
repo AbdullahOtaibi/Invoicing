@@ -33,7 +33,7 @@ const SignIn = () => {
                 localStorage.setItem("companyId", res.data.user.companyId);
                 localStorage.setItem("incomeSourceSequence", res.data.user.incomeSourceSequence);
                 localStorage.setItem("invoiceCategory", res.data.user.invoiceCategory);
-                localStorage.setItem("company", res.data.user.company._id); 
+                localStorage.setItem("company", res.data.user.company); 
                 setLoggedIn(true);
             }
 

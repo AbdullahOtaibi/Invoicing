@@ -7,7 +7,7 @@ const Contact = require("../models/Contact");
 
 
 const { query } = require("express");
-const ContactEvents = require("../data-access/Contact");
+const Contacts = require("../data-access/Contacts");
 const { json } = require("body-parser");
 
 router.post("/filter", verifyToken, async (req, res) => {
@@ -133,15 +133,16 @@ router.post("/count", verifyToken, async (req, res) => {
   }
 });
 
-
-
 router.get("/get/:id", async (req, res) => {
-  let Contact = await Contact.geContactById(req.params.id);
+  console.log("before get Contact  info. ID: " + req.params.id);
+//ReferenceError: Cannot access 'Contact' before initialization
+  //let contact = await Contacts.getContactById(req.params.id);
+  
+  //let contact = await Contact.findOne({ _id:  req.params.id, deleted: false }).populate("user", "-password") 
+  let contact =  await Contact.findOne({_id:req.params.id, deleted:false}).populate("user" , "-password")
   console.log("get Contact  info.");
-  res.json(Contact);
+  res.json(contact);
 });
-
-
 
 
 
@@ -153,23 +154,23 @@ router.post("/create", verifyToken, async (req, res, next) => {
   if (req.user.role != "Administrator" && req.user.role != "Company") {
     res.json({ success: false, message: "Unauthorized" });
   }
+  console.log("before create") ;
+  console.log( req.body)
 
 const newObject = new Contact({
     user: req.user.id,
-    company: req.user.company,
+   company: req.user.company,
+   companyId: req.user.companyId,
     ...req.body
   });
-
+  console.log("after create") ;
   newObject.deleted = false;
   newObject._id = new mongoose.Types.ObjectId();
   let savedContact = await newObject.save();
   console.log("savedContact:" +savedContact);
   res.json(savedContact);
-
   next();
 });
-
-
 
 router.post("/update/", verifyToken, async (req, res) => {
   if (req.user.role != "Administrator" && req.user.role != "Company") {
@@ -202,6 +203,68 @@ router.get("/deleteItem/:id", verifyToken, async (req, res) => {
 });
 
 
+router.get("/remove/:id", verifyToken, async (req, res) => {
+  if (req.user.role != "Administrator" && req.user.role != "Company") {
+    res.json({ success: false, message: "Unauthorized" });
+  }
+  console.log("Soft Delete: remove Contact id:" + req.params.id);
+    Contact.findByIdAndUpdate(
+    req.params.id,
+    { deleted: true },
+    function (err, model) {
+      if(err) 
+      {
+        console.log("error remove item:" + e)
+      } 
+      else if(model) 
+      {
+        console.log("marked as deleted..." + model);
+        res.json({ success: true, message: "deleted" });
+      }
+    
+    }
+  );
+  
+});
 
+
+router.get("/search/:val", verifyToken, async (req, res) => {
+  let val = req.params.val;
+  console.log("val:" +val);
+  if (!req.user) {
+    res.json({ message: "unauthorized access" });
+  }
+  if (req.user.role != "Administrator" && req.user.role != "Company") {
+    res.json({ success: false, message: "Unauthorized" });
+  }
+  var result = {};
+  try {
+  
+    
+    let sortParams = {
+      _id: -1,
+    };
+
+  let queryParams = {
+    deleted: false,
+    company: req.user.company,
+    $or: [
+      { contactName: { $regex: val, $options: "i" } },
+      { subContactName: { $regex: val, $options: "i" } },
+      { mobile: { $regex: val, $options: "i" } },
+      { subContactMobile: { $regex: val, $options: "i" } },
+    ],
+  };
+    let query = Contact.find(queryParams)
+    .populate("user", "-password")
+      .sort(sortParams);
+    result.items = await query.exec("find");
+    res.json(result);
+  } catch (ex) {
+    console.log(ex);
+    result.error = ex.message;
+    res.json(result);
+  }
+});
 
 module.exports = router;
