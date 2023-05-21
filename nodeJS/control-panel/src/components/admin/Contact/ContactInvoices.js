@@ -1,28 +1,19 @@
-import React, { useState, useEffect } from 'react'
-import { useTranslation } from "react-i18next"
-import { MdCollectionsBookmark, MdDelete, MdEdit, MdAdd, MdLocalShipping } from "react-icons/md"
-import { getInvoices }
-    from './InvoicesAPI'
-import { ThreeDots } from 'react-loader-spinner'
-import { Link, useNavigate } from 'react-router-dom'
-import { getLocalizedText } from '../utils/utils'
-import { Tabs, Tab } from 'react-bootstrap'
-import { hasPermission } from '../utils/auth';
-import { Helmet } from "react-helmet";
+import React, { useState, useEffect } from "react";
+import { getContactInvoices } from "./ContactAPI";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import {MdEdit, MdLocalShipping} from "react-icons/md";
 
-const ListInv = (props) => {
-    const [loading, setLoading] = useState(false);
+const ContactInvoices = (props) => {
     const { t, i18n } = useTranslation();
-    const [newInvoices, setNewInvoices] = useState([]);
-
-    const [nvoicesSort, setnvoicesSort] = useState('_idDesc');
-    const [invoicesPage, setInvoicesPage] = useState(0);
+    const [invoices, setInvoices] = useState([]);
     const [invoicesPages, setInvoicesPages] = useState(0);
+    const [invoicesPage,setInvoicesPage] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        console.log('********test ....');
-        console.log(JSON.stringify(newInvoices));
-    }, setNewInvoices);
+        loadNewPage(0);
+    }, []);
 
     const loadNewPage = (newPage) => {
         if (newPage < 0 || (newPage >= invoicesPages && invoicesPages > 0)) {
@@ -34,12 +25,12 @@ const ListInv = (props) => {
 
 
         setInvoicesPage(newPage);
-        getInvoices({
+        getContactInvoices({
             page: newPage,
-            status: props.status
+            clientId: props.contactId
         }).then(data => {
             setLoading(false);
-            setNewInvoices(data.items || []);
+            setInvoices(data.items || []);
             setInvoicesPage(data.page);
             console.log("data.items:" + JSON.stringify(data.items));
             console.log("data.pages:" + data.pages);
@@ -51,16 +42,24 @@ const ListInv = (props) => {
             setLoading(false);
             console.log(e);
         });
+
+    }
+    function getInvoiceDate(issuedDate) {
+        let d = new Date(issuedDate.toString());
+        let str =
+            d.getFullYear() +
+            "/" +
+            (d.getMonth().length == 2
+                ? parseInt(d.getMonth()) + 1
+                : "0" + (parseInt(d.getMonth()) + 1)) +
+            "/" +
+            d.getDate();
+        return str;
     }
 
-    useEffect(() => {
-        loadNewPage(0);
-    }, []);
-
-
-    return (
-
+    return (<>
         <div className="table-responsive">
+    
             <table className="table   table-hover">
                 <thead>
                     <tr>
@@ -92,10 +91,7 @@ const ListInv = (props) => {
 
                 </thead>
                 <tbody>
-                    {
-
-
-                        newInvoices.map(item => (
+                    {invoices.map(item => (
 
                             <tr key={'' + item.id}>
                                 <td>
@@ -157,23 +153,7 @@ const ListInv = (props) => {
                 </tfoot>
             </table>
         </div>
-
-    );
-
-    //return (<h1>test .................</h1>);
+    </>);
 }
 
-function getInvoiceDate(issuedDate) {
-    let d = new Date(issuedDate.toString());
-    let str =
-        d.getFullYear() +
-        "/" +
-        (d.getMonth().length == 2
-            ? parseInt(d.getMonth()) + 1
-            : "0" + (parseInt(d.getMonth()) + 1)) +
-        "/" +
-        d.getDate();
-    return str;
-}
-
-export default ListInv;
+export default ContactInvoices;
