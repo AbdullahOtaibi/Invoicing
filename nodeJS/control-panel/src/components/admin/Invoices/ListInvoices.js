@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next"
 import { MdCollectionsBookmark, MdDelete, MdEdit, MdAdd, MdLocalShipping } from "react-icons/md"
-import { getPostedInvoices, getNewInvoices, getIncompleteInvoices, removeInvoice } 
-from './InvoicesAPI'
-import { ThreeDots } from  'react-loader-spinner'
+import { getPostedInvoices, getNewInvoices, getIncompleteInvoices, removeInvoice }
+    from './InvoicesAPI'
+import { ThreeDots } from 'react-loader-spinner'
 import { Link, useNavigate } from 'react-router-dom'
 import { getLocalizedText } from '../utils/utils'
 import { Tabs, Tab } from 'react-bootstrap'
 import { hasPermission } from '../utils/auth';
 import { Helmet } from "react-helmet";
-import  Listinv from "./ListInv"
-import  './ListInvoice.css'
+import Listinv from "./ListInv"
+import './ListInvoice.css'
 
 
 const ListInvoices = (props) => {
@@ -33,12 +33,17 @@ const ListInvoices = (props) => {
     const [newInvoicesPage, setNewInvoicesPage] = useState(0);
     const [newInvoicesPages, setNewInvoicesPages] = useState(0);
 
+    const [newCount, setNewCount] = useState(0);
+    const [postedCount, setPostedCount] = useState(0);
+    const [stuckCount, setStuckCount] = useState(0);
 
-    useEffect( ()=>{console.log('********test ....') ; 
-    console.log(JSON.stringify(newInvoices));
- 
 
-} , setNewInvoices);
+    useEffect(() => {
+        console.log('********test ....');
+        console.log(JSON.stringify(newInvoices));
+
+
+    }, setNewInvoices);
 
 
 
@@ -50,10 +55,10 @@ const ListInvoices = (props) => {
             <div className="card">
                 <div className={"card-body"}>
 
-                
+
                     <div className='row'>
                         <div className='col-md-8 col-sm-6'>
-                            <h5 className="card-title"><MdCollectionsBookmark /> 
+                            <h5 className="card-title"><MdCollectionsBookmark />
                                 <span className='text-info px-2'> {t("sidebar.invoices")} </span>
                             </h5>
                         </div>
@@ -76,27 +81,27 @@ const ListInvoices = (props) => {
                     <br />
 
                     <Tabs
-                       defaultActiveKey= {status? status: "new"}
+                        defaultActiveKey={status ? status : "new"}
                         transition={false}
                         id="noanim-tab-example"
                         className="mb-3 " >
-                        <Tab eventKey="new" title= {  t("invoice.newInvoices") 
-                    } tabClassName="tab-item btn-info  ">
+                        <Tab eventKey="new" title={t("invoice.newInvoices") + ' (' + newCount + ')'
+                        } tabClassName="tab-item btn-info  ">
                             <div className="table-responsive">
-                          <Listinv status= "new" />
-                            </div>
-                        </Tab>
-                       
-                        
-                        <Tab eventKey="posted" title={t("invoice.postedInvoices")} tabClassName="tab-item btn-success">
-                            <div className="table-responsive ">
-                            <Listinv status= "posted" />
+                                <Listinv status="new" updateCount={setNewCount} />
                             </div>
                         </Tab>
 
-                        <Tab eventKey="stuck" title={t("invoice.stuckInvoices")} tabClassName="tab-item btn-warning">
+
+                        <Tab eventKey="posted" title={t("invoice.postedInvoices") + ' (' + postedCount + ')'} tabClassName="tab-item btn-success">
+                            <div className="table-responsive ">
+                                <Listinv status="posted" updateCount={setPostedCount} />
+                            </div>
+                        </Tab>
+
+                        <Tab eventKey="stuck" title={t("invoice.stuckInvoices") + ' (' + stuckCount + ')'} tabClassName="tab-item btn-warning">
                             <div className="table-responsive">
-                            <Listinv status= "stuck" />
+                                <Listinv status="stuck" updateCount={setStuckCount} />
 
                                 {/* <table className="table   table-hover">
                                     <thead>

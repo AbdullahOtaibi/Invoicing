@@ -44,6 +44,9 @@ const loadNewPage = (newPage) => {
         console.log("data.items:" +  JSON.stringify( data.items) ) ;
         console.log("data.pages:" +data.pages) ;
         setInvoicesPages(data.pages);
+        if(props.updateCount){
+            props.updateCount(data.count);
+        }
     }).catch(e => {
         setLoading(false);
         console.log(e);
