@@ -162,12 +162,12 @@ const FullCalenderList = (props) => {
         }
       </div>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose}   size="lg" >
         <Modal.Header closeButton>
           <div className="row">
             <div className="col">
               {popUpEvent == "new" ? (
-                <Modal.Title>{t("FullCalendar.newAppintement")}</Modal.Title>
+                <Modal.Title >{t("FullCalendar.newAppintement")}</Modal.Title>
               ) : (
                 ""
               )}

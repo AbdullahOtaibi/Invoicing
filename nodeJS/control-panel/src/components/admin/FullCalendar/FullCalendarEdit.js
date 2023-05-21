@@ -337,14 +337,16 @@ const FullCalendarEdit = (props) => {
                               confirmText={t("invoice.confirmDelete")}
                               cancelText={t("invoice.cancelDelete")}
                               loadingText={t("FullCalendar.BeingDeleteingTheAppointment")}
-                              wrapClass=""
+                              wrapClass="d-grid gap-2"
                               buttonClass="btn btn-lg"
                               mainClass="btn-warning mx-2 w-100"
-                              confirmClass="btn-danger mx-2 w-45 mr-3"
-                              cancelClass=" btn-success w-45"
+                              confirmClass="btn-danger "
+                              cancelClass=" btn-success"
                               loadingClass="visually-hidden"
                               disabledClass=""
+                              
                               once
+                            
                             >
                               {"Delete "}
                               <MdDelete />
