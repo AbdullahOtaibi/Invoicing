@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { getShipment, updateShipment } from './ShipmentsAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { MdBurstMode, MdSave, MdClose, MdDownload, MdAttachment, MdDelete } from "react-icons/md";
 import UploadAttachment from '../Attachments/UploadAttachment'
 import ListImages from '../Images/ListImages'
@@ -138,7 +138,7 @@ const EditShipment = (props) => {
             <div className="card-body">
                 <h5 className="card-title"><MdBurstMode /> {t("shipping.shipmentDetails")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

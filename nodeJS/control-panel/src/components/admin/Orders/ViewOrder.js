@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { getOrder, getPaymentsByOrderId, getShipmentByOrderId } from './OrdersAPI'
 import { useTranslation } from "react-i18next"
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { MdOutlineReceiptLong, MdEdit, MdClose, MdHistoryToggleOff, MdPayment, MdLocalShipping } from "react-icons/md";
 import { getLocalizedText } from '../utils/utils'
 import { hasPermission } from '../utils/auth';
@@ -108,7 +108,7 @@ const ViewOrder = (props) => {
                     <div className="card-body">
 
                         <div className="container text-center">
-                            <Loader
+                            <ThreeDots
                                 type="ThreeDots"
                                 color="#00BFFF"
                                 height={100}

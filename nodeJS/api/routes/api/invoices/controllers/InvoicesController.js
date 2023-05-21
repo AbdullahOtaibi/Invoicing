@@ -94,6 +94,12 @@ router.post("/filter", verifyToken, async (req, res) => {
     if (InvoiceNumber && InvoiceNumber.length > 0) {
       queryParams["$and"].push({ _id: InvoiceNumber });
     }
+
+    if (clientId) {
+      queryParams["$and"].push({ contact: clientId });
+    }
+
+    
     if (status) {
       queryParams["$and"].push({ status: status });
     }

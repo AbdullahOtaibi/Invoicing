@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next"
 import { MdCollectionsBookmark, MdDelete, MdEdit, MdAdd } from "react-icons/md"
 import { getNewQuotations, removeQuotation } from './QuotationsAPI'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { getLocalizedText } from '../utils/utils'
 import { Tabs, Tab } from 'react-bootstrap'
@@ -71,7 +71,7 @@ const ListQuotations = (props) => {
 
 
                     <div className="container text-center">
-                        <Loader
+                        <ThreeDots
                             type="ThreeDots"
                             color="#00BFFF"
                             height={100}

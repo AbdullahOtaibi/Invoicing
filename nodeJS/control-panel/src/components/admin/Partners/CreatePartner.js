@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import {  createPartner } from './PartnersAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import ListImages from '../Images/ListImages'
 
 
@@ -88,7 +88,7 @@ const CreatePartner = (props) => {
             <div className="card-body">
                 <h5 className="card-title">{t("dashboard.createPartner")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

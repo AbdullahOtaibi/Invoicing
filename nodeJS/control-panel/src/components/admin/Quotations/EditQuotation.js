@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { getQuotation, updateItemAvailable, updateItemConfirmed, addItemMessage, sendTocompanies } from './QuotationsAPI'
 import { useTranslation } from "react-i18next"
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import {
     MdBurstMode, MdClose, MdAddComment, MdAdd, MdTimer, MdHistory, MdSend,
     MdCalendarToday, MdBadge, MdInfoOutline, MdReplay
@@ -149,7 +149,7 @@ const EditQuotation = (props) => {
                         </div>
                         <div className='col-2 p-0' style={{ textAlign: 'end' }}>
 
-                            <Loader
+                            <ThreeDots
                                 type="ThreeDots"
                                 color="#00BFFF"
                                 visible={loading}

@@ -13,7 +13,7 @@ import {
   MdLocalShipping,
   MdOutlineCancel,
 } from "react-icons/md";
-import Loader from "react-loader-spinner";
+import { ThreeDots } from  'react-loader-spinner';
 import { useTranslation } from "react-i18next";
 import Moment from "react-moment";
 import { getLocalizedText } from "../utils/utils";
@@ -128,7 +128,7 @@ const ViewInvoice = (props) => {
           </h5>
           <div className="card-body">
             <div className="container text-center">
-              <Loader
+              <ThreeDots
                 type="ThreeDots"
                 color="#00BFFF"
                 height={100}

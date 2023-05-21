@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next"
 import { MdCollectionsBookmark, MdDelete, MdEdit, MdContentCopy, MdAdd, MdSearch, MdClose, MdRefresh } from "react-icons/md"
 import { getMyProducts, removeProduct, cloneProduct, getAdminProducts, applyToAll, updateApproved, updatePublished, getCompanies } from './ProductsAPI'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { getLocalizedText } from '../utils/utils'
 import { hasPermission } from '../utils/auth';
@@ -285,7 +285,7 @@ const ListProducts = (props) => {
 
 
                     <div className="container text-center">
-                        <Loader
+                        <ThreeDots
                             type="ThreeDots"
                             color="#00BFFF"
                             height={100}

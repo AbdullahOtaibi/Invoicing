@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { createCalendarEvent } from './CalendarAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { Editor } from '@tinymce/tinymce-react'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
@@ -106,7 +106,7 @@ const CreateCalendarEvent = (props) => {
             <div className="card-body">
                 <h5 className="card-title">{t("dashboard.createCalendarEvent")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

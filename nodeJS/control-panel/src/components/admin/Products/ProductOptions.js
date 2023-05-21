@@ -1,7 +1,7 @@
 import React,{ useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { updateProduct, getProduct } from './ProductsAPI'
 import { MdCollectionsBookmark, MdDelete, MdEdit, MdContentCopy, MdTune, MdDashboard } from "react-icons/md"
 import { Link } from 'react-router-dom'
@@ -124,7 +124,7 @@ const ProductOptions = (props) => {
             <div className="card-body">
                 <h5 className="card-title"><MdTune /> {t("product.productOptions")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

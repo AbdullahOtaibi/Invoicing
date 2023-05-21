@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import { getUser, updateUser } from './ClientsAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { MdPerson } from "react-icons/md";
 import UploadImage from '../Images/UploadImage';
 import { hasPermission } from '../utils/auth';
@@ -117,7 +117,7 @@ const ViewClient = (props) => {
             <div className="card-body">
                 <h5 className="card-title"><MdPerson /> {t("clients.editClient")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

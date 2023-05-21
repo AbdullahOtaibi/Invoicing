@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 import { MdDescription, MdEdit, MdDelete, MdBuild } from "react-icons/md";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Loader from "react-loader-spinner";
+import { ThreeDots } from  'react-loader-spinner';
 
 
 const ListCountries = () => {
@@ -44,7 +44,7 @@ const ListCountries = () => {
                     <h5 className="card-title"><MdBuild /> {t("sidebar.countries")} <Link className="btn btn-outline-primary btn-sm" to={"/admin/countries/create"}>+</Link>
                     </h5>
                     <div className="container text-center">
-                        <Loader
+                        <ThreeDots
                             type="ThreeDots"
                             color="#00BFFF"
                             height={100}
@@ -77,7 +77,7 @@ const ListCountries = () => {
                                                 {i18n.language === "en" ? item.name.english : item.name.arabic}
                                             </td>
 
-                                            <td className="row justify-content-end">
+                                            <td className="text-end">
                                                 <Link className="btn btn-primary" to={"/admin/countries/edit/" + item._id} title={t("dashboard.edit")}> <MdEdit /> </Link> &nbsp;
                                                 <Link className="btn btn-danger" to="#" title={t("dashboard.delete")} onClick={e => deleteCountry(item._id)}> <MdDelete /> </Link>
                                             </td>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { getQuotation } from './QuotationsAPI'
 import { useTranslation } from "react-i18next"
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { MdBurstMode, MdEdit, MdClose } from "react-icons/md";
 import { getLocalizedText } from '../utils/utils'
 import { hasPermission } from '../utils/auth';
@@ -40,7 +40,7 @@ const ViewQuotation = (props) => {
             <div className="card-body">
                 <h5 className="card-title"><MdBurstMode /> {t("quotation.quotationDetails")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

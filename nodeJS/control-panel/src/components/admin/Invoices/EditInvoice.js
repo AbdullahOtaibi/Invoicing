@@ -4,7 +4,7 @@ import { createInvoice, getInvoice, updateInvoice } from "./InvoicesAPI";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Loader from "react-loader-spinner";
+import { ThreeDots } from  'react-loader-spinner';
 import { Editor } from "@tinymce/tinymce-react";
 import { MdAdd, MdDelete , MdEdit} from "react-icons/md";
 import { v4 as uuidv4 } from "uuid";
@@ -377,7 +377,7 @@ const EditInvoice = (props) => {
           <div className="card-body">
             <h5 className="card-header" >   <MdEdit />  {t("invoice.editInvoice")}    <span className="text-info px-2">  ({  invoice.seqNumber} ) </span> </h5>
             <div className="container text-center">
-              <Loader
+              <ThreeDots
                 type="ThreeDots"
                 color="#00BFFF"
                 height={100}

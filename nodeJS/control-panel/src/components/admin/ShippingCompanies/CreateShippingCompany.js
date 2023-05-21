@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { createShippingCompany } from './ShippingCompaniesAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import ListImages from '../Images/ListImages'
 import { MdLocalShipping } from "react-icons/md";
 import LocalizedTextEditor from '../Shared/LocalizedTextEditor'
@@ -70,7 +70,7 @@ const CreateShippingCompany = (props) => {
             <div className="card-body">
                 <h5 className="card-title"><MdLocalShipping /> {t("shipping.addNewCompany")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { getAllProductCategoriesWithCounts } from './ProductCategoriesAPI';
 import { getLocalizedText } from '../utils/utils'
 import { hasPermission } from '../utils/auth';
@@ -84,7 +84,7 @@ const ShowProductCategories = ({ onPrev }) => {
             <div className="card-body">
                 <h5 className="card-title">  {t("Categories")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

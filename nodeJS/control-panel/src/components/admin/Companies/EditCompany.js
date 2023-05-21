@@ -4,7 +4,7 @@ import { updatecompany, getcompany } from './CompaniesAPI'
 import { getCountries } from '../../../services/CountriesService'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import LocalizedTextEditor from '../Shared/LocalizedTextEditor'
 import UploadImage from '../Images/UploadImage';
 import { getLocalizedTextByLocale } from '../utils/utils'
@@ -279,7 +279,7 @@ const EditCompany = (props) => {
             <div className="card-body">
                 <h5 className="card-title">{t("companies.editCompany")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

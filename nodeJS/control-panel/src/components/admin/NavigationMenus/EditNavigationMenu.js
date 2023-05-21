@@ -3,7 +3,7 @@ import { getNavigationMenu, updateNavigationMenu, createNavigationMenuItem, upda
     removeNavigationMenuSubItem, getArticles, reorderMenuItems } from './NavigationMenusAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import LocalizedTextEditor from '../Shared/LocalizedTextEditor'
 import { useParams, Link } from 'react-router-dom'
 import { getLocalizedText } from '../utils/utils'
@@ -272,7 +272,7 @@ const EditNavigationMenu = () => {
                         <h5 className="card-title">{t("dashboard.editMenu")}: <b> {menu ? getLocalizedText(menu.title, i18n) : ''} </b></h5>
                     </div>
                     <div className='col text-center'>
-                        <Loader
+                        <ThreeDots
                             type="ThreeDots"
                             color="#00BFFF"
                             height={30}

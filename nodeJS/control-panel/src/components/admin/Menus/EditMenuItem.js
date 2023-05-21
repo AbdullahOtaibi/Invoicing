@@ -1,5 +1,5 @@
 import React,{ useState, useEffect } from 'react'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { CreateMenuItem } from './CreateMenuItem'
 import { useTranslation } from "react-i18next"
 import { Link, useParams } from 'react-router-dom'
@@ -85,7 +85,7 @@ const EditMenuItem = (props) => {
             <div className="card-body">
                 <h5 className="card-title">{t("dashboard.editMenu")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}
@@ -133,7 +133,7 @@ const EditMenuItem = (props) => {
                                     <th className="text-center">
                                         {t("dashboard.published")}
                                     </th>
-                                    <th className="row justify-content-end">
+                                    <th className="text-end">
                                         <Link to="#" onClick={toggleCreateItem} className="btn btn-outline-primary btn-sm">+</Link>
                                     </th>
 
@@ -157,7 +157,7 @@ const EditMenuItem = (props) => {
                                                     <label className="custom-control-label" htmlFor="customCheck1"></label>
                                                 </div>
                                             </td>
-                                            <td className="row justify-content-end">
+                                            <td className="text-end">
 
                                                 <Link className="btn btn-primary" to="#" onClick={() => { loadModel(item.id) }}>{t("dashboard.edit")}</Link>
                                             </td>

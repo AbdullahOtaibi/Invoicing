@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next"
 import { MdCollectionsBookmark, MdDelete, MdEdit, MdAdd, MdLocalShipping } from "react-icons/md"
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { Link, useNavigate } from 'react-router-dom'
 import { getLocalizedText } from '../utils/utils'
 import { customSearch } from './OrdersAPI'
@@ -59,7 +59,7 @@ const ProductSearch = (props) => {
                 </div>
             </div>
             <br/>
-            <Loader
+            <ThreeDots
                                         type="ThreeDots"
                                         color="#00BFFF"
                                         visible={loading}

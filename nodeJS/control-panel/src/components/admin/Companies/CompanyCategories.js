@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import { updatecompany, getcompany } from './CompaniesAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { getProductCategories } from '../ProductCategories/ProductCategoriesAPI';
 import { getLocalizedText } from '../utils/utils'
 import { hasPermission } from '../utils/auth';
@@ -126,7 +126,7 @@ const CompanyCategories = ({onPrev}) => {
             <div className="card-body">
                 <h5 className="card-title">  {t("companies.CompanyCategories")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { MdCollectionsBookmark, MdDelete, MdAdd, MdSave, MdClose } from "react-icons/md"
 import { updateProduct, getProduct, searchRelatedProduct, createVariant, getVariants, unlinkVariant } from './ProductsAPI'
 import { getMyCategories, getProductCategory } from '../ProductCategories/ProductCategoriesAPI'
@@ -619,7 +619,7 @@ const EditProduct = (props) => {
             <div className="card-body">
                 <h5 className="card-title"><MdCollectionsBookmark /> {t("product.editProduct")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}
@@ -1059,7 +1059,7 @@ const EditProduct = (props) => {
                                             <td>
                                                 {rp.name.english}
                                             </td>
-                                            <td className="row justify-content-end">
+                                            <td className="text-end">
                                                 <Link className="btn btn-sm btn-success" to="#" title={t("product.productOptions")} onClick={() => addRelatedProduct(rp)} ><MdAdd /> </Link>
                                             </td>
                                         </tr>
@@ -1089,7 +1089,7 @@ const EditProduct = (props) => {
                                             <td>
                                                 {rp.name.english}
                                             </td>
-                                            <td className="row justify-content-end">
+                                            <td className="text-end">
                                                 <Link className="btn btn-sm btn-danger" to="#" title={t("product.productOptions")} onClick={() => removeRelatedProduct(rp._id)} ><MdDelete /> </Link>
                                             </td>
                                         </tr>

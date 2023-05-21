@@ -40,7 +40,7 @@ export const ListMenuItems = (props) => {
                                         <label className="custom-control-label" htmlFor="customCheck1"></label>
                                     </div>
                                 </td>
-                                <td className="row justify-content-end">
+                                <td className="text-end">
                                     <Link className="btn btn-primary" to={"/admin/menus/edit/" + item.id}>{t("dashboard.edit")}</Link>
                                 </td>
                             </tr>

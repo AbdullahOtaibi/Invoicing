@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import {  createGalleryItem } from './GalleryAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import ListImages from '../Images/ListImages'
 import { MdCollections } from "react-icons/md";
 
@@ -75,7 +75,7 @@ const CreateGalleryItem = (props) => {
             <div className="card-body">
                 <h5 className="card-title"><MdCollections /> {t("dashboard.createGalleryItem")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}
