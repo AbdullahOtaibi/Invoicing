@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 import { MdEdit, MdDelete, MdBusinessCenter } from "react-icons/md";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Loader from "react-loader-spinner";
+import { ThreeDots } from  'react-loader-spinner';
 
 const ListPartners = () => {
 
@@ -43,7 +43,7 @@ const ListPartners = () => {
                     <h5 className="card-title"><MdBusinessCenter /> {t("dashboard.partners")}  <Link className="btn btn-outline-primary btn-sm" to={"/admin/partners/create"}>+</Link>
                     </h5>
                     <div className="container text-center">
-                        <Loader
+                        <ThreeDots
                             type="ThreeDots"
                             color="#00BFFF"
                             height={100}
@@ -83,7 +83,7 @@ const ListPartners = () => {
                                                     <label className="custom-control-label" htmlFor="customCheck1"></label>
                                                 </div>
                                             </td>
-                                            <td className="row justify-content-end">
+                                            <td className="text-end">
                                                 <Link className="btn btn-primary" to={"/admin/partners/edit/" + item.id} title={t("dashboard.edit")}> <MdEdit /> </Link> &nbsp;
                                                 <Link className="btn btn-danger" to="#" title={t("dashboard.delete")} onClick={e => deleteArticle(item.id)}> <MdDelete /> </Link>
                                             </td>

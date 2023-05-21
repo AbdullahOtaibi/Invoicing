@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 import { MdEdit, MdDelete, MdBurstMode, MdAdd, MdGTranslate } from "react-icons/md";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Loader from "react-loader-spinner";
+import { ThreeDots } from  'react-loader-spinner';
 import { getLocalizedText } from '../utils/utils'
 import { hasPermission } from '../utils/auth';
 
@@ -55,7 +55,7 @@ const ListTranslations = () => {
 
 
                     <div className="container text-center">
-                        <Loader
+                        <ThreeDots
                             type="ThreeDots"
                             color="#00BFFF"
                             height={100}

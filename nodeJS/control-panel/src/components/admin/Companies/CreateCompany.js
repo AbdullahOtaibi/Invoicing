@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import { createcompany } from './CompaniesAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import LocalizedTextEditor from '../Shared/LocalizedTextEditor'
 import { getCountries } from '../../../services/CountriesService'
 import UploadImage from '../Images/UploadImage';
@@ -216,7 +216,7 @@ const CreateCompany = (props) => {
             <div className="card-body">
                 <h5 className="card-title">{t("companies.createCompany")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

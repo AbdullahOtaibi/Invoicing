@@ -4,7 +4,7 @@ import { createContact } from "./ContactAPI";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Loader from "react-loader-spinner";
+import { ThreeDots } from  'react-loader-spinner';
 import {  MdClose, MdContacts } from "react-icons/md";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -174,7 +174,7 @@ return isValid
         
         <h5 className="card-title"> <MdContacts size = {25}  /> &#160;  {t("contact.newContact")} </h5>
         <div className="container text-center">
-          <Loader
+          <ThreeDots
             type="ThreeDots"
             color="#00BFFF"
             height={100}

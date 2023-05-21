@@ -2,7 +2,7 @@ import React,{ useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { getShipment } from './ShipmentsAPI'
 import { useTranslation } from "react-i18next"
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { MdBurstMode, MdEdit, MdClose, MdDownload } from "react-icons/md";
 import { getThumbUrl } from '../utils/utils'
 
@@ -46,7 +46,7 @@ const ViewShipment = (props) => {
             <div className="card-body">
                 <h5 className="card-title"><MdBurstMode /> {t("shipping.shipmentDetails")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

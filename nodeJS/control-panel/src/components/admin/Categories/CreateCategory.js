@@ -1,7 +1,7 @@
 import React,{ useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next"
 import {  toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { MdCollectionsBookmark } from "react-icons/md"
 import { createCategory } from './CategoriesAPI'
 
@@ -48,7 +48,7 @@ const CreateCategory = (props) => {
             <div className="card-body">
                 <h5 className="card-title"><MdCollectionsBookmark /> {t("dashboard.createCategory")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

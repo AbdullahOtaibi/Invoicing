@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next"
 import { MdInsertLink, MdEdit, MdDelete, MdAdd } from "react-icons/md"
 import { getNavigationMenus, removeNavigationMenu } from './NavigationMenusAPI'
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { Link } from 'react-router-dom'
 import { getLocalizedText } from '../utils/utils';
 
@@ -50,7 +50,7 @@ const ListNavigationMenus = () => {
                     
 
                     <div className="container text-center">
-                        <Loader
+                        <ThreeDots
                             type="ThreeDots"
                             color="#00BFFF"
                             height={100}

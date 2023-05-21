@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { createSlide } from './SliderAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import ListImages from '../Images/ListImages'
 import { MdBurstMode } from "react-icons/md";
 import LocalizedTextEditor from '../Shared/LocalizedTextEditor'
@@ -90,7 +90,7 @@ const CreateSlide = (props) => {
             <div className="card-body">
                 <h5 className="card-title"><MdBurstMode /> {t("dashboard.createSlide")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

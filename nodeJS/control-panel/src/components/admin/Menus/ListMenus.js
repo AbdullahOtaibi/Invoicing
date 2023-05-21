@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next"
 import { MdInsertLink, MdEdit, MdDelete } from "react-icons/md"
 import { getMenus, removeMenu } from './MenusAPI'
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { Link } from 'react-router-dom'
 
 const ListMenus = () => {
@@ -40,7 +40,7 @@ const ListMenus = () => {
                     <h5 className="card-title"><MdInsertLink /> {t("sidebar.menus")} <Link className="btn btn-outline-primary btn-sm" to={"/admin/menus/create"}>+</Link>
                     </h5>
                     <div className="container text-center">
-                        <Loader
+                        <ThreeDots
                             type="ThreeDots"
                             color="#00BFFF"
                             height={100}

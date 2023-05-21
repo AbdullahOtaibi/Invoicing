@@ -4,7 +4,7 @@ import { getArticle, updateArticle } from './ArticlesAPI'
 import { getCategories } from '../Categories/CategoriesAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { Editor } from '@tinymce/tinymce-react'
 import ListImages from '../Images/ListImages'
 import LocalizedTextEditor from '../Shared/LocalizedTextEditor'
@@ -305,7 +305,7 @@ const EditArticle = (props) => {
             <div className="card-body">
                 <h5 className="card-title">{t("dashboard.editArticle")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 import { MdAdd, MdEdit, MdDelete, MdAccountCircle } from "react-icons/md";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Loader from "react-loader-spinner";
+import { ThreeDots } from  'react-loader-spinner';
 import { hasPermission } from '../utils/auth';
 
 const ListClients = (props) => {
@@ -134,7 +134,7 @@ const ListClients = (props) => {
                     </div>
 
                     <div className="container text-center">
-                        <Loader
+                        <ThreeDots
                             type="ThreeDots"
                             color="#00BFFF"
                             height={100}
@@ -194,7 +194,7 @@ const ListClients = (props) => {
                                                     <label className="custom-control-label" htmlFor="customCheck1"></label>
                                                 </div>
                                             </td>
-                                            <td className="row justify-content-end">
+                                            <td className="text-end">
                                                 <Link className="btn btn-primary" to={"/admin/clients/edit/" + item._id} title={t("dashboard.edit")}> <MdEdit /> </Link> &nbsp;
                                                 <Link className="btn btn-danger" to="#" title={t("dashboard.delete")} onClick={e => deleteUser(item._id)}> <MdDelete /> </Link>
                                             </td>

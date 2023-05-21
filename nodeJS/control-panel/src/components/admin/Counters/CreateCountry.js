@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import {  createCountry } from './CountriesAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 
 
 
@@ -71,7 +71,7 @@ const CreateCountry = (props) => {
             <div className="card-body">
                 <h5 className="card-title">{t("dashboard.createPartner")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

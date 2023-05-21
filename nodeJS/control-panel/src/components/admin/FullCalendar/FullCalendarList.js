@@ -11,7 +11,7 @@ import Modal from "react-bootstrap/Modal";
 import FullCalendarNew from "./FullCalendarNew";
 import FullCalendarEdit from "./FullCalendarEdit";
 import { getFullCalendars } from "./FullCalendarAPI";
-import Loader from "react-loader-spinner";
+import { ThreeDots } from  'react-loader-spinner';
 
 import {
   MdOutlineReceiptLong,
@@ -136,7 +136,7 @@ const FullCalenderList = (props) => {
       </div>
 
       <div className="container text-center">
-        <Loader
+        <ThreeDots
           type="ThreeDots"
           color="#00BFFF"
           height={100}

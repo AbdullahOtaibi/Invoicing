@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 import { MdEdit, MdDelete, MdBurstMode } from "react-icons/md";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Loader from "react-loader-spinner";
+import { ThreeDots } from  'react-loader-spinner';
 
 
 const ListShipments = () => {
@@ -51,7 +51,7 @@ const ListShipments = () => {
 
 
                     <div className="container text-center">
-                        <Loader
+                        <ThreeDots
                             type="ThreeDots"
                             color="#00BFFF"
                             height={100}
@@ -97,7 +97,7 @@ const ListShipments = () => {
                                             <td className="text-center">
                                                 {item.startDate}
                                             </td>
-                                            <td className="row justify-content-end">
+                                            <td className="text-end">
                                                 <Link className="btn btn-primary" to={"/admin/shipments/edit/" + item._id} title={t("dashboard.edit")}> <MdEdit /> </Link> &nbsp;
                                                 <Link className="btn btn-danger" to="#" title={t("dashboard.delete")} onClick={e => removeShipment(item._id)}> <MdDelete /> </Link>
                                             </td>

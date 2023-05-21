@@ -14,7 +14,7 @@ import {
   MdOutlineCancel,
   MdContacts
 } from "react-icons/md";
-import Loader from "react-loader-spinner";
+import { ThreeDots } from  'react-loader-spinner';
 import { useTranslation } from "react-i18next";
 import ConfirmButton from "react-confirmation-button";
 import { MdAdd, MdDelete } from "react-icons/md";
@@ -79,7 +79,7 @@ return (
         </h5>
         <div className="card-body">
           <div className="container text-center">
-            <Loader
+            <ThreeDots
               type="ThreeDots"
               color="#00BFFF"
               height={100}

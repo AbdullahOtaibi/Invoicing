@@ -2,7 +2,7 @@ import React,{ useState, useEffect } from 'react'
 import { createNavigationMenu } from './NavigationMenusAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import LocalizedTextEditor from '../Shared/LocalizedTextEditor'
 
 
@@ -76,7 +76,7 @@ const CreateNavigationMenu = () => {
             <div className="card-body">
                 <h5 className="card-title">{t("dashboard.createMenu")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

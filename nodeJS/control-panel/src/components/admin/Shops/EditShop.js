@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { getShop, updateShop } from './ShopsAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { Editor } from '@tinymce/tinymce-react'
 import ListImages from '../Images/ListImages'
 
@@ -151,7 +151,7 @@ const EditShop = (props) => {
             <div className="card-body">
                 <h5 className="card-title">{t("shop.editShop")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

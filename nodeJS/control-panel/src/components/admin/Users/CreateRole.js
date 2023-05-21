@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { createUserRole } from './UsersAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { MdPerson } from "react-icons/md";
 import LocalizedTextEditor from '../Shared/LocalizedTextEditor'
 import { hasPermission } from '../utils/auth';
@@ -68,7 +68,7 @@ const CreateRole = (props) => {
             <div className="card-body">
                 <h5 className="card-title"><MdPerson /> {t("users.createRole")}</h5>
                 <div className="container text-center">
-                    <Loader
+                    <ThreeDots
                         type="ThreeDots"
                         color="#00BFFF"
                         height={100}

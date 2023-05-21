@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next"
 import { MdCollectionsBookmark, MdDelete, MdEdit, MdAdd } from "react-icons/md"
 import { getCategories, removeCategory } from './CategoriesAPI'
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import { Link } from 'react-router-dom'
 import { hasPermission } from '../utils/auth';
 
@@ -46,7 +46,7 @@ const ListCategories = () => {
 
 
                     <div className="container text-center">
-                        <Loader
+                        <ThreeDots
                             type="ThreeDots"
                             color="#00BFFF"
                             height={100}
@@ -87,7 +87,7 @@ const ListCategories = () => {
                                                     <label className="custom-control-label" htmlFor="customCheck1"></label>
                                                 </div>
                                             </td>
-                                            <td className="row justify-content-end">
+                                            <td className="text-end">
                                                 <Link className="btn btn-primary" to={"/admin/categories/edit/" + item.id} title={t("dashboard.edit")} ><MdEdit /> </Link> &nbsp;
                                                 <Link className="btn btn-danger" to="#" title={t("dashboard.delete")} onClick={e => deleteCategory(item.id)} ><MdDelete /></Link>
                                             </td>

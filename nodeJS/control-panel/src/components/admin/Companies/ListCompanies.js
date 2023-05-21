@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 import { MdEdit, MdDelete, MdAccountCircle, MdGroup, MdInventory, MdAccountTree, MdAdd } from "react-icons/md";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Loader from "react-loader-spinner";
+import { ThreeDots } from  'react-loader-spinner';
 import { hasPermission } from '../utils/auth';
 import { getLocalizedText } from '../utils/utils'
 
@@ -63,7 +63,7 @@ const ListCompanies = () => {
                     </div>
 
                     <div className="container text-center">
-                        <Loader
+                        <ThreeDots
                             type="ThreeDots"
                             color="#00BFFF"
                             height={100}

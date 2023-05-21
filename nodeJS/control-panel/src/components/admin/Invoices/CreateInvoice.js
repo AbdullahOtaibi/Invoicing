@@ -4,7 +4,7 @@ import { createInvoice, getInvoice } from "./InvoicesAPI";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Loader from "react-loader-spinner";
+import { ThreeDots } from  'react-loader-spinner';
 import { Editor } from "@tinymce/tinymce-react";
 import {
   MdAdd,
@@ -424,7 +424,7 @@ const CreateInvoice = (props) => {
         <div className="card-body">
           <h5 className="card-title">{t("invoice.createInvoice")}</h5>
           <div className="container text-center">
-            <Loader
+            <ThreeDots
               type="ThreeDots"
               color="#00BFFF"
               height={100}

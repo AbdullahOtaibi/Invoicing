@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { getOrder, updateItemAvailable, requestPayment, addOrderItem, sendOrderMessage } from './OrdersAPI'
 import { useTranslation } from "react-i18next"
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import {
     MdClose, MdAddShoppingCart, MdOutlineRequestPage, MdHourglassEmpty,
     MdCalendarToday, MdBadge, MdInfoOutline, MdRefresh, MdPayment, MdProductionQuantityLimits, MdOutlineRemoveShoppingCart, MdOutlineAddShoppingCart,
@@ -357,7 +357,7 @@ const EditOrder = (props) => {
                                 </div>
                                 <div className='col-2 p-0' style={{ textAlign: 'end' }}>
 
-                                    <Loader
+                                    <ThreeDots
                                         type="ThreeDots"
                                         color="#00BFFF"
                                         visible={loading}

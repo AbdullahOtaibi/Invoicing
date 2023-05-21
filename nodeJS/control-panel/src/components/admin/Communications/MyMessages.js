@@ -6,7 +6,7 @@ import { MdEdit, MdDelete, MdOutlineMarkAsUnread, MdAdd, MdMarkEmailRead, MdMark
 import { IoTrashOutline } from "react-icons/io5";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Loader from "react-loader-spinner";
+import { ThreeDots } from  'react-loader-spinner';
 import { getLocalizedText } from '../utils/utils'
 import { hasPermission } from '../utils/auth';
 import Moment from 'react-moment'
@@ -125,7 +125,7 @@ const MyMessages = ({ notification, onHandleNotification }) => {
 
 
                     <div className="container text-center">
-                        <Loader
+                        <ThreeDots
                             type="ThreeDots"
                             color="#00BFFF"
                             height={100}

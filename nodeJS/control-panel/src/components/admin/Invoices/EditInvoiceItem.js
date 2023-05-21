@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { getInvoice, updateItemAvailable, updateItemConfirmed, addItemMessage, deleteInvoiceItem} from './InvoicesAPI'
 import { useTranslation } from "react-i18next"
-import Loader from "react-loader-spinner"
+import { ThreeDots } from  'react-loader-spinner'
 import {
     MdBurstMode, MdClose, MdAddComment, MdAdd, MdTimer, MdHistory, MdSend,
     MdCalendarToday, MdBadge, MdInfoOutline, MdReplay, MdRefresh, MdOutlineHourglassEmpty, MdProductionQuantityLimits, MdOutlineRemoveShoppingCart, MdOutlineAddShoppingCart, MdOutlineMarkEmailUnread, MdOutlineZoomOutMap, MdCardGiftcard, MdOutlineAddCircleOutline, MdSave
@@ -158,7 +158,7 @@ const EditInvoiceItem = (props) => {
                                 </div>
                                 <div className='col-2 p-0' style={{ textAlign: 'end' }}>
 
-                                    <Loader
+                                    <ThreeDots
                                         type="ThreeDots"
                                         color="#00BFFF"
                                         visible={loading}
