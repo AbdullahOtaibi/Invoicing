@@ -36,6 +36,10 @@ export const updateContact = (invoice) => {
 export const getContactInvoices = (filters) => {
     return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/filter", filters);
 }
+export const getContactAppointments = (filters) => {
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/FullCalendars/filter", filters);
+}
+
 
 export const searchContact = (value) => {
     return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/contacts/search/" + value);

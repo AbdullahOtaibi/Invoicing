@@ -51,6 +51,11 @@ router.post("/filter", verifyToken, async (req, res) => {
       queryParams["$and"].push({ status: status });
     }
 
+    if(clientId){
+      queryParams["$and"].push({ contact: clientId });
+   
+    }
+
     queryParams["$and"].push({
       "companyID": {
         $eq: req.user.companyId,

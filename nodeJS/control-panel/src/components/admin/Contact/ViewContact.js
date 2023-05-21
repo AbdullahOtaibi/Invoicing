@@ -23,7 +23,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Tabs, Tab } from 'react-bootstrap'
 import ContactInvoices from './ContactInvoices';
-
+import ContactAppointments from './ContactAppointments'
 const ViewContact = (props) => {
 
   let navigate = useNavigate();
@@ -215,10 +215,11 @@ const ViewContact = (props) => {
                 </Tab>
 
                 <Tab eventKey="invoices" title={t("sidebar.invoices")} tabClassName="tab-item">
-                  <ContactInvoices contactId={contactId}/>
+                  <ContactInvoices contactId={contactId} />
                 </Tab>
 
                 <Tab eventKey="appointments" title={t("Appointments")} tabClassName="tab-item">
+                  <ContactAppointments contactId={contactId} />
                 </Tab>
 
               </Tabs>
