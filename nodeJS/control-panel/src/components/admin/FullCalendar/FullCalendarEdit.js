@@ -159,6 +159,8 @@ const FullCalendarEdit = (props) => {
   }
 
   const selectedConatct = (item) => {
+
+
     if (item) {
       let cloned = JSON.parse(JSON.stringify(fullCalendar));
       cloned.contactName = item.contactName;
@@ -176,7 +178,7 @@ const FullCalendarEdit = (props) => {
          
       <div className="row">
           <div className="mb-3 col ">
-            <div className="col col-auto">{t("FullCalendar.contactName")} </div>
+            <div className="col col-auto">{t("FullCalendar.contactName")} {fullCalendar.contactName} </div>
 
             <div className="col">
               {/* <input
@@ -201,7 +203,7 @@ const FullCalendarEdit = (props) => {
 
       <div className="row">
           <div className="mb-3 col ">
-            <div className="col col-auto">{t("FullCalendar.title")} </div>
+            <div className="col col-auto">{t("FullCalendar.title")}  {fullCalendar.title} </div>
 
             <div className="col">
               <input

@@ -23,9 +23,11 @@ const ContactSearchControl = (props) => {
     const [selectedId, setSelectedId] = useState(null);
    
     useEffect( ()=>{
+      console.log("before check props.value");
       if(props.value)
     {
       setSelectedContactText(props.value);
+      console.log("(props.value:" +props.value);
     }
     } , [])
     const updateSearchContactText = (event) => {
