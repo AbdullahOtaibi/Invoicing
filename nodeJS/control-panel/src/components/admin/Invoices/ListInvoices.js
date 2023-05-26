@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next"
-import { MdCollectionsBookmark, MdDelete, MdEdit, MdAdd, MdLocalShipping } from "react-icons/md"
+import { MdCollectionsBookmark, MdDelete, MdEdit, MdAdd, MdSearch } from "react-icons/md"
 import { getPostedInvoices, getNewInvoices, getIncompleteInvoices, removeInvoice }
     from './InvoicesAPI'
 import { ThreeDots } from 'react-loader-spinner'
@@ -11,6 +11,7 @@ import { hasPermission } from '../utils/auth';
 import { Helmet } from "react-helmet";
 import Listinv from "./ListInv"
 import './ListInvoice.css'
+import InvoiceSearch from './InvoiceSearch'
 
 
 const ListInvoices = (props) => {
@@ -19,11 +20,13 @@ const ListInvoices = (props) => {
         navigate("/admin", { replace: true });
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const status = urlParams.get('status');
 
+    const urlParams = new URLSearchParams(window.location.search);
+    //const status = urlParams.get('status');
+    const [status, setStatus] = useState(urlParams.get('status'));
 
     const { t, i18n } = useTranslation();
+    const [searchVisible, setSearchVisible] = useState(false);
     const [newInvoices, setNewInvoices] = useState([]);
     const [postedInvoices, setPostedInvoices] = useState([]);
     const [incompleteInvoices, setIncompleteInvoices] = useState([]);
@@ -36,6 +39,14 @@ const ListInvoices = (props) => {
     const [newCount, setNewCount] = useState(0);
     const [postedCount, setPostedCount] = useState(0);
     const [stuckCount, setStuckCount] = useState(0);
+    const [searchCount, setSearchCount] = useState(0);
+    const [filter, setFilter] = useState(null);
+
+    const searchFilterChanged = (newFilter) => {
+        //alert(JSON.stringify(newFilter));
+        setFilter(newFilter);
+        setStatus("all");
+    }
 
 
     useEffect(() => {
@@ -64,6 +75,7 @@ const ListInvoices = (props) => {
                         </div>
 
                         <div className='col-md-4 col-sm-6' style={{ textAlign: 'end' }}>
+                            <button type="button" className="add-btn mx-1" onClick={() => { setSearchVisible(!searchVisible); }} ><MdSearch size={20} />  {t("search")}</button>
                             {hasPermission('invoices.modify') ? (<Link className="add-btn" to={"/admin/invoices/create"}><MdAdd size={20} />  {t("dashboard.add")}</Link>) : null}
                         </div>
                     </div>
@@ -79,12 +91,23 @@ const ListInvoices = (props) => {
                         />
                     </div>
                     <br />
+                    {searchVisible ? (<InvoiceSearch searchVisible={searchVisible} searchFilterChanged={searchFilterChanged} visiblityChanged={(show) => { setSearchVisible(show) }} />) : null}
 
                     <Tabs
                         defaultActiveKey={status ? status : "new"}
+                        activeKey={status ? status : "new"}
                         transition={false}
                         id="noanim-tab-example"
+                        onSelect={(e) => { setStatus(e); }}
                         className="mb-3 " >
+
+                        <Tab eventKey="all" title={t("viewAll") + ' (' + searchCount + ')'} tabClassName="tab-item btn-dark">
+                            <div className="table-responsive">
+                                <Listinv status="all" updateCount={setSearchCount} filter={filter} />
+                            </div>
+                        </Tab>
+
+
                         <Tab eventKey="new" title={t("invoice.newInvoices") + ' (' + newCount + ')'
                         } tabClassName="tab-item btn-info  ">
                             <div className="table-responsive">
@@ -102,90 +125,9 @@ const ListInvoices = (props) => {
                         <Tab eventKey="stuck" title={t("invoice.stuckInvoices") + ' (' + stuckCount + ')'} tabClassName="tab-item btn-warning">
                             <div className="table-responsive">
                                 <Listinv status="stuck" updateCount={setStuckCount} />
-
-                                {/* <table className="table   table-hover">
-                                    <thead>
-                                        <tr>
-
-                                            <th>
-                                                {t("invoice.invoiceNumber")}
-                                            </th>
-                                            <th>
-                                                <a href="#" >
-                                                    {t("invoice.fullName")}
-                                                </a>
-                                            </th>
-                                            <th>
-                                                <a href="#" >
-                                                    {t("invoice.issuedDate")}
-                                                </a>
-                                            </th>
-
-                                            <th className="text-center">
-                                                <a href="#">
-                                                    {t("product.products")}
-                                                </a>
-
-                                            </th>
-
-                                            <th className="text-center">
-                                                <a href="#">
-                                                    {t("invoice.totalAmount")}
-                                                </a>
-
-                                            </th>
-
-                                            <th></th>
-
-                                        </tr>
-
-
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            incompleteInvoices.map(item => (
-                                                <tr key={'' + item.id}>
-                                                    <td>
-                                                        <Link to={'/admin/invoices/' + item._id}>
-                                                            #{("000000".substring(("" + item.serialNumber).length) + item.serialNumber)}
-
-                                                        </Link>
-                                                    </td>
-                                                    <td>
-                                                     
-
-                                                    </td>
-                                                    <td>
-                                                       
-                                                    </td>
-                                                    <td className="text-center">
-                                                        {item.items ? item.items.length : 0} 
-                                                    </td>
-
-                                                    <td className="text-center">
-                                                        {item && item.totalAmount ?item.totalAmount.amount + ' ' + item.totalAmount.currencyCode: null }   
-                                                    </td>
-
-
-                                                    <td className="justify-content-end" style={{ textAlign: 'end' }}>
-                                                      
-                                                        <Link className="btn btn-primary" to={"/admin/invoices/ViewInvoice/" + item._id} title={t("dashboard.edit")} ><MdEdit /> </Link> &nbsp;
-                                                        <Link className="btn btn-danger" to="#" title={t("dashboard.delete")} onClick={e => deleteInvoice(item._id)} ><MdDelete /></Link>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        }
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th colSpan="6" className="text-right">
-
-                                            </th>
-                                        </tr>
-                                    </tfoot>
-                                </table> */}
                             </div>
                         </Tab>
+
 
                     </Tabs>
 

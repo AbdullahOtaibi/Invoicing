@@ -70,6 +70,8 @@ router.post("/filter", verifyToken, async (req, res) => {
     let deleted = filters.deleted || false;
     let status = filters.status || null;
     let InvoiceBy = filters.InvoiceBy || "_idDesc";
+    let startDate = filters.startDate || null;
+    let endDate = filters.endDate || null;
     // companyID: localStorage.getItem("companyId"),
     //let companyId
     //pending, 1=new, 2=Partially Confirmed, 3=All Items Confirmed, 4=Partially Available, 5=All Items Available, 100=Closed
@@ -91,9 +93,18 @@ router.post("/filter", verifyToken, async (req, res) => {
       queryParams["$and"].push({ deleted: { $ne: true } });
     }
 
+    if(startDate){
+      queryParams["$and"].push({ createdDate: { $gte: startDate } });
+    }
+
+    if(endDate){
+      queryParams["$and"].push({ createdDate: { $lte: endDate } });
+    }
+
     if (InvoiceNumber && InvoiceNumber.length > 0) {
       queryParams["$and"].push({ _id: InvoiceNumber });
     }
+
 
     if (clientId) {
       queryParams["$and"].push({ contact: clientId });

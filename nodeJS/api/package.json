@@ -29,6 +29,7 @@
     "firebase-admin": "^11.0.0",
     "hashmap": "^2.4.0",
     "ip": "^1.1.8",
+    "json2xls": "^0.1.2",
     "jsonwebtoken": "^8.5.1",
     "locutus": "^2.0.16",
     "moment": "^2.29.4",

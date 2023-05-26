@@ -10,6 +10,8 @@ import { Tabs, Tab } from 'react-bootstrap'
 import { hasPermission } from '../utils/auth';
 import { Helmet } from "react-helmet";
 
+
+
 const ListInv = (props) => {
     const [loading, setLoading] = useState(false);
     const { t, i18n } = useTranslation();
@@ -18,6 +20,7 @@ const ListInv = (props) => {
     const [nvoicesSort, setnvoicesSort] = useState('_idDesc');
     const [invoicesPage, setInvoicesPage] = useState(0);
     const [invoicesPages, setInvoicesPages] = useState(0);
+    //const [startDate, setStartDate] = useState()
 
     useEffect(() => {
         console.log('********test ....');
@@ -32,11 +35,36 @@ const ListInv = (props) => {
         console.log("newPage:" + newPage);
         setLoading(true);
 
+        let status = props.status;
+        let startDate = null;
+        let endDate = null;
+        let clientId = null;
 
+        if (status == "all") {
+            if (props.filter && props.filter.status && props.filter.status != "all") {
+                status = props.filter.status;
+            } else {
+                status = null;
+            }
+            if (props.filter && props.filter.startDate) {
+                startDate = props.filter.startDate;
+            }
+            if (props.filter && props.filter.endDate) {
+                endDate = props.filter.endDate;
+            }
+            if (props.filter && props.filter.contact) {
+                clientId = props.filter.contact._id;
+            }
+
+
+        }
         setInvoicesPage(newPage);
         getInvoices({
             page: newPage,
-            status: props.status
+            status: status,
+            startDate: startDate,
+            endDate: endDate,
+            clientId: clientId
         }).then(data => {
             setLoading(false);
             setNewInvoices(data.items || []);
@@ -55,12 +83,26 @@ const ListInv = (props) => {
 
     useEffect(() => {
         loadNewPage(0);
-    }, []);
+    }, [props]);
 
 
     return (
-
-        <div className="table-responsive">
+        <>{loading ? (
+            <div className="row">
+                <div className='col'></div>
+                <div className='col col-auto d-flex text-center' >
+                    <ThreeDots
+                        type="ThreeDots"
+                        color="#00BFFF"
+                        height={100}
+                        width={100}
+                        visible={loading}
+                    />
+                </div>
+                <div className='col'></div>
+            
+        </div>) : (<div className="table-responsive">
+            {/* <p>{props.filter?JSON.stringify(props.filter):'empty filter'}</p> */}
             <table className="table   table-hover">
                 <thead>
                     <tr>
@@ -156,7 +198,11 @@ const ListInv = (props) => {
                     </tr>
                 </tfoot>
             </table>
-        </div>
+        </div>)}
+        </>
+
+
+
 
     );
 
