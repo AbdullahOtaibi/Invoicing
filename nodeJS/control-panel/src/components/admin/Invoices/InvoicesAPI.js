@@ -31,6 +31,11 @@ export const getInvoices = (filters) => {
     return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/filter", filters);
 }
 
+export const getInvoicesAsExcel = (filters) => {
+    console.log("url:" +process.env.REACT_APP_API_BASE_URL + "/v1/invoices/filterExcel") ;
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/filterExcel", filters);
+}
+
 export const getNewInvoices = (filters) => {
     return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/filter", filters);
     //return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/filter", {deleted:false , page:1});

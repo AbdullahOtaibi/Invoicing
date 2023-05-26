@@ -7,6 +7,7 @@ const app = express();
 const server = require('http').createServer(app);
 const WebSocket = require("ws");
 var HashMap = require('hashmap');
+var json2xls = require('json2xls');
 
 app.use(cors());
 app.use(bodyParser.json({ limit: "50mb" }));
@@ -23,7 +24,8 @@ const fileUpload = require('express-fileupload');
 var compression = require('compression')
 
 
-app.use(compression({}))
+app.use(compression({}));
+app.use(json2xls.middleware);
 
 
 

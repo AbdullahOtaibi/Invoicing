@@ -12,6 +12,8 @@ const { json } = require("body-parser");
 const getInvoiceXML = require("../data-access/ubl");
 const xmlFormat = require("xml-formatter");
 const postToTax = require("../../utils/ubl-income-template");
+var json2xls = require('json2xls');
+const fs = require('fs');
 
 const getNewStatus = (Invoice) => {
   let newStatusId = Invoice.status;
@@ -93,11 +95,11 @@ router.post("/filter", verifyToken, async (req, res) => {
       queryParams["$and"].push({ deleted: { $ne: true } });
     }
 
-    if(startDate){
+    if (startDate) {
       queryParams["$and"].push({ createdDate: { $gte: startDate } });
     }
 
-    if(endDate){
+    if (endDate) {
       queryParams["$and"].push({ createdDate: { $lte: endDate } });
     }
 
@@ -110,7 +112,7 @@ router.post("/filter", verifyToken, async (req, res) => {
       queryParams["$and"].push({ contact: clientId });
     }
 
-    
+
     if (status) {
       queryParams["$and"].push({ status: status });
     }
@@ -165,6 +167,138 @@ router.post("/filter", verifyToken, async (req, res) => {
     console.log("out.....");
   } catch (ex) {
     console.log(ex);
+    result.error = ex.message;
+    res.json(result);
+  }
+});
+
+router.post("/filterExcel", verifyToken, async (req, res) => {
+  if (!req.user) {
+    res.json({ message: "unauthorized access" });
+  }
+  if (req.user.role != "Administrator" && req.user.role != "Company") {
+    res.json({ success: false, message: "Unauthorized" });
+  }
+  var result = {};
+  try {
+    let filters = req.body || {};
+    let page = filters.page || 0;
+    let pageSize = filters.pageSize || 20;
+    let vendorId = filters.vendorId || null;
+    let clientId = filters.clientId || null;
+    let deleted = filters.deleted || false;
+    let status = filters.status || null;
+    let InvoiceBy = filters.InvoiceBy || "_idDesc";
+    let startDate = filters.startDate || null;
+    let endDate = filters.endDate || null;
+    // companyID: localStorage.getItem("companyId"),
+    //let companyId
+    //pending, 1=new, 2=Partially Confirmed, 3=All Items Confirmed, 4=Partially Available, 5=All Items Available, 100=Closed
+    //0-incomplete
+    //req.user.companyId
+    result.page = page;
+    console.log("result.page:" + result.page);
+    let queryParams = {
+      $and: [],
+    };
+    let sortParams = {
+      _id: -1,
+    };
+    let InvoiceNumber = filters.InvoiceNumber || null;
+
+    if (deleted) {
+      queryParams["$and"].push({ deleted: { $eq: true } });
+    } else {
+      queryParams["$and"].push({ deleted: { $ne: true } });
+    }
+
+    if (startDate) {
+      queryParams["$and"].push({ createdDate: { $gte: startDate } });
+    }
+
+    if (endDate) {
+      queryParams["$and"].push({ createdDate: { $lte: endDate } });
+    }
+
+    if (InvoiceNumber && InvoiceNumber.length > 0) {
+      queryParams["$and"].push({ _id: InvoiceNumber });
+    }
+
+
+    if (clientId) {
+      queryParams["$and"].push({ contact: clientId });
+    }
+
+
+    if (status) {
+      queryParams["$and"].push({ status: status });
+    }
+
+    //read the company from the user session.
+    queryParams["$and"].push({
+      "accountingSupplierParty.partyTaxScheme.companyID": {
+        $eq: req.user.companyId,
+      },
+    });
+
+    let query = Invoice.find({ deleted: false });
+    let countQuery = Invoice.find({ deleted: false });
+
+    if (InvoiceBy == "_id") {
+      sortParams = {
+        _id: 1,
+      };
+    } else if (InvoiceBy == "amount") {
+      sortParams = {
+        "totalAmount.amount": 1,
+      };
+    } else if (InvoiceBy == "amountDesc") {
+      sortParams = {
+        "totalAmount.amount": -1,
+      };
+    }
+
+    console.log("queryParams:" + queryParams);
+    query = Invoice.find(queryParams)
+      .populate("user", "-password")
+      .sort(sortParams);
+
+    countQuery = Invoice.find(queryParams)
+      .populate("user", "-password")
+      .sort(sortParams);
+
+    console.log(JSON.stringify(queryParams["$and"]));
+
+    var count = await countQuery.countDocuments();
+    result.count = count;
+    result.pages = Math.ceil(count / pageSize);
+
+    console.log("getting data from db");
+    result.items = await query
+      .skip(page * pageSize)
+      .limit(pageSize)
+      .exec("find");
+    let jsonArray = result.items.map(item => { return { id: ('' + item._id) } });
+    var xls = json2xls(jsonArray);
+    let fileTime = Date.now();
+    let fullDirectoryPath = process.env.UPLOAD_ROOT + 'excel';
+    if (!fs.existsSync(fullDirectoryPath)) {
+      fs.mkdirSync(fullDirectoryPath);
+  }
+
+    fs.writeFileSync(fullDirectoryPath + fileTime + '.xlsx', xls, 'binary');
+    console.log(jsonArray);
+    fs.writeFileSync('data.xlsx', xls, 'binary');
+
+    result.fileUrl = fileTime + '.xlsx';
+    result.items = [];
+    //res.xls('data.xlsx', jsonArray);
+     res.json(result);
+
+    console.log("out.....");
+  } catch (ex) {
+    console.log(ex);
+    result.items = [];
     result.error = ex.message;
     res.json(result);
   }
@@ -236,7 +370,7 @@ router.post("/DachboardSummary", verifyToken, async (req, res) => {
       },
       {
         $match: {
-        "deleted": false
+          "deleted": false
         },
       },
 
@@ -269,8 +403,8 @@ router.post("/DachboardSummary", verifyToken, async (req, res) => {
         result.count = count;
         result.status = status;
         */
-    if(!result || result.length == 0){
-      result = [{"_id":{"companyID":req.user.companyId},"sumTaxInclusiveAmount":0,"sumAllowanceTotalAmount":0,"taxExclusiveAmount":0,"count":0}]
+    if (!result || result.length == 0) {
+      result = [{ "_id": { "companyID": req.user.companyId }, "sumTaxInclusiveAmount": 0, "sumAllowanceTotalAmount": 0, "taxExclusiveAmount": 0, "count": 0 }]
     }
     res.json(result);
 
@@ -308,25 +442,25 @@ router.get("/get/:id", async (req, res) => {
 
 router.get("/postToTax/:id", verifyToken, async (req, res, next) => {
 
-  let result = { success: false  };
-  console.log("req.params.id: " + req.params.id) ;
+  let result = { success: false };
+  console.log("req.params.id: " + req.params.id);
   let invoice = await Invoices.getInvoiceById(req.params.id);
   if (invoice) {
- 
-      let data =  postToTax(invoice, req.user).then(data => {
-        result.success = true;
-        console.log("data:" + data) ;
-        result.data = data; 
-        res.json(result);
-      }).catch(e => {
-        result.message = e;
-        console.log("data:" + data) ;
-        res.json(result);
-      });
-     
- 
+
+    let data = postToTax(invoice, req.user).then(data => {
+      result.success = true;
+      console.log("data:" + data);
+      result.data = data;
+      res.json(result);
+    }).catch(e => {
+      result.message = e;
+      console.log("data:" + data);
+      res.json(result);
+    });
+
+
   }
- 
+
 });
 
 function newSeq(x) {

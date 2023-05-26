@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next"
 import { MdCollectionsBookmark, MdDelete, MdEdit, MdAdd, MdSearch } from "react-icons/md"
+import { RiFileExcel2Line } from 'react-icons/ri'
 import { getPostedInvoices, getNewInvoices, getIncompleteInvoices, removeInvoice }
     from './InvoicesAPI'
 import { ThreeDots } from 'react-loader-spinner'
@@ -12,6 +13,7 @@ import { Helmet } from "react-helmet";
 import Listinv from "./ListInv"
 import './ListInvoice.css'
 import InvoiceSearch from './InvoiceSearch'
+import { getInvoicesAsExcel } from './InvoicesAPI'
 
 
 const ListInvoices = (props) => {
@@ -41,6 +43,14 @@ const ListInvoices = (props) => {
     const [stuckCount, setStuckCount] = useState(0);
     const [searchCount, setSearchCount] = useState(0);
     const [filter, setFilter] = useState(null);
+
+    const downloadExcel = () => {
+        getInvoicesAsExcel({}).then(data => {
+            
+          alert(JSON.stringify(data));
+
+        });
+    }
 
     const searchFilterChanged = (newFilter) => {
         //alert(JSON.stringify(newFilter));
@@ -94,8 +104,8 @@ const ListInvoices = (props) => {
                     {searchVisible ? (<InvoiceSearch searchVisible={searchVisible} searchFilterChanged={searchFilterChanged} visiblityChanged={(show) => { setSearchVisible(show) }} />) : null}
 
                     <Tabs
-                        defaultActiveKey={status ? status : "new"}
-                        activeKey={status ? status : "new"}
+                        defaultActiveKey={status ? status : "all"}
+                        activeKey={status ? status : "all"}
                         transition={false}
                         id="noanim-tab-example"
                         onSelect={(e) => { setStatus(e); }}
@@ -103,6 +113,13 @@ const ListInvoices = (props) => {
 
                         <Tab eventKey="all" title={t("viewAll") + ' (' + searchCount + ')'} tabClassName="tab-item btn-dark">
                             <div className="table-responsive">
+                                <div ckassName='row'>
+                                    <div className='col'>
+                                        <button type='button' className='btn btn-success' onClick={downloadExcel}>
+                                            <RiFileExcel2Line size={20} /> Download Excel
+                                        </button>
+                                    </div>
+                                </div>
                                 <Listinv status="all" updateCount={setSearchCount} filter={filter} />
                             </div>
                         </Tab>
