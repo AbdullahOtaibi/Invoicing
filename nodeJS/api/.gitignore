@@ -4,3 +4,4 @@ client/node_modules
 client/uploads
 client/build
 .accela
+*.xlsx
