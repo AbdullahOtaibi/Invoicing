@@ -48,12 +48,12 @@ router.post('/create', verifyToken, async (req, res) => {
         console.log('cannot save into database', e.message);
         res.json(e);
     });
-if(!req.user.role || req.user.role.length == 0){
-    //await User.findByIdAndUpdate(req.user.id, {vendor: newObject._id, roles:["623368ce494d1fc52d76571e"] }, function (err, item) {});
-}else{
-   // await User.findByIdAndUpdate(req.user.id, {vendor: newObject._id }, function (err, item) {});
-}
-  
+    if (!req.user.role || req.user.role.length == 0) {
+        //await User.findByIdAndUpdate(req.user.id, {vendor: newObject._id, roles:["623368ce494d1fc52d76571e"] }, function (err, item) {});
+    } else {
+        // await User.findByIdAndUpdate(req.user.id, {vendor: newObject._id }, function (err, item) {});
+    }
+
     res.json(createdCompany);
 });
 
@@ -61,19 +61,14 @@ if(!req.user.role || req.user.role.length == 0){
 router.post('/update', verifyToken, async (req, res) => {
     console.log('update vendor called...');
     console.log(req.body);
-    if(req.body.vendorId && !req.body.vendor){
+    if (req.body.vendorId && !req.body.vendor) {
         req.body.vendor = req.body.vendorId;
     }
-   await  Company.findByIdAndUpdate(req.body._id, req.body, function (err, item) {
-        if(err){
-console.log("err:" + err) ;
-            return;
-        }
-        console.log('saved into database...');
-        res.json(item);
-    });
-   // console.log('abc');
-   
+    await Company.findByIdAndUpdate(req.body._id, req.body);
+    res.json(req.body);
+
+    // console.log('abc');
+
 
 });
 

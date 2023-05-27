@@ -48,9 +48,11 @@ const CompanySchema = new Schema({
 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ProductCategory'
-        
-
     }],
+    country:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Country'
+    },
     published: Boolean,
     notesFromCompany: String,
     companyInvoiceID:String, 

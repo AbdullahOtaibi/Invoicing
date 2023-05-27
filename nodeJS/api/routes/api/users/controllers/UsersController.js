@@ -176,10 +176,9 @@ router.post('/roles/create', verifyToken, async (req, res) => {
 });
 
 router.post('/roles/update', verifyToken, async (req, res) => {
-    UserRole.findByIdAndUpdate(req.body._id, req.body, function (err, item) {
-        console.log('saved into database...');
-        res.json(item);
-    })
+    await UserRole.findByIdAndUpdate(req.body._id, req.body);
+    res.json(req.body);
+    
 });
 
 
@@ -301,14 +300,8 @@ router.post('/create', verifyToken, async (req, res) => {
         password: hash
     });
     newObject._id = new mongoose.Types.ObjectId();
-    newObject.save().then(createdObject => {
-
-        console.log('saved into database...');
-        res.json(createdObject);
-    }).catch(e => {
-        console.log('cannot save into database', e.message);
-        res.json(e);
-    });
+    await newObject.save();
+    res.json(newObject);
 });
 
 
