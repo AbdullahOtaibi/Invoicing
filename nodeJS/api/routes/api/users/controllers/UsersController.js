@@ -48,9 +48,9 @@ router.get('/all', verifyToken, async (req, res) => {
     if (req.user.role != "Administrator") {
         res.json({ success: false, message: "Unauthorized" });
     }
-
-    User.find({ roles: { $ne: [] } })
-        .sort({ id: 1 })
+//{ roles: { $ne: [] } }
+    User.find()
+        .sort({ _id: 1 })
         .then(items => {
             res.json(items);
         });
