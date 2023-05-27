@@ -278,7 +278,7 @@ router.post("/filterExcel", verifyToken, async (req, res) => {
       .skip(page * pageSize)
       .limit(pageSize)
       .exec("find");
-    let jsonArray = result.items.map(item => { return { id: ('' + item._id) } });
+    let jsonArray = result.items.map(item => { return { serial: ('' + item.seqNumber), allowance:item.legalMonetaryTotal.allowanceTotalAmount.toFixed(3),taxInclusive:item.legalMonetaryTotal.taxInclusiveAmount.toFixed(3), name:item.accountingCustomerParty.registrationName, date: item.issuedDate } });
     var xls = json2xls(jsonArray);
     let fileTime = Date.now();
     let fullDirectoryPath = process.env.UPLOAD_ROOT + 'excel';

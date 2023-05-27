@@ -27,6 +27,11 @@ router.post("/filter", verifyToken, async (req, res) => {
     let deleted = filters.deleted || false;
     let status = filters.status || null;
     let InvoiceBy = filters.InvoiceBy || "_idDesc";
+    let primaryName = filters.primaryName || null;
+    let primaryPhone = filters.primaryPhone || null;
+    let secondaryName = filters.secondaryName || null;
+    let secondaryPhone = filters.secondaryPhone || null;
+
     result.page = page;
     console.log("result.page:" + result.page);
     let queryParams = {
@@ -47,6 +52,19 @@ router.post("/filter", verifyToken, async (req, res) => {
       queryParams["$and"].push({ _id: ContactId });
     }
 
+    if (primaryName) {
+      queryParams["$and"].push({ contactName: { $regex: primaryName, $options: "i" } });
+    }
+    if (primaryPhone) {
+      queryParams["$and"].push({ mobile: { $regex: primaryPhone, $options: "i" } });
+    }
+    if (secondaryName) {
+      queryParams["$and"].push({ subContactName: { $regex: secondaryName, $options: "i" } });
+    }
+    if (secondaryPhone) {
+      queryParams["$and"].push({ subContactMobile: { $regex: secondaryPhone, $options: "i" } });
+    }
+
     if (status) {
       queryParams["$and"].push({ status: status });
     }
@@ -57,18 +75,16 @@ router.post("/filter", verifyToken, async (req, res) => {
       },
     });
 
- 
+
 
     console.log("queryParams:" + queryParams);
     console.log(JSON.stringify(queryParams["$and"]));
-    console.log("abd:before find") ;
+    console.log("abd:before find");
     let query = Contact.find(queryParams)
-    .populate("user", "-password")
-      .sort(sortParams);
-      console.log("abd:after find") ;
-    countQuery = Contact.find(queryParams)
       .populate("user", "-password")
-      .sort(sortParams);
+      .sort({ contactName: 1 });
+    console.log("abd:after find");
+    countQuery = Contact.find(queryParams);
 
     console.log(JSON.stringify(queryParams["$and"]));
 
@@ -78,6 +94,7 @@ router.post("/filter", verifyToken, async (req, res) => {
 
     console.log("getting data from db");
     result.items = await query
+      .sort({ contactName: 1 })
       .skip(page * pageSize)
       .limit(pageSize)
       .exec("find");
@@ -107,7 +124,7 @@ router.post("/count", verifyToken, async (req, res) => {
       $and: [],
     };
     let count = req.body || {};
-    
+
 
     if (status) {
       queryParams["$and"].push({ status: status });
@@ -135,11 +152,11 @@ router.post("/count", verifyToken, async (req, res) => {
 
 router.get("/get/:id", async (req, res) => {
   console.log("before get Contact  info. ID: " + req.params.id);
-//ReferenceError: Cannot access 'Contact' before initialization
+  //ReferenceError: Cannot access 'Contact' before initialization
   //let contact = await Contacts.getContactById(req.params.id);
-  
+
   //let contact = await Contact.findOne({ _id:  req.params.id, deleted: false }).populate("user", "-password") 
-  let contact =  await Contact.findOne({_id:req.params.id, deleted:false}).populate("user" , "-password")
+  let contact = await Contact.findOne({ _id: req.params.id, deleted: false }).populate("user", "-password")
   console.log("get Contact  info.");
   res.json(contact);
 });
@@ -154,20 +171,20 @@ router.post("/create", verifyToken, async (req, res, next) => {
   if (req.user.role != "Administrator" && req.user.role != "Company") {
     res.json({ success: false, message: "Unauthorized" });
   }
-  console.log("before create") ;
-  console.log( req.body)
+  console.log("before create");
+  console.log(req.body)
 
-const newObject = new Contact({
+  const newObject = new Contact({
     user: req.user.id,
-   company: req.user.company,
-   companyId: req.user.companyId,
+    company: req.user.company,
+    companyId: req.user.companyId,
     ...req.body
   });
-  console.log("after create") ;
+  console.log("after create");
   newObject.deleted = false;
   newObject._id = new mongoose.Types.ObjectId();
   let savedContact = await newObject.save();
-  console.log("savedContact:" +savedContact);
+  console.log("savedContact:" + savedContact);
   res.json(savedContact);
   next();
 });
@@ -198,8 +215,8 @@ router.get("/deleteItem/:id", verifyToken, async (req, res) => {
   }
   console.log("delete Contact id:" + req.params.id);
   await Contact.findByIdAndDelete(req.params.id);
-  res.json({ success: true, message: "deleted" }); 
- 
+  res.json({ success: true, message: "deleted" });
+
 });
 
 
@@ -208,29 +225,27 @@ router.get("/remove/:id", verifyToken, async (req, res) => {
     res.json({ success: false, message: "Unauthorized" });
   }
   console.log("Soft Delete: remove Contact id:" + req.params.id);
-    Contact.findByIdAndUpdate(
+  Contact.findByIdAndUpdate(
     req.params.id,
     { deleted: true },
     function (err, model) {
-      if(err) 
-      {
+      if (err) {
         console.log("error remove item:" + e)
-      } 
-      else if(model) 
-      {
+      }
+      else if (model) {
         console.log("marked as deleted..." + model);
         res.json({ success: true, message: "deleted" });
       }
-    
+
     }
   );
-  
+
 });
 
 
 router.get("/search/:val", verifyToken, async (req, res) => {
   let val = req.params.val;
-  console.log("val:" +val);
+  console.log("val:" + val);
   if (!req.user) {
     res.json({ message: "unauthorized access" });
   }
@@ -239,24 +254,24 @@ router.get("/search/:val", verifyToken, async (req, res) => {
   }
   var result = {};
   try {
-  
-    
+
+
     let sortParams = {
       _id: -1,
     };
 
-  let queryParams = {
-    deleted: false,
-    company: req.user.company,
-    $or: [
-      { contactName: { $regex: val, $options: "i" } },
-      { subContactName: { $regex: val, $options: "i" } },
-      { mobile: { $regex: val, $options: "i" } },
-      { subContactMobile: { $regex: val, $options: "i" } },
-    ],
-  };
+    let queryParams = {
+      deleted: false,
+      company: req.user.company,
+      $or: [
+        { contactName: { $regex: val, $options: "i" } },
+        { subContactName: { $regex: val, $options: "i" } },
+        { mobile: { $regex: val, $options: "i" } },
+        { subContactMobile: { $regex: val, $options: "i" } },
+      ],
+    };
     let query = Contact.find(queryParams)
-    .populate("user", "-password")
+      .populate("user", "-password")
       .sort(sortParams);
     result.items = await query.exec("find");
     res.json(result);
