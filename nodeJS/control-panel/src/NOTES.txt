@@ -1,6 +1,0 @@
-npm run build
-
-https://github.com/react-ga/react-ga
-
-
-<div dangerouslySetInnerHTML={{ __html: i18n.language==="en"?item.brief:item.briefArabic }}  /> 
