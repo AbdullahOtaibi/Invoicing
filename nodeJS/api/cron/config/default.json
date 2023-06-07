@@ -1,0 +1,13 @@
+{
+    "mongoURI":"mongodb+srv://waredly-api:y63id3kKwT8zCCE@waredlycluster.sh8ja9i.mongodb.net/waredlydb",
+    "mongoURIL": "mongodb://waredlyUser:Java2mail20221@104.128.69.10:27017/waredlydb",
+    "mongoURIR": "mongodb://51.195.200.24:27017/waredlydb",
+    "jwtSecret":"sl_mysecret",
+
+    "mailServer":"smtp.gmail.com",
+    "mailPort":465,
+    "mailUser":"no-reply@waredly.com",
+    "mailPassword":"J@va2mailP@ssw0rd",
+    "mailFrom":"Waredly.com <no-reply@waredly.com>"
+    
+}

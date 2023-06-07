@@ -1,0 +1,96 @@
+{
+    "additionalDocumentReference": {
+        "id": "ICV",
+        "uuid": "a3eec942-7e45-408f-ac9c-296dfa76146c"
+    },
+    "accountingSupplierParty": {
+        "postalAddress": {
+            "identificationCode": "JO"
+        },
+        "partyTaxScheme": {
+            "companyID": "22206140",
+            "taxSchemeId": "VAT",
+            "registrationName": "Brother company"
+        }
+    },
+    "accountingCustomerParty": {
+        "partyIdentification": {
+            "schemeID": "NIN",
+            "value": "122"
+        },
+        "postalAddress": {
+            "postalZone": "",
+            "countrySubentityCode": ""
+        },
+        "taxSchemeId": "VAT",
+        "registrationName": "yousef 1",
+        "telephone": "(707) 784-3315"
+    },
+    "sellerSupplierPartyIdentification": {
+        "id": "14666120"
+    },
+    "allowanceCharge": {
+        "chargeIndicator": false,
+        "allowanceChargeReason": "",
+        "amount": 0
+    },
+    "legalMonetaryTotal": {
+        "taxExclusiveAmount": 10,
+        "taxInclusiveAmount": 8,
+        "allowanceTotalAmount": 2,
+        "payableAmount": 8
+    },
+    "_id": "6463d8e72bb4c8f5dd6b4010",
+    "invoiceUUID": "e404535b-0e53-43fd-8036-5fbf3c06513d",
+    "invoiceCategory": "Income",
+    "issuedDate": "2023-05-17T19:25:32.000Z",
+    "invoiceTypeCode": "388",
+    "invoiceType": "011",
+    "currencyCode": "JO",
+    "items": [
+        {
+            "id": 1684265182106,
+            "sequance": 1,
+            "unitPrice": 10,
+            "qty": 1,
+            "allowance": 2,
+            "lineExtensionAmount": 8,
+            "itemName": "midc",
+            "chargeIndicator": true,
+            "allowanceChargeReason": "DISCOUNT",
+            "_id": "6463d8e72bb4c8f5dd6b400f"
+        }
+    ],
+    "deleted": false,
+    "user": {
+        "_id": "6233a6d646c9bd3e8bfb8dda",
+        "email": "osama.kofahi@gmail.com",
+        "registerDate": "2022-03-17T21:23:34.279Z",
+        "__v": 0,
+        "avatarUrl": "proff2.webp",
+        "roles": [
+            "62333be769abb5a35233feb1"
+        ],
+        "active": true,
+        "firstName": "Osama",
+        "surName": "Al Kofahi",
+        "phone": "+962 789 12 9394",
+        "countryCode": "TR",
+        "address": "Avcilar",
+        "otp": "dsdsadsf5ds6fsd5f6sd5f4sdf",
+        "emailConfirmed": true,
+        "shippingCompany": null,
+        "vendor": "63efff7a42de79c862bc2ef5",
+        "company": "64198cc7309971483879c665"
+    },
+    "contact": "6463d7e02bb4c8f5dd6b3fde",
+    "company": "64198cc7309971483879c665",
+    "postedXML": "",
+    "responseXML": "",
+    "serialNumber": 14,
+    "seqNumber": "INV-00014",
+    "status": "new",
+    "note": "",
+    "createdDate": "2023-05-16T19:26:31.464Z",
+    "__v": 0
+}

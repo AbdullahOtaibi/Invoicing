@@ -1,0 +1,13 @@
+{
+    "type": "service_account",
+    "project_id": "waredly",
+    "private_key_id": "1304a31bcd35a3962880613191e80b0b0d53eac0",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCvT+CTThCao9kx\n0GfZkKADKbsUg36l/BhDWsJEAfjsj9fXGH0zt0qwztNjMkhRh1i7a0zlXh3Txd8h\n1Yf+0aT3jV7CyndE5T8P5+1WM0dQR1sLjKeU2vD6QndzvplJzWREL3vdcZxeKcKQ\n0AAQmFXWlUDT65bBdUbQSh3bbfB2JYat2XUjic3V6aphxOkNS8hJ/jdeBYLC8e8W\ncKIIvqP84iI8+S69hsdnL8eRoD3kLq7YYEqlO3SxocCtNN0O/sHpvE+qeBxrnES+\nRmEX4sMDwWa1f8JBqszHzdlVqc0/4DjdW2u+Al0ql48CBArmwCBeeEha9VKN48I4\ncvE/Yt0XAgMBAAECggEAA6uMbAkKV/JuLZjLU8avUuGgxQEruZXZfC9+OaZA69Ln\nFd2xYU/JBIKP8levI+XNeb75USPzQ+e0kCTEQBVrerM+9J0AejTCaTbVxSQ1rfyQ\nb2F2cKtUuCiED6xB0UW3f6Xu1ef2+hGtvRJdrftCcMeXH9iiw1INNXcXwOxASHjf\nxT4g0v3DCCjsuS4sdRNJlk+C+GymDuZC3T77qRNC5owaHgrLIEv34ioEtktq+V+w\n7c3cZZ143XJ9WlSutbEozzUSJw5ricN5GxPi7mhyf+hEf/ZNQOwsN4uqxmaMSIcp\nm3WE+eJIXDoPpSid0XmWma/H752MGegBI+9P3cX3YQKBgQDZ/AhUXs8GTuJkyjth\ncexLRDlaJlkVFZ1dBwxAFyDFKi+IT+vsRDsnDMT0XB/9wbO0B+voNaV1TXibtK60\nAnPj4F3PK5PxpGUHLWKD7EiHSFbcgXjCmt3sk7XldAwvVeNabeXLaVa3wEijpt3X\n2XqV2rs02vdoLR85Zy1Rsp8c5QKBgQDN4rjb5RY0IwZcVhBQhEiZ1Q0FiFndtvkv\nohRaeClxhIQ0BYL3Qvr8gN93WU1C+O77SBjrHeJo1DwG9qbOTAHRR7ZRc5bO8TI6\nGsffukW5zM/33+mp9yP8nhkDK0IPiFGOFg9LW4an7rUxqLitEF4oIYWLB41Eyfvx\nUY+MsD9uSwKBgQCKl9ej7POrixQeCQZgGlKmOCZOzvrskOWQdB6x0QKg2QWHoWja\nuzbwyQmgY8JjUHi1CiRPa2xbfHomZWZ+RODyDYEXaxmRFXi2a4CrZ9tlR/USFa91\n64kWFYQc8v+cSPtYT28/OSZNhg+pHTsHNdre1Ecaf+21aprjoFoMC4lmkQKBgQCP\n4ngArWxECYpDc545NwmqAHv2NuFfEqW5RVNmGn4UKGFgHc32UagoWURTG2TkfiY+\nFJfdkOgPDOvajfvrRrEqeiyPZfGqNGQ+uUKgN4TNIbbh62lYcDCFNlQSo+OqCUG9\nw+ryZkeIC0o0J07RHBRBhZPXovJ2dZaOgsqIrw/VWwKBgH+5F1xVDK6/A449VB1g\nddYkscnBlUI2vj0fO/fybc1g/EwwqOYxQUmxasxbJte94QkK3mGFtKxKF80PJSVm\nvK6pflYH1QCQtTtHy0gd1KO0uebKb15VB8bO7isicRaqF2FeuW5tcJEXMvX0qp3V\nl3gOo1esmUTJHbKkBgUOY4hH\n-----END PRIVATE KEY-----\n",
+    "client_email": "waredly-storage@waredly.iam.gserviceaccount.com",
+    "client_id": "101585426604030518101",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/waredly-storage%40waredly.iam.gserviceaccount.com"
+  }
+  
