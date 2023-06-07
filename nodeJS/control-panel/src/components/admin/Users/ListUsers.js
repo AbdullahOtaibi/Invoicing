@@ -1,5 +1,5 @@
 import React,{ useState, useEffect } from 'react'
-import { getUsers, removeUser, getUsersBycompany } from './UsersAPI'
+import { getUsers, removeUser, getUsersByCompany } from './UsersAPI'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from "react-i18next"
 import { MdAdd, MdEdit, MdDelete, MdAccountCircle } from "react-icons/md";
@@ -28,7 +28,7 @@ const ListUsers = (props) => {
     useEffect(() => {
         setLoading(true);
         if(companyId && userRole != "Administrator"){
-            getUsersBycompany(usercompanyId).then(res => {
+            getUsersByCompany(usercompanyId).then(res => {
                 if(!res.data){
                     res.data = [];
                 }
@@ -40,7 +40,7 @@ const ListUsers = (props) => {
         }else
         if(companyId && companyId != 0 && userRole == "Administrator"){
 
-            getUsersBycompany(companyId).then(res => {
+            getUsersByCompany(companyId).then(res => {
                 if(!res.data){
                     res.data = [];
                 }
@@ -178,7 +178,7 @@ const ListUsers = (props) => {
                                 </th>
 
                                 <th className="text-center">
-                                    <select className='form-control' onChange={filterBycompanyId} >
+                                    <select className='form-select' onChange={filterBycompanyId} >
                                         <option value=''>All companies</option>
                                         {companies.map(v => (
                                             <option value={v._id} key={v._id}>{v.name.english}</option>

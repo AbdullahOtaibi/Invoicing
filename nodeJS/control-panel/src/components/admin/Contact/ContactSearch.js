@@ -41,8 +41,29 @@ const ContactSearch = (props) => {
 
     const updateSecondaryName = (e) => {
         setSecondaryName(e.target.value);
+        
     }
 
+
+    const handleEnter = (e) => {
+        if (e.keyCode == 13) {
+            doSearch();
+            }
+    }
+    useEffect(() => {
+        if(primaryName && primaryName.length > 2){
+            doSearch();
+        }
+        if(secondaryName && secondaryName.length > 2){
+            doSearch();
+        }
+        if(primaryPhone && primaryPhone.length > 2){
+            doSearch();
+        }
+        if(secondaryPhone && secondaryPhone.length > 2){
+            doSearch();
+        }
+    }, [primaryName, secondaryName, primaryPhone, secondaryPhone]);
 
     const doSearch = () => {
         if (props.searchFilterChanged) {
@@ -72,6 +93,7 @@ const ContactSearch = (props) => {
                                 className="form-control"
                                 value={primaryName}
                                 onChange={updatePrimaryName}
+                                onKeyUp={handleEnter}
                             />
                         </div>
                     </div>
@@ -86,6 +108,7 @@ const ContactSearch = (props) => {
                                 className="form-control"
                                 value={primaryPhone}
                                 onChange={updatePrimaryPhone}
+                                onKeyUp={handleEnter}
                             />
                         </div>
                     </div>
@@ -100,6 +123,7 @@ const ContactSearch = (props) => {
                                 className="form-control"
                                 value={secondaryName}
                                 onChange={updateSecondaryName}
+                                onKeyUp={handleEnter}
                             />
                         </div>
                     </div>
@@ -114,6 +138,7 @@ const ContactSearch = (props) => {
                                 className="form-control"
                                 value={secondaryPhone}
                                 onChange={updateSecondaryPhone}
+                                onKeyUp={handleEnter}
                             />
                         </div>
                     </div>

@@ -89,6 +89,7 @@ const EditCompany = (props) => {
     }
 
 
+    
     useEffect(() => {
         getcompany(companyId).then(res => {
             if(!res.data.description){
@@ -233,13 +234,7 @@ const EditCompany = (props) => {
 
     const updateCountry = (event) => {
         let cloned = JSON.parse(JSON.stringify(company));
-        if (!cloned.address) {
-            cloned.address = { country: {}, location: {} }
-        }
-        if (!cloned.address.country) {
-            cloned.address.country = {}
-        }
-        cloned.address.country = { code: event.target.value, name: {} };
+        cloned.country = event.target.value;
         setcompany(cloned);
     }
 
@@ -373,15 +368,15 @@ const EditCompany = (props) => {
                     </div>
 
 
-                    {/* <div className="mb-3">
+                    <div className="mb-3">
                         <label htmlFor="alias" className="form-label">{t("countries.country")} </label>
-                        <select type="text" className="form-control" id="countryCode" value={company.address.country.code} onChange={updateCountry}  >
+                        <select type="text" className="form-control" id="countryCode" value={company.country} onChange={updateCountry}  >
                             <option>SELECT COUNTRY</option>
                             {countries.map(country => (
-                                <option key={country._id} value={country.code}>{country.name.english}</option>
+                                <option key={country._id} value={country._id}>{country.name.english}</option>
                             ))}
                         </select>
-                    </div> */}
+                    </div>
 
                    
 
@@ -397,7 +392,7 @@ const EditCompany = (props) => {
 
 
 
-                    <div className="mb-3 row col justify-content-end" >
+                    <div className="mb-3 text-end col justify-content-end" >
                         <Link className="add-btn btn-danger" to='/admin/companies' >
                             <MdClose size={20} />&nbsp;&nbsp;
                             {t("dashboard.cancel")}</Link> &nbsp;

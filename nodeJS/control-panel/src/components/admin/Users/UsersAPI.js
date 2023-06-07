@@ -37,9 +37,9 @@ export const getUsers = () => {
     {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
 }
 
-export const getUsersBycompany = (companyId) => {
+export const getUsersByCompany = (companyId) => {
   
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/users/bycompany/" + companyId, {headers:
+    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/users/byCompany/" + companyId, {headers:
     {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
 }
 

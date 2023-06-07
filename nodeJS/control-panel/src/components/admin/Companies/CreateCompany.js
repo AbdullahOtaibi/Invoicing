@@ -91,6 +91,12 @@ const CreateCompany = (props) => {
         setcompany(cloned);
     }
 
+    const updateCountry = (event) => {
+        let cloned = JSON.parse(JSON.stringify(company));
+        cloned.country = event.target.value;
+        setcompany(cloned);
+    }
+
     
 
 
@@ -305,16 +311,16 @@ const CreateCompany = (props) => {
 
 
 
-{/* 
+
                     <div className="mb-3">
                         <label htmlFor="alias" className="form-label">{t("countries.country")} </label>
-                        <select type="text" className="form-control" id="countryCode" value={company.countryCode}  >
+                        <select type="text" className="form-select" id="countryCode" value={company.country} onChange={updateCountry}  >
                             <option>SELECT COUNTRY</option>
                             {countries.map(country => (
-                                <option key={country._id}>{country.name.english}</option>
+                                <option key={country._id} value={country._id}>{country.name.english}</option>
                             ))}
                         </select>
-                    </div> */}
+                    </div>
 
 
 
@@ -325,7 +331,7 @@ const CreateCompany = (props) => {
                         </div>
                     </div>
 
-                    <div className="mb-3 row col justify-content-end" >
+                    <div className="mb-3 text-end col justify-content-end" >
                         <Link className="add-btn btn-danger" to='/admin/companies' >
                             <MdClose size={20} /> &nbsp; 
                             {t("dashboard.cancel")}</Link> &nbsp;
