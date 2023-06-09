@@ -97,6 +97,7 @@ router.post("/login", async (req, res) => {
             company: user.company?user.company._id: "", 
             companyName: user.company ? user.company.name.arabic : "",
             companyId: user.company ? user.company.companyInvoiceID : "",
+            logoUrl:user.company ? user.company.logoUrl : "",
             incomeSourceSequence: user.company
               ? user.company.incomeSourceSequence
               : "",
@@ -124,6 +125,7 @@ router.post("/login", async (req, res) => {
             company: user.company?user.company._id: "", 
             companyName: user.company ? user.company.name.arabic : "",
             companyId: user.company ? user.company.companyInvoiceID : "",
+            logoUrl:user.company ? user.company.logoUrl : "",
             incomeSourceSequence: user.company
               ? user.company.incomeSourceSequence
               : "",
@@ -195,6 +197,7 @@ router.get("/oauth-login/:email", async (req, res) => {
         role: userRoleName,
         companyName: user.company ? user.company.name.arabic : "",
         companyId: user.company ? user.company.companyInvoiceID : "",
+        logoUrl:user.company ? user.company.logoUrl : "",
         incomeSourceSequence: user.company
           ? user.company.incomeSourceSequence
           : "",
@@ -219,6 +222,7 @@ router.get("/oauth-login/:email", async (req, res) => {
         role: userRoleName,
         companyName: user.company ? user.company.name.arabic : "",
         companyId: user.company ? user.company.companyInvoiceID : "",
+        logoUrl:user.company ? user.company.logoUrl : "",
         incomeSourceSequence: user.company
           ? user.company.incomeSourceSequence
           : "",
@@ -294,6 +298,7 @@ router.get("/oauth-profile/:token", async (req, res) => {
         role: userRoleName,
         companyName: user.company ? user.company.name.arabic : "",
         companyId: user.company ? user.company.companyInvoiceID : "",
+        logoUrl:user.company ? user.company.logoUrl : "",
         incomeSourceSequence: user.company
           ? user.company.incomeSourceSequence
           : "",

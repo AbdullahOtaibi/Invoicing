@@ -128,23 +128,23 @@ router.post('/upload-image', verifyToken, async (req, res) => {
             console.log('file Uploaded :' + fullFileName);
            
             tmpPath += uploadedFile.name;
-            await uploadedFile.mv(tmpPath);
-            await sharp(tmpPath)
-                .resize(800)
-                .webp({ quality: 90 })
-                .toFile(fullFileName)
+            await uploadedFile.mv(fullFileName);
+           // await sharp(tmpPath)
+            //    .resize(800)
+            //    .webp({ quality: 90 })
+            //    .toFile(fullFileName)
 
 
 
 
-            await sharp(tmpPath).resize(500, 350, {
-                fit: 'inside',
-                position: 'center'
-            })
-            .webp({ quality: 90 })
-            .toFile(thumbnailFileFullPath);
+            //await sharp(tmpPath).resize(500, 350, {
+            //    fit: 'inside',
+            //    position: 'center'
+            //})
+            //.webp({ quality: 90 })
+           // .toFile(thumbnailFileFullPath);
            
-            fs.unlinkSync(tmpPath);
+            //fs.unlinkSync(tmpPath);
 
 
             console.log("result : " + fileName);

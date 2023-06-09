@@ -80,7 +80,7 @@ function Dashboard() {
           />
         </div>
       </div>
-      <div>
+      <div className='d-print-none'>
        
         <center className=" shadow" style={{backgroundColor: "rgb(45, 50, 116)"}} >
          

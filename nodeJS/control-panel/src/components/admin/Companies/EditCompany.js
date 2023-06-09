@@ -1,27 +1,45 @@
-import React,{ useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { updatecompany, getcompany } from './CompaniesAPI'
 import { getCountries } from '../../../services/CountriesService'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
-import { ThreeDots } from  'react-loader-spinner'
+import { ThreeDots } from 'react-loader-spinner'
 import LocalizedTextEditor from '../Shared/LocalizedTextEditor'
 import UploadImage from '../Images/UploadImage';
 import { getLocalizedTextByLocale } from '../utils/utils'
 import { Editor } from '@tinymce/tinymce-react'
 import { MdSave, MdClose } from "react-icons/md";
 import { hasPermission } from '../utils/auth';
+import { upload } from '../../../services/ApiClient'
 
 const EditCompany = (props) => {
 
+    const upload = () => {
+        upload(process.env.REACT_APP_API_BASE_URL + "/v1/file-upload/upload-image", {}, null).then(res => {
+           // setFileName(null);
+            //fileRef.current.value = null;
+            //console.log(res);
+            //setUploading(false);
+            //toast.success(t("succeed"));
+            if (props.handleUpload != null) {
+                props.handleUpload({ url: res.path, uploadFolder: res.uploadFolder, thumbnailUrl: res.thumbnailUrl });
+            }
+        }).catch(e => {
+           // setUploading(false);
+            //console.log(e.message);
+           // toast.error(e.message);
+        });
+    }
+
     let navigate = useNavigate();
-    if(!hasPermission('vendors.modify')){
+    if (!hasPermission('vendors.modify')) {
         navigate("/admin/companies", { replace: true });
     }
 
     const editorRef = useRef(null);
     const [contentLocale, setContentLocale] = useState('ar');
-    
+
     const [company, setcompany] = useState({ logoUrl: "/images/no-image.png", name: { arabic: "", english: "" }, description: { arabic: "", english: "" }, contactDetails: {}, address: { country: {}, location: {} } });
     const [countries, setCountries] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -30,7 +48,7 @@ const EditCompany = (props) => {
     const [editorReady, setEditorReady] = useState(false);
     const [contentReady, setContentReady] = useState(false);
     let contentNeesUpdate = true;
-    const[wasValidated, setValidated] = useState(false); 
+    const [wasValidated, setValidated] = useState(false);
 
 
 
@@ -71,40 +89,40 @@ const EditCompany = (props) => {
     }
 
 
-    const isFormValid = () =>{
+    const isFormValid = () => {
         setValidated(true);
         return company.name && company.name.arabic &&
-        company.companyInvoiceID && 
-        company.incomeSourceSequence && 
-        company.clientId && 
-        company.clientSecret &&
-        company.contactDetails.phone; 
+            company.companyInvoiceID &&
+            company.incomeSourceSequence &&
+            company.clientId &&
+            company.clientSecret &&
+            company.contactDetails.phone;
     }
 
-     
+
     const fieldClass = (value) => {
-        if(!wasValidated)
-        return 'form-control';
-        return value?'form-control is-valid':'form-control is-invalid';
+        if (!wasValidated)
+            return 'form-control';
+        return value ? 'form-control is-valid' : 'form-control is-invalid';
     }
 
 
-    
+
     useEffect(() => {
         getcompany(companyId).then(res => {
-            if(!res.data.description){
+            if (!res.data.description) {
                 res.data.description = {};
             }
-            if(!res.data.name){
+            if (!res.data.name) {
                 res.data.name = {};
             }
-            if(!res.data.contactDetails){
+            if (!res.data.contactDetails) {
                 res.data.contactDetails = {};
             }
-            if(!res.data.address){
-                res.data.address = {country: {}, location: {}};
+            if (!res.data.address) {
+                res.data.address = { country: {}, location: {} };
             }
-            
+
 
             setcompany(res.data);
             setContentReady(true);
@@ -241,12 +259,12 @@ const EditCompany = (props) => {
 
     const doPost = data => {
 
-        if(!isFormValid()){
+        if (!isFormValid()) {
             return;
         }
         setLoading(true);
         let cloned = JSON.parse(JSON.stringify(company));
-        
+
 
         updatecompany(cloned).then(res => {
             setLoading(false);
@@ -260,12 +278,12 @@ const EditCompany = (props) => {
         console.log(data);
     }
 
-    // const imageUploaded = uploadedImage => {
-    //     let cloned = JSON.parse(JSON.stringify(company));
-    //     cloned.logoUrl = uploadedImage.url;
-    //     setcompany(cloned);
+     const imageUploaded = uploadedImage => {
+         let cloned = JSON.parse(JSON.stringify(company));
+         cloned.logoUrl = uploadedImage.url;
+         setcompany(cloned);
 
-    // }
+     }
 
 
 
@@ -286,7 +304,7 @@ const EditCompany = (props) => {
                 <br />
 
                 <form>
-{/* 
+                     
                     <div className="mb-3">
                         <img src={company.logoUrl ? "/uploads/" + company.logoUrl : "/images/no-image.png"} 
                         style={{ width: '200px', hwight: '200px' }}
@@ -294,9 +312,9 @@ const EditCompany = (props) => {
                         />
                         <br /><br />
                         <UploadImage handleUpload={imageUploaded} />
-                    </div> */}
+                    </div> 
 
-                  
+
 
                     <div className="mb-3">
                         <label htmlFor="name" className="form-label">{t("companies.name")}</label>
@@ -304,13 +322,13 @@ const EditCompany = (props) => {
                             onLocalChanged={changeLocale} onChange={updatecompanyName} />
                     </div>
 
-   
+
 
 
 
                     <div className="mb-3">
                         <label htmlFor="phone" className="form-label">{t("companies.phone")} </label>
-                        <input type="number"  className={fieldClass(company.contactDetails.phone)}  placeholder={t("companies.phone")} id="phone" name="phone" value={company.contactDetails.phone} onChange={updatePhoneNumber} />
+                        <input type="number" className={fieldClass(company.contactDetails.phone)} placeholder={t("companies.phone")} id="phone" name="phone" value={company.contactDetails.phone} onChange={updatePhoneNumber} />
 
                     </div>
 
@@ -331,26 +349,26 @@ const EditCompany = (props) => {
                     </div>
 
 
-                    
+
                     <div className="mb-3">
                         <label htmlFor="incomeSourceSequence" className="form-label">{t("companies.incomeSourceSequence")} </label>
-                        <input type="number" className={fieldClass(company.incomeSourceSequence)}  placeholder={t("companies.incomeSourceSequence")} id="incomeSourceSequence" name="incomeSourceSequence" value={company.incomeSourceSequence} onChange={updateIncomeSourceSequence} />
+                        <input type="number" className={fieldClass(company.incomeSourceSequence)} placeholder={t("companies.incomeSourceSequence")} id="incomeSourceSequence" name="incomeSourceSequence" value={company.incomeSourceSequence} onChange={updateIncomeSourceSequence} />
                     </div>
 
 
 
                     <div className="mb-3">
-                        <label htmlFor="invoiceCategory"  className={fieldClass(company.invoiceCategory)}>{t("companies.invoiceCategory")} </label>
-          
-                   
-                        <select type="text" className="form-control" id="invoiceCategory" name="title"  value = {company.invoiceCategory} onChange={updateInvoiceCategory}   >
-                                <option value =""> Select  </option>
-                                <option value="Income"> Income </option>
-                                <option value="TAX"> TAX </option>
-                                <option value="Income-Tax"> Income & TAX </option>
-                                v
-                            </select>
-                       
+                        <label htmlFor="invoiceCategory" className={fieldClass(company.invoiceCategory)}>{t("companies.invoiceCategory")} </label>
+
+
+                        <select type="text" className="form-control" id="invoiceCategory" name="title" value={company.invoiceCategory} onChange={updateInvoiceCategory}   >
+                            <option value=""> Select  </option>
+                            <option value="Income"> Income </option>
+                            <option value="TAX"> TAX </option>
+                            <option value="Income-Tax"> Income & TAX </option>
+                            v
+                        </select>
+
 
                     </div>
 
@@ -378,9 +396,9 @@ const EditCompany = (props) => {
                         </select>
                     </div>
 
-                   
 
-                   
+
+
 
                     <div className="mb-3 form-check">
                         <div className="custom-control custom-checkbox">
