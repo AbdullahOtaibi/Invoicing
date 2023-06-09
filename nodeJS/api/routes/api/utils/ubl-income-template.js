@@ -15,7 +15,7 @@ function getInvoiceDate(issuedDate) {
       ? parseInt(d.getMonth()) + 1
       : "0" + (parseInt(d.getMonth()) + 1)) +
     "-" +
-    (d.getDate().length ==2 ? d.getDate(): "0" + d.getDate());
+    (d.getDate().length == 2 ? d.getDate() : "0" + d.getDate());
   return str;
 }
 
@@ -60,7 +60,7 @@ async function postToTax(invoice, user) {
           _encryptPostedXML = "";
         }
 
-       
+
         await Invoice.findOneAndUpdate(
           { _id: invoice._id },
           {
@@ -70,21 +70,21 @@ async function postToTax(invoice, user) {
             responseXML: JSON.stringify(result),
           }
         );
-       
+
         console.log(
           "Saved Post invoice to Tax ........., result.EINV_RESULTS.status: " + result.EINV_RESULTS.status
         );
         resolve(result);
 
       })
-      .catch( (e) => {
+      .catch((e) => {
         if (e.response && e.response.status === 403) {
           console.log("Unauthorized");
           reject("Unauthorized")
         } else {
           console.log("=====> catch");
           console.log(JSON.stringify(e.stack));
-          reject(JSON.stringify(e.stack)) ;
+          reject(JSON.stringify(e.stack));
         }
       });
 
@@ -225,14 +225,16 @@ function toXml(invoice) {
   console.log("PayableAmount:" + PayableAmount);
   // description--> itemName ,  unitPrice-> unitPrice, qty -->qty allowance -->allowance
 
-  var note =  checkJSONProperty(
+  var note = checkJSONProperty(
     invoice,
     "note",
     ""
   );
 
-  console.log("note:::" +note) ;
-  
+  var clientName = checkJSONProperty(invoice, "accountingCustomerParty.registrationName", "");
+
+  console.log("note:::" + note);
+
   let invoiceLines = invoice.items
     .map((item) => {
       return `<cac:InvoiceLine>
@@ -308,7 +310,10 @@ function toXml(invoice) {
           <cbc:ID>VAT</cbc:ID>
         </cac:TaxScheme>
       </cac:PartyTaxScheme>
-      <cac:PartyLegalEntity/>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>${clientName}
+        </cbc:RegistrationName>
+      </cac:PartyLegalEntity>
     </cac:Party>
     <cac:AccountingContact>
       <cbc:Telephone>${Telephone}</cbc:Telephone>

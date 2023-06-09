@@ -231,6 +231,17 @@ const EditInvoice = (props) => {
         : "form-control is-invalid";
   };
 
+  const selectFieldClass = (value, minQuantity) => {
+    if (!wasValidated) return "form-select";
+    //console.log("minQuantity:"+ minQuantity) ;
+    if (isNaN(minQuantity))
+      return value ? "form-select is-valid" : "form-select is-invalid";
+    else
+      return parseFloat(value) >= parseFloat(minQuantity)
+        ? "form-select is-valid"
+        : "form-select is-invalid";
+  };
+
   function isBlank(str) {
     return !str || /^\s*$/.test(str);
   }
@@ -438,7 +449,7 @@ const EditInvoice = (props) => {
                   <div className="col col-auto">
                     <select
                       type="text"
-                      className={fieldClass(invoice.invoiceType)}
+                      className={selectFieldClass(invoice.invoiceType)}
                       id="invoiceType"
                       name="title"
                       onChange={updateInvoiceType}
@@ -503,7 +514,7 @@ const EditInvoice = (props) => {
                   <div className="col col-auto">
                     <select
                       type="text"
-                      className="form-control"
+                      className="form-select"
                       id="accountingCustomerParty_schemeID"
                       name="accountingCustomerParty_schemeID"
                       value={
