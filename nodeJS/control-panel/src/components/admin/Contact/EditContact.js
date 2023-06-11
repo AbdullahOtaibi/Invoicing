@@ -5,11 +5,14 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThreeDots } from  'react-loader-spinner';
-import { MdClose, MdContacts } from "react-icons/md";
+import { MdClose, MdContacts, MdTurnedInNot } from "react-icons/md";
 import "react-datepicker/dist/react-datepicker.css";
 import { getContact } from "./ContactAPI";
+import { CSSTransition } from 'react-transition-group';
 
 const EditContact = (props) => {
+  const[showSubContactInfo, setShowSubContactInfo] =useState(true) ; 
+
   const { contactId } = useParams();
   const [contact, setContact] = useState();
   const [loading, setLoading] = useState(false);
@@ -24,6 +27,7 @@ const EditContact = (props) => {
         console.log(data);
         setLoading(true);
         setContact(data);
+        (data.contactType == "Employee" ? setShowSubContactInfo(false):setShowSubContactInfo(true) )
         console.log(data);
         setLoading(false);
       })
@@ -74,7 +78,9 @@ const EditContact = (props) => {
     let cloned = JSON.parse(JSON.stringify(contact));
     cloned.contactType = event.target.value;
     setContact(cloned);
+    (event.target.value=="Employee" ? setShowSubContactInfo(false) : setShowSubContactInfo(true) )
   };
+
 
   const setSubContactName = (event) => {
     let cloned = JSON.parse(JSON.stringify(contact));
@@ -103,6 +109,17 @@ const EditContact = (props) => {
       return parseFloat(value) >= parseFloat(minQuantity)
         ? "form-control is-valid"
         : "form-control is-invalid";
+  };
+
+  const selectFieldClass = (value, minQuantity) => {
+    if (!wasValidated) return "form-select";
+    //console.log("minQuantity:"+ minQuantity) ;
+    if (isNaN(minQuantity))
+      return value ? "form-select is-valid" : "form-select is-invalid";
+    else
+      return parseFloat(value) >= parseFloat(minQuantity)
+        ? "form-select is-valid"
+        : "form-select is-invalid";
   };
 
   const [PlaceHolderIdentificationType, updatePlaceHolderIdentificationType] =
@@ -175,7 +192,7 @@ const EditContact = (props) => {
           <div className="card-body">
             <h5 className="card-title">
               {" "}
-              <MdContacts size={25} /> &#160; {t("contact.newContact")}{" "}
+              <MdContacts size={25} /> &#160; {t("contact.editContact")}{" "}
             </h5>
             <div className="container text-center">
               <ThreeDots
@@ -198,6 +215,25 @@ const EditContact = (props) => {
               </div>
 
               <div className="mb-3 row">
+              <div className="mb-3 col ">
+                  <div className="col col-auto">{t("contact.contactType")}</div>
+                  <div className="col col-auto">
+                    <select
+                      type="text"
+                      className={selectFieldClass(contact.contactType)}
+                      id="contactType"
+                      name="contactType"
+                      value={contact.contactType}
+                      onChange={setContactType}
+                    >
+                      <option value=""> أختر </option>
+                      <option value="Client">Client</option>
+                      <option value="Employee">Employee</option>
+                      <option value="Vendor">Vendor</option>
+                    </select>
+                  </div>
+                </div>
+
                 <div className="mb-3 col ">
                   <div className="col col-auto">{t("contact.contactName")}</div>
                   <div className="col">
@@ -212,24 +248,7 @@ const EditContact = (props) => {
                     />
                   </div>
                 </div>
-                <div className="mb-3 col ">
-                  <div className="col col-auto">{t("contact.contactType")}</div>
-                  <div className="col col-auto">
-                    <select
-                      type="text"
-                      className={fieldClass(contact.contactType)}
-                      id="contactType"
-                      name="contactType"
-                      value={contact.contactType}
-                      onChange={setContactType}
-                    >
-                      <option value=""> أختر </option>
-                      <option value="Client">Client</option>
-                      <option value="Employee">Employee</option>
-                      <option value="Vendor">Vendor</option>
-                    </select>
-                  </div>
-                </div>
+       
                 <div className="mb-3 col ">
                   <div className="col col-auto">{t("contact.mobile")} </div>
                   <div className="col">
@@ -248,6 +267,13 @@ const EditContact = (props) => {
                 <div className="mb-3 col "></div>
               </div>
 
+              <CSSTransition
+                    in={showSubContactInfo}
+                    timeout={700}
+                    classNames="list-transition"
+                    unmountOnExit
+                  >
+<>
               <div className="mb-3 row">
                 <div className="mb-3 col ">
                   <div className="col col-auto">
@@ -364,6 +390,8 @@ const EditContact = (props) => {
                 </div>
                 <div className="mb-3 col "></div>
               </div>
+</>
+</CSSTransition>
 
               <div className="mb-3 row">
                 <div className="mb-3 col ">

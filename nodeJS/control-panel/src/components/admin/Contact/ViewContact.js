@@ -113,6 +113,15 @@ className="mb-3 " >
     </div>
   </div>
   <div className="row">
+
+  <div className="mb-3 col ">
+      <div className="col col-auto"> {t("contact.contactType")  }</div>
+
+      <div className="col">
+        {contact.contactType}
+      </div>
+    </div>
+
     <div className="mb-3 col ">
       <div className="col col-auto"> {t("contact.contactName")} </div>
       <div className="col">
@@ -120,13 +129,6 @@ className="mb-3 " >
       </div>
     </div>
 
-    <div className="mb-3 col ">
-      <div className="col col-auto"> {t("contact.contactType")}</div>
-
-      <div className="col">
-        {contact.contactType}
-      </div>
-    </div>
 
     <div className="mb-3 col ">
       <div className="col col-auto"> {t("contact.mobile")}</div>
@@ -138,7 +140,10 @@ className="mb-3 " >
 
     <div className="mb-3 col "></div>
   </div>
-  <div className="row">
+  
+  { contact.contactType != "Employee" ? (
+<>
+<div className="row">
     <div className="mb-3 col ">
       <div className="col col-auto"> {t("contact.identificationType")}</div>
       <div className="col">
@@ -196,6 +201,10 @@ className="mb-3 " >
 
     <div className="mb-3 col "></div>
   </div>
+</>
+  )
+  : ""}
+
   <div className="row">
     <div className="mb-3 col ">
       <div className="col col-auto"> {t("contact.note")}</div>

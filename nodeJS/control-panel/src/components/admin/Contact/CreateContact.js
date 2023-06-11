@@ -7,9 +7,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { ThreeDots } from  'react-loader-spinner';
 import {  MdClose, MdContacts } from "react-icons/md";
 import "react-datepicker/dist/react-datepicker.css";
-
+import { CSSTransition } from 'react-transition-group';
 
 const CreateContact = (props) => {
+
+  const[showSubContactInfo, setShowSubContactInfo] =useState(true) ; 
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
   const [contact, setContact] = useState({
@@ -61,6 +63,7 @@ const CreateContact = (props) => {
     let cloned = JSON.parse(JSON.stringify(contact));
     cloned.contactType = event.target.value;
     setContact(cloned);
+    (event.target.value=="Employee" ? setShowSubContactInfo(false) : setShowSubContactInfo(true) )
   };
 
 
@@ -94,6 +97,17 @@ const CreateContact = (props) => {
       return parseFloat(value) >= parseFloat(minQuantity)
         ? "form-control is-valid"
         : "form-control is-invalid";
+  };
+
+  const selectFieldClass = (value, minQuantity) => {
+    if (!wasValidated) return "form-select";
+    //console.log("minQuantity:"+ minQuantity) ;
+    if (isNaN(minQuantity))
+      return value ? "form-select is-valid" : "form-select is-invalid";
+    else
+      return parseFloat(value) >= parseFloat(minQuantity)
+        ? "form-select is-valid"
+        : "form-select is-invalid";
   };
 
   const [PlaceHolderIdentificationType, updatePlaceHolderIdentificationType] =
@@ -194,27 +208,15 @@ return isValid
           </div>
 
           <div className="mb-3 row">
-            <div className="mb-3 col ">
-              <div className="col col-auto">{t("contact.contactName")}</div>
-              <div className="col">
-                <input
-                  type="text"
-                  className={fieldClass(contact.contactName)}
-                  id="fullName"
-                  name="fullName"
-                  onChange={setContactName}
-                  placeholder={t("contact.contactName")}
-                />
-              </div>
-            </div>
-            <div className="mb-3 col ">
+
+          <div className="mb-3 col ">
               <div className="col col-auto">
                 {t("contact.contactType")}
               </div>
               <div className="col col-auto">
                 <select
                   type="text"
-                  className= {fieldClass(contact.contactType)}
+                  className= {selectFieldClass(contact.contactType)}
                   id="contactType"
                   name="contactType"
                   value={contact.contactType}
@@ -229,6 +231,21 @@ return isValid
                 </select>
               </div>
             </div>
+
+            <div className="mb-3 col ">
+              <div className="col col-auto">{t("contact.contactName")}</div>
+              <div className="col">
+                <input
+                  type="text"
+                  className={fieldClass(contact.contactName)}
+                  id="fullName"
+                  name="fullName"
+                  onChange={setContactName}
+                  placeholder={t("contact.contactName")}
+                />
+              </div>
+            </div>
+           
             <div className="mb-3 col ">
               <div className="col col-auto">{t("contact.mobile")} </div>
               <div className="col">
@@ -250,7 +267,13 @@ return isValid
             <div className="mb-3 col "></div>
           </div>
 
-
+          <CSSTransition
+                    in={showSubContactInfo}
+                    timeout={700}
+                    classNames="list-transition"
+                    unmountOnExit
+                  >
+<>
           <div className="mb-3 row" >
           <div className="mb-3 col ">
               <div className="col col-auto">
@@ -309,8 +332,8 @@ return isValid
          
       
 
-        
-            <div className="mb-3 row ">
+
+<div className="mb-3 row ">
             <div className="col col-auto text-info">
               {t("contact.subContactInformation")}{" "}
             </div>
@@ -363,6 +386,9 @@ return isValid
             <div className="mb-3 col "></div>
             </div>
 
+</>
+                  </CSSTransition>
+      
 
       
             <div className="mb-3 row">
@@ -378,11 +404,7 @@ placeholder= "weewwewe"
 value={contact.note}
 onChange={setNote}>  </textarea>
 
-
-
-
-
-    </div>
+  </div>
   </div>
   <div className="mb-3 col "></div>
   <div className="mb-3 col "></div>
