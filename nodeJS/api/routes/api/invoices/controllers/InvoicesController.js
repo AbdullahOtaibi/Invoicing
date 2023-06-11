@@ -11,7 +11,8 @@ const Invoices = require("../data-access/Invoices");
 const { json } = require("body-parser");
 const getInvoiceXML = require("../data-access/ubl");
 const xmlFormat = require("xml-formatter");
-const postToTax = require("../../utils/ubl-income-template");
+const postToTaxTypeIncome = require("../../utils/ubl-income-template");
+const postToTaxTypeRevertedIncome = require("../../utils/ubl-income-Reverted-template");
 var json2xls = require('json2xls');
 const fs = require('fs');
 
@@ -457,14 +458,14 @@ router.get("/get/:id", async (req, res) => {
   res.json(invoice);
 });
 
-router.get("/postToTax/:id", verifyToken, async (req, res, next) => {
+router.get("/postToTaxTypeIncome/:id", verifyToken, async (req, res, next) => {
 
   let result = { success: false };
   console.log("req.params.id: " + req.params.id);
   let invoice = await Invoices.getInvoiceById(req.params.id);
   if (invoice) {
 
-    let data = postToTax(invoice, req.user).then(data => {
+    let data = postToTaxTypeIncome(invoice, req.user).then(data => {
       result.success = true;
       console.log("data:" + data);
       result.data = data;
@@ -479,6 +480,31 @@ router.get("/postToTax/:id", verifyToken, async (req, res, next) => {
   }
 
 });
+
+
+router.get("/postToTaxTypeRevertedIncome/:id", verifyToken, async (req, res, next) => {
+
+  let result = { success: false };
+  console.log("req.params.id: " + req.params.id);
+  let invoice = await Invoices.getInvoiceById(req.params.id);
+  if (invoice) {
+
+    let data = postToTaxTypeRevertedIncome(invoice, req.user).then(data => {
+      result.success = true;
+      console.log("data:" + data);
+      result.data = data;
+      res.json(result);
+    }).catch(e => {
+      result.message = e;
+      console.log("data:" + data);
+      res.json(result);
+    });
+
+
+  }
+
+});
+
 
 function newSeq(x) {
   //d =new Date()

@@ -485,7 +485,10 @@
 "postToTax" : "Post to Tax" ,
 "revertInvoice" : "Revert Invoice" ,
 "note" : "Note" ,
-"invoiceDate": "Invoice Date"
+"invoiceDate": "Invoice Date" ,
+"reverted_Status" : "Reverted Status" ,
+"PostedInvoiceQRCode" : " Posted Invoice QR Code" ,
+"RevertedInvoiceQRCode" : "Reverted Invoice QR Code"
   } ,
   "FullCalendar" :{
     "start" : "Start" ,

@@ -19,7 +19,7 @@ function getInvoiceDate(issuedDate) {
   return str;
 }
 
-async function postToTaxTypeIncome(invoice, user) {
+async function postToTaxTypeRevertedIncome(invoice, user) {
   return new Promise((resolve, reject) => {
 
     if (invoice.status == "posted") {
@@ -28,7 +28,7 @@ async function postToTaxTypeIncome(invoice, user) {
 
     console.log("insert post to tax method .......");
 
-    let xml = toXmlTypeIncome(invoice);
+    let xml = toXmlTypeRevertedIncome(invoice);
     let req = toBase64(xml).trim();
     const httpsAgent = new https.Agent({
       rejectUnauthorized: false,
@@ -59,20 +59,28 @@ async function postToTaxTypeIncome(invoice, user) {
         if (process.env.INCLUDE_REQUEST !== true) {
           _encryptPostedXML = "";
         }
-
+           
+     console.log("before update: invoice._id:" +invoice._id) ;
+     console.log("reverted_Status:" +newStatus) ; 
+   //  console.log("revertedXML:" +_postedXml) ;
+     //console.log("revertedXMLResponse:" + JSON.stringify(result));
 
         await Invoice.findOneAndUpdate(
           { _id: invoice._id },
           {
-            status: newStatus,
-            postedXML: _postedXml,
-            encryptPostedXML: _encryptPostedXML,
-            responseXML: JSON.stringify(result),
+            reverted_Status: newStatus,
+            revertedXML: _postedXml,
+            encrypRevertedXML: _encryptPostedXML,
+            revertedXMLResponse: JSON.stringify(result),
+           RevertedDate: (new Date()),
           }
-        );
+        );   
+
+      
+ 
 
         console.log(
-          "Saved Post invoice to Tax ........., result.EINV_RESULTS.status: " + result.EINV_RESULTS.status
+          "Saved Post REVERTED invoice to Tax ........., result.EINV_RESULTS.status: " + result.EINV_RESULTS.status
         );
         resolve(result);
 
@@ -109,7 +117,7 @@ function checkJSONProperty(obj, path, defaultValue) {
   }
 }
 
-function toXmlTypeIncome(invoice) {
+function toXmlTypeRevertedIncome(invoice) {
   var id = checkJSONProperty(
     invoice,
     "sellerSupplierPartyIdentification.id",
@@ -117,8 +125,9 @@ function toXmlTypeIncome(invoice) {
   ); // "14666120";
   console.log("id:" + id);
   var uuid = checkJSONProperty(invoice, "seqNumber", invoice.uuid); //"ba492a3e-f514-43ac-b572-b973f57fbaba";
+  var uuid_Reverted = uuid+ "-REVERTED"
   console.log("uuid:" + uuid);
-  var issuedDate = getInvoiceDate(invoice.issuedDate); //"2023-03-06";
+  var issuedDate = getInvoiceDate(new Date()); //"2023-03-06";
   console.log("issuedDate:" + issuedDate);
   var InvoiceTypeCode_name = checkJSONProperty(invoice, "invoiceType", "011"); //"011";
   console.log("InvoiceTypeCode_name:" + InvoiceTypeCode_name);
@@ -138,9 +147,11 @@ function toXmlTypeIncome(invoice) {
   console.log(
     "AdditionalDocumentReference_id::" + AdditionalDocumentReference_id
   );
+ 
+  //var AdditionalDocumentReference_uuid= "7affbc3e-a0de-40de-8b0b-2600a6f0a9a0";
   var AdditionalDocumentReference_uuid = checkJSONProperty(
     invoice,
-    "additionalDocumentReference.uuid",
+    "AdditionalDocumentReference_uuid_Type_Reverted",
     "0"
   );
   console.log(
@@ -155,9 +166,7 @@ function toXmlTypeIncome(invoice) {
     invoice,
     "accountingSupplierParty.partyTaxScheme.registrationName",
     ""
-  );
-  //static value will removed after test
-  //registrationName = "ثناء اسماعيل وعبد الله العتيبي";
+  )
   console.log("companyId:" + companyId);
   var PartyIdentification_schemeID_type = checkJSONProperty(
     invoice,
@@ -223,14 +232,16 @@ function toXmlTypeIncome(invoice) {
   ); //"1.000";
 
   console.log("PayableAmount:" + PayableAmount);
-  // description--> itemName ,  unitPrice-> unitPrice, qty -->qty allowance -->allowance
-
+ 
+/*
   var note = checkJSONProperty(
     invoice,
     "note",
     ""
   );
+*/
 
+var note= "تم ارجاع الفاتورة"
   var clientName = checkJSONProperty(invoice, "accountingCustomerParty.registrationName", "");
 
   console.log("note:::" + note);
@@ -266,12 +277,22 @@ function toXmlTypeIncome(invoice) {
   <Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2">
   <cbc:ProfileID>reporting:1.0</cbc:ProfileID>
   <cbc:ID>${id}</cbc:ID>
-  <cbc:UUID>${uuid}</cbc:UUID>
+  <cbc:UUID>${uuid_Reverted}</cbc:UUID>
   <cbc:IssueDate>${issuedDate}</cbc:IssueDate>
-  <cbc:InvoiceTypeCode name="${InvoiceTypeCode_name}">${InvoiceTypeCode_type}</cbc:InvoiceTypeCode>
+  <cbc:InvoiceTypeCode name="${InvoiceTypeCode_name}">381</cbc:InvoiceTypeCode>
   <cbc:Note>${note}</cbc:Note>
   <cbc:DocumentCurrencyCode>${currency}</cbc:DocumentCurrencyCode>
   <cbc:TaxCurrencyCode>${currency}</cbc:TaxCurrencyCode>
+
+            <cac:BillingReference>
+            <cac:InvoiceDocumentReference>
+            <cbc:ID>${id}</cbc:ID>
+            <cbc:UUID>${uuid}</cbc:UUID>
+            <cbc:DocumentDescription>${PayableAmount.toFixed(3 )}</cbc:DocumentDescription>
+            </cac:InvoiceDocumentReference>
+            </cac:BillingReference>
+
+
   <cac:AdditionalDocumentReference>
     <cbc:ID>${AdditionalDocumentReference_id}</cbc:ID>
     <cbc:UUID>${AdditionalDocumentReference_uuid}</cbc:UUID>
@@ -326,6 +347,12 @@ function toXmlTypeIncome(invoice) {
       </cac:PartyIdentification>
     </cac:Party>
   </cac:SellerSupplierParty>
+
+  <cac:PaymentMeans>
+  <cbc:PaymentMeansCode listID="UN/ECE 4461">10</cbc:PaymentMeansCode>
+  <cbc:InstructionNote> ${note} </cbc:InstructionNote> 
+  </cac:PaymentMeans>
+  
   <cac:AllowanceCharge>
     <cbc:ChargeIndicator>false</cbc:ChargeIndicator>
     <cbc:AllowanceChargeReason>discount</cbc:AllowanceChargeReason>
@@ -364,4 +391,4 @@ function toBase64(xml) {
   return req;
 }
 
-module.exports = postToTaxTypeIncome;
+module.exports = postToTaxTypeRevertedIncome;

@@ -77,10 +77,12 @@ router.post("/filter", verifyToken, async (req, res) => {
     console.log("abd:before find") ;
     let query = FullCalendar.find(queryParams)
     .populate("user", "-password")
+    .populate("employee")
       .sort(sortParams);
       console.log("abd:after find") ;
     countQuery = FullCalendar.find(queryParams)
       .populate("user", "-password")
+      .populate("employee")
       .sort(sortParams);
 
     console.log(JSON.stringify(queryParams["$and"]));

@@ -12,9 +12,15 @@ export const getInvoice = (invoiceId) => {
     return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/get/" + invoiceId);
 }
 
-export const postToTax = (invoiceId) => {
-    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/postToTax/" + invoiceId);
+export const postToTaxTypeIncome = (invoiceId) => {
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/postToTaxTypeIncome/" + invoiceId);
 }
+
+
+export const postToTaxTypeRevertedIncome = (invoiceId) => {
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/postToTaxTypeRevertedIncome/" + invoiceId);
+}
+
 
 
 

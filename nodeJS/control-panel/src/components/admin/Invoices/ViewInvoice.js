@@ -2,7 +2,7 @@ import { CSSTransition } from 'react-transition-group';
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { hasPermission } from "../utils/auth";
-import { getInvoice, removeInvoice, updateInvoice, postToTax } from "./InvoicesAPI";
+import { getInvoice, removeInvoice, updateInvoice, postToTaxTypeIncome , postToTaxTypeRevertedIncome } from "./InvoicesAPI";
 import { Helmet } from "react-helmet";
 import {
   MdOutlineReceiptLong,
@@ -98,12 +98,31 @@ const ViewInvoice = (props) => {
 
   const doPostToTax = (data) => {
     setLoading(true);
-    postToTax(invoice._id).then(res => {
+    postToTaxTypeIncome(invoice._id).then(res => {
       setLoading(false);
-      setInvoice({ ...invoice, status: 'posted' });
+    //  setInvoice({ ...invoice, status: 'posted' });
       console.log("success invoice ......");
       // window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
-      // window.location.href =  "/admin/invoices/ViewInvoice/" +invoice._id;
+       window.location.href =  "/admin/invoices/ViewInvoice/" +invoice._id;
+      //console.log(res.data);
+    }).catch(e => {
+      console.log("error post to tax");
+      console.log(e);
+      setLoading(false);
+    });
+    console.log(invoice);
+    console.log(data);
+  };
+
+
+  const doPostRevertedInvoice = (data) => {
+    setLoading(true);
+    postToTaxTypeRevertedIncome(invoice._id).then(res => {
+      setLoading(false);
+      //setInvoice({ ...invoice, reverted_Status: 'posted' });
+      console.log("success invoice ......");
+      // window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
+      window.location.href =  "/admin/invoices/ViewInvoice/" +invoice._id;
       //console.log(res.data);
     }).catch(e => {
       console.log("error post to tax");
@@ -156,34 +175,75 @@ const ViewInvoice = (props) => {
                
               </div>
 
-              <div className='col col-auto'>
+              <div className='col col-auto text-center'>
               {invoice && invoice.responseXML ?(<>
                   <QRCode
                     title="GeeksForGeeks"
                     value={''+JSON.parse(invoice.responseXML).EINV_QR}
                     bgColor={'white'}
-                    fgColor={'#1f224f'}
+                    fgColor={'#18bc9c'}
                     size={100}
-                  /></>):null}
+                  />
+                   <div className="pt-3"> {t("invoice.PostedInvoiceQRCode")}</div>
+                  </>):null}
               </div>
+
+
+              <div className='col col-auto text-center'>
+              {invoice && invoice.revertedXMLResponse ?(<>
+                  <QRCode
+                    title="GeeksForGeeks"
+                    value={''+JSON.parse(invoice.revertedXMLResponse).EINV_QR}
+                    bgColor={'white'}
+                    fgColor={'#e74c3c'}
+                    size={100}
+                  />
+                   <div className="pt-3"> {t("invoice.RevertedInvoiceQRCode")}</div>
+                  </>):null}
+              </div>
+
             </div>
 
               <div className="row text-right d-print-none">
-
-                <div className='col text-start mb-3'>
-                  {invoice && invoice.responseXML ?(<>
+              
+                <div className='col text-start mb-3'> 
+                {/* <span> test : {JSON.parse(invoice.responseXML).EINV_QR}</span> */}
+                  { invoice && invoice.responseXML ?(<>
                   <QRCode
                     title="GeeksForGeeks"
                     value={''+JSON.parse(invoice.responseXML).EINV_QR}
                     bgColor={'white'}
-                    fgColor={'#1f224f'}
+                    fgColor={'#18bc9c'}
                     size={150}
-                  /></>):null}
+                  />
+                 
+                   <div className="pt-3"> {t("invoice.PostedInvoiceQRCode")}</div>
+                  </>):null}
                   
                   
                 </div>
+
+                <div className='col text-start mb-3'>
+                  {invoice && invoice.revertedXMLResponse ?(<>
+                  <QRCode
+                    title="GeeksForGeeks"
+                    value={''+JSON.parse(invoice.revertedXMLResponse).EINV_QR}
+                    bgColor={'white'}
+                    fgColor={'#e74c3c'}
+                    size={150}
+                  />
+                  <div className="pt-3">  {t("invoice.RevertedInvoiceQRCode")} </div>
+                  </>):null}
+                  
+                  
+                </div>
+                
                 <div class="mb-3  col justify-content-end">
 
+                <button type='button' className='btn btn-lg btn-dark d-print-none' onClick={() => {window.print()}}>
+                      <MdPrint size={28} />
+                    </button>
+                    
 
                   {
                     (invoice.status != "posted") &&
@@ -198,16 +258,13 @@ const ViewInvoice = (props) => {
                   }
 
                   {
-                    (invoice.status == "posted") &&
+                      
+                    (invoice.status == "posted" && invoice.reverted_Status != "posted" ) &&
                     (<>
-                  
-                    <button type='button' className='btn btn-lg btn-dark d-print-none' onClick={() => {window.print()}}>
-                      <MdPrint size={28} />
-                    </button>
                     <button
                       type="button"
-                      className="btn btn-success btn-lg mx-2 d-print-none"
-                      onClick={() => { console.log('reverted ....') }}
+                      className="btn btn-danger btn-lg mx-2 d-print-none"
+                      onClick={doPostRevertedInvoice}
                     >
                       <RiRefund2Fill size={20} />
                       {t("invoice.revertInvoice")}
@@ -238,6 +295,7 @@ const ViewInvoice = (props) => {
                   </div>
                 </div>
 
+              
                 <div className="mb-3 col ">
                   <div className="col col-auto"> {t("invoice.status")}</div>
 
@@ -246,8 +304,18 @@ const ViewInvoice = (props) => {
                   </div>
                 </div>
 
+                <div className="mb-3 col ">
+                  <div className="col col-auto"> {t("invoice.reverted_Status")}</div>
+
+                  <div className="col">
+                    {invoice.reverted_Status}
+                  </div>
+                </div>
+
+
+
                 <div className="mb-3 col "></div>
-                <div className="mb-3 col "></div>
+                
               </div>
 
               <div className="row">

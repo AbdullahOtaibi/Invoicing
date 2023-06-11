@@ -78,7 +78,7 @@ const ContactAppointments = (props) => {
               <th>End</th>
               <th> Remining Time </th>
               <th>Note</th>
-              
+              <th>Employee</th>
             </tr>
           </thead>
           <tbody>
@@ -90,7 +90,7 @@ const ContactAppointments = (props) => {
                     <td>{moment(a.end).format("DD/MM/yyyy hh:mm A")}</td>
                     <td>{moment(a.start).fromNow()}  </td>
                     <td>{a.note}</td>
-                  
+                    <td> {a.employee? a.employee.contactName : ""} </td>
                 </tr>))
             }</>):(<></>)}
           </tbody>

@@ -63,6 +63,7 @@ const CreateInvoice = (props) => {
     note: "",
     postedXML: "",
     responseXML: "",
+    AdditionalDocumentReference_uuid_Type_Reverted: uuidv4(),
   });
 
   //#region useState

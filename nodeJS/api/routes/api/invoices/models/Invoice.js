@@ -138,7 +138,13 @@ const InvoiceSchema = new Schema({
     postedXML:String, 
     encryptPostedXML: String,
     responseXML: String ,
-    developerCommnet: String
+    developerCommnet: String,
+    AdditionalDocumentReference_uuid_Type_Reverted:String,
+    reverted_Status:String,
+    revertedXML:String, 
+    encrypRevertedXML:String,
+    revertedXMLResponse:String, 
+    RevertedDate:Date
 }, { collection: 'Invoices' });
 
 
