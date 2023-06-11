@@ -272,14 +272,18 @@ className="mb-3 " >
 
 </Tab>
 
-<Tab eventKey="invoices" title={t("sidebar.invoices")} tabClassName="tab-item">
-  <ContactInvoices contactId={contactId} />
-</Tab>
 
-<Tab eventKey="appointments" title={t("Appointments")} tabClassName="tab-item">
+{contact.contactType != "Employee" && <Tab eventKey="invoices" title={t("sidebar.invoices")} tabClassName="tab-item">
+  <ContactInvoices contactId={contactId} />
+</Tab>} 
+
+{contact.contactType != "Employee" ? (<Tab eventKey="appointments" title={t("Appointments") + " not empl"} tabClassName="tab-item">
   <ContactAppointments contactId={contactId} />
 
-</Tab>
+</Tab>) :  (<Tab eventKey="appointments" title={t("Appointments") + " is emp"} tabClassName="tab-item">
+  <ContactAppointments employeeId={contactId} />
+</Tab>)}
+
 
 </Tabs>
       ) : "Not Found"}

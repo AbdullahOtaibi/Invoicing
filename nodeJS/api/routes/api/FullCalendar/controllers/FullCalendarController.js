@@ -26,6 +26,7 @@ router.post("/filter", verifyToken, async (req, res) => {
     let clientId = filters.clientId || null;
     let deleted = filters.deleted || false;
     let status = filters.status || null;
+    let employeeId = filters.employeeId|| null; 
     let InvoiceBy = filters.InvoiceBy || "_idDesc";
     result.page = page;
     console.log("result.page:" + result.page);
@@ -55,7 +56,10 @@ router.post("/filter", verifyToken, async (req, res) => {
       queryParams["$and"].push({ contact: clientId });
    
     }
-
+    if(employeeId) 
+    {
+      queryParams["$and"].push({ employee: employeeId });
+    }
     queryParams["$and"].push({
       "companyID": {
         $eq: req.user.companyId,

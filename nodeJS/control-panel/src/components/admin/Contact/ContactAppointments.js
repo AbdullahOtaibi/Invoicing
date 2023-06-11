@@ -43,10 +43,18 @@ const ContactAppointments = (props) => {
     setLoading(true);
 
     setPage(newPage);
-    getContactAppointments({
+    let filter= (props.contactId? {
       page: newPage,
       clientId: props.contactId,
-    })
+    } : 
+    {
+      page: newPage,
+      employeeId: props.contactId,
+    }
+     ) 
+
+    
+    getContactAppointments(filter)
       .then((data) => {
         setLoading(false);
         setAppointments(data.items || []);
