@@ -104,10 +104,10 @@ defaultActiveKey={"info"}
 transition={false}
 id="noanim-tab-example"
 className="mb-3 " >
-<Tab eventKey="info" title={t("contact.ContactInformation")} tabClassName="tab-item">
+<Tab eventKey="info" title={t("contact.ContactInformation") } tabClassName="tab-item">
   <br />
   <div className="mb-3 row ">
-    <div className="col col-auto text-info">{t("contact.ContactInformation")}</div>
+    <div className="col col-auto text-info">{t("contact.ContactInformation")} </div>
     <div className="col">
       <hr />
     </div>

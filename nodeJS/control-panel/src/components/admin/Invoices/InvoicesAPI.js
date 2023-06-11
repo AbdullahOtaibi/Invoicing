@@ -24,9 +24,6 @@ export const postToTaxTypeRevertedIncome = (invoiceId) => {
 
 
 
-
-
-
 export const sendTocompanies = (invoiceId) => {
     return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/sendTocompanies/" + invoiceId);
 }

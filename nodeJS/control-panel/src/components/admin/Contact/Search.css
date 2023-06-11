@@ -21,7 +21,7 @@
     cursor: pointer;
 }
 .searchItem:hover{
-background-color: #fff !important;  /*#3498db !important*/
+background-color: #F0F0F0 !important;   /*#3498db !important*/
 }
 
  h5.contactInfo {

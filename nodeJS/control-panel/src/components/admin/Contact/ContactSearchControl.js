@@ -89,12 +89,16 @@ const ContactSearchControl = (props) => {
           {contactItems
             ? contactItems.map((item) => (
                 <>
+               
                   <li
                     className="searchItem  list-group-item list-group-item-light"
                     onClick={() => {
                       handleSelectContact(item);
                     }}
                   >
+                    {(props.contactType && props.contactType.length == 1 && props.contactType[0] == "Employee")? <div>{ item.contactName}</div> :
+                    (
+                    
                     <div className="row">
                       <div className="mb-3 col ">
                         <h5 className="mt-2 text-info">
@@ -135,52 +139,8 @@ const ContactSearchControl = (props) => {
 
                       </div>
                     </div>
-
-                    {/* <ul class="list-unstyled text-smoke text-smoke">
-                          <li class="d-flex">
-                            {" "}
-                            <h5
-                              className="contactInfo"
-                            >
-                              {" "}
-                             { t("contact.searchContactInfo")}
-                            </h5>
-                          </li>
-                          <li class="d-flex pl-2">
-                            {" "}
-                            <MdContactPage size={25} />{" "}
-                            <span className="text-secondary">
-                              {" "}
-                              {item.contactName}
-                            </span>
-                          </li>
-                          <li class="d-flex pl-2">
-                            {" "}
-                            <MdPhone size={25} />{" "}
-                            <span className="text-secondary"> {item.mobile}</span>
-                          </li>
-                          <li class="d-flex">
-                            {" "}
-                            <h5 className="mt-2 subContactInfo" >
-                              {" "}
-                             { t("contact.searchSubContactInfo")}
-                            </h5>
-                          </li>
-                          <li class="d-flex pl-2">
-                            {" "}
-                            <MdContactPage size={25} />{" "}
-                            <span className="text-secondary">
-                            {item.subContactName? item.subContactName: t("contact.searchContactEmpty")}
-                            </span>
-                          </li>
-                          <li class="d-flex pl-2">
-                            {" "}
-                            <MdPhone size={25} />{" "}
-                            <span className="text-secondary">
-                            {item.subContactMobile?item.subContactMobile:  t("contact.searchContactEmpty")}
-                            </span>
-                          </li>
-                        </ul> */}
+                    )
+                   }
                   </li>
                 </>
               ))
