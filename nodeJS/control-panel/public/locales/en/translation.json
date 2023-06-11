@@ -522,6 +522,7 @@
 "BeingDeleteingTheContact" : "Being Deleteing The Contact",
 "searchContactEmpty" : "Not Found",
 "searchContactInfo" : "Contact Info:" ,
-"searchSubContactInfo" : "Sub contact Info:"
+"searchSubContactInfo" : "Sub contact Info:",
+"employeeAppointments" : "Employee Appointments"
 }
 }

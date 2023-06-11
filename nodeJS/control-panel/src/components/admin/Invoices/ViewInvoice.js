@@ -206,7 +206,7 @@ const ViewInvoice = (props) => {
 
               <div className="row text-right d-print-none">
               
-                <div className='col text-start mb-3'> 
+                <div className='col text-start mb-3 text-center'> 
                 {/* <span> test : {JSON.parse(invoice.responseXML).EINV_QR}</span> */}
                   { invoice && invoice.responseXML ?(<>
                   <QRCode
@@ -223,7 +223,7 @@ const ViewInvoice = (props) => {
                   
                 </div>
 
-                <div className='col text-start mb-3'>
+                <div className='col text-start mb-3 text-center'>
                   {invoice && invoice.revertedXMLResponse ?(<>
                   <QRCode
                     title="GeeksForGeeks"

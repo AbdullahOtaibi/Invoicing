@@ -277,10 +277,10 @@ className="mb-3 " >
   <ContactInvoices contactId={contactId} />
 </Tab>} 
 
-{contact.contactType != "Employee" ? (<Tab eventKey="appointments" title={t("Appointments") + " not empl"} tabClassName="tab-item">
+{contact.contactType != "Employee" ? (<Tab eventKey="appointments" title={t("Appointments") } tabClassName="tab-item">
   <ContactAppointments contactId={contactId} />
 
-</Tab>) :  (<Tab eventKey="appointments" title={t("Appointments") + " is emp"} tabClassName="tab-item">
+</Tab>) :  (<Tab eventKey="appointments" title={t("contact.employeeAppointments") } tabClassName="tab-item">
   <ContactAppointments employeeId={contactId} />
 </Tab>)}
 

@@ -49,7 +49,7 @@ const ContactAppointments = (props) => {
     } : 
     {
       page: newPage,
-      employeeId: props.contactId,
+      employeeId: props.employeeId,
     }
      ) 
 
