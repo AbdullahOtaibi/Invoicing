@@ -55,14 +55,6 @@ const ListInvoices = (props) => {
             document.body.appendChild(link);
             link.click();
         });
-       
-
-
-        /* getInvoicesAsExcel({}).then(data => {
-            
-          alert(JSON.stringify(data));
-
-        }); */
     }
 
 
