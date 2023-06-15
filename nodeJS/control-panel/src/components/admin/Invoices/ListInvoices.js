@@ -14,6 +14,7 @@ import Listinv from "./ListInv"
 import './ListInvoice.css'
 import InvoiceSearch from './InvoiceSearch'
 import { getInvoicesAsExcel } from './InvoicesAPI'
+import { downloadXLSFile } from '../../../services/ApiClient';
 
 
 const ListInvoices = (props) => {
@@ -44,13 +45,27 @@ const ListInvoices = (props) => {
     const [searchCount, setSearchCount] = useState(0);
     const [filter, setFilter] = useState(null);
 
-    const downloadExcel = () => {
-        getInvoicesAsExcel({}).then(data => {
+    const downloadExcel =  () => {
+        const outputFilename = `${Date.now()}.xls`;
+        downloadXLSFile('/v1/invoices/filterExcel').then(url => {
+           // alert(url);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', outputFilename);
+            document.body.appendChild(link);
+            link.click();
+        });
+       
+
+
+        /* getInvoicesAsExcel({}).then(data => {
             
           alert(JSON.stringify(data));
 
-        });
+        }); */
     }
+
+
 
     const searchFilterChanged = (newFilter) => {
         //alert(JSON.stringify(newFilter));
@@ -115,6 +130,7 @@ const ListInvoices = (props) => {
                             <div className="table-responsive">
                                 <div ckassName='row'>
                                     <div className='col'>
+                                       
                                         <button type='button' className='btn btn-success' onClick={downloadExcel}>
                                             <RiFileExcel2Line size={20} /> Download Excel
                                         </button>
