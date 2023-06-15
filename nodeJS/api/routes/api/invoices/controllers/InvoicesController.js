@@ -295,12 +295,12 @@ router.post("/filterExcel", verifyToken, async (req, res) => {
 
     fs.writeFileSync(fullDirectoryPath + fileTime + '.xlsx', xls, 'binary');
     console.log(jsonArray);
-    fs.writeFileSync('data.xlsx', xls, 'binary');
+    //fs.writeFileSync('data.xlsx', xls, 'binary');
 
     result.fileUrl = fileTime + '.xlsx';
     result.items = [];
-    //res.xls('data.xlsx', jsonArray);
-     res.json(result);
+    res.xls('data.xlsx', jsonArray);
+   //  res.json(result);
 
     console.log("out.....");
   } catch (ex) {
@@ -343,7 +343,7 @@ router.post("/count", verifyToken, async (req, res) => {
     result.count = count;
     result.status = status;
     res.json(result);
-
+    
     console.log("out.....");
   } catch (ex) {
     console.log(ex);
