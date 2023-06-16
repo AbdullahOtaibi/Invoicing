@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+var ObjectId = mongoose.Types.ObjectId;
+
 const verifyToken = require("../../utils/auth");
 
 const Invoice = require("../models/Invoice");
@@ -366,14 +368,16 @@ router.post("/DachboardSummary", verifyToken, async (req, res) => {
     console.log("status1:" + status1);
 
     let q = [
+      
       {
         $match: {
           status: status1,
           "accountingSupplierParty.partyTaxScheme.companyID": {
             $eq: req.user.companyId,
           },
+          company:   new ObjectId(req.user.company),
           deleted: false,
-          deleted:false,
+         
              /* "company": {
             $eq: req.user.company,
             },*/
@@ -385,7 +389,7 @@ router.post("/DachboardSummary", verifyToken, async (req, res) => {
          // company: ObjectId('64198cc7309971483879c66,5'),
          //company: '64198cc7309971483879c665',
          //status: "new" ,
-         company:  req.user.company,
+         
          //"company" : ObjectId('64198cc7309971483879c665'),
           //"company": ObjectId('64198cc7309971483879c665'),
           //company : ObjectId('64198cc7309971483879c665')
