@@ -261,7 +261,8 @@
     "incomeSourceSequence" : "Income Source Sequence",
     "invoiceCategory": "Invoice Category" ,
     "clientId": "Client ID", 
-    "clientSecret": "Client Secret"
+    "clientSecret": "Client Secret",
+    "subscriptionExpiryDate":"Subscription Expiry Date"
   },
   "countries":{
     "countryCode":"Country Code",

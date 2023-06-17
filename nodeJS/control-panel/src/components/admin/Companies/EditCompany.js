@@ -12,12 +12,14 @@ import { Editor } from '@tinymce/tinymce-react'
 import { MdSave, MdClose } from "react-icons/md";
 import { hasPermission } from '../utils/auth';
 import { upload } from '../../../services/ApiClient'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const EditCompany = (props) => {
 
     const upload = () => {
         upload(process.env.REACT_APP_API_BASE_URL + "/v1/file-upload/upload-image", {}, null).then(res => {
-           // setFileName(null);
+            // setFileName(null);
             //fileRef.current.value = null;
             //console.log(res);
             //setUploading(false);
@@ -26,9 +28,9 @@ const EditCompany = (props) => {
                 props.handleUpload({ url: res.path, uploadFolder: res.uploadFolder, thumbnailUrl: res.thumbnailUrl });
             }
         }).catch(e => {
-           // setUploading(false);
+            // setUploading(false);
             //console.log(e.message);
-           // toast.error(e.message);
+            // toast.error(e.message);
         });
     }
 
@@ -166,6 +168,14 @@ const EditCompany = (props) => {
         setcompany(cloned);
     }
 
+    const updateExpiryDate = (date) => {
+        let cloned = JSON.parse(JSON.stringify(company));
+        cloned.subscriptionExpiryDate = date;
+        setcompany(cloned);
+    }
+
+
+
 
 
 
@@ -278,12 +288,12 @@ const EditCompany = (props) => {
         console.log(data);
     }
 
-     const imageUploaded = uploadedImage => {
-         let cloned = JSON.parse(JSON.stringify(company));
-         cloned.logoUrl = uploadedImage.url;
-         setcompany(cloned);
+    const imageUploaded = uploadedImage => {
+        let cloned = JSON.parse(JSON.stringify(company));
+        cloned.logoUrl = uploadedImage.url;
+        setcompany(cloned);
 
-     }
+    }
 
 
 
@@ -304,15 +314,15 @@ const EditCompany = (props) => {
                 <br />
 
                 <form>
-                     
+
                     <div className="mb-3">
-                        <img src={company.logoUrl ? "/uploads/" + company.logoUrl : "/images/no-image.png"} 
-                        style={{ width: '200px', hwight: '200px' }}
-                        alt="Logo"
+                        <img src={company.logoUrl ? "/uploads/" + company.logoUrl : "/images/no-image.png"}
+                            style={{ width: '200px', hwight: '200px' }}
+                            alt="Logo"
                         />
                         <br /><br />
                         <UploadImage handleUpload={imageUploaded} />
-                    </div> 
+                    </div>
 
 
 
@@ -397,6 +407,22 @@ const EditCompany = (props) => {
                     </div>
 
 
+                    <div className="mb-3">
+                        <label htmlFor="subscriptionExpiryDate" className="form-label">{t("companies.subscriptionExpiryDate")} </label>
+
+                        <DatePicker
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            selected={company && company.subscriptionExpiryDate ?new Date(company.subscriptionExpiryDate): Date.now()}
+                            onChange={(date) => {
+                                updateExpiryDate(date);
+                            }}
+                        />
+
+
+                        {/* <input type="text" className={fieldClass(company.subscriptionExpiryDate)} placeholder={t("companies.subscriptionExpiryDate")} id="subscriptionExpiryDate" name="clientSecret" value={company.subscriptionExpiryDate} onChange={updateExpiryDate} /> */}
+                    </div>
+
 
 
 
@@ -406,6 +432,8 @@ const EditCompany = (props) => {
                             <label className="custom-control-label" htmlFor="publishedCheck">{t("dashboard.published")}</label>
                         </div>
                     </div>
+
+
 
 
 

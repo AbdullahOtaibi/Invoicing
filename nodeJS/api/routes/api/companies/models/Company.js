@@ -16,8 +16,8 @@ const AddressSchema = new Schema({
     location: {
         lng: Number,
         lat: Number
-    } ,
-   
+    },
+
 
 });
 
@@ -35,7 +35,7 @@ const CompanySchema = new Schema({
         infoEmail: String,
         salesEmail: String,
         fax: String,
-        facebook: String, 
+        facebook: String,
         instagram: String,
         youtube: String,
         website: String
@@ -49,17 +49,21 @@ const CompanySchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ProductCategory'
     }],
-    country:{
+    country: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Country'
     },
     published: Boolean,
     notesFromCompany: String,
-    companyInvoiceID:String, 
-    incomeSourceSequence:String,
-    invoiceCategory:String,
-    clientId:String, 
-    clientSecret:String,  
+    companyInvoiceID: String,
+    incomeSourceSequence: String,
+    invoiceCategory: String,
+    clientId: String,
+    clientSecret: String,
+    subscriptionExpiryDate: {
+        type: Date,
+        default: Date.now
+    }
 }, { collection: 'Companies' });
 
 
