@@ -4255,10 +4255,14 @@
  .nav-link {
    display: block;
    padding: 0.5rem 2rem;
+   color: #fff;
+   ;
  }
  
  .nav-link:hover, .nav-link:focus {
    text-decoration: none;
+   color: #fff;
+  text-shadow: 2px 2px 4px #fff;
  }
  
  .nav-link.disabled {
@@ -4269,6 +4273,10 @@
  
  .nav-tabs {
    border-bottom: 1px solid #ecf0f1;
+ }
+
+ #sidebar ul li a:hover{
+  text-shadow: 2px 2px 4px #fff;
  }
  
  .nav-tabs .nav-link {

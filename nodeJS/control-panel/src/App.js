@@ -1,9 +1,9 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/App.css';
 import 'react-toastify/dist/ReactToastify.css'
 import { languages } from './globals';
 import { getEnabledLanguages } from './services/TranslationsService'
-
+import './assets/css/bootstrap.min.css'
 
 
 
