@@ -47,10 +47,10 @@ const InvoiceSearch = (props) => {
         
     }
 
-    return (<><div className='invoiceSearch'>
+    return (<><div className='invoiceSearch mb-5'>
         <div className='card'>
             <form>
-                <div className='row'>
+                <div className='row mt-3' >
                     <div className="mb-3 col ">
                         <div className="col col-auto">
                             {t("sidebar.Contact")}
@@ -113,10 +113,10 @@ const InvoiceSearch = (props) => {
 
                 </div>
 
-                <div className='row'>
+                <div className='row mb-3'>
                     <div className='col text-end px-4 mb-2'>
-                        <button type='button' className='btn btn-danger' onClick={() => { visiblityChanged(!searchVisible) }}><MdClose /> {t("close")}</button>
-                        <button type='button' className='btn btn-primary mx-2' onClick={doSearch}><MdSearch /> {t("search")}</button>
+                        <button type='button' className='btn btn-warning' onClick={() => { visiblityChanged(!searchVisible) }}><MdClose /> {t("close")}</button>
+                        <button type='button' className='btn btn-success mx-2' onClick={doSearch}><MdSearch /> {t("search")}</button>
                     </div>
                 </div>
             </form>

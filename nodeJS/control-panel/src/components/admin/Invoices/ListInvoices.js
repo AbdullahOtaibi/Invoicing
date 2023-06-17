@@ -92,8 +92,11 @@ const ListInvoices = (props) => {
                         </div>
 
                         <div className='col-md-4 col-sm-6' style={{ textAlign: 'end' }}>
-                            <button type="button" className="add-btn mx-1" onClick={() => { setSearchVisible(!searchVisible); }} ><MdSearch size={20} />  {t("search")}</button>
-                            {hasPermission('invoices.modify') ? (<Link className="add-btn" to={"/admin/invoices/create"}><MdAdd size={20} />  {t("dashboard.add")}</Link>) : null}
+                            <button type="button" className="btn-success btn-lg mx-1" onClick={() => { setSearchVisible(!searchVisible); }} ><MdSearch size={20} />  {t("search")}</button>
+                            {hasPermission('invoices.modify') ? (
+                            <a className="add-btn btn-info btn-lg" href={"/admin/invoices/create"}><MdAdd size={20} />  {t("dashboard.add")}</a>) : null
+                           
+                            }
                         </div>
                     </div>
 
@@ -123,7 +126,7 @@ const ListInvoices = (props) => {
                                 <div ckassName='row'>
                                     <div className='col'>
                                        
-                                        <button type='button' className='btn btn-success' onClick={downloadExcel}>
+                                        <button type='button' className='btn btn-success mb-3 mt-3' onClick={downloadExcel}>
                                             <RiFileExcel2Line size={20} /> Download Excel
                                         </button>
                                     </div>

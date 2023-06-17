@@ -181,6 +181,22 @@ router.post("/filter", verifyToken, async (req, res) => {
   }
 });
 
+
+function getInvoiceDate(x) {
+  //let x = invoice.issuedDate.toString();
+  let d = new Date(x);
+  let str =
+    d.getFullYear() +
+    "/" +
+    (d.getMonth().length == 2
+      ? parseInt(d.getMonth()) + 1
+      : "0" + (parseInt(d.getMonth()) + 1)) +
+    "/" +
+    d.getDate();
+  return str;
+}
+
+
 router.post("/filterExcel", verifyToken, async (req, res) => {
   if (!req.user) {
     res.json({ message: "unauthorized access" });
@@ -287,7 +303,7 @@ router.post("/filterExcel", verifyToken, async (req, res) => {
       .skip(page * pageSize)
       .limit(pageSize)
       .exec("find");
-    let jsonArray = result.items.map(item => { return { serial: ('' + item.seqNumber), allowance:item.legalMonetaryTotal.allowanceTotalAmount.toFixed(3),taxInclusive:item.legalMonetaryTotal.taxInclusiveAmount.toFixed(3), name:item.accountingCustomerParty.registrationName, date: item.issuedDate } });
+    let jsonArray = result.items.map(item => { return { serial: ('' + item.seqNumber), allowance:item.legalMonetaryTotal.allowanceTotalAmount.toFixed(3),taxInclusive:item.legalMonetaryTotal.taxInclusiveAmount.toFixed(3), name:item.accountingCustomerParty.registrationName, date: getInvoiceDate(item.issuedDate.toString()) } });
     var xls = json2xls(jsonArray);
     let fileTime = Date.now();
     let fullDirectoryPath = process.env.UPLOAD_ROOT + 'excel';

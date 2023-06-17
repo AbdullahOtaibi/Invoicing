@@ -107,23 +107,23 @@ const ListInv = (props) => {
                 <thead>
                     <tr>
                         <th>
-                            <a href="#" >
+                          
                                 {t("invoice.invoiceNo")}
-                            </a>
+                          
 
                         </th>
-                        <th>  <a href="#" > {t("invoice.TaxExclusiveAmount")}  </a></th>
-                        <th>  <a href="#" > {t("invoice.AllowanceTotalAmount")}</a></th>
-                        <th>  <a href="#" > {t("invoice.TaxInclusiveAmount")}</a></th>
+                        <th>  {t("invoice.TaxExclusiveAmount")} </th>
+                        <th>  {t("invoice.AllowanceTotalAmount")}</th>
+                        <th>  {t("invoice.TaxInclusiveAmount")}</th>
                         <th>
-                            <a href="#" >
+                           
                                 {t("invoice.fullName")}
-                            </a>
+                           
                         </th>
                         <th>
-                            <a href="#" >
+                          
                                 {t("invoice.issuedDate")}
-                            </a>
+                            
                         </th>
 
 

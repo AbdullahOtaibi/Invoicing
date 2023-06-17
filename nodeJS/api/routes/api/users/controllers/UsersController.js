@@ -294,6 +294,11 @@ router.post('/create', verifyToken, async (req, res) => {
     var password = req.body.password;
     var salt = await bcrypt.genSalt(10);
     var hash = await bcrypt.hash(password, salt);
+    let exists = await User.findOne({email: req.body.email});
+    if(exists){
+        res.json({success: false, message: "Email already exists."});
+        return;
+    }
     await sendEmail(req.body.email, "New User Registeres", "Welcome");
     const newObject = new User({
         ...req.body,
@@ -301,6 +306,7 @@ router.post('/create', verifyToken, async (req, res) => {
     });
     newObject._id = new mongoose.Types.ObjectId();
     await newObject.save();
+    newObject.success = true;
     res.json(newObject);
 });
 

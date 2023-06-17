@@ -8,6 +8,8 @@ import { MdPerson } from "react-icons/md";
 import { getCompanies } from '../Companies/CompaniesAPI'
 import { getCountries } from '../../../services/CountriesService'
 import { hasPermission } from '../utils/auth';
+//import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreateUser = (props) => {
 
@@ -77,14 +79,24 @@ const CreateUser = (props) => {
 
     const updateRole = (event) => {
         let cloned = JSON.parse(JSON.stringify(user));
-        cloned.roles = [];
-        cloned.roles.push(event.target.value)
-       
+        cloned.role={_id:  event.target.value};
+        //cloned.roles.push(event.target.value)
+       console.log("upaate role value : " + event.target.value);
         setUser(cloned);
     }
 
+
+    const viewItemValidMessage = (message) => {
+        toast.warning(message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      };
     
 
+    function isBlank(str) {
+        return !str || /^\s*$/.test(str);
+      }
+    
 
     const updateActive = (event) => {
         let cloned = JSON.parse(JSON.stringify(user));
@@ -92,6 +104,33 @@ const CreateUser = (props) => {
         setUser(cloned);
     }
 
+    function checkUserData() {
+     let isValid = true;
+       
+
+    if (isBlank(user.firstName)) {
+        viewItemValidMessage("Fill First Name");
+        isValid = false;
+      }
+        
+      if (isBlank(user.surName)) {
+        viewItemValidMessage("Fill Sur Name");
+        isValid = false;
+      }
+
+      if (isBlank(user.email)) {
+        viewItemValidMessage("Fill Email");
+        isValid = false;
+      }
+
+      if (isBlank(user.password)) {
+        viewItemValidMessage("Fill password");
+        isValid = false;
+      }
+
+     return isValid;
+        
+    }
 
 
     useEffect(() => {
@@ -123,15 +162,31 @@ const CreateUser = (props) => {
 
     const doPost = data => {
         setLoading(true);
-        createUser(user).then(res => {
-            setLoading(false);
-            toast.success(t("succeed"));
-            window.location.href = "/admin/users";
-        }).catch(e => {
-            setLoading(false);
-        })
-        console.log(user);
-        console.log(data);
+        if(!checkUserData()){ 
+            setLoading(false);  
+        }
+        else{
+         
+            createUser(user).then(res => { 
+                console.log("ABD:res : " + JSON.stringify(res));
+                if(res.success != false){
+    
+                    setLoading(false);
+                    toast.success(t("succeed"));
+                    window.location.href = "/admin/users/Edit/" + res._id;
+                }
+                else{
+                    setLoading(false);
+                    toast.error(res.message);
+                }
+    
+            }).catch(e => {
+                setLoading(false);
+            })
+            console.log(user);
+            console.log(data);
+        }
+    
     }
 
 
@@ -208,7 +263,7 @@ const CreateUser = (props) => {
 
                         <label className="labels">{t("users.roles")}</label>
                         <select className="form-control" placeholder={t("users.roles")}
-                            value={user.countryCode} onChange={updateRole} >
+                            value={user && user.role?user.role._id:''} onChange={updateRole} >
                             {roles.map(role => (<option key={role._id} value={role._id}>
                                 {role.name.english}
                             </option>))}
