@@ -20,7 +20,7 @@ const logMessage = (msg, ip) => {
     ipAddress: ip,
   });
   newLogEntry._id = new mongoose.Types.ObjectId();
-  newLogEntry.save().then((logEntry) => {});
+  newLogEntry.save().then((logEntry) => { });
 };
 const sendEmail = async (to, subject, body) => {
   let transporter = nodemailer.createTransport({
@@ -47,6 +47,7 @@ const sendEmail = async (to, subject, body) => {
 router.post("/login", async (req, res) => {
   const user = await User.findOne({ email: req.body.email })
     .populate("roles")
+    .populate("company")
     .populate({
       path: "roles",
       populate: {
@@ -62,6 +63,10 @@ router.post("/login", async (req, res) => {
   let userRoleName = null;
   let userRole = {};
   if (user) {
+    if(user.company && user.company.subscriptionExpiryDate <= Date.now()){
+      res.json({ message: "Subscription Expired", success: false });
+      return;
+    }
     if (req.body.SeqCompanyID == user.company.companyInvoiceID) {
       const password = req.body.password;
       const validPassword = await bcrypt.compare(password, user.password);
@@ -94,10 +99,10 @@ router.post("/login", async (req, res) => {
             register_date: user.register_date,
             permissions: userPermissions,
             role: userRoleName,
-            company: user.company?user.company._id: "", 
+            company: user.company ? user.company._id : "",
             companyName: user.company ? user.company.name.arabic : "",
             companyId: user.company ? user.company.companyInvoiceID : "",
-            logoUrl:user.company ? user.company.logoUrl : "",
+            logoUrl: user.company ? user.company.logoUrl : "",
             incomeSourceSequence: user.company
               ? user.company.incomeSourceSequence
               : "",
@@ -122,10 +127,10 @@ router.post("/login", async (req, res) => {
             id: user._id,
             permissions: userPermissions,
             role: userRoleName,
-            company: user.company?user.company._id: "", 
+            company: user.company ? user.company._id : "",
             companyName: user.company ? user.company.name.arabic : "",
             companyId: user.company ? user.company.companyInvoiceID : "",
-            logoUrl:user.company ? user.company.logoUrl : "",
+            logoUrl: user.company ? user.company.logoUrl : "",
             incomeSourceSequence: user.company
               ? user.company.incomeSourceSequence
               : "",
@@ -197,7 +202,7 @@ router.get("/oauth-login/:email", async (req, res) => {
         role: userRoleName,
         companyName: user.company ? user.company.name.arabic : "",
         companyId: user.company ? user.company.companyInvoiceID : "",
-        logoUrl:user.company ? user.company.logoUrl : "",
+        logoUrl: user.company ? user.company.logoUrl : "",
         incomeSourceSequence: user.company
           ? user.company.incomeSourceSequence
           : "",
@@ -222,7 +227,7 @@ router.get("/oauth-login/:email", async (req, res) => {
         role: userRoleName,
         companyName: user.company ? user.company.name.arabic : "",
         companyId: user.company ? user.company.companyInvoiceID : "",
-        logoUrl:user.company ? user.company.logoUrl : "",
+        logoUrl: user.company ? user.company.logoUrl : "",
         incomeSourceSequence: user.company
           ? user.company.incomeSourceSequence
           : "",
@@ -298,7 +303,7 @@ router.get("/oauth-profile/:token", async (req, res) => {
         role: userRoleName,
         companyName: user.company ? user.company.name.arabic : "",
         companyId: user.company ? user.company.companyInvoiceID : "",
-        logoUrl:user.company ? user.company.logoUrl : "",
+        logoUrl: user.company ? user.company.logoUrl : "",
         incomeSourceSequence: user.company
           ? user.company.incomeSourceSequence
           : "",
