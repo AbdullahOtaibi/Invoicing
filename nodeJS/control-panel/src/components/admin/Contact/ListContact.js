@@ -87,8 +87,9 @@ const ListContact = (props) => {
                         </div>
 
                         <div className='col-md-4 col-sm-6' style={{ textAlign: 'end' }}>
-                            <button type="button" className="add-btn mx-1" onClick={() => { setSearchVisible(!searchVisible); }} ><MdSearch size={20} />  {t("search")}</button>
-                            {hasPermission('invoices.modify') ? (<Link className="add-btn" to={"/admin/Contact/create"}><MdAdd size={20} />  {t("dashboard.add")}</Link>) : null}
+                            <button type="button" className="btn-success btn-lg mx-1" onClick={() => { setSearchVisible(!searchVisible); }} ><MdSearch size={20} />  {t("search")}</button>
+                            {hasPermission('invoices.modify') ? (
+                            <button className="add-btn btn-info btn-lg" href={"/admin/Contact/create"}><MdAdd size={20} />  {t("dashboard.add")}</button>) : null}
                         </div>
                     </div>
 

@@ -82,7 +82,7 @@ const ContactSearch = (props) => {
     return (<><div className='invoiceSearch'>
         <div className='card'>
             <form>
-                <div className='row'>
+                <div className='row mt-3'>
                     <div className="mb-3 col ">
                         <div className="col col-auto">
                             {t("contact.contactName")}
@@ -146,9 +146,9 @@ const ContactSearch = (props) => {
 
                 </div>
 
-                <div className='row'>
+                <div className='row mb-3'>
                     <div className='col text-end px-4 mb-2'>
-                        <button type='button' className='btn btn-danger' onClick={() => { visiblityChanged(!searchVisible) }}><MdClose /> {t("close")}</button>
+                        <button type='button' className='btn btn-secondary' onClick={() => { visiblityChanged(!searchVisible) }}><MdClose /> {t("close")}</button>
                         <button type='button' className='btn btn-primary mx-2' onClick={doSearch}><MdSearch /> {t("search")}</button>
                     </div>
                 </div>

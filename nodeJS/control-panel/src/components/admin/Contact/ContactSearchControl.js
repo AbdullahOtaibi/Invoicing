@@ -25,7 +25,7 @@ const ContactSearchControl = (props) => {
 
   const updateSearchContactText = (event) => {
     setSelectedContactText(event.target.value);
-    if (event.target.value.length >= 3) {
+    if (event.target.value.length >= 3 ||  props.contactType[0] == "Employee" ) {
       let contactType = ["Client"];
       if (props.contactType) {
         contactType = props.contactType;
@@ -51,11 +51,27 @@ const ContactSearchControl = (props) => {
     props.handleSelectContact(null);
   };
 
+  
   const onBlurSearchContact = (event) => {
-    // event.preventDefault();
-    // setContactItems([]);
+     //event.preventDefault();
+     // setContactItems([]);
+     /*if(selectedId)
+     {
+      setContactItems([]);
+     }
+     */
   };
 
+/*
+const onBlurSearchContact = (item) => {
+  setSelectedId(item);
+  if (props.handleSelectContact) {
+    props.handleSelectContact(item);
+  }
+  setSelectedContactText(item.contactName);
+  setContactItems([]);
+};
+*/
   const [contactItems, setContactItems] = useState([]);
   const handleSelectContact = (item) => {
     setSelectedId(item);
@@ -73,7 +89,6 @@ const ContactSearchControl = (props) => {
           <MdSearch size={20} />
         </span>
         <input
-          //className="form-control"
           className={fieldClass1(selectedContactText)}
           placeholder="Type to search..."
           autoComplete="false"

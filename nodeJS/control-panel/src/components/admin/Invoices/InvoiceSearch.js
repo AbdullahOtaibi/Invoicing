@@ -115,8 +115,8 @@ const InvoiceSearch = (props) => {
 
                 <div className='row mb-3'>
                     <div className='col text-end px-4 mb-2'>
-                        <button type='button' className='btn btn-warning' onClick={() => { visiblityChanged(!searchVisible) }}><MdClose /> {t("close")}</button>
-                        <button type='button' className='btn btn-success mx-2' onClick={doSearch}><MdSearch /> {t("search")}</button>
+                        <button type='button' className='btn btn-secondary' onClick={() => { visiblityChanged(!searchVisible) }}><MdClose /> {t("close")}</button>
+                        <button type='button' className='btn btn-primary mx-2' onClick={doSearch}><MdSearch /> {t("search")}</button>
                     </div>
                 </div>
             </form>
