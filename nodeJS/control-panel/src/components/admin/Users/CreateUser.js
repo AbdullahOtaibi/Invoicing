@@ -4,7 +4,7 @@ import { createUser, getAllRoles } from './UsersAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
 import { ThreeDots } from  'react-loader-spinner'
-import { MdPerson } from "react-icons/md";
+import { MdPerson, MdCheckBox, MdCheckBoxOutlineBlank } from "react-icons/md";
 import { getCompanies } from '../Companies/CompaniesAPI'
 import { getCountries } from '../../../services/CountriesService'
 import { hasPermission } from '../utils/auth';
@@ -83,6 +83,37 @@ const CreateUser = (props) => {
         //cloned.roles.push(event.target.value)
        console.log("upaate role value : " + event.target.value);
         setUser(cloned);
+    }
+
+    const toggleRole = roleId => {
+        let cloned = JSON.parse(JSON.stringify(user));
+        if(cloned.roles == null){
+            cloned.roles = [];
+        }
+        let role = cloned.roles.filter(p => p == roleId).length;
+        if (role > 0) {
+            cloned.roles = cloned.roles.filter(p => p != roleId);
+        } else {
+            cloned.roles.push(roleId);
+        }
+        setUser(cloned);
+    }
+
+
+
+    const roleSelected = roleId => {
+        if(user.roles){
+            let role = user.roles.filter(p => p == roleId).length;
+            console.log(role);
+            if (role > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }else{
+            return false;
+        }
+        
     }
 
 
@@ -262,12 +293,24 @@ const CreateUser = (props) => {
                     <div className="mb-3">
 
                         <label className="labels">{t("users.roles")}</label>
-                        <select className="form-control" placeholder={t("users.roles")}
-                            value={user && user.role?user.role._id:''} onChange={updateRole} >
-                            {roles.map(role => (<option key={role._id} value={role._id}>
-                                {role.name.english}
-                            </option>))}
-                        </select>
+                        <table className='table'>
+
+                                {roles.map(role => (
+                                    <tr>
+                                        <td>
+                                            {roleSelected(role._id) ? (<button type="button" className="btn btn-sm" onClick={() => { toggleRole(role._id) }}> <MdCheckBox /></button>) : (<button type="button" className="btn btn-sm" onClick={() => { toggleRole(role._id) }}> <MdCheckBoxOutlineBlank /></button>)}
+                                            &nbsp;&nbsp;
+                                            {role.name.english}
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                    </tr>
+
+                                ))}
+
+
+                            </table>
 
                     </div>
 
