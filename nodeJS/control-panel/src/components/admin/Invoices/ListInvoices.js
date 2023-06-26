@@ -94,9 +94,12 @@ const ListInvoices = (props) => {
                         <div className='col-md-4 col-sm-6' style={{ textAlign: 'end' }}>
                             <button type="button" className="btn-success btn-lg mx-1" onClick={() => { setSearchVisible(!searchVisible); }} ><MdSearch size={20} />  {t("search")}</button>
                             {hasPermission('invoices.modify') ? (
-                            <a className="add-btn btn-info btn-lg" 
-                            href={"/admin/invoices/create"}><MdAdd size={20} />  
-                            {t("dashboard.add")}</a>) : null
+                    
+                            <Link className="add-btn btn-info btn-lg" to="/admin/invoices/create">
+                            <MdAdd size={20} /> &nbsp; {t("dashboard.add")}
+                          </Link>
+
+                            ) : null
                            
                             }
                         </div>
