@@ -92,8 +92,7 @@ const ListInvoices = (props) => {
                         </div>
 
                         <div className='col-md-4 col-sm-6' style={{ textAlign: 'end' }}>
-                            <button type="button" className="btn-success btn-lg mx-1" onClick={() => { setSearchVisible(!searchVisible); }} ><MdSearch size={20} />  {t("search")}</button>
-                            {hasPermission('invoices.modify') ? (
+                         {hasPermission('invoices.modify') ? (
                     
                             <Link className="add-btn btn-info btn-lg" to="/admin/invoices/create">
                             <MdAdd size={20} /> &nbsp; {t("dashboard.add")}
@@ -116,7 +115,7 @@ const ListInvoices = (props) => {
                         />
                     </div>
                     <br />
-                    {searchVisible ? (<InvoiceSearch searchVisible={searchVisible} searchFilterChanged={searchFilterChanged} visiblityChanged={(show) => { setSearchVisible(show) }} />) : null}
+                    
 
                     <Tabs
                         defaultActiveKey={status ? status : "all"}
@@ -128,14 +127,21 @@ const ListInvoices = (props) => {
 
                         <Tab eventKey="all" title={t("viewAll") + ' (' + searchCount + ')'} tabClassName="tab-item btn-dark">
                             <div className="table-responsive">
-                                <div ckassName='row'>
+                                <div ckassName='row mb-5 mt-5'>
                                     <div className='col'>
                                        
-                                        <button type='button' className='btn btn-success mb-3 mt-3' onClick={downloadExcel}>
+                                        <button type='button' className='btn btn-success btn-lg mr-3 ' onClick={downloadExcel}>
                                             <RiFileExcel2Line size={20} /> Download Excel
                                         </button>
+                                        <button  type='button' className='btn btn-success btn-lg mr-3 ' 
+                                         onClick={() => { setSearchVisible(!searchVisible); }} >
+                                            <MdSearch size={20} />  {t("search")}</button>
+
                                     </div>
                                 </div>
+
+                                {searchVisible ? (<InvoiceSearch searchVisible={searchVisible} searchFilterChanged={searchFilterChanged} visiblityChanged={(show) => { setSearchVisible(show) }} />) : null}
+
                                 <Listinv status="all" updateCount={setSearchCount} filter={filter} />
                             </div>
                         </Tab>
