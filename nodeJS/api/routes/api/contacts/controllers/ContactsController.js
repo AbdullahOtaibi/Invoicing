@@ -266,6 +266,7 @@ router.get("/search/:val", verifyToken, async (req, res) => {
     let queryParams = {
       deleted: false,
       company: req.user.company,
+      companyID: req.user.companyId,
       $or: [
         { contactName: { $regex: val, $options: "i" } },
         { subContactName: { $regex: val, $options: "i" } },
