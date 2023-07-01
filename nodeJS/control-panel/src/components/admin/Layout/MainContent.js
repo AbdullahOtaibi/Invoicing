@@ -126,6 +126,14 @@ const EditContact = lazy(() => import(/* webpackChunkName: "EditContact" */'../C
 const ViewContact = lazy(() => import(/* webpackChunkName: "ViewContact" */'../Contact/ViewContact'))
 
 
+
+const ListPackage = lazy(() => import(/* webpackChunkName: "ListPackage" */'../Package/ListPackage'))
+const CreatePackage = lazy(() => import(/* webpackChunkName: "CreatePackage" */'../Package/CreatePackage'))
+const EditPackage = lazy(() => import(/* webpackChunkName: "EditPackage" */'../Package/EditPackage'))
+const ViewPackage = lazy(() => import(/* webpackChunkName: "ViewPackage" */'../Package/ViewPackage'))
+
+
+
 const SignIn = lazy(() => import(/* webpackChunkName: "SignIn" */'../../SignIn/SignIn'));
 
 
@@ -273,6 +281,12 @@ const MainContent = ({notification, onHandleNotification}) => {
                     <Route path="/Contact/create" element={<CreateContact/>} />
                     <Route path="/Contact/view/:contactId" element={<ViewContact />} />
                     <Route path="/Contact/edit/:contactId" element={<EditContact/>} />
+
+                    <Route path="/Package" exact element={<ListPackage/>} />
+                    <Route path="/Package/create" element={<CreatePackage/>} />
+                    <Route path="/Package/view/:packageId" element={<ViewPackage />} />
+                    <Route path="/Package/edit/:packageId" element={<EditPackage/>} />
+
 
 
                     <Route path="/shippingCompanies" exact element={<ListShippingCompanies />} />

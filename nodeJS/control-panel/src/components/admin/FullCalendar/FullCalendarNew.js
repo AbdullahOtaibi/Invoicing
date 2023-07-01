@@ -37,6 +37,7 @@ const FullCalendarNew = (props) => {
   const [fullCalendar, setFullCalendar] = useState({
     deleted: false,
     companyID: localStorage.getItem("companyId"),
+    company: localStorage.getItem("company"),
    // status: "Scheduled" ,
     start: startDate,
     end: endDate,
