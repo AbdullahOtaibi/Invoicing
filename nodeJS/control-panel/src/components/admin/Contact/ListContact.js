@@ -62,13 +62,6 @@ const ListContact = (props) => {
     }
         , [filter])
 
-    //console.log("newPage:" +contactsPage) ;
-
-
-
-
-
-
 
     return (
         <div className="conatiner">
@@ -116,41 +109,40 @@ const ListContact = (props) => {
                             <thead>
                                 <tr>
                                     <th>
-                                        <a href="#" >
+                                      
                                             {t("contact.contactName")}
-                                        </a>
+                                    
 
                                     </th>
                                     <th>
-                                        <a href="#" >
+                                     
                                             {t("contact.contactType")}
-                                        </a>
+                                  
 
                                     </th>
                                     <th>
-                                        <a href="#" >
+                                      
                                             {t("contact.mobile")}
-                                        </a>
+                                     
 
                                     </th>
 
                                     <th>
-                                        <a href="#"  >
+                                      
                                             {t("contact.subContactName")}
-                                        </a>
+                                       
 
                                     </th>
 
                                     <th>
-                                        <a href="#" >
+                                        
                                             {t("contact.subContactMobile")}
-                                        </a>
-
+                                        
                                     </th>
                                     <th>
-                                        <a href="#" >
+                                      
                                             {t("contact.note")}
-                                        </a>
+                                     
 
                                     </th>
 

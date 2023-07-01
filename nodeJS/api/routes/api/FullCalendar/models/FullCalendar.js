@@ -6,6 +6,11 @@ const ObjectId = Schema.ObjectId;
 
 const FullCalendarSchema = new Schema({
     _id: ObjectId,
+    status: 
+    {
+        type:String, 
+        default: "Scheduled"
+    }, 
     companyID: String,
     contactName: String, 
     mobile:String, 

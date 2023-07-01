@@ -70,12 +70,13 @@ const FullCalenderList = (props) => {
               _id: item._id,
               start: new Date(item.start),
               end: new Date(item.end),
-              title: item.title,
+              title: item.title ,
               note: item.note,
               contactName: item.contactName,
               allDay: item.allDay,
               mobile: item.mobile,
-              employeeName: item.employeeName
+              employeeName: item.employeeName ,
+              status:  item.status
             };
           })
         );
@@ -120,6 +121,8 @@ const FullCalenderList = (props) => {
   ];
   */
 
+
+
   return (
     <>
       <div class="row mb-3">
@@ -159,6 +162,19 @@ const FullCalenderList = (props) => {
             }
             showAllEvents={true}
             localizer={localizer}
+            eventPropGetter={(event) => {
+              console.log(" event.status:"+ event.status )
+
+             let backgroundColor = "" ;
+                if( event.status == "Scheduled") 
+                backgroundColor = "RGBA(13,202,240,var(--bs-bg-opacity,1))" 
+                else if( event.status == "Completed") 
+                backgroundColor =  "#18bc9c" ;
+                else if( event.status == "In Complete") 
+                backgroundColor =  "RGBA(220,53,69,var(--bs-bg-opacity,1)" ;
+             console.log("backgroundColor =" +backgroundColor ) ;
+             return { style: { backgroundColor  } }
+            }}
           />
         }
       </div>

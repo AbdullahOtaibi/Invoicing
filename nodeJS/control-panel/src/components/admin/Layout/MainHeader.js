@@ -109,14 +109,17 @@ const MainHeader = ({ notification, onHandleNotification }) => {
 </div>
 
 
-
 <div lassNAme='col col-auto' style={{color:'white'}}>
 تسلسل مصدر الدخل:  {localStorage.getItem("incomeSourceSequence")}
 </div>
 
+ <div lassNAme='col col-auto' style={{color:'white'}}>
+البريد الالكتروني:  {localStorage.getItem("email")}
+</div> 
+
 
       {/* <input className="form-control form-control-light w-100" type="text" placeholder="Search" aria-label="Search" /> */}
-      <div className="col-6">
+      <div className="col-4">
         <div className='row d-flex flex-row-reverse' >
           <div className="col-auto pt-1">
             <select value={lang} onChange={updateLanguage} className="form-select"
@@ -147,14 +150,14 @@ const MainHeader = ({ notification, onHandleNotification }) => {
 
           </div>
 
-          <div className="col-auto">
+          {/* <div className="col-auto">
             <Link className="nav-link" to="/admin/messages"> <MdMarkEmailUnread size={30} />
               {messages && messages.length > 0 ? (
                 <span className="badge badge-danger" style={styles.messageCount}>
                   {messages.length}
                 </span>) : null}  </Link>
 
-          </div>
+          </div> */}
 
           <div className="col-auto">
             <Link className="nav-link" onClick={signOut} to="#"> {t("header.signout")}</Link>

@@ -502,7 +502,8 @@
     "editAppintement" : "Edit Appintement",
     "BeingDeleteingTheAppointment" : "Being Deleteing The Appointment ..." ,
     "mobile" : "Mobile" ,
-    "employeeName" : "Employee Name"
+    "employeeName" : "Employee Name" ,
+    "status": "Status"
     
   } ,
 "contact" : {

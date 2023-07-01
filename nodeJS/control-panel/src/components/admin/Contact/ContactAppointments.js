@@ -87,6 +87,7 @@ const ContactAppointments = (props) => {
               <th> Remining Time </th>
               <th>Note</th>
               <th>Employee</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -99,6 +100,7 @@ const ContactAppointments = (props) => {
                     <td>{moment(a.start).fromNow()}  </td>
                     <td>{a.note}</td>
                     <td> {a.employee? a.employee.contactName : ""} </td>
+                    <td className= { getStyleStatus(a.status)   }>{a.status} </td>
                 </tr>))
             }</>):(<></>)}
           </tbody>
@@ -106,6 +108,16 @@ const ContactAppointments = (props) => {
       </div>
     </>
   );
+
+function getStyleStatus(val) {
+  if(val == "Completed")
+  return "text-success"
+  else   if(val == "Scheduled")
+  return "text-info"
+  else  
+  return "text-danger"
+
+}
 };
 
 export default ContactAppointments;

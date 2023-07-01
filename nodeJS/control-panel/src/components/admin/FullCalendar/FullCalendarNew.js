@@ -30,13 +30,28 @@ else
 
 const FullCalendarNew = (props) => {
 
+
+
+
+  
   const [fullCalendar, setFullCalendar] = useState({
     deleted: false,
     companyID: localStorage.getItem("companyId"),
+   // status: "Scheduled" ,
     start: startDate,
     end: endDate,
     allDay: false,
   });
+
+  const selectFieldClass = (value, minQuantity) => {
+    if (!wasValidated) return "form-select";
+    if (isNaN(minQuantity))
+      return value ? "form-select is-valid" : "form-select is-invalid";
+    else
+      return parseFloat(value) >= parseFloat(minQuantity)
+        ? "form-select is-valid"
+        : "form-select is-invalid";
+  };
 
   const { t, i18n } = useTranslation();
 
@@ -60,6 +75,12 @@ const setMobile = (event) => {
   cloned.mobile = event.target.value;
   setFullCalendar(cloned);
 };
+
+const setStatus = (event)=> {
+  let cloned = JSON.parse(JSON.stringify(fullCalendar));
+  cloned.status = event.target.value;
+  setFullCalendar(cloned);
+}
 
   const setNote = (event) => {
     let cloned = JSON.parse(JSON.stringify(fullCalendar));
@@ -112,8 +133,7 @@ const setMobile = (event) => {
       console.log("ready to add new calendar ...");
       creatFullCalendar(fullCalendar)
         .then((res) => {
-          //setInvoice(res.data);
-          // window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
+   
           console.log("fullCalendar has been created ....");
           if(props.onSave){
             props.onSave();
@@ -296,6 +316,32 @@ const setMobile = (event) => {
           </div>
         </div>
 
+
+        <div className="row">
+        <div className="mb-3 col ">
+        <div className="col col-auto">{t("FullCalendar.status")} </div>
+        <div className="col">
+                  <select
+                    type="text"
+                    className={selectFieldClass(fullCalendar.status)}
+                    id="status"
+                    name="title"
+                    onChange={setStatus}
+                  >
+                    <option value="Scheduled"> Scheduled </option>
+                    <option value="Completed">Completed</option>
+                    <option value="In Complete">In Complete</option>
+                  </select>
+              
+
+        </div>
+        </div>
+        </div>
+
+
+
+
+   
         <div className="row">
           <div className="mb-3 col ">
             <div className="col col-auto">{t("FullCalendar.note")} </div>
@@ -346,6 +392,7 @@ const setMobile = (event) => {
       </form>
     </>
   );
+  
 };
 
 export default FullCalendarNew;
