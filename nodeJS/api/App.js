@@ -86,6 +86,9 @@ const PackagesController = require('./routes/api/packages/controllers/PackagesCo
 app.use('/v1/packages', PackagesController);
 
 
+const receiptController = require('./routes/api/receipt/controllers/receiptController');
+app.use('/v1/receipt', receiptController);
+
 
 
 const articlesController = require('./routes/api/articles/controllers/ArticlesController');
