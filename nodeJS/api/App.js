@@ -82,6 +82,12 @@ app.use('/v1/contacts', contactController);
 
 
 
+const PackagesController = require('./routes/api/packages/controllers/PackagesController');
+app.use('/v1/packages', PackagesController);
+
+
+
+
 const articlesController = require('./routes/api/articles/controllers/ArticlesController');
 app.use('/v1/articles', articlesController);
 

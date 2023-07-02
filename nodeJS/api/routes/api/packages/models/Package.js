@@ -11,7 +11,7 @@ const PackageSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
     },
-    name: String, 
+    packageName: String, 
     price: Number, 
     numberOfSet:Number ,
     note:String,

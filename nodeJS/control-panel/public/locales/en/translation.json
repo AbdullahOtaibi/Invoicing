@@ -160,7 +160,8 @@
     "shipments":"Shipments",
     "invoices":"Invoices",
     "FullCalendar" : "Full Calendar",
-    "Contact" :"Contact"
+    "Contact" :"Contact", 
+    "Package" : "Packages"
     
 
   },
@@ -525,6 +526,19 @@
 "searchContactEmpty" : "Not Found",
 "searchContactInfo" : "Contact Info:" ,
 "searchSubContactInfo" : "Sub contact Info:",
-"employeeAppointments" : "Employee Appointments"
+"employeeAppointments" : "Employee Appointments",
+"editContact" : "Edit Contact"
+} , 
+"Package" : {
+
+  "createPackage": "create Package" ,
+  "status": "Status" ,
+  "packageName": "package Name" ,
+  "packageInformation": "package Information" ,
+  "price": "Price (JOD)" , 
+  "numberOfSet": "Number Of Set" ,
+  "note": "Note" ,
+  "editPackage" : "Edit Package"
+
 }
 }

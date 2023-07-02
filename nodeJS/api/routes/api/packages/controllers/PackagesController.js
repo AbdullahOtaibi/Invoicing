@@ -249,10 +249,16 @@ router.get("/search/:val", verifyToken, async (req, res) => {
     let queryParams = {
       deleted: false,
       company: req.user.company,
+      companyID: req.user.companyId
+    }
+    
+    
+    
+  
       
     let query = Package.find(queryParams)
       .populate("user", "-password")
-      .sort( {"name" : 1});
+      .sort( {"packageName" : 1});
     result.items = await query.exec("find");
     res.json(result);
   } catch (ex) {
@@ -283,7 +289,7 @@ router.post("/search/", verifyToken, async (req, res) => {
     };
     let query = Package.find(queryParams)
       .populate("user", "-password")
-      .sort( {"name" : 1});
+      .sort( {"packageName" : 1});
     result.items = await query.exec("find");
     res.json(result);
   } catch (ex) {
