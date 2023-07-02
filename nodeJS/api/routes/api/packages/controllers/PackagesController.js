@@ -26,12 +26,6 @@ router.post("/filter", verifyToken, async (req, res) => {
     let clientId = filters.clientId || null;
     let deleted = filters.deleted || false;
     let status = filters.status || null;
-    let InvoiceBy = filters.InvoiceBy || "_idDesc";
-    let primaryName = filters.primaryName || null;
-    let primaryPhone = filters.primaryPhone || null;
-    let secondaryName = filters.secondaryName || null;
-    let secondaryPhone = filters.secondaryPhone || null;
-
     result.page = page;
     console.log("result.page:" + result.page);
     let queryParams = {
