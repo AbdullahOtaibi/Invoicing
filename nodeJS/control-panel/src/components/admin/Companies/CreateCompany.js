@@ -9,6 +9,8 @@ import { getCountries } from '../../../services/CountriesService'
 import UploadImage from '../Images/UploadImage';
 import { MdSave, MdClose } from "react-icons/md";
 import { hasPermission } from '../utils/auth';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 // addedd by abdullah
 
@@ -99,7 +101,11 @@ const CreateCompany = (props) => {
 
     
 
-
+    const updateExpiryDate = (date) => {
+        let cloned = JSON.parse(JSON.stringify(company));
+        cloned.subscriptionExpiryDate = date;
+        setcompany(cloned);
+    }
 
 
     
@@ -322,7 +328,21 @@ const CreateCompany = (props) => {
                         </select>
                     </div>
 
+                    <div className="mb-3">
+                        <label htmlFor="subscriptionExpiryDate" className="form-label">{t("companies.subscriptionExpiryDate")} </label>
 
+                        <DatePicker
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            selected={company && company.subscriptionExpiryDate ?new Date(company.subscriptionExpiryDate): Date.now()}
+                            onChange={(date) => {
+                                updateExpiryDate(date);
+                            }}
+                        />
+
+
+                        {/* <input type="text" className={fieldClass(company.subscriptionExpiryDate)} placeholder={t("companies.subscriptionExpiryDate")} id="subscriptionExpiryDate" name="clientSecret" value={company.subscriptionExpiryDate} onChange={updateExpiryDate} /> */}
+                    </div>
 
                     <div className="mb-3 form-check">
                         <div className="custom-control custom-checkbox">
