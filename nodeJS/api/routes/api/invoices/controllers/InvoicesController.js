@@ -374,9 +374,9 @@ router.post("/DachboardSummary", verifyToken, async (req, res) => {
   if (!req.user) {
     res.json({ message: "unauthorized access" });
   }
-  if (req.user.role != "Administrator" && req.user.role != "Company") {
-    res.json({ success: false, message: "Unauthorized" });
-  }
+ // if (req.user.role != "Administrator" && req.user.role != "Company") {
+ //   res.json({ success: false, message: "Unauthorized" });
+ // }
   var result = {};
   try {
     console.log(JSON.stringify(req.body));
