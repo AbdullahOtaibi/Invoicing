@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 const Dashboard = lazy(() => import(/* webpackChunkName: "Dashboard" */'./components/admin/Layout/Dashboard'));
 
  const SignIn = lazy(() => import(/* webpackChunkName: "SignIn" */'./components/SignIn/SignIn'));
-
+ const ForgotPassword = lazy(() => import(/* webpackChunkName: "ForgotPassword" */'./components/SignIn/ForgotPassword'));
 
 
 
@@ -51,6 +51,8 @@ function App() {
         <Router>
           <Routes>
           <Route path="/admin/sign-in" element={<SignIn />}   />
+          <Route path="/admin/forgot-password" element={<ForgotPassword />}   />
+          
           <Route path="/admin/*" element={<Dashboard />} />
           <Route path="/*" element={<Dashboard />} />
           {/* <Route path="ar/*" element={<HomePage lang='ar' />} />

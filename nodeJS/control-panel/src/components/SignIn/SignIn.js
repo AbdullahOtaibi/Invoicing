@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './signin.css'
 import userImage from '../../images/user.svg';
 import { login, sendActivationEmail } from '../../services/AuthService'
-import { Navigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 
@@ -36,7 +36,7 @@ const SignIn = () => {
                 localStorage.setItem("incomeSourceSequence", res.data.user.incomeSourceSequence);
                 localStorage.setItem("invoiceCategory", res.data.user.invoiceCategory);
                 localStorage.setItem("company", res.data.user.company);
-                localStorage.setItem("logoUrl" , res.data.user.logoUrl) 
+                localStorage.setItem("logoUrl", res.data.user.logoUrl)
                 setLoggedIn(true);
             }
 
@@ -96,14 +96,22 @@ const SignIn = () => {
                 <button type="button" className='btn btn-sm' onClick={() => setShowPassword(!showPassword)} >
                     {showPassword ? (<AiOutlineEyeInvisible />) : (<AiOutlineEye />)}
                 </button>
+
             </div>
+
+
             <div className="checkbox mb-3">
                 <label>
                     <input type="checkbox" value="remember-me" /> {t("users.rememberMe")}
                 </label>
             </div>
+            <div className="mb-3" style={{ position: "relative", display: "flex" }}>
+                <button className="w-100 btn btn-lg btn-primary" type="submit" onClick={doPost}>{t("users.signIn")}</button>
+            </div>
+            <div className="mb-3" style={{ position: "relative", display: "flex" }}>
+            <a href="/admin/forgot-password">Forgot Password</a>
+            </div>
 
-            <button className="w-100 btn btn-lg btn-primary" type="submit" onClick={doPost}>{t("users.signIn")}</button>
 
         </div>
     )

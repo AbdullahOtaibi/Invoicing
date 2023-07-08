@@ -63,6 +63,7 @@
   "selectCountry":"Select Country",
   "unknown":"Unknown",
   "writeAMessageFor":"Write a Message for",
+  "continue":"Continue",
   "header":{
     "signout":"Sign Out"
   },
@@ -239,7 +240,8 @@
     "resetPassword":"Reset My Password",
     "forgotMyPassword":"Forgot my password",
     "sendResetPasswordEmail":"Send Reset Link",
-    "addedBy":"Added By"
+    "addedBy":"Added By",
+    "forgotPassword":"Forgot Password"
   },
   "companies":{
     "companies":"Companies",

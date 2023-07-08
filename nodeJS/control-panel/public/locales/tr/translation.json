@@ -63,6 +63,7 @@
   "selectCountry":"Ülke Seç",
   "unknown":"Bilinmeyen",
   "writeAMessageFor":"için bir mesaj yazın",
+  "continue":"Devam et",
   "header":{
     "signout":"Oturumu Kapat"
   },
@@ -232,7 +233,8 @@
     "resetPassword":"Şifremi sıfırlamak",
     "forgotMyPassword":"Şifremi Unuttum",
     "sendResetPasswordEmail":"Sıfırlama Bağlantısı Gönder",
-    "addedBy":"Tarafından eklendi"
+    "addedBy":"Tarafından eklendi",
+    "forgotPassword":"Şifremi unuttum"
   },
   "companies":{
     "companies":"Satıcılar",

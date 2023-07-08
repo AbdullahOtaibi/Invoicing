@@ -63,6 +63,7 @@
   "selectCountry":"اختر البلد",
   "unknown":"غير معروف",
   "writeAMessageFor":"اكتب رسالة الى",
+  "continue":"استمرار",
   "header": {
     "signout": "تسجيل الخروج"
   },
@@ -234,7 +235,8 @@
     "resetPassword": "استرجاع كلمة السر",
     "forgotMyPassword": "نسيت كلمة السر",
     "sendResetPasswordEmail": "ارسل رابط الاسترجاع للبريد الالكتروني",
-    "addedBy":"تمت الاضافة من قبل"
+    "addedBy":"تمت الاضافة من قبل",
+    "forgotPassword":"نسيت كلمة السر"
   },
   "companies": {
     "companies": "الموردين",

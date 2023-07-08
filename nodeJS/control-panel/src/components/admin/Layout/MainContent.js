@@ -141,7 +141,7 @@ const ViewReceipt = lazy(() => import(/* webpackChunkName: "ViewReceipt" */'../R
 
 
 const SignIn = lazy(() => import(/* webpackChunkName: "SignIn" */'../../SignIn/SignIn'));
-
+const ForgotPassword = lazy(() => import(/* webpackChunkName: "ForgotPassword" */'../../SignIn/ForgotPassword'));
 
 
 
@@ -161,6 +161,8 @@ const MainContent = ({notification, onHandleNotification}) => {
                 
 
                     <Route path="/sign-in" exact element={<SignIn />} />
+                    <Route path="/forgot-password" exact element={<ForgotPassword />} />
+                    
                     <Route path="/articles" exact element={<ListArticles />} />
                     <Route path="/orders" exact element={<ListOrders notification={notification} onHandleNotification={onHandleNotification}  />} />
                     <Route path="/orders/:orderId" element={<ViewOrder notification={notification} onHandleNotification={onHandleNotification} />}  />
