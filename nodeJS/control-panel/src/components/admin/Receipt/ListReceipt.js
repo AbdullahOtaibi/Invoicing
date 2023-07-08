@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next"
-import { MdCollectionsBookmark, MdDelete, MdEdit, MdAdd, MdSearch, MdContacts, MdCollections } from "react-icons/md"
+import { MdCollectionsBookmark, MdDelete, MdEdit, MdAdd, MdSearch, MdContacts, MdCollections, MdReceipt } from "react-icons/md"
 import { ThreeDots } from 'react-loader-spinner'
 import { Link, useNavigate } from 'react-router-dom'
 import { getLocalizedText } from '../utils/utils'
@@ -17,26 +17,26 @@ const ListReceipt = (props) => {
     const [loading, setLoading] = useState(false);
     const [packages , setPackages] = useState([]) ; 
 
-    const [contactsSort, setContactsSort] = useState('_idDesc');
-    const [packagesPage, setPackagesPage] = useState(0);
-    const [packagesPages, setpackagesPages] = useState(0);
+    //const [contactsSort, setContactsSort] = useState('_idDesc');
+    const [receiptsPage, setReceiptsPage] = useState(0);
+    const [receiptsPages, setreceiptsPages] = useState(0);
     const loadNewPage = (newPage) => {
-        if (newPage < 0 || (newPage >= packagesPages && packagesPages > 0)) {
+        if (newPage < 0 || (newPage >= receiptsPages && receiptsPages > 0)) {
             return;
         }
     }
     useEffect( ()=> {
 
         getReceipts({
-            page: packagesPage,
+            page: receiptsPage,
             
         }).then(data => {
             setLoading(false);
             setPackages(data.items || []);
-            setPackagesPage(data.page);
+            setReceiptsPage(data.page);
             console.log("data.items:" + JSON.stringify(data.items));
             console.log("data.pages:" + data.pages);
-            setpackagesPages(data.pages);
+            setreceiptsPages(data.pages);
         }).catch(e => {
             setLoading(false);
             console.log(e);
@@ -49,7 +49,7 @@ const ListReceipt = (props) => {
     return (
         <div className="conatiner">
             <Helmet>
-                <title>{'Invoicing | Admin | Packages'} </title>
+                <title>{'Invoicing | Admin | Receipts'} </title>
             </Helmet>
             <div className="card">
                 <div className={"card-body"}>
@@ -57,15 +57,15 @@ const ListReceipt = (props) => {
 
                     <div className='row'>
                         <div className='col-md-8 col-sm-6'>
-                            <h5 className="card-title"><MdCollections />
-                                <span className='text-info px-2'> {t("sidebar.Package")} </span>
+                            <h5 className="card-title"><MdReceipt />
+                                <span className='text-info px-2'> {t("sidebar.Receipt")} </span>
                             </h5>
                         </div>
 
                         <div className='col-md-4 col-sm-6' style={{ textAlign: 'end' }}>
                             
                           
-                            <a className="add-btn btn-info btn-lg" href={"/admin/Package/create"}><MdAdd size={20} />  {t("dashboard.add")}</a>
+                            <a className="add-btn btn-info btn-lg" href={"/admin/Receipt/create"}><MdAdd size={20} />  {t("dashboard.add")}</a>
                             
                         </div>
                     </div>
@@ -92,25 +92,25 @@ const ListReceipt = (props) => {
                                 <tr>
                                     <th>
                                       
-                                            {t("Package.packageName")}
+                                            {t("receipt.sequance")}
                                     
 
                                     </th>
                                     <th>
                                      
-                                            {t("Package.status")}
+                                            {t("receipt.receiptAmount")}
                                   
 
                                     </th>
                                     <th>
                                      
-                                     {t("Package.price")}
+                                     {t("receipt.receiptTotalInstallments")}
                            
 
                              </th>
                              <th>
                                      
-                                     {t("Package.numberOfSet")}
+                                     {t("receipt.receiptTotalInvoice")}
                            
 
                              </th>
@@ -119,11 +119,16 @@ const ListReceipt = (props) => {
                                    
                                     <th>
                                       
-                                            {t("Package.note")}
+                                            {t("receipt.packageName")}
                                      
 
                                     </th>
+                                    <th>
+                                      
+                                      {t("receipt.packagePrice")}
+                               
 
+                              </th>
 
 
 
@@ -139,18 +144,19 @@ const ListReceipt = (props) => {
 
                                         <tr key={'' + item.id}>
                                             <td>
-                                                <Link to={'/admin/Package/view/' + item._id} className='text-info'>
-                                                    {item.packageName}
+                                                <Link to={'/admin/Receipt/view/' + item._id} className='text-info'>
+                                                    {item.sequance}
 
                                                 </Link>
                                             </td>
+                                            <td>{item.receiptAmount}</td>
+                                         
 
-                                            <td> {item.status}</td>
-                                            <td> { item.price}</td>
-                                            <td> { item.numberOfSet}</td>
-                                            <td>
-                                                {item.note}
-                                            </td>
+                                            <td> {item.receiptTotalInvoice}</td>
+                                            <td>{item.receiptAmount}</td>
+                                            <td> { item.packageName}</td>
+                                            <td> { item.packagePrice}</td>
+                                           
                                   
 
                                         </tr>
@@ -163,11 +169,11 @@ const ListReceipt = (props) => {
                                         <nav aria-label="Page navigation example">
                                             <ul className="pagination">
 
-                                                {packagesPages > 1 ? (<li className="page-item"><label className="page-link" href="#" onClick={() => loadNewPage(packagesPage - 1)}>Previous</label></li>) : null}
+                                                {receiptsPages > 1 ? (<li className="page-item"><label className="page-link" href="#" onClick={() => loadNewPage(receiptsPage - 1)}>Previous</label></li>) : null}
 
-                                                {Array.from(Array(packagesPages), (e, i) => {
-                                                    console.log('i:' + i, "packagesPages:" + packagesPages);
-                                                    return <li className={i == packagesPage ? "page-item active" : "page-item"} key={i}>
+                                                {Array.from(Array(receiptsPages), (e, i) => {
+                                                    console.log('i:' + i, "receiptsPages:" + receiptsPages);
+                                                    return <li className={i == receiptsPage ? "page-item active" : "page-item"} key={i}>
                                                         <label className="page-link" onClick={() => loadNewPage(i)}>
                                                             {i + 1}
                                                         </label>
@@ -175,7 +181,7 @@ const ListReceipt = (props) => {
                                                 })}
 
 
-                                                {packagesPages > 1 ? (<li className="page-item"><label className="page-link" href="#" onClick={() => loadNewPage(packagesPage + 1)}>Next</label></li>) : null}
+                                                {receiptsPages > 1 ? (<li className="page-item"><label className="page-link" href="#" onClick={() => loadNewPage(receiptsPage + 1)}>Next</label></li>) : null}
 
                                             </ul>
                                         </nav>

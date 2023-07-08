@@ -11,7 +11,7 @@ const ReceiptSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
     },
-    Sequance: String, 
+    sequance: String, 
     receiptAmount: Number, 
     receiptTotalInstallments: {type: Number , default: 0} ,
     receiptTotalInvoice: {type: Number , default: 0} ,
@@ -24,10 +24,14 @@ const ReceiptSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Contact'
     } ,
+    contactName:String, 
+    contactMobile:String, 
     package:{ 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Package'
     } ,
+    packageName:String, 
+    packagePrice:String, 
     installments : [
         {
             installmentSequance: Number, 
