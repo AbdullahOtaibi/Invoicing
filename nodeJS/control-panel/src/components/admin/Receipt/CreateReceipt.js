@@ -9,7 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { CSSTransition } from 'react-transition-group';
 import  {createReceipt} from './ReceiptAPI'
 import ContactSearchControl from "../Contact/ContactSearchControl";
-
+import PackageSearchControl  from "../Package/PackageSearchControl" ; 
 const CreateReceipt = (props) => {
 
   const [wasValidated, setWasValidated] = useState(false);
@@ -36,6 +36,20 @@ const CreateReceipt = (props) => {
     }
   };
 
+
+  const setPackage = (item) => {
+    if (item) {
+      let cloned =JSON.parse(JSON.stringify(receipt)) ;
+      cloned.packageName = item.packageName;
+      cloned.package = item._id;
+      cloned.packagePrice = item.price; 
+      cloned.packageNumberOfSet = item.numberOfSet; 
+      setReceipt(cloned);
+      
+    }
+  };
+
+  
   
   const setPackageName = (event) => {
 
@@ -247,16 +261,11 @@ const viewItemValidMessage = (message) => {
             <div className="mb-3 col ">
                 <div className="col col-auto">{t("receipt.packageName")}</div>
                 <div className="col col-auto">
-                <input
-                    type="text"
-                    className= {fieldClass(receipt.packageName)}
-                    id="packageName"
-                    name="packageName"
-                    placeholder={t("receipt.packageName")}
-                    onChange={setPackageName}
-                    value={
-                      receipt.packageName
-                    }
+                <PackageSearchControl
+                    handleSelectPackage={setPackage}
+                    wasValidated={wasValidated}
+                    value = {receipt.packageName}
+                   
                   />
                 </div>
               </div>

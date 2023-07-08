@@ -32,6 +32,7 @@ const ReceiptSchema = new Schema({
     } ,
     packageName:String, 
     packagePrice:String, 
+    packageNumberOfSet:Number ,
     installments : [
         {
             installmentSequance: Number, 

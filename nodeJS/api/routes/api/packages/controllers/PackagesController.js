@@ -275,12 +275,18 @@ router.post("/search/", verifyToken, async (req, res) => {
       _id: -1,
     };
    
-
+    let val= req.body.val;
     let queryParams = {
       deleted: false,
       company: req.user.company,
       companyID: req.user.companyId,
+      status: "Active",
+     
     };
+    if(val ) 
+    {
+      queryParams.packageName = { $regex: val, $options: "i" } 
+    }
     let query = Package.find(queryParams)
       .populate("user", "-password")
       .sort( {"packageName" : 1});
@@ -293,20 +299,7 @@ router.post("/search/", verifyToken, async (req, res) => {
   }
 
   
-  //TODO: if user is vendor check if item product belongs to the same vendor
-  /*Package.findOneAndUpdate(
-    { _id: req.body._id },
-    req.body,
-    function (err, item) {
-      console.log("marked  updated...");
-      res.json({
-        success: true,
-        message: "updated successfully ....",
-        _id: req.body._id,
-      });
-    }
-  );
-  */
+ 
 });
 
 module.exports = router;
