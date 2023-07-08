@@ -10,6 +10,7 @@ import { CSSTransition } from 'react-transition-group';
 import  {createReceipt} from './ReceiptAPI'
 import ContactSearchControl from "../Contact/ContactSearchControl";
 import PackageSearchControl  from "../Package/PackageSearchControl" ; 
+import DatePicker from "react-datepicker";
 const CreateReceipt = (props) => {
 
   const [wasValidated, setWasValidated] = useState(false);
@@ -18,7 +19,8 @@ const CreateReceipt = (props) => {
     deleted: false,
     companyID: localStorage.getItem("companyId"),
     company: localStorage.getItem("company"), 
-    status: "Active"
+    status: "Active" ,
+    receiptDate: Date.now, 
   }) ;  
   
   const [loading, setLoading] = useState(false);
@@ -58,6 +60,13 @@ const CreateReceipt = (props) => {
      setReceipt(cloned)
 
   } ;
+
+
+  const setReceiptDate = (date) => {
+    let cloned = JSON.parse(JSON.stringify(receipt));
+    cloned.receiptDate = date;
+    setReceipt(cloned);
+  };
 
   const setStatus = (event) => {
 
@@ -237,13 +246,7 @@ const viewItemValidMessage = (message) => {
                   </div>
     
     
-                  <div className="mb-3 col ">
-                    <div className="col col-auto"></div>
-                    <div className="col col-auto">
-                
-                    </div>
-                  </div>
-    
+
                   
     
                 </div>
@@ -271,41 +274,21 @@ const viewItemValidMessage = (message) => {
               </div>
 
 
-              <div className="mb-3 col ">
-                <div className="col col-auto">{t("receipt.status")}</div>
-                <div className="col col-auto">
-      
-
-                    <select
-                    type="text"
-                    className={selectFieldClass( receipt.status)}
-                    id="status"
-                    name="status"
-                    onChange={setStatus}
-                    value={ receipt.status}
-                  >
-                    <option value=""> اخنر </option>
-                    <option value="Active">Active</option>
-                    <option value="In Active">In Active</option>
-                   
-                  </select>
-
-                </div>
-              </div>
+            
 
 
               <div className="mb-3 col ">
-                <div className="col col-auto">{t("receipt.price")}</div>
+                <div className="col col-auto">{t("receipt.packagePrice")}</div>
                 <div className="col col-auto">
                 <input
                     type="text"
-                    className= {fieldClass(receipt.price)}
+                    className= {fieldClass(receipt.packagePrice)}
                     id="price"
-                    name="price"
-                    placeholder={t("receipt.price")}
-                    onChange={setPrice}
+                    name="packagePrice"
+                    placeholder={t("receipt.packagePrice")}
+                    
                     value={
-                      receipt.price
+                      receipt.packagePrice
                     }
                   />
                 </div>
@@ -313,17 +296,17 @@ const viewItemValidMessage = (message) => {
 
 
               <div className="mb-3 col ">
-                <div className="col col-auto">{t("receipt.numberOfSet")}</div>
+                <div className="col col-auto">{t("receipt.packageNumberOfSet")}</div>
                 <div className="col col-auto">
                 <input
                     type="text"
-                    className= {fieldClass(receipt.numberOfSet)}
-                    id="numberOfSet"
-                    name="numberOfSet"
-                    placeholder={t("receipt.numberOfSet")}
-                    onChange={setNumberOfSet}
+                    className= {fieldClass(receipt.packageNumberOfSet)}
+                    id="packageNumberOfSet"
+                    name="packageNumberOfSet"
+                    placeholder={t("receipt.packageNumberOfSet")}
+                  
                     value={
-                      receipt.numberOfSet
+                      receipt.packageNumberOfSet
                     }
                   />
                 </div>
@@ -334,6 +317,71 @@ const viewItemValidMessage = (message) => {
             </div>
               
 
+            <div className="mb-3 row ">
+              <div className="col col-auto text-info">
+                {t("receipt.ReceiptInformation")}{" "}
+              </div>
+              <div className="col">
+                <hr />
+              </div>
+            </div>
+
+            <div className="mb-3 row">
+                
+                <div className="mb-3 col ">
+                    <div className="col col-auto">{t("receipt.receiptDate")}</div>
+                    <div className="col col-auto">
+                    {/* <DatePicker
+                    className={fieldClass(receipt.receiptDate)}
+                    dateFormat="dd/MM/yyyy"
+                    selected={new Date(receipt.receiptDate)}
+                    onChange={(date) => setReceiptDate(date)}
+                  /> */}
+                    </div>
+                  </div>
+    
+    
+                
+    
+    
+                  <div className="mb-3 col ">
+                    <div className="col col-auto">{t("receipt.packagePrice")}</div>
+                    <div className="col col-auto">
+                    <input
+                        type="text"
+                        className= {fieldClass(receipt.packagePrice)}
+                        id="price"
+                        name="packagePrice"
+                        placeholder={t("receipt.packagePrice")}
+                        
+                        value={
+                          receipt.packagePrice
+                        }
+                      />
+                    </div>
+                  </div>
+    
+    
+                  <div className="mb-3 col ">
+                    <div className="col col-auto">{t("receipt.packageNumberOfSet")}</div>
+                    <div className="col col-auto">
+                    <input
+                        type="text"
+                        className= {fieldClass(receipt.packageNumberOfSet)}
+                        id="packageNumberOfSet"
+                        name="packageNumberOfSet"
+                        placeholder={t("receipt.packageNumberOfSet")}
+                      
+                        value={
+                          receipt.packageNumberOfSet
+                        }
+                      />
+                    </div>
+                  </div>
+    
+                  
+    
+                </div>
           
 
             <div className="mb-3 row ">
