@@ -8,6 +8,7 @@ import {  MdClose, MdCollections, MdContacts, MdReceipt } from "react-icons/md";
 import "react-datepicker/dist/react-datepicker.css";
 import { CSSTransition } from 'react-transition-group';
 import  {createReceipt} from './ReceiptAPI'
+import ContactSearchControl from "../Contact/ContactSearchControl";
 
 const CreateReceipt = (props) => {
 
@@ -23,6 +24,19 @@ const CreateReceipt = (props) => {
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
+
+  const setConatct = (item) => {
+    if (item) {
+      let cloned =JSON.parse(JSON.stringify(receipt)) ;
+      cloned.contactName = item.contactName;
+      cloned.contact = item._id;
+      cloned.contactMobile = item.mobile; 
+      setReceipt(cloned);
+      
+    }
+  };
+
+  
   const setPackageName = (event) => {
 
      let cloned =JSON.parse(JSON.stringify(receipt)) ;
@@ -137,6 +151,7 @@ const viewItemValidMessage = (message) => {
   });
 };
 
+
   return (
     <>
       <div className="card">
@@ -169,76 +184,49 @@ const viewItemValidMessage = (message) => {
                 <div className="mb-3 col ">
                     <div className="col col-auto">{t("receipt.contactName")}</div>
                     <div className="col col-auto">
-                    <input
-                        type="text"
-                        className= {fieldClass(receipt.packageName)}
-                        id="packageName"
-                        name="packageName"
-                        placeholder={t("receipt.packageName")}
-                        onChange={setPackageName}
-                        value={
-                          receipt.packageName
-                        }
-                      />
+                    <ContactSearchControl
+                    handleSelectContact={setConatct}
+                    wasValidated={wasValidated}
+                    value = {receipt.contactName}
+                    contactType = {["Client" , "Vendor"]}
+
+                  />
                     </div>
                   </div>
     
     
                   <div className="mb-3 col ">
-                    <div className="col col-auto">{t("receipt.status")}</div>
+                    <div className="col col-auto">{t("receipt.contactMobile")}</div>
                     <div className="col col-auto">
           
-    
-                        <select
-                        type="text"
-                        className={selectFieldClass( receipt.status)}
-                        id="status"
-                        name="status"
-                        onChange={setStatus}
-                        value={ receipt.status}
-                      >
-                        <option value=""> اخنر </option>
-                        <option value="Active">Active</option>
-                        <option value="In Active">In Active</option>
-                       
-                      </select>
-    
-                    </div>
-                  </div>
-    
-    
-                  <div className="mb-3 col ">
-                    <div className="col col-auto">{t("receipt.price")}</div>
-                    <div className="col col-auto">
                     <input
                         type="text"
-                        className= {fieldClass(receipt.price)}
+                        className= {fieldClass(receipt.contactMobile)}
                         id="price"
                         name="price"
-                        placeholder={t("receipt.price")}
-                        onChange={setPrice}
+                        placeholder={t("receipt.contactMobile")}
                         value={
-                          receipt.price
+                          receipt.contactMobile
                         }
                       />
+                    
+    
                     </div>
                   </div>
     
     
                   <div className="mb-3 col ">
-                    <div className="col col-auto">{t("receipt.numberOfSet")}</div>
+                    <div className="col col-auto"></div>
                     <div className="col col-auto">
-                    <input
-                        type="text"
-                        className= {fieldClass(receipt.numberOfSet)}
-                        id="numberOfSet"
-                        name="numberOfSet"
-                        placeholder={t("receipt.numberOfSet")}
-                        onChange={setNumberOfSet}
-                        value={
-                          receipt.numberOfSet
-                        }
-                      />
+                 
+                    </div>
+                  </div>
+    
+    
+                  <div className="mb-3 col ">
+                    <div className="col col-auto"></div>
+                    <div className="col col-auto">
+                
                     </div>
                   </div>
     
