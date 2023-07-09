@@ -14,6 +14,8 @@ const ReceiptSchema = new Schema({
     sequance: String, 
     receiptAmount: Number, 
     receiptTotalInstallments: {type: Number , default: 0} ,
+    receiptReminingAmount: {type: Number , default: 0} ,
+    receiptBalance:{type: Number , default: 0} ,
     receiptTotalInvoice: {type: Number , default: 0} ,
     receiptDate: {type:Date , default: Date.now} , 
     note:String,

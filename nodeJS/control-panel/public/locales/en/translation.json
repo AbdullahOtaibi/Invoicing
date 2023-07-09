@@ -542,5 +542,32 @@
   "note": "Note" ,
   "editPackage" : "Edit Package"
 
+} , 
+"receipt" : 
+{
+  "createReceipt" : "Create Receipt" ,
+  "contactInformation" : "Contact Information",
+  "contactMobile" : "Contact Mobile" , 
+  "packageInformation": "Package Information" ,
+  "packageName" : "Package Name" , 
+  "packagePrice" : "Package Price" ,
+  "packageNumberOfSet" : "Package Number Of Set" ,
+  "ReceiptInformation" : "Receipt Information" ,
+  "receiptDate" : "Receipt Date" ,
+  "receiptAmount" : "Receipt Amount JOD" ,
+  "receiptTotalInstallments" : "Receipt Total Installments",
+  "receiptTotalInvoice" : "Receipt Total Invoice" ,
+  "note" : "Note" ,
+  "installments" : "Installments" ,
+  "installmentAmount" : "Installment Amount JOD" ,
+  "installmentDate" : "Installment Date" , 
+  "installmentNote" : "Installment Note" ,
+  "add" : "Add" ,
+  "confirm" : "Confirm" ,
+  "cancel" : "Cancel" ,
+  "receiptReminingAmount" : "Receipt Remining Amount" ,
+  "contactName" : "Contact Name", 
+  "receiptTotalInstallments" : "Receipt Total Installments",
+  "receiptBalance" : "receipt Balance"
 }
 }

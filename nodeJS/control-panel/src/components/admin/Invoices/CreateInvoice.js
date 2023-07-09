@@ -301,7 +301,6 @@ const CreateInvoice = (props) => {
   };
 
   const addItem = (event) => {
-    //setWasValidated(true);
 
     if (!checkItemIsValid()) {
       console.log("invoice item is not valid...");
@@ -691,7 +690,7 @@ const CreateInvoice = (props) => {
                             once
                           >
                             {"Delete "}
-                            <MdDelete />
+                            <MdDelete/>
                           </ConfirmButton>
                         </td>
                       </tr>
