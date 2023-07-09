@@ -219,6 +219,7 @@ const CreateReceipt = (props) => {
   }
 
   const doPost = (event) => {
+    
     setWasValidated(true) ;
     setLoading(true) ;
 

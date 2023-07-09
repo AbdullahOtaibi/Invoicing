@@ -11,7 +11,7 @@ const ReceiptSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
     },
-    sequance: String, 
+    seqNumber: String, 
     receiptAmount: Number, 
     receiptTotalInstallments: {type: Number , default: 0} ,
     receiptReminingAmount: {type: Number , default: 0} ,

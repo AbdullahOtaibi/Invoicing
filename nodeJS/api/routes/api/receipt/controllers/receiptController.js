@@ -145,6 +145,11 @@ router.get("/get/:id", async (req, res) => {
 });
 
 
+function newSeq(x) {
+  //d =new Date()
+  //return d.getFullYear() + '-' +parseInt(d.getMonth() + 1) + "-" +d.getDate() + '-'+"0000".substring(0,4-x.toString().length)+x.toString()
+  return "RCP-" + "00000".substring(0, 5 - x.toString().length) + x.toString();
+}
 
 router.post("/create", verifyToken, async (req, res, next) => {
   // console.log(req.user);
@@ -157,10 +162,19 @@ router.post("/create", verifyToken, async (req, res, next) => {
   console.log("before create");
   console.log(req.body)
 
+  
+  let count = await Receipt.countDocuments({
+    "companyID": {
+      $eq: req.user.companyId,
+    },
+    "company" : { $eq: req.user.company,} ,
+  });
+  let newSerial = count + 1;
   const newObject = new Receipt({
     user: req.user.id,
     company: req.user.company,
     companyId: req.user.companyId,
+    seqNumber: newSeq(newSerial),
     ...req.body
   });
   console.log("after create");
@@ -170,6 +184,7 @@ router.post("/create", verifyToken, async (req, res, next) => {
   console.log("savedReceipt:" + savedReceipt);
   res.json(savedReceipt);
   next();
+
 });
 
 router.post("/update/", verifyToken, async (req, res) => {
