@@ -36,11 +36,11 @@ router.post('/init-payment', async (req, res) => {
 
   let tranTrackid = Date.now();
   let tranportalId = "351901";
-  //let responseUrl = "https://waredly.com/knet/GetHandlerResponse.php";
-  let responseUrl = "https://waredly.com/v1/payment/knet/handle-payment-response";
-  let errorUrl = "https://waredly.com/payment/error";
+  //let responseUrl = "https://website-domain.com/knet/GetHandlerResponse.php";
+  let responseUrl = "https://website-domain.com/v1/payment/knet/handle-payment-response";
+  let errorUrl = "https://website-domain.com/payment/error";
   if (languageCode == 'ar') {
-    errorUrl = "https://waredly.com/ar/payment/error";
+    errorUrl = "https://website-domain.com/ar/payment/error";
   }
 
   let reqTrackId = 'trackid=' + tranTrackid;

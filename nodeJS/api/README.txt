@@ -52,7 +52,7 @@ xsmtpsib-963d5b146c8e0892afb6f7b84c70bdaba9cda925150ea00bfc9492773164a2ac-qBJr7a
 Atlas Username & Password:
 
 User Name:
-waredly-api
+website-domain-api
 
 Password:
 y63id3kKwT8zCCE
@@ -60,7 +60,7 @@ y63id3kKwT8zCCE
 
 ==================================================
 Google Cloude:
-https://waredly-api-yvsyr5cswq-uc.a.run.app/v1/articles/get/6287e8eb2cb205a1993c73ba
+https://website-domain-api-yvsyr5cswq-uc.a.run.app/v1/articles/get/6287e8eb2cb205a1993c73ba
 
 
 ==================================================

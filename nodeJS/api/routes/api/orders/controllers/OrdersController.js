@@ -653,7 +653,7 @@ router.get('/sendToCompanies/:id', verifyToken, async (req, res) => {
         }
         for (var vendorIndex in companies) {
             let vendor = companies[vendorIndex];
-            let messageBody = "Dears " + vendor.name.english + ", <br/>New Order Received, please <a href='https://waredly.com/admin/orders/" + order._id + "'>Click Here </a> to see order details.";
+            let messageBody = "Dears " + vendor.name.english + ", <br/>New Order Received, please <a href='https://website-domain.com/admin/orders/" + order._id + "'>Click Here </a> to see order details.";
             messageBody += "<br/><b>Order Number: </b> " + order._id + "<br />";
             try {
                 sendEmail(vendor.contactDetails.infoEmail, "New Order Received", messageBody);

@@ -3,8 +3,8 @@
     "jwtSecret":"sl_mysecret",
     "mailServer":"smtp.gmail.com",
     "mailPort":465,
-    "mailUser":"no-reply@waredly.com",
+    "mailUser":"no-reply@website-domain.com",
     "mailPassword":"J@va2mailP@ssw0rd",
-    "mailFrom":"Waredly.com <no-reply@waredly.com>"
+    "mailFrom":"website-domain.com <no-reply@website-domain.com>"
     
 }

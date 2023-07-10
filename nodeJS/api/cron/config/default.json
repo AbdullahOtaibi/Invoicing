@@ -1,13 +1,13 @@
 {
-    "mongoURI":"mongodb+srv://waredly-api:y63id3kKwT8zCCE@waredlycluster.sh8ja9i.mongodb.net/waredlydb",
-    "mongoURIL": "mongodb://waredlyUser:Java2mail20221@104.128.69.10:27017/waredlydb",
-    "mongoURIR": "mongodb://51.195.200.24:27017/waredlydb",
+    "mongoURI":"mongodb+srv://website-domain-api:y63id3kKwT8zCCE@website-domaincluster.sh8ja9i.mongodb.net/website-domaindb",
+    "mongoURIL": "mongodb://website-domainUser:Java2mail20221@104.128.69.10:27017/website-domaindb",
+    "mongoURIR": "mongodb://51.195.200.24:27017/website-domaindb",
     "jwtSecret":"sl_mysecret",
 
     "mailServer":"smtp.gmail.com",
     "mailPort":465,
-    "mailUser":"no-reply@waredly.com",
+    "mailUser":"no-reply@website-domain.com",
     "mailPassword":"J@va2mailP@ssw0rd",
-    "mailFrom":"Waredly.com <no-reply@waredly.com>"
+    "mailFrom":"website-domain.com <no-reply@website-domain.com>"
     
 }

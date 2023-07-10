@@ -344,7 +344,7 @@ router.post("/register", async (req, res) => {
         user.firstName +
         " " +
         user.surName +
-        "<br/> Please click <a href='https://waredly.com/activate-account/" +
+        "<br/> Please click <a href='https://website-domain.com/activate-account/" +
         user._id +
         "/" +
         rand +

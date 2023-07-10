@@ -92,7 +92,7 @@ const EditOrder = (props) => {
     }
 
     const showMessageAdmin = () => {
-        setMailModalTitle(t("writeAMessageFor") + ' Waredly');
+        setMailModalTitle(t("writeAMessageFor") + ' website-domain');
         setShowMessageModal(true);
     }
 
@@ -618,7 +618,7 @@ const EditOrder = (props) => {
                                     <button type='button' className='btn btn-success shadow-sm'>
                                         <MdOutlineForwardToInbox size={24} /> &nbsp;
                                         {i18n.language == 'tr' ? (<><b style={{ color: 'yellow' }}>
-                                            Waredly
+                                            website-domain
                                         </b>
                                             <b>
                                                 {t("writeAMessageFor")}
@@ -630,7 +630,7 @@ const EditOrder = (props) => {
                                         </b>
 
                                             <b style={{ color: 'yellow' }}>
-                                                Waredly
+                                                website-domain
                                             </b>
                                         </>)}
 

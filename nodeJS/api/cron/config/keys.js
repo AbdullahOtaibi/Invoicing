@@ -1,6 +1,6 @@
 module.exports = {
-    mongoURI: "mongodb://localhost:27017/waredlydb",
-    mongoURIX: "mongodb://51.195.200.24:27017/waredlydb",
+    mongoURI: "mongodb://localhost:27017/website-domaindb",
+    mongoURIX: "mongodb://51.195.200.24:27017/website-domaindb",
     mailServer:"smtp-relay.sendinblue.com",
     mailPort:587,
     mailUser:"osama.kofahi@gmail.com",

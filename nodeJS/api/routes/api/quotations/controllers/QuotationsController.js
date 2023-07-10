@@ -304,7 +304,7 @@ router.get('/sendToCompanies/:id', verifyToken, async (req, res) => {
         }
         for (var vendorIndex in companies) {
             let vendor = companies[vendorIndex];
-            let messageBody = "Dears " + vendor.name.english + ", <br/>New quotation Received, please <a href='https://waredly.com/admin/quotations/" + quotation._id + "'>Click Here </a> to see quotation details.";
+            let messageBody = "Dears " + vendor.name.english + ", <br/>New quotation Received, please <a href='https://website-domain.com/admin/quotations/" + quotation._id + "'>Click Here </a> to see quotation details.";
             messageBody += "<br/><b>quotation Number: </b> " + quotation._id + "<br />";
             try {
                 sendEmail(vendor.contactDetails.infoEmail, "New quotation Received", messageBody);

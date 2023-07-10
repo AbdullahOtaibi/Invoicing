@@ -223,8 +223,8 @@ router.get('/sendActivationEmail/:email', async (req, res) => {
 
     let user = await User.findOne({ email: email });
     if (user && user.email && user.email.length > 0) {
-        let emailBody = "<a href='https://waredly.com/activate-account/" + user._id + "/" + user.otp + "'>Verify your email address</a>";
-        sendEmail(email, "Waredly.com | Email Verification", emailBody)
+        let emailBody = "<a href='https://website-domain.com/activate-account/" + user._id + "/" + user.otp + "'>Verify your email address</a>";
+        sendEmail(email, "website-domain.com | Email Verification", emailBody)
         //User.findByIdAndUpdate(req.params.id, {emailConfirmed: true}, function (err, item) {
         //     console.log('saved into database...');
         //    res.json({ message: "ok" });
@@ -240,8 +240,8 @@ router.get('/forgot-password/:email', async (req, res) => {
 
     let user = await User.findOne({ email: email });
     if (user && user.email && user.email.length > 0) {
-        let emailBody = "<a href='https://waredly.com/reset-password/" + user.otp + "'>Reset your password</a>.";
-        sendEmail(email, "Waredly.com | Reset Password", emailBody);
+        let emailBody = "<a href='https://website-domain.com/reset-password/" + user.otp + "'>Reset your password</a>.";
+        sendEmail(email, "website-domain.com | Reset Password", emailBody);
         //User.findByIdAndUpdate(req.params.id, {emailConfirmed: true}, function (err, item) {
         //     console.log('saved into database...');
         //    res.json({ message: "ok" });

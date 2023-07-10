@@ -6,7 +6,7 @@ const path = require('path');
 
 function GoogleCloudStorage() {
 
-    const bucketName = 'waredly-uploads';
+    const bucketName = 'website-domain-uploads';
 
     this.createDirectory = async () => {
 
@@ -19,7 +19,7 @@ function GoogleCloudStorage() {
         try {
             const storage = new Storage({
                 keyFilename: path.join(__dirname, '../../../../config/google-api-key.json'),
-                projectId: 'waredly'
+                projectId: 'website-domain'
             });
 
             await storage.bucket(bucketName).upload(filePath, {

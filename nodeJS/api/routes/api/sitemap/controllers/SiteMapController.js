@@ -23,11 +23,11 @@ router.get('/generate', verifyToken, async (req, res) => {
         totalUrls++;
         let category = mainCategories[catIndex];
         //console.log('category id:' + category._id);
-        let url = 'https://waredly.com/category/'+category.urlKey;
+        let url = 'https://website-domain.com/category/'+category.urlKey;
         xml.ele('url').ele('loc', url).up()
         .ele('lastmod', moment().format('YYYY-MM-DD')).end();
         totalUrls++;
-         url = 'https://waredly.com/ar/category/'+category.urlKey;
+         url = 'https://website-domain.com/ar/category/'+category.urlKey;
         xml.ele('url').ele('loc', url).up()
         .ele('lastmod', moment().format('YYYY-MM-DD')).end();
 
@@ -37,12 +37,12 @@ router.get('/generate', verifyToken, async (req, res) => {
             totalUrls++;
             let category = subCategories[subCatIndex];
             //console.log('category id:' + category._id);
-            let url = 'https://waredly.com/category-products/'+category.urlKey;
+            let url = 'https://website-domain.com/category-products/'+category.urlKey;
             totalUrls++;
             xml.ele('url').ele('loc', url).up()
             .ele('lastmod', moment().format('YYYY-MM-DD')).end();
 
-            url = 'https://waredly.com/ar/category-products/'+category.urlKey;
+            url = 'https://website-domain.com/ar/category-products/'+category.urlKey;
             xml.ele('url').ele('loc', url).up()
             .ele('lastmod', moment().format('YYYY-MM-DD')).end();
 
@@ -53,12 +53,12 @@ router.get('/generate', verifyToken, async (req, res) => {
         for(var productIndex in products){
             let product = products[productIndex];
             //console.log('product id:' + product._id);
-            let url = 'https://waredly.com/product/'+product._id;
+            let url = 'https://website-domain.com/product/'+product._id;
             totalUrls++;
             xml.ele('url').ele('loc', url).up()
             .ele('lastmod', moment().format('YYYY-MM-DD')).end();
 
-             url = 'https://waredly.com/ar/product/'+product._id;
+             url = 'https://website-domain.com/ar/product/'+product._id;
              totalUrls++;
             xml.ele('url').ele('loc', url).up()
             .ele('lastmod', moment().format('YYYY-MM-DD')).end();

@@ -51,7 +51,7 @@ router.post('/send-order-message', verifyToken, async (req, res, next) => {
   let vendorId = req.body.vendorId || '';
   let clientId = req.body.clientId;
   let orderId = req.body.orderId;
-  let subject = "Waredly Order Notification";
+  let subject = "website-domain Order Notification";
   let order = null;
   if (orderId) {
     order = await orders.getOrderById(orderId);
@@ -76,7 +76,7 @@ router.post('/send-order-message', verifyToken, async (req, res, next) => {
 
   if(order){
     console.log('order found')
-    subject = "Waredly Order #" + ("000000".substring(("" + order.serialNumber).length) + order.serialNumber) + " Notification";
+    subject = "website-domain Order #" + ("000000".substring(("" + order.serialNumber).length) + order.serialNumber) + " Notification";
   }
    
 

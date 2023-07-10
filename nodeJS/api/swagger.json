@@ -3,13 +3,13 @@
     "info": {
         "description": "",
         "version": "1.0.0",
-        "title": "Waredly API",
-        "termsOfService": "https://waredly.com/page/ConditionsOfUse",
+        "title": "website-domain API",
+        "termsOfService": "https://website-domain.com/page/ConditionsOfUse",
         "contact": {
-            "email": "info@waredly.com"
+            "email": "info@website-domain.com"
         }
     },
-    "host": "api.waredly.com",
+    "host": "api.website-domain.com",
     "basePath": "/v1",
     "tags": [
         {
@@ -413,7 +413,7 @@
         },
         "articlestore_auth": {
             "type": "oauth2",
-            "authorizationUrl": "https://api.waredly.com/auth/sign-in",
+            "authorizationUrl": "https://api.website-domain.com/auth/sign-in",
             "flow": "implicit",
             "scopes": {
                 "read:articles": "read your articles",
