@@ -276,7 +276,7 @@ const EditUser = (props) => {
                                     <label className="custom-control-label" htmlFor="publishedCheck">{t("users.active")}</label>
                                 </div>
                             </div>
-                            <div className="mb-3 row col justify-content-end" >
+                            <div className="mb-3 text-end col justify-content-end" >
                                 <Link className="btn btn-warning" to='/admin/users' >{t("dashboard.cancel")}</Link> &nbsp;
                                 <button type="button" className="btn btn-primary" onClick={doPost}>{t("dashboard.submit")}</button>
                             </div>
