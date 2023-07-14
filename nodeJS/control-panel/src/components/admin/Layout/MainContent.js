@@ -9,6 +9,7 @@ import { Helmet } from "react-helmet";
 
 import CompanyCategories from '../Companies/CompanyCategories'
 
+
 const ListModules = lazy(() => import(/* webpackChunkName: "ListModules" */'../Modules/ListModules'))
 const CreateModule = lazy(() => import(/* webpackChunkName: "CreateModule" */'../Modules/CreateModule'))
 
@@ -142,7 +143,7 @@ const ViewReceipt = lazy(() => import(/* webpackChunkName: "ViewReceipt" */'../R
 
 const SignIn = lazy(() => import(/* webpackChunkName: "SignIn" */'../../SignIn/SignIn'));
 const ForgotPassword = lazy(() => import(/* webpackChunkName: "ForgotPassword" */'../../SignIn/ForgotPassword'));
-
+const ResetPassword = lazy(() => import(/* webpackChunkName: "ResetPassword" */'../../SignIn/ResetPassword'));
 
 
 const MainContent = ({notification, onHandleNotification}) => {
@@ -162,6 +163,7 @@ const MainContent = ({notification, onHandleNotification}) => {
 
                     <Route path="/sign-in" exact element={<SignIn />} />
                     <Route path="/forgot-password" exact element={<ForgotPassword />} />
+                    <Route path="/reset-password/:token"  element={<ResetPassword />} />
                     
                     <Route path="/articles" exact element={<ListArticles />} />
                     <Route path="/orders" exact element={<ListOrders notification={notification} onHandleNotification={onHandleNotification}  />} />

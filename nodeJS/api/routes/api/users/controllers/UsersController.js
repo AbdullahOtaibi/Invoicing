@@ -240,7 +240,7 @@ router.get('/forgot-password/:email', async (req, res) => {
 
     let user = await User.findOne({ email: email });
     if (user && user.email && user.email.length > 0) {
-        let emailBody = "<a href='https://website-domain.com/reset-password/" + user.otp + "'>Reset your password</a>.";
+        let emailBody = "<a href='https://website-domain.com/admin/reset-password/" + user.otp + "'>Reset your password</a>.";
         sendEmail(email, "website-domain.com | Reset Password", emailBody);
         //User.findByIdAndUpdate(req.params.id, {emailConfirmed: true}, function (err, item) {
         //     console.log('saved into database...');
@@ -255,8 +255,7 @@ router.get('/forgot-password/:email', async (req, res) => {
 
 router.post('/reset-password', async (req, res) => {
     var email = req.body.email;
-    var password = req.body.password;
-    var confirmPassword = req.body.confirmPassword;
+    var password = req.body.newPassword;
     var otp = req.body.otp;
 console.log("otp: " + otp)
 

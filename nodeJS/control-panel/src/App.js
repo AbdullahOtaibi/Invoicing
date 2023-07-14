@@ -19,7 +19,8 @@ const Dashboard = lazy(() => import(/* webpackChunkName: "Dashboard" */'./compon
 
  const SignIn = lazy(() => import(/* webpackChunkName: "SignIn" */'./components/SignIn/SignIn'));
  const ForgotPassword = lazy(() => import(/* webpackChunkName: "ForgotPassword" */'./components/SignIn/ForgotPassword'));
-
+ const ResetPassword = lazy(() => import(/* webpackChunkName: "ResetPassword" */'./components/SignIn/ResetPassword'));
+ 
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
           <Routes>
           <Route path="/admin/sign-in" element={<SignIn />}   />
           <Route path="/admin/forgot-password" element={<ForgotPassword />}   />
+          <Route path="/admin/reset-password/:token" element={<ResetPassword />}   />
           
           <Route path="/admin/*" element={<Dashboard />} />
           <Route path="/*" element={<Dashboard />} />
