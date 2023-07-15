@@ -223,7 +223,7 @@ router.get('/sendActivationEmail/:email', async (req, res) => {
 
     let user = await User.findOne({ email: email });
     if (user && user.email && user.email.length > 0) {
-        let emailBody = "<a href='https://website-domain.com/activate-account/" + user._id + "/" + user.otp + "'>Verify your email address</a>";
+        let emailBody = "<a href='" + process.env.WEB_BASE_URL + "/admin/activate-account/" + user._id + "/" + user.otp + "'>Verify your email address</a>";
         sendEmail(email, "website-domain.com | Email Verification", emailBody)
         //User.findByIdAndUpdate(req.params.id, {emailConfirmed: true}, function (err, item) {
         //     console.log('saved into database...');
@@ -240,7 +240,7 @@ router.get('/forgot-password/:email', async (req, res) => {
 
     let user = await User.findOne({ email: email });
     if (user && user.email && user.email.length > 0) {
-        let emailBody = "<a href='https://website-domain.com/admin/reset-password/" + user.otp + "'>Reset your password</a>.";
+        let emailBody = "<a href='" + process.env.WEB_BASE_URL + "/admin/reset-password/" + user.otp + "'>Reset your password</a>.";
         sendEmail(email, "website-domain.com | Reset Password", emailBody);
         //User.findByIdAndUpdate(req.params.id, {emailConfirmed: true}, function (err, item) {
         //     console.log('saved into database...');
