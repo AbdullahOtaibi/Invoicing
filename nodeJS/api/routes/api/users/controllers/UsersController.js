@@ -48,7 +48,7 @@ router.get('/all', verifyToken, async (req, res) => {
     if (req.user.role != "Administrator") {
         res.json({ success: false, message: "Unauthorized" });
     }
-//{ roles: { $ne: [] } }
+    //{ roles: { $ne: [] } }
     User.find()
         .sort({ _id: 1 })
         .then(items => {
@@ -178,7 +178,7 @@ router.post('/roles/create', verifyToken, async (req, res) => {
 router.post('/roles/update', verifyToken, async (req, res) => {
     await UserRole.findByIdAndUpdate(req.body._id, req.body);
     res.json(req.body);
-    
+
 });
 
 
@@ -237,9 +237,9 @@ router.get('/sendActivationEmail/:email', async (req, res) => {
 
 router.get('/forgot-password/:email', async (req, res) => {
     let email = req.params.email;
-
     let user = await User.findOne({ email: email });
     if (user && user.email && user.email.length > 0) {
+        console.log("" + process.env.WEB_BASE_URL + "/admin/reset-password/" + user.otp);
         let emailBody = "<a href='" + process.env.WEB_BASE_URL + "/admin/reset-password/" + user.otp + "'>Reset your password</a>.";
         sendEmail(email, "website-domain.com | Reset Password", emailBody);
         //User.findByIdAndUpdate(req.params.id, {emailConfirmed: true}, function (err, item) {
@@ -257,7 +257,7 @@ router.post('/reset-password', async (req, res) => {
     var email = req.body.email;
     var password = req.body.newPassword;
     var otp = req.body.otp;
-console.log("otp: " + otp)
+    console.log("otp: " + otp)
 
 
     var salt = await bcrypt.genSalt(10);
@@ -271,11 +271,10 @@ console.log("otp: " + otp)
     if (user) {
         if (user.otp == otp) {
             console.log('user.otp : ' + user.otp);
-             await User.findByIdAndUpdate(user._id, updateData, function (err, item) {
-                console.log('saved into database...');
-                res.json({ success: true });
-            });
-        }else{
+            await User.findByIdAndUpdate(user._id, updateData);
+            console.log('saved into database...');
+            res.json({ success: true });
+        } else {
             res.json({ success: false, message: 'Invalid Reset URL.' });
         }
 
@@ -293,9 +292,9 @@ router.post('/create', verifyToken, async (req, res) => {
     var password = req.body.password;
     var salt = await bcrypt.genSalt(10);
     var hash = await bcrypt.hash(password, salt);
-    let exists = await User.findOne({email: req.body.email});
-    if(exists){
-        res.json({success: false, message: "Email already exists."});
+    let exists = await User.findOne({ email: req.body.email });
+    if (exists) {
+        res.json({ success: false, message: "Email already exists." });
         return;
     }
     await sendEmail(req.body.email, "New User Registeres", "Welcome");
