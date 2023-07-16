@@ -92,7 +92,7 @@ const ListReceipt = (props) => {
                                 <tr>
                                     <th>
                                       
-                                            {t("receipt.sequance")}
+                                            {t("receipt.seqNumber")}
                                     
 
                                     </th>
@@ -145,7 +145,7 @@ const ListReceipt = (props) => {
                                         <tr key={'' + item.id}>
                                             <td>
                                                 <Link to={'/admin/Receipt/view/' + item._id} className='text-info'>
-                                                    {item.sequance}
+                                                    {item.seqNumber}
 
                                                 </Link>
                                             </td>

@@ -20,143 +20,288 @@ import {
 import { ThreeDots } from 'react-loader-spinner';
 import { useTranslation } from "react-i18next";
 import ConfirmButton from "react-confirmation-button";
-import { MdAdd, MdDelete } from "react-icons/md";
+import { MdAdd, MdDelete, MdReceipt } from "react-icons/md";
 import { RiRefund2Fill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {getReceipt , removeReceipt} from "./ReceiptAPI"
+import moment from "moment";
 
 const ViewReceipt = (props) => {
 
   let navigate = useNavigate(); 
-  const { packageId } = useParams();
+  const { receiptId } = useParams();
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
-  const [Package , setPackage] = useState( { }) ;
+  const [receipt , setReceipt] = useState( { }) ;
   useEffect( () => {
     setLoading(true) ; 
-  console.log("packageId:" +packageId) ; 
-  getReceipt(packageId).then(
+  console.log("receiptId:" +receiptId) ; 
+  getReceipt(receiptId).then(
     (res) =>{ 
-      setPackage(res)
+      setReceipt(res)
+      console.log("receipt:" )
+      console.log( JSON.stringify(res)) ;
     }
   ).catch((error) =>{ console.log(error)}) 
   setLoading(false) ; 
   } , []) ; 
 
 
+
+
+
   return (
-   (Package ? (  <>
-      
-    <div className="card">
-        <h5 className="card-header">
-          <MdCollections /> {t("Package.packageInformation")}   <span className="text-info px-1">  {Package.packageName  }  <MdMoney size={20}/>  { "  "  +Package.price}</span>
-        </h5>
-        <div className="card-body">
-
-        <div className="container text-center">
-          <ThreeDots
-            type="ThreeDots"
-            color="#00BFFF"
-            height={100}
-            width={100}
-            visible={loading}
-          />
-        </div>
-        <br />
-
-        <div className="row">
-
-<div className="mb-3 col ">
-    <div className="col col-auto"> {t("Package.packageName")  }</div>
-
-    <div className="col">
-      {Package.packageName}
-    </div>
-  </div>
-
-  <div className="mb-3 col ">
-    <div className="col col-auto"> {t("Package.status")  }</div>
-
-    <div className="col">
-      {Package.status}
-    </div>
-  </div>
-
-  <div className="mb-3 col ">
-    <div className="col col-auto"> {t("Package.price")  }</div>
-
-    <div className="col">
-      {Package.price}
-    </div>
-  </div>
-
-  <div className="mb-3 col ">
-    <div className="col col-auto"> {t("Package.numberOfSet")  }</div>
-
-    <div className="col">
-      {Package.numberOfSet}
-    </div>
-  </div>
+   (receipt ?  (
+      <>
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title"> <MdReceipt size= {20} />   {t("receipt.createReceipt")}</h5>
+            <div className="container text-center">
+              <ThreeDots
+                type="ThreeDots"
+                color="#00BFFF"
+                height={100}
+                width={100}
+                visible={loading}
+              />
+            </div>
+            <br />
+            <form className="needs-validation">
+            
   
-  </div>
-
-  <div className="row">
-
-  <div className="mb-3 col ">
-    <div className="col col-auto"> {t("Package.note")  }</div>
-
-    <div className="col">
-      {Package.note}
+            <div className="mb-3 row ">
+                <div className="col col-auto text-info">
+                  {t("receipt.contactInformation")}{" "}
+                </div>
+                <div className="col">
+                  <hr />
+                </div>
+              </div>
+  
+              <div className="mb-3 row">
+                  
+                  <div className="mb-3 col ">
+                      <div className="col col-auto">{t("receipt.contactName")}</div>
+                      <div className="col col-auto">
+              {receipt.contactName}
+                      </div>
+                    </div>
+      
+      
+                    <div className="mb-3 col ">
+                      <div className="col col-auto">{t("receipt.contactMobile")}</div>
+                      <div className="col col-auto">
+            {receipt.contactMobile}
+                      
+      
+                      </div>
+                    </div>
+      
+      
+                    <div className="mb-3 col ">
+                      <div className="col col-auto"></div>
+                      <div className="col col-auto">
+                   
+                      </div>
+                    </div>
+      
+      
+  
+                    
+      
+                  </div>
+  
+                 <div className="mb-3 row ">
+                <div className="col col-auto text-info">
+                  {t("receipt.packageInformation")}{" "}
+                </div>
+                <div className="col">
+                  <hr />
+                </div>
+              </div>    
+              <div className="mb-3 row">
+                  
+              <div className="mb-3 col ">
+                  <div className="col col-auto">{t("receipt.packageName")}</div>
+                  <div className="col col-auto">
+             {receipt.packageName}
+                  </div>
+                </div>
+  
+  
+              
+  
+  
+                <div className="mb-3 col ">
+                  <div className="col col-auto">{t("receipt.packagePrice")}</div>
+                  <div className="col col-auto">
+                  {
+                        receipt.packagePrice
+                      }
+                  </div>
+                </div>
+  
+  
+                <div className="mb-3 col ">
+                  <div className="col col-auto">{t("receipt.packageNumberOfSet")}</div>
+                  <div className="col col-auto">
+         { receipt.packageNumberOfSet}
+                  </div>
+                </div>
+  
+                
+  
+              </div>
+                
+  
+              <div className="mb-3 row ">
+                <div className="col col-auto text-info">
+                  {t("receipt.ReceiptInformation")}{" "}
+                </div>
+                <div className="col">
+                  <hr />
+                </div>
+              </div>
+  
+              <div className="mb-3 row">
+                  
+                  <div className="mb-3 col ">
+                      <div className="col col-auto">{t("receipt.receiptDate")}</div>
+                      <div className="col">
+                   {receipt.receiptDate}
+                  </div>
+                    </div>
+      
+      
+                  
+      
+      
+                    <div className="mb-3 col  text-warning">
+                      <div className="col col-auto">{t("receipt.receiptAmount")}</div>
+                      <div className="col col-auto">
+                     {receipt.receiptAmount}
+                      </div>
+                    </div>
+      
+      
+      
+                    <div className="mb-3 col ">
+      <div className="col col-auto">{t("receipt.note")}</div>
+      <div className="col col-auto">
+       
+      {receipt.note}
+  
+      </div>
     </div>
-  </div>
+                   
+      
+                    
+      
+                  </div>
+            
+                  <div className="mb-3 row">
+  
+                  <div className="mb-3 col  text-warning">
+                      <div className="col col-auto">{t("receipt.receiptTotalInstallments")}</div>
+                      <div className="col col-auto">
+                         JOD {receipt.receiptTotalInstallments? receipt.receiptTotalInstallments.toFixed(2) : receipt.receiptTotalInstallments} 
+                      </div>
+                    </div>
+                  
+                  
+  
+                  <div className="mb-3 col  text-warning ">
+                      <div className="col col-auto">{t("receipt.receiptTotalInvoice")}</div>
+                      <div className="col col-auto">
+                         JOD {receipt.receiptTotalInvoice? receipt.receiptTotalInvoice.toFixed(2) : receipt.receiptTotalInvoice} 
+                      </div>
+                    </div>
+  
+                    <div className="mb-3 col   text-warning">
+                      <div className="col col-auto">{t("receipt.receiptBalance")}</div>
+                      <div className="col col-auto">
+                         JOD {receipt.receiptBalance ? receipt.receiptBalance.toFixed(2) : receipt.receiptBalance } 
+                      </div>
+                    </div>
+      
+                  </div>
+  
+                  <div className="mb-3 row">
+  
+  <div className="mb-3 col  text-warning">
+      <div className="col col-auto">{t("receipt.receiptReminingAmount")}</div>
+      <div className="col col-auto">
+         JOD {receipt.receiptReminingAmount} 
+      </div>
+    </div>
+    </div>
+  
+                  
+              <div className="mb-3 row ">
+                <div className="col col-auto text-info">
+                  {t("receipt.installments")}{" "}
+                </div>
+                <div className="col">
+                  <hr />
+                </div>
+              </div>    
+  
+              <div className="row">
+                <div className="col table-responsive">
+                  <table className="table table-sm needs-validation ">
+                    <thead>
+                      <tr className="table-light">
+                        <th width="5%">#</th>
+                     
+                        <th width="20%">{t("receipt.installmentAmount")} </th>
+                        <th width="20%">{t("receipt.installmentDate")} </th>
+                        <th width="35%">{t("receipt.installmentNote")}</th>
+                       
+                    
+                      </tr>
+                    </thead>
+  
+                    <tbody>
+                      {receipt.installments.map((item) => (
+                        <tr>
+                          <td> {item.installmentSequance} </td>
+                          <td>{item.installmentAmount}</td>
+                          <td>{item.installmentDate} </td>
+                          <td>{item.installmentNote} </td>
+      
+                          
+                        </tr>
+                      ))}
+  
 
-  </div>
-
-
-  <div className="row text-right">
-  <div className="mb-3  col justify-content-end">
-    <Link className="btn btn-secondary btn-lg mx-2" to={"/admin/Package"}>
-      <MdClose size={20} /> &nbsp; {t("close")}
-    </Link>
-    &nbsp;
-
-
-
-    <Link className="btn btn-primary btn-lg" to={"/admin/Package/edit/" + Package._id}>
-      <MdEdit size={20} />
-      &nbsp; {t("dashboard.edit")}
-    </Link>
-
-  </div>
-
-
-   <ConfirmButton
-    onConfirm={() => { removeReceipt(packageId); navigate("/admin/Package/", { replace: true }); }}
-    onCancel={() => console.log("cancel")}
-    buttonText={t("dashboard.delete")}
-    confirmText={t("invoice.confirmDelete")}
-    cancelText={t("invoice.cancelDelete")}
-    loadingText={t("contact.BeingDeleteingTheContact")}
-    wrapClass="fdfdf"
-    buttonClass="btn btn-lg"
-    mainClass="btn-warning mx-2"
-    confirmClass="btn-danger mx-2"
-    cancelClass=" btn-success "
-    loadingClass="visually-hidden"
-    disabledClass=""
-    once
-  >
-    {"Delete "}
-    <MdDelete />
-  </ConfirmButton> 
-
-</div>
+                    </tbody>
+                    <tfoot></tfoot>
+                  </table>
+                </div>
+              </div>
+  
+            
+  
+  
+  
+  
+              <div class="row text-right">
+                <div className="mb-3  col justify-content-end">
+                  <Link className="btn btn-secondary btn-lg" to="/admin/Receipt">
+                    <MdClose size={20} /> &nbsp; {t("Cancel")}
+                  </Link>{" "}
+                  &nbsp;
+             
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
-        </div>
-
+      </>
     
-  </> ): "No Data Found") );
+   
+    ): "No Data Found") );
   
 
 };
