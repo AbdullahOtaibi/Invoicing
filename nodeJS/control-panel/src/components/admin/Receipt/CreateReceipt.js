@@ -59,6 +59,13 @@ const CreateReceipt = (props) => {
       cloned.installments[i].installmentSequance = i+1;
     }
 
+    setCurrentEditableItem({
+      installmentSequance: cloned.installments.length +1 ,
+      installmentAmount: 0,
+      installmentNote: "",
+      installmentDate: new Date() , 
+    });
+
     setReceipt(cloned);
   };
 

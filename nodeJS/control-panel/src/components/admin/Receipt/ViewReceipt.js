@@ -295,6 +295,10 @@ const ViewReceipt = (props) => {
                   </Link>{" "}
                   &nbsp;
              
+                  <Link className="btn btn-primary btn-lg" to={"/admin/Receipt/edit/" + receipt._id}>
+                      <MdEdit size={20} />
+                      &nbsp; {t("dashboard.edit")}
+                    </Link> 
                 </div>
               </div>
             </form>
