@@ -51,6 +51,7 @@ const ViewReceipt = (props) => {
 
 
 
+  moment.locale("en-GB");
   return (
    (receipt ?  (
       <>
@@ -137,7 +138,7 @@ const ViewReceipt = (props) => {
                   <div className="col col-auto">{t("receipt.packagePrice")}</div>
                   <div className="col col-auto">
                   {
-                        receipt.packagePrice
+                        receipt.packagePrice? receipt.packagePrice.toFixed(2) : receipt.packagePrice
                       }
                   </div>
                 </div>
@@ -169,7 +170,7 @@ const ViewReceipt = (props) => {
                   <div className="mb-3 col ">
                       <div className="col col-auto">{t("receipt.receiptDate")}</div>
                       <div className="col">
-                   {receipt.receiptDate}
+                   {receipt.receiptDate? moment(receipt.receiptDate).format("DD/MM/yyyy") : "Not Set"}
                   </div>
                     </div>
       
@@ -177,10 +178,10 @@ const ViewReceipt = (props) => {
                   
       
       
-                    <div className="mb-3 col  text-warning">
+                    <div className="mb-3 col   ">
                       <div className="col col-auto">{t("receipt.receiptAmount")}</div>
                       <div className="col col-auto">
-                     {receipt.receiptAmount}
+                     {receipt.receiptAmount? receipt.receiptAmount.toFixed(2) : receipt.receiptAmount}
                       </div>
                     </div>
       
@@ -202,7 +203,7 @@ const ViewReceipt = (props) => {
             
                   <div className="mb-3 row">
   
-                  <div className="mb-3 col  text-warning">
+                  <div className="mb-3 col   ">
                       <div className="col col-auto">{t("receipt.receiptTotalInstallments")}</div>
                       <div className="col col-auto">
                          JOD {receipt.receiptTotalInstallments? receipt.receiptTotalInstallments.toFixed(2) : receipt.receiptTotalInstallments} 
@@ -211,14 +212,14 @@ const ViewReceipt = (props) => {
                   
                   
   
-                  <div className="mb-3 col  text-warning ">
+                  <div className="mb-3 col   ">
                       <div className="col col-auto">{t("receipt.receiptTotalInvoice")}</div>
                       <div className="col col-auto">
                          JOD {receipt.receiptTotalInvoice? receipt.receiptTotalInvoice.toFixed(2) : receipt.receiptTotalInvoice} 
                       </div>
                     </div>
   
-                    <div className="mb-3 col   text-warning">
+                    <div className="mb-3 col    ">
                       <div className="col col-auto">{t("receipt.receiptBalance")}</div>
                       <div className="col col-auto">
                          JOD {receipt.receiptBalance ? receipt.receiptBalance.toFixed(2) : receipt.receiptBalance } 
@@ -229,10 +230,10 @@ const ViewReceipt = (props) => {
   
                   <div className="mb-3 row">
   
-  <div className="mb-3 col  text-warning">
+  <div className="mb-3 col   ">
       <div className="col col-auto">{t("receipt.receiptReminingAmount")}</div>
       <div className="col col-auto">
-         JOD {receipt.receiptReminingAmount} 
+         JOD {receipt.receiptReminingAmount? receipt.receiptReminingAmount.toFixed(2) : receipt.receiptReminingAmount } 
       </div>
     </div>
     </div>
@@ -254,7 +255,7 @@ const ViewReceipt = (props) => {
                       <tr className="table-light">
                         <th width="5%">#</th>
                      
-                        <th width="20%">{t("receipt.installmentAmount")} </th>
+                        <th width="20%">{t("receipt.installmentAmount") +  "  (JOD)"} </th>
                         <th width="20%">{t("receipt.installmentDate")} </th>
                         <th width="35%">{t("receipt.installmentNote")}</th>
                        
@@ -263,21 +264,22 @@ const ViewReceipt = (props) => {
                     </thead>
   
                     <tbody>
-                      {receipt.installments.map((item) => (
+                      { receipt.installments? receipt.installments.map((item) => (
                         <tr>
                           <td> {item.installmentSequance} </td>
                           <td>{item.installmentAmount}</td>
-                          <td>{item.installmentDate} </td>
+                          <td>{item.installmentDate ? moment(item.installmentDate).format("DD/MM/yyyy") : "Not Set"} </td>
                           <td>{item.installmentNote} </td>
       
                           
                         </tr>
-                      ))}
+                      )) : <tr></tr>}
   
 
                     </tbody>
                     <tfoot></tfoot>
                   </table>
+                  
                 </div>
               </div>
   
