@@ -571,6 +571,7 @@
   "receiptReminingAmount" : "Receipt Remining Amount" ,
   "contactName" : "Contact Name", 
   "receiptTotalInstallments" : "Receipt Total Installments",
-  "receiptBalance" : "receipt Balance"
+  "receiptBalance" : "receipt Balance" ,
+  "editReceipt" : "Edit Receipt"
 }
 }

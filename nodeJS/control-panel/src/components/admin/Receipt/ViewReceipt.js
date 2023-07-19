@@ -57,7 +57,7 @@ const ViewReceipt = (props) => {
       <>
         <div className="card">
           <div className="card-body">
-            <h5 className="card-title"> <MdReceipt size= {20} />   {t("receipt.createReceipt")}</h5>
+            <h5 className="card-title"> <MdReceipt size= {20} />   {t("receipt.ReceiptInformation")}</h5>
             <div className="container text-center">
               <ThreeDots
                 type="ThreeDots"

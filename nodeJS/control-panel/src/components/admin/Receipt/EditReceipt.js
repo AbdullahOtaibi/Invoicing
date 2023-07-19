@@ -316,7 +316,7 @@ useEffect( ()=>{updateReceiptCalculation()} , [currentEditableItem ]) ;
     receipt.contactName ?  <>
    <div className="card">
      <div className="card-body">
-       <h5 className="card-title"> <MdReceipt size= {20} />   {t("receipt.createReceipt")}</h5>
+       <h5 className="card-title"> <MdReceipt size= {20} />   {t("receipt.editReceipt")}</h5>
        <div className="container text-center">
          <ThreeDots
            type="ThreeDots"
