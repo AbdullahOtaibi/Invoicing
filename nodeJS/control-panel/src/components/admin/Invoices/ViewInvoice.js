@@ -259,7 +259,7 @@ const ViewInvoice = (props) => {
 
                   {
                       
-                    (invoice.status == "posted" && invoice.reverted_Status != "posted" ) &&
+                    (invoice.status != "reverted" ) &&
                     (<>
                     <button
                       type="button"
@@ -305,10 +305,10 @@ const ViewInvoice = (props) => {
                 </div>
 
                 <div className="mb-3 col ">
-                  <div className="col col-auto"> {t("invoice.reverted_Status")}</div>
+                  <div className="col col-auto"> {t("invoice.status")}</div>
 
                   <div className="col">
-                    {invoice.reverted_Status}
+                    {invoice.status}
                   </div>
                 </div>
 
