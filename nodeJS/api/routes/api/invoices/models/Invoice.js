@@ -140,7 +140,7 @@ const InvoiceSchema = new Schema({
     responseXML: String ,
     developerCommnet: String,
     AdditionalDocumentReference_uuid_Type_Reverted:String,
-    reverted_Status:String,
+    isPosted:Boolean,
     revertedXML:String, 
     encrypRevertedXML:String,
     revertedXMLResponse:String, 

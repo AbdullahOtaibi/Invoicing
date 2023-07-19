@@ -115,15 +115,10 @@ router.post("/filter", verifyToken, async (req, res) => {
       queryParams["$and"].push({ contact: clientId });
     }
 
-    if(status == "reverted"){
-      queryParams["$and"].push({ reverted_Status: "posted" });
-      
-    }else if (status){
+     if (status){
        
-        queryParams["$and"].push({ status: status, reverted_Status : {$ne : "posted"} });
+        queryParams["$and"].push({ status: status });
       
-    }else{
-      queryParams["$and"].push({  reverted_Status : {$ne : "posted"} });
     }
     
 

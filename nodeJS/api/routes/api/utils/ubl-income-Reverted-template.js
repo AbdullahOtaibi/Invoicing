@@ -53,7 +53,7 @@ async function postToTaxTypeRevertedIncome(invoice, user) {
         console.log(res.data);
         var result = res.data;
         var newStatus = "";
-        newStatus = result.EINV_RESULTS.status == "PASS" ? "posted" : "stuck";
+        newStatus = result.EINV_RESULTS.status == "PASS" ? "reverted" : "stuck";
         let _postedXml = xml;
         let _encryptPostedXML = req;
         if (process.env.INCLUDE_REQUEST !== true) {
@@ -61,14 +61,14 @@ async function postToTaxTypeRevertedIncome(invoice, user) {
         }
            
      console.log("before update: invoice._id:" +invoice._id) ;
-     console.log("reverted_Status:" +newStatus) ; 
+     console.log("new status:" +newStatus) ; 
    //  console.log("revertedXML:" +_postedXml) ;
      //console.log("revertedXMLResponse:" + JSON.stringify(result));
 
         await Invoice.findOneAndUpdate(
           { _id: invoice._id },
           {
-            reverted_Status: newStatus,
+            status: newStatus,
             revertedXML: _postedXml,
             encrypRevertedXML: _encryptPostedXML,
             revertedXMLResponse: JSON.stringify(result),

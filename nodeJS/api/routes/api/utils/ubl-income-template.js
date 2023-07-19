@@ -53,7 +53,11 @@ async function postToTaxTypeIncome(invoice, user) {
         console.log(res.data);
         var result = res.data;
         var newStatus = "";
+        var isPosted = false;
         newStatus = result.EINV_RESULTS.status == "PASS" ? "posted" : "stuck";
+        if(newStatus == "posted"){
+          isPosted = true;
+        }
         let _postedXml = xml;
         let _encryptPostedXML = req;
         if (process.env.INCLUDE_REQUEST !== true) {
@@ -68,6 +72,7 @@ async function postToTaxTypeIncome(invoice, user) {
             postedXML: _postedXml,
             encryptPostedXML: _encryptPostedXML,
             responseXML: JSON.stringify(result),
+            isPosted: isPosted
           }
         );
 
