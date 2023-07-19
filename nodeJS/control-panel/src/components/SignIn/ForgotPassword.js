@@ -26,16 +26,13 @@ const ForgotPassword = () => {
             }
         })).catch((e) => {
             setLoading(false);
-
             setMessage(e.message);
-        })
+        });
     }
 
     const handleUpdateEmail = (event) => {
         setFormData({ ...formData, email: event.target.value })
     }
-
-
 
     return (
         <div className='container'>

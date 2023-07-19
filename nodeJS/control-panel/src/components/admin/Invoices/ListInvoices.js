@@ -43,6 +43,8 @@ const ListInvoices = (props) => {
     const [postedCount, setPostedCount] = useState(0);
     const [stuckCount, setStuckCount] = useState(0);
     const [searchCount, setSearchCount] = useState(0);
+    const [revertedCount, setRevertedCount] = useState(0);
+    
     const [filter, setFilter] = useState(null);
 
     const downloadExcel =  () => {
@@ -167,6 +169,13 @@ const ListInvoices = (props) => {
                             </div>
                         </Tab>
 
+                        <Tab eventKey="reverted" title={t("invoice.revertedInvoices") + ' (' + revertedCount + ')'} tabClassName="tab-item btn-danger">
+                            <div className="table-responsive">
+                                <Listinv status="reverted" updateCount={setRevertedCount} />
+                            </div>
+                        </Tab>
+
+                        
 
                     </Tabs>
 
