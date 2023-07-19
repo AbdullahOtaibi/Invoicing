@@ -443,6 +443,7 @@
     "Invoices": "Invoices", 
     "newInvoices" : "New Invoices",
     "postedInvoices": "Posted Invoices", 
+    "revertedInvoices":"Reverted Invoices",
     "TaxExclusiveAmount": "Tax Exclusive Amount",
     "AllowanceTotalAmount" : "Allowance Total Amount" ,
     "TaxInclusiveAmount" : "Tax Inclusive Amount",
