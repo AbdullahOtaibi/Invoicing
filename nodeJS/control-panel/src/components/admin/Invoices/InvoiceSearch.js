@@ -106,6 +106,7 @@ const InvoiceSearch = (props) => {
                                 <option value="new"> {t("invoice.NewInvoices")}</option>
                                 <option value="posted"> {t("invoice.PostedInvoices")}</option>
                                 <option value="stuck"> {t("invoice.StuckInvoices")}</option>
+                                <option value="reverted"> {t("invoice.revertedInvoices")}</option>
                             </select>
                         </div>
                     </div>
