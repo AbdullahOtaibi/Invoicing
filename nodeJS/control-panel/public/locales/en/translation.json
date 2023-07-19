@@ -572,6 +572,7 @@
   "contactName" : "Contact Name", 
   "receiptTotalInstallments" : "Receipt Total Installments",
   "receiptBalance" : "receipt Balance" ,
-  "editReceipt" : "Edit Receipt"
+  "editReceipt" : "Edit Receipt",
+  "seqNumber" : "Sequance Number"
 }
 }
