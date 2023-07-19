@@ -13,6 +13,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { event } from "jquery";
 import ConfirmButton from "react-confirmation-button";
+import moment from "moment";
 const CreateReceipt = (props) => {
 
   const [wasValidated, setWasValidated] = useState(false);
@@ -38,7 +39,7 @@ const CreateReceipt = (props) => {
   const [currentEditableItem, setCurrentEditableItem] = useState({
     installmentSequance: receipt.installments.length +1,
     installmentAmount: 0,
-    installmentDate: Date.now,
+    installmentDate:new Date(),
     installmentNote: ""
   });
 
@@ -69,6 +70,8 @@ const CreateReceipt = (props) => {
     }
 
     let cloned = JSON.parse(JSON.stringify(receipt));
+    console.log("before push installment ")
+    console.log(receipt) ;
     cloned.installments.push(
     {...currentEditableItem}
     );
@@ -78,13 +81,18 @@ const CreateReceipt = (props) => {
           cloned.installments[i].installmentSequance = i+1;
     }
 
+    console.log("AFTER push installment ")
+    console.log(cloned) ;
+
     setCurrentEditableItem({
       installmentSequance: cloned.installments.length +1 ,
       installmentAmount: 0,
-      installmentDate: Date.now, 
+      installmentNote: "",
+      installmentDate: new Date() , 
     });
     setReceipt(cloned);
-
+    
+    console.log("installment added to receipt") ;
     //updateReceiptCalculation();
   };
 
@@ -100,6 +108,14 @@ const CreateReceipt = (props) => {
     let cloned = JSON.parse(JSON.stringify(currentEditableItem));
     cloned.installmentNote = event.target.value;
     setCurrentEditableItem(cloned);
+  };
+
+  const updateInstallmentDate = (date) => {
+    let cloned = JSON.parse(JSON.stringify(currentEditableItem));
+    console.log("updateInstallmentDate::" +date)
+    cloned.installmentDate = date;
+    setCurrentEditableItem(cloned);
+    
   };
 
 
@@ -226,7 +242,7 @@ const CreateReceipt = (props) => {
     if(checkData()) {
       createReceipt(receipt).then((res)=> {
         toast("success!") ;
-         window.location.href = "/admin/Receipt/ViewPackage/" + res._id;
+         window.location.href = "/admin/Receipt/view/" + res._id;
   
       }).catch((err)=> { console.log(err)}) ;
     }
@@ -550,7 +566,7 @@ useEffect( ()=>{updateReceiptCalculation()} , [currentEditableItem ]) ;
 
             <div className="row">
               <div className="col table-responsive">
-                <table className="table table-sm needs-validation ">
+                <table className="table table-sm needs-validation " style={{minHeight: '400px'} }>
                   <thead>
                     <tr className="table-light">
                       <th width="5%">#</th>
@@ -564,11 +580,12 @@ useEffect( ()=>{updateReceiptCalculation()} , [currentEditableItem ]) ;
                   </thead>
 
                   <tbody>
-                    {receipt.installments.map((item) => (
+                    { receipt.installments? receipt.installments.map((item) => (
                       <tr>
                         <td> {item.installmentSequance} </td>
                         <td>{item.installmentAmount}</td>
-                        <td>{item.installmentDate} </td>
+                        { <td>{item.installmentDate ? moment(item.installmentDate).format("DD/MM/yyyy") : "Not Set"} </td> }
+                      
                         <td>{item.installmentNote} </td>
     
                         <td>
@@ -593,7 +610,7 @@ useEffect( ()=>{updateReceiptCalculation()} , [currentEditableItem ]) ;
                           </ConfirmButton>
                         </td>
                       </tr>
-                    ))}
+                    )) : ""}
 
                     <tr className="d-print-none">
                       <td>{receipt.installments.length + 1}</td>
@@ -608,7 +625,9 @@ useEffect( ()=>{updateReceiptCalculation()} , [currentEditableItem ]) ;
                         />
                       </td>
                       <td>
-                         <DatePicker className="form-control"  dateFormat="dd/MM/yyyy"/>
+                         <DatePicker className="form-control"  dateFormat="dd/MM/yyyy" selected = {new Date(currentEditableItem.installmentDate) } 
+                         onChange={(date)=> updateInstallmentDate(date)}
+                         />
                       </td>
                       <td>
                     <textarea className="form-control"  value={currentEditableItem.installmentNote}

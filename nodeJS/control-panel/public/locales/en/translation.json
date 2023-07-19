@@ -162,7 +162,8 @@
     "invoices":"Invoices",
     "FullCalendar" : "Full Calendar",
     "Contact" :"Contact", 
-    "Package" : "Packages"
+    "Package" : "Packages",
+    "Receipt" : "Receipts"
     
 
   },
@@ -559,7 +560,7 @@
   "receiptTotalInvoice" : "Receipt Total Invoice" ,
   "note" : "Note" ,
   "installments" : "Installments" ,
-  "installmentAmount" : "Installment Amount JOD" ,
+  "installmentAmount" : "Installment Amount" ,
   "installmentDate" : "Installment Date" , 
   "installmentNote" : "Installment Note" ,
   "add" : "Add" ,
