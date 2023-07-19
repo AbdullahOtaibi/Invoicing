@@ -558,7 +558,7 @@
   "ReceiptInformation" : "Receipt Information" ,
   "receiptDate" : "Receipt Date" ,
   "receiptAmount" : "Receipt Amount JOD" ,
-  "receiptTotalInstallments" : "Receipt Total Installments",
+  
   "receiptTotalInvoice" : "Receipt Total Invoice" ,
   "note" : "Note" ,
   "installments" : "Installments" ,
@@ -571,6 +571,8 @@
   "receiptReminingAmount" : "Receipt Remining Amount" ,
   "contactName" : "Contact Name", 
   "receiptTotalInstallments" : "Receipt Total Installments",
-  "receiptBalance" : "receipt Balance"
+  "receiptBalance" : "receipt Balance" ,
+  "editReceipt" : "Edit Receipt",
+  "seqNumber" : "Sequance Number"
 }
 }
