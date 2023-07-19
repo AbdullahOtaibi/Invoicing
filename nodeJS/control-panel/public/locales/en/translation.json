@@ -488,6 +488,7 @@
     "developerCommnet" : "Developer Commnet",
     "seqNumber" : "Sequance Number",
 "status" : "Status" ,
+"revertStatus":"Revert Status",
 "postToTax" : "Post to Tax" ,
 "revertInvoice" : "Revert Invoice" ,
 "note" : "Note" ,

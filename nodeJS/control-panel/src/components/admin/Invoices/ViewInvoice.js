@@ -300,12 +300,12 @@ const ViewInvoice = (props) => {
                   <div className="col col-auto"> {t("invoice.status")}</div>
 
                   <div className="col">
-                    {invoice.status}
+                    {invoice.isPosted?'posted':invoice.status}
                   </div>
                 </div>
 
                 <div className="mb-3 col ">
-                  <div className="col col-auto"> {t("invoice.status")}</div>
+                  <div className="col col-auto"> {t("invoice.revertStatus")}</div>
 
                   <div className="col">
                     {invoice.status}
