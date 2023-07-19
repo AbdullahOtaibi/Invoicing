@@ -96,6 +96,8 @@ const ListReceipt = (props) => {
                                     
 
                                     </th>
+
+                                    <th>    {t("receipt.contactName")}  </th>
                                     <th>
                                      
                                             {t("receipt.receiptAmount")}
@@ -138,8 +140,6 @@ const ListReceipt = (props) => {
                             </thead>
                             <tbody>
                                 {
-
-
                                     packages.map(item => (
 
                                         <tr key={'' + item.id}>
@@ -149,6 +149,8 @@ const ListReceipt = (props) => {
 
                                                 </Link>
                                             </td>
+                                            <td> {item.contactName}</td>
+
                                             <td>{item.receiptAmount}</td>
                                          
 

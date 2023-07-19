@@ -558,7 +558,7 @@
   "ReceiptInformation" : "Receipt Information" ,
   "receiptDate" : "Receipt Date" ,
   "receiptAmount" : "Receipt Amount JOD" ,
-  "receiptTotalInstallments" : "Receipt Total Installments",
+  
   "receiptTotalInvoice" : "Receipt Total Invoice" ,
   "note" : "Note" ,
   "installments" : "Installments" ,
