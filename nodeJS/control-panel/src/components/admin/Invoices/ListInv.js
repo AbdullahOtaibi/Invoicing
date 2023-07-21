@@ -163,7 +163,7 @@ const ListInv = (props) => {
 
 
                                         {item.shipment ? (<><Link className="btn btn-primary" to={"/admin/shipments/" + item.shipment} title={t("dashboard.shipmentDetails")} ><MdLocalShipping /> </Link> &nbsp;</>) : null}
-                                        <Link className="btn btn-primary" to={"/admin/invoices/edit/" + item._id} title={t("dashboard.edit")} > Edit <MdEdit /> </Link> &nbsp;
+                                        {item.status!='posted' && item.status != 'reverted'?(<><Link className="btn btn-primary" to={"/admin/invoices/edit/" + item._id} title={t("dashboard.edit")} > Edit <MdEdit /> </Link> &nbsp </>):null}
                                         {/* <Link className="btn btn-danger" to="#" title={t("dashboard.delete")} onClick={e => deleteInvoice(item._id)} ><MdDelete /></Link> */}
                                     </td>
                                     : ""
