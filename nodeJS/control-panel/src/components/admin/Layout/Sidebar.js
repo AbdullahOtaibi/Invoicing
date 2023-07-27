@@ -32,7 +32,7 @@ const Sidebar = () => {
     }
     const [shippingExpanded, showShippingSubmenu] = useState(false);
     const [paymentsExpanded, showPaymentsSubMenu] = useState(false);
-    
+
     return (
         <nav id="sidebar" className="nav-sidebar d-print-none" style={{ minHeight: '100vh' }}>
             <ul className="list-unstyled components" id="accordion">
@@ -41,8 +41,29 @@ const Sidebar = () => {
                         <MdOutlineDashboard size={18} />&nbsp; {t("sidebar.dashboard")} </Link>
                 </li>
 
+                {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("invoices.view") > -1 ? (
+                    <li className={getClass('/admin/Contact')}>
+                        <Link className="wave-effect waves-effect waves-button" to="/admin/Contact" >
+                            <MdContacts size={18} /> &nbsp; {t("sidebar.Contact")}
+                        </Link >
+                    </li>) : null}
 
-{/* 
+                {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("invoices.view") > -1 ? (
+                    <li className={getClass('/admin/FullCalendar')}>
+                        <Link className="wave-effect waves-effect waves-button" to="/admin/FullCalendar" >
+                            <MdCalendarViewMonth size={18} /> &nbsp; {t("sidebar.FullCalendar")}
+                        </Link >
+                    </li>) : null}
+
+
+                {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("invoices.view") > -1 ? (
+                    <li className={getClass('/admin/Package')}>
+                        <Link className="wave-effect waves-effect waves-button" to="/admin/Package" >
+                            <MdCollections size={18} /> &nbsp; {t("sidebar.Package")}
+                        </Link >
+                    </li>) : null}
+
+                {/* 
                 {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("settings.view") > -1 ? (
                     <li className={getClass('/admin/settings')}>
                         <Link className="wave-effect waves-effect waves-button" to="/admin/settings" >
@@ -91,20 +112,15 @@ const Sidebar = () => {
                     </li>) : null}
 
 
-                    {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("invoices.view") > -1 ? (
-                    <li className={getClass('/admin/Package')}>
-                        <Link className="wave-effect waves-effect waves-button" to="/admin/Package" >
-                            <MdCollections size={18} /> &nbsp; {t("sidebar.Package")}
-                        </Link >
-                    </li>) : null}
 
-                    {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("invoices.view") > -1 ? (
+
+                {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("invoices.view") > -1 ? (
                     <li className={getClass('/admin/Receipt')}>
                         <Link className="wave-effect waves-effect waves-button" to="/admin/Receipt" >
                             <MdReceipt size={18} /> &nbsp; {t("sidebar.Receipt")}
                         </Link >
                     </li>) : null}
-                    
+
                 {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("invoices.view") > -1 ? (
                     <li className={getClass('/admin/invoices')}>
                         <Link className="wave-effect waves-effect waves-button" to="/admin/invoices" >
@@ -113,20 +129,9 @@ const Sidebar = () => {
                     </li>) : null}
 
 
-                    {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("invoices.view") > -1 ? (
-                    <li className={getClass('/admin/FullCalendar')}>
-                        <Link className="wave-effect waves-effect waves-button" to="/admin/FullCalendar" >
-                            <MdCalendarViewMonth size={18} /> &nbsp; {t("sidebar.FullCalendar")}
-                        </Link >
-                    </li>) : null}
 
 
-                    {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("invoices.view") > -1 ? (
-                    <li className={getClass('/admin/Contact')}>
-                        <Link className="wave-effect waves-effect waves-button" to="/admin/Contact" >
-                            <MdContacts size={18} /> &nbsp; {t("sidebar.Contact")}
-                        </Link >
-                    </li>) : null}
+
 
 
 
@@ -209,7 +214,7 @@ const Sidebar = () => {
                         </Link >
                     </li>) : null}
 
-                    {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("vendors.view") > -1 ? (
+                {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("vendors.view") > -1 ? (
                     <li className={getClass('/admin/companies')}>
                         <Link className="wave-effect waves-effect waves-button" to="/admin/companies" >
                             <MdRealEstateAgent size={18} /> &nbsp; {t("sidebar.companies")}
