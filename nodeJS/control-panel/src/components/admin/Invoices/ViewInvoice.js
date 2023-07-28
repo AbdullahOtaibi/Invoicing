@@ -583,7 +583,7 @@ const ViewInvoice = (props) => {
 
 
 
-                    {invoice.status != "posted" ? <Link className="btn btn-primary btn-lg" to={"/admin/Invoices/edit/" + invoice._id}>
+                    {invoice.status != "posted" ? <Link className="btn btn-primary btn-lg d-print-none" to={"/admin/Invoices/edit/" + invoice._id}>
                       <MdEdit size={20} />
                       &nbsp; {t("dashboard.edit")}
                     </Link> : ""}
@@ -591,6 +591,7 @@ const ViewInvoice = (props) => {
                   </div>
 
                   {invoice.status != "posted" ?
+                  <div className="d-print-none">
                     <ConfirmButton
                       onConfirm={() => { removeInvoice(invoiceId); navigate("/admin/invoices/", { replace: true }); }}
                       onCancel={() => console.log("cancel")}
@@ -599,7 +600,7 @@ const ViewInvoice = (props) => {
                       cancelText={t("invoice.cancelDelete")}
                       loadingText={t("invoice.BeingDeleteingTheInvoice")}
                       wrapClass="fdfdf"
-                      buttonClass="btn btn-lg"
+                      buttonClass="btn btn-lg d-print-none"
                       mainClass="btn-warning mx-2"
                       confirmClass="btn-danger mx-2"
                       cancelClass=" btn-success "
@@ -610,6 +611,7 @@ const ViewInvoice = (props) => {
                       {"Delete "}
                       <MdDelete />
                     </ConfirmButton>
+                    </div>
                     : ""}
                 </div>
 
