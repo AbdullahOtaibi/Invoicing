@@ -4,7 +4,7 @@ import { createInvoice, getInvoice } from "./InvoicesAPI";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ThreeDots } from  'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner';
 import { Editor } from "@tinymce/tinymce-react";
 import {
   MdAdd,
@@ -23,6 +23,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { event } from "jquery";
 import ConfirmButton from "react-confirmation-button";
 import ContactSearchControl from "../Contact/ContactSearchControl";
+import ReceiptSearchControl from "../Receipt/ReceiptSearchControl";
 //import { eventManager } from "react-toastify/dist/core";
 const CreateInvoice = (props) => {
   const [invoice, setInvoice] = useState({
@@ -83,6 +84,8 @@ const CreateInvoice = (props) => {
     allowance: 0,
   });
 
+  const [receipt, setReceipt] = useState({});
+
   //#endregion
 
   //#region const
@@ -94,12 +97,12 @@ const CreateInvoice = (props) => {
 
 
       let cloned = JSON.parse(JSON.stringify(invoice));
-     // console.log('updating to ===> ' + value);
+      // console.log('updating to ===> ' + value);
       cloned.accountingCustomerParty.partyIdentification.schemeID = item.identificationType;
       cloned.accountingCustomerParty.partyIdentification.value = item.identificationValue
       cloned.accountingCustomerParty.registrationName = item.contactName;
       cloned.accountingCustomerParty.telephone = item.mobile;
-      cloned.contact  = item._id 
+      cloned.contact = item._id
       setInvoice(cloned);
     }
   };
@@ -204,8 +207,8 @@ const CreateInvoice = (props) => {
   useEffect(() => {
     console.log(
       "use effect" +
-        invoice.accountingCustomerParty.partyIdentification.schemeID +
-        "xyz"
+      invoice.accountingCustomerParty.partyIdentification.schemeID +
+      "xyz"
     );
     if (invoice.accountingCustomerParty.partyIdentification.schemeID == "NIN")
       updatePlaceHolderIdentificationType("National ID");
@@ -314,7 +317,7 @@ const CreateInvoice = (props) => {
       chargeIndicator: currentEditableItem.allowance > 0 ? true : false,
       lineExtensionAmount: numericFormat(
         currentEditableItem.unitPrice * currentEditableItem.qty -
-          currentEditableItem.allowance
+        currentEditableItem.allowance
       ),
       ...currentEditableItem,
     });
@@ -395,7 +398,7 @@ const CreateInvoice = (props) => {
 
     if (
       currentEditableItem.unitPrice * currentEditableItem.qty -
-        currentEditableItem.allowance <=
+      currentEditableItem.allowance <=
       0
     ) {
       viewItemValidMessage("Invoice amount must be greater than zero.");
@@ -429,6 +432,34 @@ const CreateInvoice = (props) => {
     return invoiceIsValid;
   }
   //#endregion
+
+  const onReceiptSelected = (event) => {
+
+  }
+
+  const updateReceiptAmount = (event) => {
+
+  }
+
+  const updateReceiptTotalInstallments = (event) => {
+
+  }
+
+  const updateReceiptTotalInvoice = (event) => {
+
+  }
+
+  const updatePackageName = (event) => {
+
+  }
+
+  const updatePackagePrice = (event) => {
+
+  }
+
+  const handleSelectReceipt = (selectedReceipt) => {
+    setReceipt(selectedReceipt);
+  }
 
   return (
     <>
@@ -636,6 +667,78 @@ const CreateInvoice = (props) => {
             </div>
 
             <div className="mb-3 row ">
+              <div className="mb-3 col-2 ">
+                <div className="col col-auto">
+                  {t("sidebar.Receipt")}
+                </div>
+                <div className="col col-auto">
+                  <ReceiptSearchControl handleSelectReceipt={handleSelectReceipt} />
+                </div>
+              </div>
+
+              {receipt && receipt._id?(<>
+                <div className="mb-3 col ">
+                <div className="col col-auto">{t("receipt.receiptAmount")} </div>
+                <div className="col">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder={t("receipt.receiptAmount")}
+                    value={receipt.receiptAmount}
+                    onChange={updateReceiptAmount}
+                  />
+                </div>
+              </div>
+
+              <div className="mb-3 col ">
+                <div className="col col-auto">{t("receipt.receiptTotalInstallments")} </div>
+                <div className="col">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={receipt.receiptTotalInstallments}
+                    placeholder={t("receipt.receiptTotalInstallments")}
+                    onChange={updateReceiptTotalInstallments}
+                  />
+                </div>
+              </div>
+
+
+              <div className="mb-3 col ">
+                <div className="col col-auto">{t("receipt.receiptTotalInvoice")} </div>
+                <div className="col">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={receipt.receiptTotalInvoice}
+                    placeholder={t("receipt.receiptTotalInvoice")}
+                    onChange={updateReceiptTotalInvoice}
+                  />
+                </div>
+              </div>
+
+            
+
+              <div className="mb-3 col ">
+                <div className="col col-auto">{t("receipt.packagePrice")} </div>
+                <div className="col">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={receipt.packagePrice}
+                    placeholder={t("receipt.packagePrice")}
+                    onChange={updatePackagePrice}
+                  />
+                </div>
+              </div>
+              
+              </>):null}
+             
+
+
+            </div>
+
+            <div className="mb-3 row ">
               <div className="col col-auto text-info">Items</div>
               <div className="col">
                 <hr />
@@ -690,7 +793,7 @@ const CreateInvoice = (props) => {
                             once
                           >
                             {"Delete "}
-                            <MdDelete/>
+                            <MdDelete />
                           </ConfirmButton>
                         </td>
                       </tr>
@@ -743,24 +846,24 @@ const CreateInvoice = (props) => {
                       <td>
                         {!isNaN(
                           currentEditableItem.unitPrice *
-                            currentEditableItem.qty
+                          currentEditableItem.qty
                         )
                           ? currentEditableItem.unitPrice *
-                            currentEditableItem.qty
+                          currentEditableItem.qty
                           : 0}{" "}
                         JOD
                       </td>
                       <td>
                         {!isNaN(
                           currentEditableItem.unitPrice *
-                            currentEditableItem.qty -
-                            currentEditableItem.allowance
+                          currentEditableItem.qty -
+                          currentEditableItem.allowance
                         )
                           ? numericFormat(
-                              currentEditableItem.unitPrice *
-                                currentEditableItem.qty -
-                                currentEditableItem.allowance
-                            )
+                            currentEditableItem.unitPrice *
+                            currentEditableItem.qty -
+                            currentEditableItem.allowance
+                          )
                           : 0}{" "}
                         JOD
                       </td>

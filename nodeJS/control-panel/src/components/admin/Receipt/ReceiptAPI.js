@@ -31,6 +31,10 @@ export const updateReceipt = (ReceiptObj) => {
     return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/receipt/update", ReceiptObj);
 }
 
+export const searchReceipt = (filters) => {
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/receipt/search/" , filters);
+
+}
 
 
 

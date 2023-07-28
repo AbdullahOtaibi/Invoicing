@@ -268,6 +268,7 @@ router.get("/search/:val", verifyToken, async (req, res) => {
       
     let query = Receipt.find(queryParams)
       .populate("user", "-password")
+      .populate("package")
       .sort( {"Sequance" : 1});
     result.items = await query.exec("find");
     res.json(result);
