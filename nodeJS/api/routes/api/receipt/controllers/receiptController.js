@@ -297,7 +297,9 @@ router.post("/search/", verifyToken, async (req, res) => {
       deleted: false,
       company: req.user.company,
       companyID: req.user.companyId,
+      contact: req.body.clientId
     };
+    console.log(queryParams);
     let query = Receipt.find(queryParams)
       .populate("user", "-password")
       .sort( {"Sequance" : 1});

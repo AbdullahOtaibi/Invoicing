@@ -8,6 +8,7 @@ const ReceiptSearchControl = (props) => {
   const { t } = useTranslation();
   const [selectedReceiptText, setSelectedReceiptText] = useState(props.value);
   const [selectedId, setSelectedId] = useState(null);
+  const [clientId, setClientId] = useState(props.clientId);
   useEffect(() => {
     if (props) {
       setSelectedReceiptText(props.value);
@@ -28,7 +29,8 @@ const ReceiptSearchControl = (props) => {
     if (event.target.value.length >= 3 ) {
       
       let filter = {
-        val: event.target.value
+        val: event.target.value,
+        clientId: props.clientId
       };
 
       searchReceipt(filter)

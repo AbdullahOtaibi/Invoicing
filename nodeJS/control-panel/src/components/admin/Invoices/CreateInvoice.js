@@ -433,28 +433,37 @@ const CreateInvoice = (props) => {
   }
   //#endregion
 
-  const onReceiptSelected = (event) => {
 
-  }
 
   const updateReceiptAmount = (event) => {
-
+    let cloned = JSON.parse(JSON.stringify(receipt));
+    cloned.receiptAmount = event.target.value;
+    setReceipt(cloned);
+    
   }
 
   const updateReceiptTotalInstallments = (event) => {
-
+    let cloned = JSON.parse(JSON.stringify(receipt));
+    cloned.receiptTotalInstallments = event.target.value;
+    setReceipt(cloned);
   }
 
   const updateReceiptTotalInvoice = (event) => {
-
+    let cloned = JSON.parse(JSON.stringify(receipt));
+    cloned.receiptTotalInvoice = event.target.value;
+    setReceipt(cloned);
   }
 
   const updatePackageName = (event) => {
-
+    let cloned = JSON.parse(JSON.stringify(receipt));
+    cloned.packageName = event.target.value;
+    setReceipt(cloned);
   }
 
   const updatePackagePrice = (event) => {
-
+    let cloned = JSON.parse(JSON.stringify(receipt));
+    cloned.packagePrice = event.target.value;
+    setReceipt(cloned);
   }
 
   const handleSelectReceipt = (selectedReceipt) => {
@@ -672,7 +681,7 @@ const CreateInvoice = (props) => {
                   {t("sidebar.Receipt")}
                 </div>
                 <div className="col col-auto">
-                  <ReceiptSearchControl handleSelectReceipt={handleSelectReceipt} />
+                  <ReceiptSearchControl handleSelectReceipt={handleSelectReceipt}  clientId={invoice.contact}/>
                 </div>
               </div>
 
