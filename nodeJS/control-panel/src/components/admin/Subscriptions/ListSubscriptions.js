@@ -149,14 +149,14 @@ const ListSubscription = (props) => {
 
                                                 </Link>
                                             </td>
-                                            <td> {item.contactName}</td>
+                                            <td> {item.contact?.contactName}</td>
 
                                             <td>{item.subscriptionAmount}</td>
                                          
 
                                             <td> {item.subscriptionTotalInvoice}</td>
                                             <td>{item.subscriptionAmount}</td>
-                                            <td> { item.packageName}</td>
+                                            <td> { item.package?.packageName}</td>
                                             <td> { item.packagePrice}</td>
                                            
                                   

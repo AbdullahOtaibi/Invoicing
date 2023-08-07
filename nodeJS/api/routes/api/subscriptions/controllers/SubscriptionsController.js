@@ -66,7 +66,8 @@ router.post("/filter", verifyToken, async (req, res) => {
     console.log(JSON.stringify(queryParams["$and"]));
     console.log("abd:before find");
     let query = Subscription.find(queryParams)
-      .populate("client", "-password")
+      .populate("contact", "-password")
+      .populate("package")
       .sort({ name: 1 });
     console.log("abd:after find");
     countQuery = Subscription.find(queryParams);
@@ -138,7 +139,7 @@ router.post("/count", verifyToken, async (req, res) => {
 router.get("/get/:id", async (req, res) => {
   console.log("before get Subscription  info. ID: " + req.params.id);
   //ReferenceError: Cannot access 'Subscription' before initialization
-    let subscription = await Subscription.findOne({ _id: req.params.id, deleted: false }).populate("client", "-password")
+    let subscription = await Subscription.findOne({ _id: req.params.id, deleted: false }).populate("contact", "-password").populate("package")
   console.log("get Subscription  info.");
   res.json(subscription);
 });
@@ -266,7 +267,7 @@ router.get("/search/:val", verifyToken, async (req, res) => {
   
       
     let query = Subscription.find(queryParams)
-      .populate("client", "-password")
+      .populate("contact", "-password")
       .populate("package")
       .sort( {"Sequance" : 1});
     result.items = await query.exec("find");

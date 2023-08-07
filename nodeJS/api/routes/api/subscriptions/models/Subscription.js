@@ -4,19 +4,21 @@ const ObjectId = Schema.ObjectId;
 
 const SubscriptionSchema = new Schema({
     _id: ObjectId,
+    seqNumber: String,
     package: {
         type: ObjectId,
         ref: 'Package'
     },
-    client: {
+    contact: {
         type: ObjectId,
-        ref: 'User'
+        ref: 'Contact'
     },
     subscriptionDate: {
         type: Date,
         default: Date.now
     },
-    amount: Number,
+    subscriptionAmount: Number,
+    packagePrice: Number,
     numberOfSet: Number,
     note: String,
     deleted: {
@@ -27,7 +29,24 @@ const SubscriptionSchema = new Schema({
         type: Boolean,
         default: true
     },
-
+    subscriptionBalance: Number,
+    subscriptionReminingAmount: Number,
+    installments: [
+        {
+            installmentSequance: Number,
+            installmentAmount: Number,
+            installmentDate: { type: Date, default: Date.now },
+            installmentNote: String,
+            invoice: {
+                type: ObjectId,
+                ref: 'Invoice'
+            },
+            appointment: {
+                type: ObjectId,
+                ref: 'FullCalendar'
+            },
+        }
+    ],
 
 }, { collection: 'Subscriptions' });
 

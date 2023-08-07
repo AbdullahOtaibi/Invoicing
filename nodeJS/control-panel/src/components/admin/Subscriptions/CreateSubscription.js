@@ -161,7 +161,7 @@ const CreateSubscription = (props) => {
       cloned.packageName = item.packageName;
       cloned.package = item._id;
       cloned.packagePrice = item.price; 
-      cloned.packageNumberOfSet = item.numberOfSet; 
+      cloned.numberOfSet = item.numberOfSet; 
       if(!subscription.subscriptionAmount) 
       {
         cloned.subscriptionAmount =  item.price;
@@ -169,12 +169,7 @@ const CreateSubscription = (props) => {
         cloned.subscriptionReminingAmount = parseFloat(item.price) - totalInstallments ;
 
       } 
-      
         setSubscription(cloned);
-      
-      
-     
-      
     }
   };
 
