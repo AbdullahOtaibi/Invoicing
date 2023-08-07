@@ -571,7 +571,9 @@ router.post("/create", verifyToken, async (req, res, next) => {
   newObject._id = new mongoose.Types.ObjectId();
   //newObject.invoiceLines = req.body.items;
   let savedInvoice = await newObject.save();
-
+  if(req.body.receipt){
+    
+  }
   res.json(savedInvoice);
 
   next();

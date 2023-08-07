@@ -160,7 +160,8 @@
     "shippingCompanies": "شركات الشحن",
     "logistics": "الشحن",
     "shipments": "الشحنات",
-    "invoices":"الفواتير"
+    "invoices":"الفواتير",
+    "subscriptions": "الاشتراكات"
   },
   "dashboard": {
     "code": "الرمز",
@@ -423,5 +424,36 @@
     "messageQueueItem":"الرسالة",
     "messages":"الرسائل",
     "youGotNewMessage":"تم استلام رسالة جديدة"
+  },
+  "subscriptions":{
+    "subscriptions":"الاشتراكات",
+    "addNewSubscription":"اضافة اشتراك جديد",
+    "subscriptionName":"اسم الاشتراك",
+    "subscriptionDescription":"وصف الاشتراك",
+    "subscriptionPrice":"سعر الاشتراك",
+    "seqNumber":"الترتيب",
+    "contactName":"اسم المشترك",
+    "totalInstallments":"اجمالي الاقساط",
+    "remainingAmount":"المبلغ المتبقي",
+    "packagePrice":"سعر الباقة",
+    "packageName":"اسم الباقة",
+    "subscriptionTotalInstallments": "اجمالي الاقساط",
+    "subscriptionTotalInvoice": "اجمالي الفواتير",
+    "subscriptionAmount": "المبلغ",
+    "createSubscription": "انشاء اشتراك",
+    "contactInformation": "معلومات المشترك",
+    "contactMobile":"رقم الهاتف",
+    "packageNumberOfSet":"عدد الاقساط",
+    "subscriptionDate":"تاريخ الاشتراك",
+    "note":"ملاحظة",
+    "subscriptionBalance":"الرصيد",
+    "subscriptionReminingAmount":"المبلغ المتبقي",
+    "installments":"الاقساط",
+    "installmentAmount":"مبلغ القسط",
+    "installmentDate":"تاريخ القسط",
+    "installmentNote":"ملاحظة",
+    "add":"اضافة",
+    "SubscriptionInformation":"معلومات الاشتراك",
+    "packageInformation":"معلومات الباقة"
   }
 }

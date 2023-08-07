@@ -354,7 +354,7 @@ const CreateInvoice = (props) => {
     };
 
     invoice.allowanceCharge.value = totalAllowance();
-
+    invoice.receipt = receipt;
     createInvoice(invoice)
       .then((res) => {
         setLoading(false);

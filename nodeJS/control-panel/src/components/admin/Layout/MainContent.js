@@ -139,7 +139,10 @@ const CreateReceipt = lazy(() => import(/* webpackChunkName: "CreateReceipt" */'
 const EditReceipt = lazy(() => import(/* webpackChunkName: "EditReceipt" */'../Receipt/EditReceipt'))
 const ViewReceipt = lazy(() => import(/* webpackChunkName: "ViewReceipt" */'../Receipt/ViewReceipt'))
 
-
+const ListSubscription = lazy(() => import(/* webpackChunkName: "ListSubscription" */'../Subscriptions/ListSubscriptions'))
+const CreateSubscription = lazy(() => import(/* webpackChunkName: "CreateSubscription" */'../Subscriptions/CreateSubscription'))
+const EditSubscription = lazy(() => import(/* webpackChunkName: "EditSubscription" */'../Subscriptions/EditSubscription'))
+const ViewSubscription = lazy(() => import(/* webpackChunkName: "ViewSubscription" */'../Subscriptions/ViewSubscription'))
 
 const SignIn = lazy(() => import(/* webpackChunkName: "SignIn" */'../../SignIn/SignIn'));
 const ForgotPassword = lazy(() => import(/* webpackChunkName: "ForgotPassword" */'../../SignIn/ForgotPassword'));
@@ -302,7 +305,10 @@ const MainContent = ({notification, onHandleNotification}) => {
                     <Route path="/Receipt/view/:receiptId" element={<ViewReceipt />} />
                     <Route path="/Receipt/edit/:receiptId" element={<EditReceipt/>} />
 
-                    
+                    <Route path="/Subscription" exact element={<ListSubscription/>} />
+                    <Route path="/Subscription/create" element={<CreateSubscription/>} />
+                    <Route path="/Subscription/view/:subscriptionId" element={<ViewSubscription />} />
+                    <Route path="/Subscription/edit/:subscriptionId" element={<EditSubscription/>} />
 
                     <Route path="/shippingCompanies" exact element={<ListShippingCompanies />} />
                     <Route path="/shippingCompanies/create" element={<CreateShippingCompany />} />

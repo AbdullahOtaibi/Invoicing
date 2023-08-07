@@ -37,6 +37,10 @@ const FullCalendarSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
+    subscription: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Subscription'
+    } ,
     company: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
