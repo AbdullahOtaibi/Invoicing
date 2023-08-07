@@ -425,6 +425,17 @@
     "messages":"الرسائل",
     "youGotNewMessage":"تم استلام رسالة جديدة"
   },
+  "Package": {
+    "createPackage": "اضافة حزمة جديدة",
+    "status": "الحالة",
+    "packageName": "اسم الحزمة",
+    "packageInformation": "معلومات الحزمة",
+    "price": "السعر",
+    "numberOfSet": "عدد الجلسات",
+    "note": "ملاحظة",
+    "editPackage": "تعديل الحزمة",
+    "frequency":  "التكرار"
+  },
   "subscriptions":{
     "subscriptions":"الاشتراكات",
     "addNewSubscription":"اضافة اشتراك جديد",

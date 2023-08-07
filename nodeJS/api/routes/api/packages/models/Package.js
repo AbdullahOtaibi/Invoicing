@@ -11,27 +11,31 @@ const PackageSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
     },
-    packageName: String, 
-    price: Number, 
-    numberOfSet:Number ,
-    note:String,
+    packageName: String,
+    price: Number,
+    numberOfSet: Number,
+    note: String,
     status: {
-        type:String, 
+        type: String,
         default: "Active"
-    } ,
+    },
     deleted: {
-        type:Boolean,
-        default:false
+        type: Boolean,
+        default: false
     },
     createdDate: {
         type: Date,
         default: Date.now
-    }, 
+    },
     updatedDate: Date,
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    }
+    },
+    frequency: {
+        type: String,
+        default: "daily"
+    },//"daily", "weekly", "monthly", "yearly"
 
 }, { collection: 'Packages' });
 

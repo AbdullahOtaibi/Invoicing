@@ -537,7 +537,8 @@
     "price": "Price (JOD)",
     "numberOfSet": "Number Of Set",
     "note": "Note",
-    "editPackage": "Edit Package"
+    "editPackage": "Edit Package",
+    "frequency": "Frequency"
   },
   "receipt": {
     "createReceipt": "Create Receipt",

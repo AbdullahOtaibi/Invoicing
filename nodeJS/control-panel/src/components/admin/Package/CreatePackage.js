@@ -17,7 +17,8 @@ const CreatePackage = (props) => {
     deleted: false,
     companyID: localStorage.getItem("companyId"),
     company: localStorage.getItem("company"), 
-    status: "Active"
+    status: "Active",
+    "frequency": "monthly",
   }) ;  
   
   const [loading, setLoading] = useState(false);
@@ -48,6 +49,12 @@ const CreatePackage = (props) => {
   const setNumberOfSet = (event) => {
     let cloned =JSON.parse(JSON.stringify(Package)) ;
     cloned.numberOfSet = event.target.value; 
+    setPackage(cloned)
+  };
+
+  const updateFrequency = (event) => {
+    let cloned =JSON.parse(JSON.stringify(Package)) ;
+    cloned.frequency = event.target.value; 
     setPackage(cloned)
   };
 
@@ -249,7 +256,30 @@ const viewItemValidMessage = (message) => {
             <div className="mb-3 row ">
 
             <div className="mb-3 col ">
-                <div className="col col-auto">{t("Package.note")}</div>
+                <div className="col col-auto mb-2">{t("Package.frequency")}</div>
+                <div className="col col-auto">
+                <select
+                    onChanange={updateFrequency}
+                    className="form-select"
+                    placeholder={t("Package.frequency")}
+                    value={
+                      Package.frequency
+                    }
+                  >
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                  </select>
+                </div>
+              </div>
+
+
+
+            
+
+            <div className="mb-3 col ">
+                <div className="col col-auto mb-2">{t("Package.note")}</div>
                 <div className="col col-auto">
                  
                 <textarea

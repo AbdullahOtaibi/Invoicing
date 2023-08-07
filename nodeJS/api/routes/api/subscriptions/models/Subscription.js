@@ -36,6 +36,7 @@ const SubscriptionSchema = new Schema({
             installmentSequance: Number,
             installmentAmount: Number,
             installmentDate: { type: Date, default: Date.now },
+            expectedDate: { type: Date, default: Date.now },
             installmentNote: String,
             invoice: {
                 type: ObjectId,

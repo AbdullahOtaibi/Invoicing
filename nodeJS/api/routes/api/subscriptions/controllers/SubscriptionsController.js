@@ -187,7 +187,7 @@ router.post("/create", verifyToken, async (req, res, next) => {
 
 });
 
-router.post("/update/", verifyToken, async (req, res) => {
+router.post("/update", verifyToken, async (req, res) => {
   if (req.user.role != "Administrator" && req.user.role != "Company") {
     res.json({ success: false, message: "Unauthorized" });
   }

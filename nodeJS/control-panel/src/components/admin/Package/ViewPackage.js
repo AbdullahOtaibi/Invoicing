@@ -104,6 +104,14 @@ const ViewPackage = (props) => {
   <div className="row">
 
   <div className="mb-3 col ">
+    <div className="col col-auto"> {t("Package.frequency")  }</div>
+
+    <div className="col" style={{textTransform:'capitalize'}}>
+      {Package.frequency}
+    </div>
+  </div>
+
+  <div className="mb-3 col ">
     <div className="col col-auto"> {t("Package.note")  }</div>
 
     <div className="col">
