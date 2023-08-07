@@ -28,7 +28,14 @@ const EditSubscription = (props) => {
   console.log("subscriptionId:" +subscriptionId) ; 
   getSubscription(subscriptionId).then(
     (res) =>{ 
-      setSubscription(res)
+      res.contactName = res.contact.contactName;
+      res.contactMobile = res.contact.mobile; 
+      res.packageName = res.package.packageName;
+      //res.contact = res.contact._id;
+     
+
+      setSubscription(res);
+
       console.log("subscription:" )
       console.log( JSON.stringify(res)) ;
     }
@@ -313,7 +320,7 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
 
 
   return (
-    subscription.contactName ?  <>
+    subscription._id ?  <>
    <div className="card">
      <div className="card-body">
        <h5 className="card-title"> <MdReceipt size= {20} />   {t("subscriptions.editSubscription")}</h5>
@@ -443,7 +450,7 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
                  placeholder={t("subscriptions.packageNumberOfSet")}
                
                  value={
-                   subscription.packageNumberOfSet
+                   subscription.numberOfSet
                  }
                />
              </div>

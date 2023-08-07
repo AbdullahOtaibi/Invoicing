@@ -596,7 +596,8 @@
     "installmentNote": "Installment Note",
     "add": "Add",
     "SubscriptionInformation": "Subscription Information",
-    "packageInformation": "Package Information"
+    "packageInformation": "Package Information",
+    "editSubscription": "Edit Subscription"
 
   }
 }

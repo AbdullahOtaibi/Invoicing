@@ -465,6 +465,7 @@
     "installmentNote":"ملاحظة",
     "add":"اضافة",
     "SubscriptionInformation":"معلومات الاشتراك",
-    "packageInformation":"معلومات الباقة"
+    "packageInformation":"معلومات الباقة",
+    "editSubscription":"تعديل الاشتراك"
   }
 }

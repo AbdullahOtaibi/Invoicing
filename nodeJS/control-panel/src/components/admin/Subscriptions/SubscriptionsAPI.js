@@ -4,8 +4,8 @@ export const removeSubscription = (contactId) => {
     return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/subscriptions/remove/" + contactId);
 }
 
-export const getSubscription = (contactId) => {
-    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/subscriptions/get/" + contactId);
+export const getSubscription = (subscriptionId) => {
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/subscriptions/get/" + subscriptionId);
 
 }
 

@@ -154,7 +154,7 @@ const ListSubscription = (props) => {
                                             <td>{item.subscriptionAmount}</td>
                                          
 
-                                            <td> {item.subscriptionTotalInvoice}</td>
+                                            <td> {item.subscriptionTotalInvoice?item.subscriptionTotalInvoice:'0.00'}</td>
                                             <td>{item.subscriptionAmount}</td>
                                             <td> { item.package?.packageName}</td>
                                             <td> { item.packagePrice}</td>
