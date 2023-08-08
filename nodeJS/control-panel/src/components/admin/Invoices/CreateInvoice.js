@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { createInvoice, getInvoice, getSubscriptionInvoices } from "./InvoicesAPI";
+import { createInvoice, getInvoice, getSubscriptionInvoices, getSubscription } from "./InvoicesAPI";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,6 +26,9 @@ import ContactSearchControl from "../Contact/ContactSearchControl";
 import ReceiptSearchControl from "../Subscriptions/ReceiptSearchControl";
 //import { eventManager } from "react-toastify/dist/core";
 const CreateInvoice = (props) => {
+
+  const { subscriptionId } = useParams();
+const [sid, setSID] = useState(subscriptionId);
   const [invoice, setInvoice] = useState({
     invoiceCategory: "Income",
     invoiceType: "",
@@ -88,7 +91,24 @@ const CreateInvoice = (props) => {
   const [oldInvoices, setOldInvoices] = useState([]);
 
   useEffect(() => {
-   if(subscription){
+    //alert('sid : ' + sid);
+    if(sid){
+     
+      let cloned = JSON.parse(JSON.stringify(invoice));
+      cloned.subscription = sid;
+      setInvoice(cloned);
+      getSubscription(sid).then((res) => {
+       // alert(res);
+        setSubscription(res);
+        console.log(res.data);
+      });
+     
+    }
+  }, [sid]);
+
+
+  useEffect(() => {
+   if(subscription && subscription._id && subscription._id.length == 12){
       getSubscriptionInvoices(subscription._id).then((res) => {
         setOldInvoices(res.data);
         console.log(res.data);

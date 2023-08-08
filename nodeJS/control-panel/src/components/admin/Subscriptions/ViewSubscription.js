@@ -301,10 +301,20 @@ const getTotalInstallments = () =>{
                   </Link>{" "}
                   &nbsp;
 
+                  <Link className="btn btn-primary btn-lg mx-1" to={"/invoices/createForSubscription/" + subscription._id}>
+                    <MdEdit size={20} />
+                    &nbsp; {t("invoice.createInvoice")}
+                  </Link>
+
                   <Link className="btn btn-primary btn-lg" to={"/admin/Subscription/edit/" + subscription._id}>
                     <MdEdit size={20} />
                     &nbsp; {t("dashboard.edit")}
                   </Link>
+
+                  
+
+
+                 
                 </div>
               </div>
             </form>

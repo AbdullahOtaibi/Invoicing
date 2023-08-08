@@ -282,6 +282,7 @@ const MainContent = ({notification, onHandleNotification}) => {
                     <Route path="/invoices/create" element={<CreateInvoice />} />
                     <Route path="/invoices/ViewInvoice/:invoiceId" element={<ViewInvoice />} />
                     <Route path="/invoices/edit/:invoiceId" element={<EditInvoice />} />
+                    <Route path="/invoices/createForSubscription/:subscriptionId" element={<CreateInvoice />} />
                    
 
                     <Route path="/FullCalendar" exact element={<FullCalendarList />} />
