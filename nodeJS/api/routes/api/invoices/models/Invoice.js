@@ -5,6 +5,10 @@ const ObjectId = Schema.ObjectId;
 
 const InvoiceSchema = new Schema({
     _id: ObjectId,
+    subscription: {
+        type: ObjectId,
+        ref: 'Subscription'
+    },
     invoiceSequance:String, 
     invoiceUUID: String,
     incomeSourceSequence: String,

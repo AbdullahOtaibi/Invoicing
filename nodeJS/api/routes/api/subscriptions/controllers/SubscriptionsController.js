@@ -343,9 +343,11 @@ router.post("/search/", verifyToken, async (req, res) => {
     };
     console.log(queryParams);
     let query = Subscription.find(queryParams)
-      .populate("client", "-password")
+      .populate("contact", "-password")
       .sort({ "Sequance": 1 });
     result.items = await query.exec("find");
+   
+
     res.json(result);
   } catch (ex) {
     console.log(ex);

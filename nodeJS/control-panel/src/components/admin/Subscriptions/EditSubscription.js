@@ -582,7 +582,7 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
 
          <div className="row">
            <div className="col table-responsive">
-             <table className="table table-sm needs-validation " style={{minHeight: '400px'} }>
+             <table className="table table-sm needs-validation " style={{minHeight: '10px'} }>
                <thead>
                  <tr className="table-light">
                    <th width="5%">#</th>

@@ -42,7 +42,7 @@ ul.list-group {
     max-height: 376px;
     overflow-y: auto;
     position: absolute;
-    width: 91%;
+    width: 400px;
     z-index: 99;
 }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./SubscriptionSearchControl.css";
+import "./SubscriptionsSearchControl.css";
 import { MdSearch, MdPhone, MdContactPage } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import { searchSubscription } from "./SubscriptionsAPI";
@@ -26,8 +26,8 @@ const SubscriptionSearchControl = (props) => {
 
   const updateSearchSubscriptionText = (event) => {
     setSelectedSubscriptionText(event.target.value);
-    if (event.target.value.length >= 3 ) {
-      
+    if (event.target.value.length >= 0) {
+
       let filter = {
         val: event.target.value,
         clientId: props.clientId
@@ -46,30 +46,33 @@ const SubscriptionSearchControl = (props) => {
     }
 
     setSelectedId(null);
-    props.handleSelectSubscription(null);
+    if(props.handleSelectSubscription){
+      props.handleSelectSubscription(null);
+    }
+   
   };
 
-  
+
   const onBlurSearchSubscription = (event) => {
-     //event.preventDefault();
-     // setSubscriptionItems([]);
-     /*if(selectedId)
-     {
-      setSubscriptionItems([]);
-     }
-     */
+    //event.preventDefault();
+    // setSubscriptionItems([]);
+    /*if(selectedId)
+    {
+     setSubscriptionItems([]);
+    }
+    */
   };
 
-/*
-const onBlurSearchSubscription = (item) => {
-  setSelectedId(item);
-  if (props.handleSelectSubscription) {
-    props.handleSelectSubscription(item);
-  }
-  setSelectedSubscriptionText(item.contactName);
-  setSubscriptionItems([]);
-};
-*/
+  /*
+  const onBlurSearchSubscription = (item) => {
+    setSelectedId(item);
+    if (props.handleSelectSubscription) {
+      props.handleSelectSubscription(item);
+    }
+    setSelectedSubscriptionText(item.contactName);
+    setSubscriptionItems([]);
+  };
+  */
   const [subscriptionItems, setSubscriptionItems] = useState([]);
   const handleSelectSubscription = (item) => {
     setSelectedId(item);
@@ -101,36 +104,42 @@ const onBlurSearchSubscription = (item) => {
         <ul className="list-group scrollbar p-2" id="style-7">
           {subscriptionItems
             ? subscriptionItems.map((item) => (
-                <>
-               
-                  <li
-                    className="searchItem  list-group-item list-group-item-light"
-                    onClick={() => {
-                      handleSelectSubscription(item);
-                    }}
-                  >
-                    {(props.contactType && props.contactType.length == 1)? <div>{ item.seqNumber}</div> :
+              <>
+
+                <li
+                  className="searchItem  list-group-item list-group-item-light"
+                  onClick={() => {
+                    handleSelectSubscription(item);
+                  }}
+                >
+                  {(props.contactType && props.contactType.length == 1) ? <div>{item.seqNumber}</div> :
                     (
-                    
-                    <div className="row">
-                      <div className="mb-3 col ">
+                      <>
+                        <div className="row">
+                          <div className="mb-3 col ">
 
-                        <div>
-                          <MdContactPage size={25} />{" "}
-                          <span className="text-secondary">
-                            {item.seqNumber}
-                          </span>
+                            <div>
+                              <MdContactPage size={25} />{" "}
+                              <span className="text-secondary">
+                                {item.seqNumber}
+                              </span>
+                            </div>
+
+                          </div>
+
+
                         </div>
-                       
-                      </div>
-
-                      
-                    </div>
+                        <div className="row">
+                          <div className="mb-3 col ">
+                            aaa
+                          </div>
+                        </div>
+                      </>
                     )
-                   }
-                  </li>
-                </>
-              ))
+                  }
+                </li>
+              </>
+            ))
             : null}
         </ul>
       ) : null}

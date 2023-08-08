@@ -58,6 +58,8 @@ const getNewStatus = (Invoice) => {
   return newStatusId;
 };
 
+
+
 router.post("/filter", verifyToken, async (req, res) => {
   if (!req.user) {
     res.json({ message: "unauthorized access" });
@@ -524,6 +526,21 @@ router.get("/postToTaxTypeRevertedIncome/:id", verifyToken, async (req, res, nex
 
 
   }
+
+});
+
+
+router.get("/getSubscriptionInvoices/:id", verifyToken, async (req, res, next) => {
+
+  let result = { success: false };
+  console.log("req.params.id: " + req.params.id);
+  let invoices = await Invoices.getSubscriptionInvoices(req.params.id);
+  result.success = true;
+ 
+  result.data = invoices;
+  res.json(result);
+
+
 
 });
 

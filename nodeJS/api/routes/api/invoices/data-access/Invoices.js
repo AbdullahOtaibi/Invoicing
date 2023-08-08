@@ -23,6 +23,17 @@ function Invoices() {
     return invoice;
   }
 
+  this.getSubscriptionInvoices = async function (subscriptionId) {
+    let invoices = await Invoice.find({ subscription: subscriptionId, deleted: false }).populate("user", "-password")
+      .populate("items")
+      .populate({
+        path: 'items'
+
+      })
+      .populate("status");
+    return invoices;
+  }
+
   this.addInvoiceItem = async (InvoiceId, productId, qty) => {
     //TODO: add method to re-calculate Invoice total amounts
     let result = { success: false }
