@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ThreeDots } from  'react-loader-spinner';
 import {  MdClose, MdCollections, MdContacts, MdReceipt , MdDelete} from "react-icons/md";
 import { CSSTransition } from 'react-transition-group';
-import  {createSubscription, updateSubscription} from './SubscriptionsAPI'
+import  {createContract, updateContract} from './ContractsAPI'
 import ContactSearchControl from "../Contact/ContactSearchControl";
 import PackageSearchControl  from "../Package/PackageSearchControl" ; 
 import DatePicker from "react-datepicker";
@@ -14,21 +14,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import { event } from "jquery";
 import ConfirmButton from "react-confirmation-button";
 import moment from "moment";
-const CreateSubscription = (props) => {
+const CreateContract = (props) => {
 
   const [wasValidated, setWasValidated] = useState(false);
 
-  const [subscription , setSubscription] = useState( { 
+  const [contract , setContract] = useState( { 
     deleted: false,
     companyID: localStorage.getItem("companyId"),
     company: localStorage.getItem("company"), 
     status: "Active" ,
-    subscriptionDate: new Date(), 
-    subscriptionTotalInstallments: 0.00,
-    subscriptionBalance: 0.00, 
-    subscriptionTotalInvoice: 0.00 , 
-    subscriptionReminingAmount: 0.00 ,
-    subscriptionAmount:0.00 , 
+    contractDate: new Date(), 
+    contractTotalInstallments: 0.00,
+    contractBalance: 0.00, 
+    contractTotalInvoice: 0.00 , 
+    contractReminingAmount: 0.00 ,
+    contractAmount:0.00 , 
     installments: [
     ]
   }) ;  
@@ -37,7 +37,7 @@ const CreateSubscription = (props) => {
   const { t } = useTranslation();
 
   const [currentEditableItem, setCurrentEditableItem] = useState({
-    installmentSequance: subscription.installments.length +1,
+    installmentSequance: contract.installments.length +1,
     installmentAmount: 0,
     installmentDate:new Date(),
     installmentNote: ""
@@ -50,7 +50,7 @@ const CreateSubscription = (props) => {
 
   const removeItem = (id) => {
     console.log("removeItem id=" +id)
-    let cloned = JSON.parse(JSON.stringify(subscription));
+    let cloned = JSON.parse(JSON.stringify(contract));
     cloned.installments = cloned.installments.filter((item) => item.installmentSequance != id);
      console.log(cloned.installments )
     for( let i= 0 ;  i < cloned.installments.length ; i++)
@@ -66,7 +66,7 @@ const CreateSubscription = (props) => {
       installmentDate: new Date() , 
     });
 
-    setSubscription(cloned);
+    setContract(cloned);
   };
 
   const addItem = (event) => {
@@ -76,9 +76,9 @@ const CreateSubscription = (props) => {
       return false;
     }
 
-    let cloned = JSON.parse(JSON.stringify(subscription));
+    let cloned = JSON.parse(JSON.stringify(contract));
     console.log("before push installment ")
-    console.log(subscription) ;
+    console.log(contract) ;
     cloned.installments.push(
     {...currentEditableItem}
     );
@@ -97,10 +97,10 @@ const CreateSubscription = (props) => {
       installmentNote: "",
       installmentDate: new Date() , 
     });
-    setSubscription(cloned);
+    setContract(cloned);
     
-    console.log("installment added to subscription") ;
-    //updateSubscriptionCalculation();
+    console.log("installment added to contract") ;
+    //updateContractCalculation();
   };
 
 
@@ -135,20 +135,20 @@ const CreateSubscription = (props) => {
     }
 
     if(! isBlank(currentEditableItem.installmentAmount) 
-    && parseFloat(currentEditableItem.installmentAmount) > parseFloat(subscription.subscriptionReminingAmount)  )
+    && parseFloat(currentEditableItem.installmentAmount) > parseFloat(contract.contractReminingAmount)  )
      {
-      viewItemValidMessage("The max installment amount equals " +subscription.subscriptionReminingAmount);
+      viewItemValidMessage("The max installment amount equals " +contract.contractReminingAmount);
       itemIsValid = false;
      }
     return itemIsValid;
   }
   const setConatct = (item) => {
     if (item) {
-      let cloned =JSON.parse(JSON.stringify(subscription)) ;
+      let cloned =JSON.parse(JSON.stringify(contract)) ;
       cloned.contactName = item.contactName;
       cloned.contact = item._id;
       cloned.contactMobile = item.mobile; 
-      setSubscription(cloned);
+      setContract(cloned);
       
     }
   };
@@ -157,19 +157,19 @@ const CreateSubscription = (props) => {
 
   const setPackage = (item) => {
     if (item) {
-      let cloned =JSON.parse(JSON.stringify(subscription)) ;
+      let cloned =JSON.parse(JSON.stringify(contract)) ;
       cloned.packageName = item.packageName;
       cloned.package = item._id;
       cloned.packagePrice = item.price; 
       cloned.numberOfSet = item.numberOfSet; 
-      if(!subscription.subscriptionAmount) 
+      if(!contract.contractAmount) 
       {
-        cloned.subscriptionAmount =  item.price;
+        cloned.contractAmount =  item.price;
         let totalInstallments =cloned.totalInstallments|| 0 ;
-        cloned.subscriptionReminingAmount = parseFloat(item.price) - totalInstallments ;
+        cloned.contractReminingAmount = parseFloat(item.price) - totalInstallments ;
 
       } 
-        setSubscription(cloned);
+        setContract(cloned);
     }
   };
 
@@ -177,36 +177,36 @@ const CreateSubscription = (props) => {
   
   const setPackageName = (event) => {
 
-     let cloned =JSON.parse(JSON.stringify(subscription)) ;
+     let cloned =JSON.parse(JSON.stringify(contract)) ;
      cloned.packageName = event.target.value; 
-     setSubscription(cloned)
+     setContract(cloned)
 
   } ;
 
 
-  const setSubscriptionAmount = (event)=> {
-    console.log( "setSubscriptionAmount " +event.target.value) ;
+  const setContractAmount = (event)=> {
+    console.log( "setContractAmount " +event.target.value) ;
     // +  event.target.value
    
-   let cloned =JSON.parse(JSON.stringify(subscription)) ;
-     cloned.subscriptionAmount = parseFloat(event.target.value); 
+   let cloned =JSON.parse(JSON.stringify(contract)) ;
+     cloned.contractAmount = parseFloat(event.target.value); 
      let totalInstallments =cloned.totalInstallments|| 0 ;
-     cloned.subscriptionReminingAmount = parseFloat(cloned.subscriptionAmount)  - parseFloat( totalInstallments) ;
-    setSubscription(cloned)
+     cloned.contractReminingAmount = parseFloat(cloned.contractAmount)  - parseFloat( totalInstallments) ;
+    setContract(cloned)
 
   }
 
-  const setSubscriptionDate = (date) => {
-    let cloned = JSON.parse(JSON.stringify(subscription));
-    cloned.subscriptionDate = date;
-    setSubscription(cloned);
+  const setContractDate = (date) => {
+    let cloned = JSON.parse(JSON.stringify(contract));
+    cloned.contractDate = date;
+    setContract(cloned);
   };
 
 
   const setNote = (event) => {
-    let cloned =JSON.parse(JSON.stringify(subscription)) ;
+    let cloned =JSON.parse(JSON.stringify(contract)) ;
     cloned.note = event.target.value; 
-    setSubscription(cloned)
+    setContract(cloned)
   };
 
   const fieldClass = (value, minQuantity) => {
@@ -242,9 +242,9 @@ const CreateSubscription = (props) => {
     setLoading(true) ;
 
     if(checkData()) {
-      createSubscription(subscription).then((res)=> {
+      createContract(contract).then((res)=> {
         toast("success!") ;
-         window.location.href = "/admin/Subscription/view/" + res._id;
+         window.location.href = "/admin/Contract/view/" + res._id;
   
       }).catch((err)=> { console.log(err)}) ;
     }
@@ -257,15 +257,15 @@ function checkData()
   console.log( "insert checkdata ...") 
   let isValid= true;
 
- if (isBlank(subscription.contactName)) 
+ if (isBlank(contract.contactName)) 
  {
   viewItemValidMessage("Fill the contact name.") 
   isValid = false ; 
  }
 
- if ( isBlank(subscription.subscriptionAmount) ||  parseFloat(subscription.subscriptionAmount) <=0) 
+ if ( isBlank(contract.contractAmount) ||  parseFloat(contract.contractAmount) <=0) 
  {
-  viewItemValidMessage("Fill the subscription amount.") 
+  viewItemValidMessage("Fill the contract amount.") 
   isValid = false ; 
  }
 
@@ -280,36 +280,36 @@ const viewItemValidMessage = (message) => {
   });
 };
 
-function updateSubscriptionCalculation()  {
-  console.log("updateSubscriptionCalculation method ....")
-  console.log("before fill subscription" ) ;
-  console.log(subscription)
-let subscriptionAmount = subscription.subscriptionAmount || 0 ;
-let subscriptionTotalInvoice = subscription.subscriptionTotalInvoice || 0;
+function updateContractCalculation()  {
+  console.log("updateContractCalculation method ....")
+  console.log("before fill contract" ) ;
+  console.log(contract)
+let contractAmount = contract.contractAmount || 0 ;
+let contractTotalInvoice = contract.contractTotalInvoice || 0;
 let totalInstallments=0;
-let subscriptionReminingAmount = 0; 
+let contractReminingAmount = 0; 
 
-for( let i= 0 ;  i < subscription.installments.length ; i++)
+for( let i= 0 ;  i < contract.installments.length ; i++)
 {
 
-  totalInstallments += parseFloat(subscription.installments[i].installmentAmount )
+  totalInstallments += parseFloat(contract.installments[i].installmentAmount )
 }
 
-let cloned = JSON.parse(JSON.stringify(subscription));
-cloned.subscriptionTotalInstallments = totalInstallments;
-cloned.subscriptionBalance = totalInstallments - parseFloat(subscriptionTotalInvoice);
-cloned.subscriptionReminingAmount = parseFloat(subscriptionAmount) - totalInstallments 
-setSubscription(cloned) ;
-console.log("after fill subscription:" ) ;
-console.log(subscription) ;
+let cloned = JSON.parse(JSON.stringify(contract));
+cloned.contractTotalInstallments = totalInstallments;
+cloned.contractBalance = totalInstallments - parseFloat(contractTotalInvoice);
+cloned.contractReminingAmount = parseFloat(contractAmount) - totalInstallments 
+setContract(cloned) ;
+console.log("after fill contract:" ) ;
+console.log(contract) ;
 } 
-useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ; 
+useEffect( ()=>{updateContractCalculation()} , [currentEditableItem ]) ; 
 
   return (
     <>
       <div className="card">
         <div className="card-body">
-          <h5 className="card-title"> <MdReceipt size= {20} />   {t("subscriptions.createSubscription")}</h5>
+          <h5 className="card-title"> <MdReceipt size= {20} />   {t("contracts.createContract")}</h5>
           <div className="container text-center">
             <ThreeDots
               type="ThreeDots"
@@ -325,7 +325,7 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
 
           <div className="mb-3 row ">
               <div className="col col-auto text-info">
-                {t("subscriptions.contactInformation")}{" "}
+                {t("contracts.contactInformation")}{" "}
               </div>
               <div className="col">
                 <hr />
@@ -335,12 +335,12 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
             <div className="mb-3 row">
                 
                 <div className="mb-3 col ">
-                    <div className="col col-auto">{t("subscriptions.contactName")}</div>
+                    <div className="col col-auto">{t("contracts.contactName")}</div>
                     <div className="col col-auto">
                     <ContactSearchControl
                     handleSelectContact={setConatct}
                     wasValidated={wasValidated}
-                    value = {subscription.contactName}
+                    value = {contract.contactName}
                     contactType = {["Client" , "Vendor"]}
 
                   />
@@ -349,17 +349,17 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
     
     
                   <div className="mb-3 col ">
-                    <div className="col col-auto">{t("subscriptions.contactMobile")}</div>
+                    <div className="col col-auto">{t("contracts.contactMobile")}</div>
                     <div className="col col-auto">
           
                     <input
                         type="text"
-                        className= {fieldClass(subscription.contactMobile)}
+                        className= {fieldClass(contract.contactMobile)}
                         id="price"
                         name="price"
-                        placeholder={t("subscriptions.contactMobile")}
+                        placeholder={t("contracts.contactMobile")}
                         value={
-                          subscription.contactMobile
+                          contract.contactMobile
                         }
                       />
                     
@@ -383,7 +383,7 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
 
                <div className="mb-3 row ">
               <div className="col col-auto text-info">
-                {t("subscriptions.packageInformation")}{" "}
+                {t("contracts.packageInformation")}{" "}
               </div>
               <div className="col">
                 <hr />
@@ -392,12 +392,12 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
             <div className="mb-3 row">
                 
             <div className="mb-3 col ">
-                <div className="col col-auto">{t("subscriptions.packageName")}</div>
+                <div className="col col-auto">{t("contracts.packageName")}</div>
                 <div className="col col-auto">
                 <PackageSearchControl
                     handleSelectPackage={setPackage}
                    
-                    value = {subscription.packageName}
+                    value = {contract.packageName}
                    
                   />
                 </div>
@@ -408,17 +408,17 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
 
 
               <div className="mb-3 col ">
-                <div className="col col-auto">{t("subscriptions.packagePrice")}</div>
+                <div className="col col-auto">{t("contracts.packagePrice")}</div>
                 <div className="col col-auto">
                 <input
                     type="text"
                     className= "form-control"
                     id="price"
                     name="packagePrice"
-                    placeholder={t("subscriptions.packagePrice")}
+                    placeholder={t("contracts.packagePrice")}
                     
                     value={
-                      subscription.packagePrice
+                      contract.packagePrice
                     }
                   />
                 </div>
@@ -426,17 +426,17 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
 
 
               <div className="mb-3 col ">
-                <div className="col col-auto">{t("subscriptions.packageNumberOfSet")}</div>
+                <div className="col col-auto">{t("contracts.packageNumberOfSet")}</div>
                 <div className="col col-auto">
                 <input
                     type="text"
                     className= "form-control"
                     id="packageNumberOfSet"
                     name="packageNumberOfSet"
-                    placeholder={t("subscriptions.packageNumberOfSet")}
+                    placeholder={t("contracts.packageNumberOfSet")}
                   
                     value={
-                      subscription.packageNumberOfSet
+                      contract.packageNumberOfSet
                     }
                   />
                 </div>
@@ -449,7 +449,7 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
 
             <div className="mb-3 row ">
               <div className="col col-auto text-info">
-                {t("subscriptions.SubscriptionInformation")}{" "}
+                {t("contracts.ContractInformation")}{" "}
               </div>
               <div className="col">
                 <hr />
@@ -459,13 +459,13 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
             <div className="mb-3 row">
                 
                 <div className="mb-3 col ">
-                    <div className="col col-auto">{t("subscriptions.subscriptionDate")}</div>
+                    <div className="col col-auto">{t("contracts.contractDate")}</div>
                     <div className="col">
                   <DatePicker
-                    className={fieldClass(subscription.subscriptionDate)}
+                    className={fieldClass(contract.contractDate)}
                     dateFormat="dd/MM/yyyy"
-                     selected={new Date(subscription.subscriptionDate)}
-                     onChange={(date) => setSubscriptionDate(date)}
+                     selected={new Date(contract.contractDate)}
+                     onChange={(date) => setContractDate(date)}
                   />
                 </div>
                   </div>
@@ -475,18 +475,18 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
     
     
                   <div className="mb-3 col ">
-                    <div className="col col-auto">{t("subscriptions.subscriptionAmount")}</div>
+                    <div className="col col-auto">{t("contracts.contractAmount")}</div>
                     <div className="col col-auto">
                     <input
                         type="number"
-                        className= {fieldClass(subscription.subscriptionAmount,0.01)}
-                        id="subscriptionAmount"
-                        name="subscriptionAmount"
-                        placeholder={t("subscriptions.subscriptionAmount")}
-                        onChange={setSubscriptionAmount}
+                        className= {fieldClass(contract.contractAmount,0.01)}
+                        id="contractAmount"
+                        name="contractAmount"
+                        placeholder={t("contracts.contractAmount")}
+                        onChange={setContractAmount}
 
                         value={
-                          subscription.subscriptionAmount
+                          contract.contractAmount
                         }
                         min= {0}
 
@@ -498,7 +498,7 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
     
     
                   <div className="mb-3 col ">
-    <div className="col col-auto">{t("subscriptions.note")}</div>
+    <div className="col col-auto">{t("contracts.note")}</div>
     <div className="col col-auto">
      
     <textarea
@@ -506,9 +506,9 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
         id="note"
         name="note"
         onChange={setNote}
-        placeholder={t("subscriptions.note")}
+        placeholder={t("contracts.note")}
       >
-        {subscription.note}
+        {contract.note}
       </textarea>
 
     </div>
@@ -522,25 +522,25 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
                 <div className="mb-3 row">
 
                 <div className="mb-3 col ">
-                    <div className="col col-auto">{t("subscriptions.subscriptionTotalInstallments")}</div>
+                    <div className="col col-auto">{t("contracts.contractTotalInstallments")}</div>
                     <div className="col col-auto">
-                       JOD {subscription.subscriptionTotalInstallments.toFixed(2)} 
+                       JOD {contract.contractTotalInstallments.toFixed(2)} 
                     </div>
                   </div>
                 
                 
 
                 <div className="mb-3 col ">
-                    <div className="col col-auto">{t("subscriptions.subscriptionTotalInvoice")}</div>
+                    <div className="col col-auto">{t("contracts.contractTotalInvoice")}</div>
                     <div className="col col-auto">
-                       JOD {subscription.subscriptionTotalInvoice.toFixed(2)} 
+                       JOD {contract.contractTotalInvoice.toFixed(2)} 
                     </div>
                   </div>
 
                   <div className="mb-3 col ">
-                    <div className="col col-auto">{t("subscriptions.subscriptionBalance")}</div>
+                    <div className="col col-auto">{t("contracts.contractBalance")}</div>
                     <div className="col col-auto">
-                       JOD {subscription.subscriptionBalance.toFixed(2)} 
+                       JOD {contract.contractBalance.toFixed(2)} 
                     </div>
                   </div>
     
@@ -549,9 +549,9 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
                 <div className="mb-3 row">
 
 <div className="mb-3 col ">
-    <div className="col col-auto">{t("subscriptions.subscriptionReminingAmount")}</div>
+    <div className="col col-auto">{t("contracts.contractReminingAmount")}</div>
     <div className="col col-auto">
-       JOD {subscription.subscriptionReminingAmount} 
+       JOD {contract.contractReminingAmount} 
     </div>
   </div>
   </div>
@@ -559,7 +559,7 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
                 
             <div className="mb-3 row ">
               <div className="col col-auto text-info">
-                {t("subscriptions.installments")}{" "}
+                {t("contracts.installments")}{" "}
               </div>
               <div className="col">
                 <hr />
@@ -573,16 +573,16 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
                     <tr className="table-light">
                       <th width="5%">#</th>
                    
-                      <th width="20%">{t("subscriptions.installmentAmount")} </th>
-                      <th width="20%">{t("subscriptions.installmentDate")} </th>
-                      <th width="35%">{t("subscriptions.installmentNote")}</th>
+                      <th width="20%">{t("contracts.installmentAmount")} </th>
+                      <th width="20%">{t("contracts.installmentDate")} </th>
+                      <th width="35%">{t("contracts.installmentNote")}</th>
                      
                       <th width="20%"></th>
                     </tr>
                   </thead>
 
                   <tbody>
-                    { subscription.installments? subscription.installments.map((item) => (
+                    { contract.installments? contract.installments.map((item) => (
                       <tr>
                         <td> {item.installmentSequance} </td>
                         <td>{item.installmentAmount}</td>
@@ -595,9 +595,9 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
                             onConfirm={() => removeItem(item.installmentSequance)}
                             onCancel={() => console.log("cancel")}
                             buttonText={t("dashboard.delete")}
-                            confirmText={t("subscriptions.confirm")}
-                            cancelText={t("subscriptions.cancel")}
-                            loadingText={t("subscriptions.deleteingItem")}
+                            confirmText={t("contracts.confirm")}
+                            cancelText={t("contracts.cancel")}
+                            loadingText={t("contracts.deleteingItem")}
                             wrapClass=""
                             buttonClass="btn d-print-none"
                             mainClass="btn-danger"
@@ -615,7 +615,7 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
                     )) : ""}
 
                     <tr className="d-print-none">
-                      <td>{subscription.installments.length + 1}</td>
+                      <td>{contract.installments.length + 1}</td>
                       <td>
                         <input
                           type="number"
@@ -644,7 +644,7 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
                           className="btn  btn-success d-print-none "
                           onClick={addItem}
                         >
-                          {t("subscriptions.add")}
+                          {t("contracts.add")}
                         </button>
                       </td>
                     </tr>
@@ -683,4 +683,4 @@ useEffect( ()=>{updateSubscriptionCalculation()} , [currentEditableItem ]) ;
                   
 };
 
-export default CreateSubscription;
+export default CreateContract;

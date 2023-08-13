@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
-const SubscriptionSchema = new Schema({
+const ContractSchema = new Schema({
     _id: ObjectId,
     seqNumber: String,
     package: {
@@ -13,11 +13,11 @@ const SubscriptionSchema = new Schema({
         type: ObjectId,
         ref: 'Contact'
     },
-    subscriptionDate: {
+    contractDate: {
         type: Date,
         default: Date.now
     },
-    subscriptionAmount: Number,
+    contractAmount: Number,
     packagePrice: Number,
     numberOfSet: Number,
     note: String,
@@ -29,8 +29,8 @@ const SubscriptionSchema = new Schema({
         type: Boolean,
         default: true
     },
-    subscriptionBalance: Number,
-    subscriptionReminingAmount: Number,
+    contractBalance: Number,
+    contractReminingAmount: Number,
     installments: [
         {
             installmentSequance: Number,
@@ -49,6 +49,6 @@ const SubscriptionSchema = new Schema({
         }
     ],
 
-}, { collection: 'Subscriptions' });
+}, { collection: 'Contracts' });
 
-module.exports = Subscription = mongoose.model("Subscription", SubscriptionSchema);
+module.exports = Contract = mongoose.model("Contract", ContractSchema);

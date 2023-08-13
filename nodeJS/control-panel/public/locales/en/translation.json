@@ -164,7 +164,7 @@
     "Contact": "Contact",
     "Package": "Packages",
     "Receipt": "Receipts",
-    "subscriptions": "Subscriptions"
+    "contracts": "Contracts"
   },
   "dashboard": {
     "code": "Code",
@@ -264,7 +264,7 @@
     "invoiceCategory": "Invoice Category",
     "clientId": "Client ID",
     "clientSecret": "Client Secret",
-    "subscriptionExpiryDate": "Subscription Expiry Date"
+    "contractExpiryDate": "Contract Expiry Date"
   },
   "countries": {
     "countryCode": "Country Code",
@@ -567,37 +567,37 @@
     "editReceipt": "Edit Receipt",
     "seqNumber": "Sequance Number"
   },
-  "subscriptions": {
-    "subscriptions": "Subscriptions",
-    "addNewSubscription": "Add New Subscription",
-    "subscriptionName": "Subscription Name",
-    "subscriptionDescription": "Subscription Description",
-    "subscriptionPrice": "Subscription Price",
+  "contracts": {
+    "contracts": "Contracts",
+    "addNewContract": "Add New Contract",
+    "contractName": "Contract Name",
+    "contractDescription": "Contract Description",
+    "contractPrice": "Contract Price",
     "seqNumber": "Sequence Number",
     "contactName": "Contact Name",
     "totalInstallments": "Total Installments",
     "remainingAmount": "Remaining Amount",
     "packagePrice":   "Package Price",
     "packageName": "Package Name",
-    "subscriptionTotalInstallments": "Subscription Total Installments",
-    "subscriptionTotalInvoice": "Subscription Total Invoice",
-    "subscriptionAmount": "Subscription Amount",
-    "createSubscription":"Create Subscription",
+    "contractTotalInstallments": "Contract Total Installments",
+    "contractTotalInvoice": "Contract Total Invoice",
+    "contractAmount": "Contract Amount",
+    "createContract":"Create Contract",
     "contactInformation": "Contact Information",
     "contactMobile": "Contact Mobile",
     "packageNumberOfSet": "Package Number Of Set",
-    "subscriptionDate": "Subscription Date",
+    "contractDate": "Contract Date",
     "note": "Note",
-    "subscriptionBalance": "Subscription Balance",
-    "subscriptionReminingAmount": "Subscription Remining Amount",
+    "contractBalance": "Contract Balance",
+    "contractReminingAmount": "Contract Remining Amount",
     "installments":"Installments",
     "installmentAmount": "Installment Amount",
     "installmentDate": "Installment Date",
     "installmentNote": "Installment Note",
     "add": "Add",
-    "SubscriptionInformation": "Subscription Information",
+    "ContractInformation": "Contract Information",
     "packageInformation": "Package Information",
-    "editSubscription": "Edit Subscription"
+    "editContract": "Edit Contract"
 
   }
 }

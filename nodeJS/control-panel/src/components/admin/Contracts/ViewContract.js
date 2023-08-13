@@ -24,23 +24,23 @@ import { MdAdd, MdDelete, MdReceipt } from "react-icons/md";
 import { RiRefund2Fill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getSubscription, removeSubscription } from "./SubscriptionsAPI"
+import { getContract, removeContract } from "./ContractsAPI"
 import moment from "moment";
 
-const ViewSubscription = (props) => {
+const ViewContract = (props) => {
 
   let navigate = useNavigate();
-  const { subscriptionId } = useParams();
+  const { contractId } = useParams();
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
-  const [subscription, setSubscription] = useState({});
+  const [contract, setContract] = useState({});
   useEffect(() => {
     setLoading(true);
-    console.log("subscriptionId:" + subscriptionId);
-    getSubscription(subscriptionId).then(
+    console.log("contractId:" + contractId);
+    getContract(contractId).then(
       (res) => {
-        setSubscription(res)
-        console.log("subscription:")
+        setContract(res)
+        console.log("contract:")
         console.log(JSON.stringify(res));
       }
     ).catch((error) => { console.log(error) })
@@ -49,7 +49,7 @@ const ViewSubscription = (props) => {
 
 const getTotalInstallments = () =>{
   let total = 0;
-  subscription.installments.forEach((installment) => {
+  contract.installments.forEach((installment) => {
     total += parseFloat(installment.installmentAmount);
   });
   return total;
@@ -59,11 +59,11 @@ const getTotalInstallments = () =>{
 
   moment.locale("en-GB");
   return (
-    (subscription ? (
+    (contract ? (
       <>
         <div className="card">
           <div className="card-body">
-            <h5 className="card-title"> <MdReceipt size={20} />   {t("subscriptions.SubscriptionInformation")} ({subscription.seqNumber})</h5>
+            <h5 className="card-title"> <MdReceipt size={20} />   {t("contracts.ContractInformation")} ({contract.seqNumber})</h5>
             <div className="container text-center">
               <ThreeDots
                 type="ThreeDots"
@@ -79,7 +79,7 @@ const getTotalInstallments = () =>{
 
               <div className="mb-3 row ">
                 <div className="col col-auto text-info">
-                  {t("subscriptions.contactInformation")}{" "}
+                  {t("contracts.contactInformation")}{" "}
                 </div>
                 <div className="col">
                   <hr />
@@ -89,17 +89,17 @@ const getTotalInstallments = () =>{
               <div className="mb-3 row">
 
                 <div className="mb-3 col ">
-                  <div className="col col-auto">{t("subscriptions.contactName")}</div>
+                  <div className="col col-auto">{t("contracts.contactName")}</div>
                   <div className="col col-auto">
-                    {subscription.contact?.contactName}
+                    {contract.contact?.contactName}
                   </div>
                 </div>
 
 
                 <div className="mb-3 col ">
-                  <div className="col col-auto">{t("subscriptions.contactMobile")}</div>
+                  <div className="col col-auto">{t("contracts.contactMobile")}</div>
                   <div className="col col-auto">
-                    {subscription.contact?.mobile}
+                    {contract.contact?.mobile}
 
 
                   </div>
@@ -121,7 +121,7 @@ const getTotalInstallments = () =>{
 
               <div className="mb-3 row ">
                 <div className="col col-auto text-info">
-                  {t("subscriptions.packageInformation")}{" "}
+                  {t("contracts.packageInformation")}{" "}
                 </div>
                 <div className="col">
                   <hr />
@@ -130,9 +130,9 @@ const getTotalInstallments = () =>{
               <div className="mb-3 row">
 
                 <div className="mb-3 col ">
-                  <div className="col col-auto">{t("subscriptions.packageName")}</div>
+                  <div className="col col-auto">{t("contracts.packageName")}</div>
                   <div className="col col-auto">
-                    {subscription.package?.packageName}
+                    {contract.package?.packageName}
                   </div>
                 </div>
 
@@ -141,19 +141,19 @@ const getTotalInstallments = () =>{
 
 
                 <div className="mb-3 col ">
-                  <div className="col col-auto">{t("subscriptions.packagePrice")}</div>
+                  <div className="col col-auto">{t("contracts.packagePrice")}</div>
                   <div className="col col-auto">
                     {
-                      subscription.packagePrice ? subscription.packagePrice.toFixed(2) : subscription.packagePrice
+                      contract.packagePrice ? contract.packagePrice.toFixed(2) : contract.packagePrice
                     }
                   </div>
                 </div>
 
 
                 <div className="mb-3 col ">
-                  <div className="col col-auto">{t("subscriptions.packageNumberOfSet")}</div>
+                  <div className="col col-auto">{t("contracts.packageNumberOfSet")}</div>
                   <div className="col col-auto">
-                    {subscription.numberOfSet}
+                    {contract.numberOfSet}
                   </div>
                 </div>
 
@@ -164,7 +164,7 @@ const getTotalInstallments = () =>{
 
               <div className="mb-3 row ">
                 <div className="col col-auto text-info">
-                  {t("subscriptions.SubscriptionInformation")}{" "}
+                  {t("contracts.ContractInformation")}{" "}
                 </div>
                 <div className="col">
                   <hr />
@@ -174,9 +174,9 @@ const getTotalInstallments = () =>{
               <div className="mb-3 row">
 
                 <div className="mb-3 col ">
-                  <div className="col col-auto">{t("subscriptions.subscriptionDate")}</div>
+                  <div className="col col-auto">{t("contracts.contractDate")}</div>
                   <div className="col">
-                    {subscription.subscriptionDate ? moment(subscription.subscriptionDate).format("DD/MM/yyyy") : "Not Set"}
+                    {contract.contractDate ? moment(contract.contractDate).format("DD/MM/yyyy") : "Not Set"}
                   </div>
                 </div>
 
@@ -185,19 +185,19 @@ const getTotalInstallments = () =>{
 
 
                 <div className="mb-3 col   ">
-                  <div className="col col-auto">{t("subscriptions.subscriptionAmount")}</div>
+                  <div className="col col-auto">{t("contracts.contractAmount")}</div>
                   <div className="col col-auto">
-                    {subscription.subscriptionAmount ? subscription.subscriptionAmount.toFixed(2) : subscription.subscriptionAmount}
+                    {contract.contractAmount ? contract.contractAmount.toFixed(2) : contract.contractAmount}
                   </div>
                 </div>
 
 
 
                 <div className="mb-3 col ">
-                  <div className="col col-auto">{t("subscriptions.note")}</div>
+                  <div className="col col-auto">{t("contracts.note")}</div>
                   <div className="col col-auto">
 
-                    {subscription.note}
+                    {contract.note}
 
                   </div>
                 </div>
@@ -210,25 +210,25 @@ const getTotalInstallments = () =>{
               <div className="mb-3 row">
 
                 <div className="mb-3 col   ">
-                  <div className="col col-auto">{t("subscriptions.subscriptionTotalInstallments")}</div>
+                  <div className="col col-auto">{t("contracts.contractTotalInstallments")}</div>
                   <div className="col col-auto">
-                    JOD {subscription.installments ? getTotalInstallments().toFixed(2) : '0.00'}
+                    JOD {contract.installments ? getTotalInstallments().toFixed(2) : '0.00'}
                   </div>
                 </div>
 
 
 
                 <div className="mb-3 col   ">
-                  <div className="col col-auto">{t("subscriptions.subscriptionTotalInvoice")}</div>
+                  <div className="col col-auto">{t("contracts.contractTotalInvoice")}</div>
                   <div className="col col-auto">
-                    JOD {subscription.packagePrice ? subscription.packagePrice.toFixed(2) : subscription.packagePrice}
+                    JOD {contract.packagePrice ? contract.packagePrice.toFixed(2) : contract.packagePrice}
                   </div>
                 </div>
 
                 <div className="mb-3 col    ">
-                  <div className="col col-auto">{t("subscriptions.subscriptionBalance")}</div>
+                  <div className="col col-auto">{t("contracts.contractBalance")}</div>
                   <div className="col col-auto">
-                    JOD {subscription.subscriptionBalance ? subscription.subscriptionBalance.toFixed(2) : '0.00'}
+                    JOD {contract.contractBalance ? contract.contractBalance.toFixed(2) : '0.00'}
                   </div>
                 </div>
 
@@ -237,9 +237,9 @@ const getTotalInstallments = () =>{
               <div className="mb-3 row">
 
                 <div className="mb-3 col   ">
-                  <div className="col col-auto">{t("subscriptions.subscriptionReminingAmount")}</div>
+                  <div className="col col-auto">{t("contracts.contractReminingAmount")}</div>
                   <div className="col col-auto">
-                    JOD {subscription.subscriptionReminingAmount ? subscription.subscriptionReminingAmount.toFixed(2) : '0.00'}
+                    JOD {contract.contractReminingAmount ? contract.contractReminingAmount.toFixed(2) : '0.00'}
                   </div>
                 </div>
               </div>
@@ -247,7 +247,7 @@ const getTotalInstallments = () =>{
 
               <div className="mb-3 row ">
                 <div className="col col-auto text-info">
-                  {t("subscriptions.installments")}{" "}
+                  {t("contracts.installments")}{" "}
                 </div>
                 <div className="col">
                   <hr />
@@ -261,16 +261,16 @@ const getTotalInstallments = () =>{
                       <tr className="table-light">
                         <th width="5%">#</th>
 
-                        <th width="20%">{t("subscriptions.installmentAmount") + "  (JOD)"} </th>
-                        <th width="20%">{t("subscriptions.installmentDate")} </th>
-                        <th width="35%">{t("subscriptions.installmentNote")}</th>
+                        <th width="20%">{t("contracts.installmentAmount") + "  (JOD)"} </th>
+                        <th width="20%">{t("contracts.installmentDate")} </th>
+                        <th width="35%">{t("contracts.installmentNote")}</th>
 
 
                       </tr>
                     </thead>
 
                     <tbody>
-                      {subscription.installments ? subscription.installments.map((item) => (
+                      {contract.installments ? contract.installments.map((item) => (
                         <tr>
                           <td> {item.installmentSequance} </td>
                           <td>{item.installmentAmount}</td>
@@ -296,17 +296,17 @@ const getTotalInstallments = () =>{
 
               <div class="row text-right">
                 <div className="mb-3  col justify-content-end">
-                  <Link className="btn btn-secondary btn-lg" to="/admin/Subscription">
+                  <Link className="btn btn-secondary btn-lg" to="/admin/Contract">
                     <MdClose size={20} /> &nbsp; {t("Cancel")}
                   </Link>{" "}
                   &nbsp;
 
-                  <Link className="btn btn-primary btn-lg mx-1" to={"/invoices/createForSubscription/" + subscription._id}>
+                  <Link className="btn btn-primary btn-lg mx-1" to={"/invoices/createForContract/" + contract._id}>
                     <MdEdit size={20} />
                     &nbsp; {t("invoice.createInvoice")}
                   </Link>
 
-                  <Link className="btn btn-primary btn-lg" to={"/admin/Subscription/edit/" + subscription._id}>
+                  <Link className="btn btn-primary btn-lg" to={"/admin/Contract/edit/" + contract._id}>
                     <MdEdit size={20} />
                     &nbsp; {t("dashboard.edit")}
                   </Link>
@@ -328,4 +328,4 @@ const getTotalInstallments = () =>{
 
 };
 
-export default ViewSubscription
+export default ViewContract

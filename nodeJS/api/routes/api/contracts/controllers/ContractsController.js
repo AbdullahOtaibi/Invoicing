@@ -3,11 +3,11 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const verifyToken = require("../../utils/auth");
 
-const Subscription = require("../models/Subscription");
+const Contract = require("../models/Contract");
 const FullCalendar = require("../../FullCalendar/models/FullCalendar");
 
 const { query } = require("express");
-const Subscriptions = require("../data-access/Subscriptions");
+const Contracts = require("../data-access/Contracts");
 const { json } = require("body-parser");
 
 router.post("/filter", verifyToken, async (req, res) => {
@@ -40,9 +40,9 @@ router.post("/filter", verifyToken, async (req, res) => {
     } else {
       queryParams["$and"].push({ deleted: { $ne: true } });
     }
-    let subscriptionId = filters.subscriptionId || null;
-    if (subscriptionId && subscriptionId.length > 0) {
-      queryParams["$and"].push({ _id: subscriptionId });
+    let contractId = filters.contractId || null;
+    if (contractId && contractId.length > 0) {
+      queryParams["$and"].push({ _id: contractId });
     }
 
     if (status) {
@@ -65,12 +65,12 @@ router.post("/filter", verifyToken, async (req, res) => {
     console.log("queryParams:" + queryParams);
     console.log(JSON.stringify(queryParams["$and"]));
     console.log("abd:before find");
-    let query = Subscription.find(queryParams)
+    let query = Contract.find(queryParams)
       .populate("contact", "-password")
       .populate("package")
       .sort({ name: 1 });
     console.log("abd:after find");
-    countQuery = Subscription.find(queryParams);
+    countQuery = Contract.find(queryParams);
 
     console.log(JSON.stringify(queryParams["$and"]));
 
@@ -122,7 +122,7 @@ router.post("/count", verifyToken, async (req, res) => {
       },
     });
     console.log("queryParams:" + queryParams);
-    countQuery = Subscription.find(queryParams);
+    countQuery = Contract.find(queryParams);
     count = await countQuery.countDocuments();
     result.count = count;
     result.status = status;
@@ -137,11 +137,11 @@ router.post("/count", verifyToken, async (req, res) => {
 });
 
 router.get("/get/:id", async (req, res) => {
-  console.log("before get Subscription  info. ID: " + req.params.id);
+  console.log("before get Contract  info. ID: " + req.params.id);
   //ReferenceError: Cannot access 'Subscription' before initialization
-  let subscription = await Subscription.findOne({ _id: req.params.id, deleted: false }).populate("contact", "-password").populate("package")
-  console.log("get Subscription  info.");
-  res.json(subscription);
+  let contract = await Contract.findOne({ _id: req.params.id, deleted: false }).populate("contact", "-password").populate("package")
+  console.log("get Contract  info.");
+  res.json(contract);
 });
 
 
@@ -163,14 +163,14 @@ router.post("/create", verifyToken, async (req, res, next) => {
   console.log(req.body)
 
 
-  let count = await Subscription.countDocuments({
+  let count = await Contract.countDocuments({
     "companyID": {
       $eq: req.user.companyId,
     },
     "company": { $eq: req.user.company, },
   });
   let newSerial = count + 1;
-  const newObject = new Subscription({
+  const newObject = new Contract({
     user: req.user.id,
     company: req.user.company,
     companyId: req.user.companyId,
@@ -180,41 +180,41 @@ router.post("/create", verifyToken, async (req, res, next) => {
   console.log("after create");
   newObject.deleted = false;
   newObject._id = new mongoose.Types.ObjectId();
-  let savedSubscription = await newObject.save();
+  let savedContract = await newObject.save();
 
 
   /*
    let setsCount = newObject.numberOfSet;
-   let startDate =  new Date(newObject.subscriptionDate);
+   let startDate =  new Date(newObject.contractDate);
 
 
    for (let index = 0; index < setsCount; index++) {
      let setDate = new Date(startDate);
      let setEndDate = new Date(startDate);
      if(newObject.frequency == "Monthly"){
-       setDate =  new Date(newObject.subscriptionDate);
+       setDate =  new Date(newObject.contractDate);
        setDate.setMonth(setDate.getMonth() + index);
      }else if(newObject.frequency == "Weekly"){
-       setDate =  new Date(newObject.subscriptionDate);
+       setDate =  new Date(newObject.contractDate);
        setDate.setDate(setDate.getDate() + (index*7));   
      }else if(newObject.frequency == "Daily"){
-       setDate =  new Date(newObject.subscriptionDate);
+       setDate =  new Date(newObject.contractDate);
        setDate.setDate(setDate.getDate() + index);   
      }else if(newObject.frequency == "Yearly"){
-       setDate =  new Date(newObject.subscriptionDate);
+       setDate =  new Date(newObject.contractDate);
        setDate.setFullYear(setDate.getFullYear() + index);   
      }
      setEndDate = new Date(setDate);
      setEndDate.setHours(setEndDate.getHours() + 1);   
 
      let appointment = new FullCalendar({
-       subscription: savedSubscription._id,
+       contract: savedContract._id,
        companyId: req.user.companyId,
        start: setDate,
        end: setEndDate,
        contact: newObject.contact,
        user: req.user.id,
-       title: "Testing Subscriptions",
+       title: "Testing Contracts",
      });
      appointment._id = new mongoose.Types.ObjectId();
      await appointment.save();
@@ -223,8 +223,8 @@ router.post("/create", verifyToken, async (req, res, next) => {
  
 */
 
-  console.log("savedSubscription:" + savedSubscription);
-  res.json(savedSubscription);
+  console.log("savedContract:" + savedContract);
+  res.json(savedContract);
   next();
 
 });
@@ -235,7 +235,7 @@ router.post("/update", verifyToken, async (req, res) => {
   }
 
   //TODO: if user is vendor check if item product belongs to the same vendor
-  Subscription.findOneAndUpdate(
+  Contract.findOneAndUpdate(
     { _id: req.body._id },
     req.body,
     function (err, item) {
@@ -253,8 +253,8 @@ router.get("/deleteItem/:id", verifyToken, async (req, res) => {
   if (req.user.role != "Administrator" && req.user.role != "Company") {
     res.json({ success: false, message: "Unauthorized" });
   }
-  console.log("delete Subscription id:" + req.params.id);
-  await Subscription.findByIdAndDelete(req.params.id);
+  console.log("delete Contract id:" + req.params.id);
+  await Contract.findByIdAndDelete(req.params.id);
   res.json({ success: true, message: "deleted" });
 
 });
@@ -264,8 +264,8 @@ router.get("/remove/:id", verifyToken, async (req, res) => {
   if (req.user.role != "Administrator" && req.user.role != "Company") {
     res.json({ success: false, message: "Unauthorized" });
   }
-  console.log("Soft Delete: remove Subscription id:" + req.params.id);
-  Subscription.findByIdAndUpdate(
+  console.log("Soft Delete: remove Contract id:" + req.params.id);
+  Contract.findByIdAndUpdate(
     req.params.id,
     { deleted: true },
     function (err, model) {
@@ -308,7 +308,7 @@ router.get("/search/:val", verifyToken, async (req, res) => {
 
 
 
-    let query = Subscription.find(queryParams)
+    let query = Contract.find(queryParams)
       .populate("contact", "-password")
       .populate("package")
       .sort({ "Sequance": 1 });
@@ -342,7 +342,7 @@ router.post("/search/", verifyToken, async (req, res) => {
       contact: req.body.clientId
     };
     console.log(queryParams);
-    let query = Subscription.find(queryParams)
+    let query = Contract.find(queryParams)
       .populate("contact", "-password")
       .sort({ "Sequance": 1 });
     result.items = await query.exec("find");

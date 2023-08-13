@@ -161,7 +161,7 @@
     "logistics": "الشحن",
     "shipments": "الشحنات",
     "invoices":"الفواتير",
-    "subscriptions": "الاشتراكات"
+    "contracts": "العقود"
   },
   "dashboard": {
     "code": "الرمز",
@@ -436,36 +436,36 @@
     "editPackage": "تعديل الحزمة",
     "frequency":  "التكرار"
   },
-  "subscriptions":{
-    "subscriptions":"الاشتراكات",
-    "addNewSubscription":"اضافة اشتراك جديد",
-    "subscriptionName":"اسم الاشتراك",
-    "subscriptionDescription":"وصف الاشتراك",
-    "subscriptionPrice":"سعر الاشتراك",
+  "contracts":{
+    "contracts":"الاشتراكات",
+    "addNewContract":"اضافة اشتراك جديد",
+    "contractName":"اسم الاشتراك",
+    "contractDescription":"وصف الاشتراك",
+    "contractPrice":"سعر الاشتراك",
     "seqNumber":"الترتيب",
     "contactName":"اسم المشترك",
     "totalInstallments":"اجمالي الاقساط",
     "remainingAmount":"المبلغ المتبقي",
     "packagePrice":"سعر الباقة",
     "packageName":"اسم الباقة",
-    "subscriptionTotalInstallments": "اجمالي الاقساط",
-    "subscriptionTotalInvoice": "اجمالي الفواتير",
-    "subscriptionAmount": "المبلغ",
-    "createSubscription": "انشاء اشتراك",
+    "contractTotalInstallments": "اجمالي الاقساط",
+    "contractTotalInvoice": "اجمالي الفواتير",
+    "contractAmount": "المبلغ",
+    "createContract": "انشاء اشتراك",
     "contactInformation": "معلومات المشترك",
     "contactMobile":"رقم الهاتف",
     "packageNumberOfSet":"عدد الاقساط",
-    "subscriptionDate":"تاريخ الاشتراك",
+    "contractDate":"تاريخ الاشتراك",
     "note":"ملاحظة",
-    "subscriptionBalance":"الرصيد",
-    "subscriptionReminingAmount":"المبلغ المتبقي",
+    "contractBalance":"الرصيد",
+    "contractReminingAmount":"المبلغ المتبقي",
     "installments":"الاقساط",
     "installmentAmount":"مبلغ القسط",
     "installmentDate":"تاريخ القسط",
     "installmentNote":"ملاحظة",
     "add":"اضافة",
-    "SubscriptionInformation":"معلومات الاشتراك",
+    "ContractInformation":"معلومات الاشتراك",
     "packageInformation":"معلومات الباقة",
-    "editSubscription":"تعديل الاشتراك"
+    "editContract":"تعديل الاشتراك"
   }
 }

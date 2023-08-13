@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import "./SubscriptionsSearchControl.css";
+import "./ContractsSearchControl.css";
 import { MdSearch, MdPhone, MdContactPage } from "react-icons/md";
 import { useTranslation } from "react-i18next";
-import { searchSubscription } from "./SubscriptionsAPI";
+import { searchContract } from "./ContractsAPI";
 import { json } from "react-router-dom";
-const SubscriptionSearchControl = (props) => {
+const ContractSearchControl = (props) => {
   const { t } = useTranslation();
-  const [selectedSubscriptionText, setSelectedSubscriptionText] = useState(props.value);
+  const [selectedContractText, setSelectedContractText] = useState(props.value);
   const [selectedId, setSelectedId] = useState(null);
   const [clientId, setClientId] = useState(props.clientId);
   useEffect(() => {
     if (props) {
-      setSelectedSubscriptionText(props.value);
+      setSelectedContractText(props.value);
     }
   }, []);
 
@@ -24,8 +24,8 @@ const SubscriptionSearchControl = (props) => {
     return selectedId ? "form-control is-valid" : "form-control is-invalid";
   };
 
-  const updateSearchSubscriptionText = (event) => {
-    setSelectedSubscriptionText(event.target.value);
+  const updateSearchContractText = (event) => {
+    setSelectedContractText(event.target.value);
     if (event.target.value.length >= 0) {
 
       let filter = {
@@ -33,54 +33,54 @@ const SubscriptionSearchControl = (props) => {
         clientId: props.clientId
       };
 
-      searchSubscription(filter)
+      searchContract(filter)
         .then((data) => {
           console.log(data.items);
-          setSubscriptionItems(data.items);
+          setContractItems(data.items);
         })
         .catch((e) => {
           console.log(e);
         });
     } else {
-      setSubscriptionItems([]);
+      setContractItems([]);
     }
 
     setSelectedId(null);
-    if(props.handleSelectSubscription){
-      props.handleSelectSubscription(null);
+    if(props.handleSelectContract){
+      props.handleSelectContract(null);
     }
    
   };
 
 
-  const onBlurSearchSubscription = (event) => {
+  const onBlurSearchContract = (event) => {
     //event.preventDefault();
-    // setSubscriptionItems([]);
+    // setContractItems([]);
     /*if(selectedId)
     {
-     setSubscriptionItems([]);
+     setContractItems([]);
     }
     */
   };
 
   /*
-  const onBlurSearchSubscription = (item) => {
+  const onBlurSearchContract = (item) => {
     setSelectedId(item);
-    if (props.handleSelectSubscription) {
-      props.handleSelectSubscription(item);
+    if (props.handleSelectContract) {
+      props.handleSelectContract(item);
     }
-    setSelectedSubscriptionText(item.contactName);
-    setSubscriptionItems([]);
+    setSelectedContractText(item.contactName);
+    setContractItems([]);
   };
   */
-  const [subscriptionItems, setSubscriptionItems] = useState([]);
-  const handleSelectSubscription = (item) => {
+  const [contractItems, setContractItems] = useState([]);
+  const handleSelectContract = (item) => {
     setSelectedId(item);
-    if (props.handleSelectSubscription) {
-      props.handleSelectSubscription(item);
+    if (props.handleSelectContract) {
+      props.handleSelectContract(item);
     }
-    setSelectedSubscriptionText(item.seqNumber);
-    setSubscriptionItems([]);
+    setSelectedContractText(item.seqNumber);
+    setContractItems([]);
   };
 
   return (
@@ -90,26 +90,26 @@ const SubscriptionSearchControl = (props) => {
           <MdSearch size={20} />
         </span>
         <input
-          className={fieldClass1(selectedSubscriptionText)}
+          className={fieldClass1(selectedContractText)}
           placeholder="Type to search..."
           autoComplete="false"
-          onChange={updateSearchSubscriptionText}
-          value={selectedSubscriptionText}
-          onBlur={onBlurSearchSubscription}
-          onFocus={updateSearchSubscriptionText}
+          onChange={updateSearchContractText}
+          value={selectedContractText}
+          onBlur={onBlurSearchContract}
+          onFocus={updateSearchContractText}
         />
       </div>
 
-      {subscriptionItems && subscriptionItems.length > 0 ? (
+      {contractItems && contractItems.length > 0 ? (
         <ul className="list-group scrollbar p-2" id="style-7">
-          {subscriptionItems
-            ? subscriptionItems.map((item) => (
+          {contractItems
+            ? contractItems.map((item) => (
               <>
 
                 <li
                   className="searchItem  list-group-item list-group-item-light"
                   onClick={() => {
-                    handleSelectSubscription(item);
+                    handleSelectContract(item);
                   }}
                 >
                   {(props.contactType && props.contactType.length == 1) ? <div>{item.seqNumber}</div> :
@@ -146,4 +146,4 @@ const SubscriptionSearchControl = (props) => {
     </>
   );
 };
-export default SubscriptionSearchControl;
+export default ContractSearchControl;

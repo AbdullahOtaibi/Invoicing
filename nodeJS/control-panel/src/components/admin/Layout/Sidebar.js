@@ -114,9 +114,9 @@ const Sidebar = () => {
 
 
                     {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("invoices.view") > -1 ? (
-                    <li className={getClass('/admin/Subscription')}>
-                        <Link className="wave-effect waves-effect waves-button" to="/admin/Subscription" >
-                            <MdReceipt size={18} /> &nbsp; {t("sidebar.subscriptions")}
+                    <li className={getClass('/admin/Contract')}>
+                        <Link className="wave-effect waves-effect waves-button" to="/admin/Contract" >
+                            <MdReceipt size={18} /> &nbsp; {t("sidebar.contracts")}
                         </Link >
                     </li>) : null}
 

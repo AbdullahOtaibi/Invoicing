@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { createInvoice, getInvoice, getSubscriptionInvoices, getSubscription } from "./InvoicesAPI";
+import { createInvoice, getInvoice, getContractInvoices, getContract } from "./InvoicesAPI";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,12 +23,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import { event } from "jquery";
 import ConfirmButton from "react-confirmation-button";
 import ContactSearchControl from "../Contact/ContactSearchControl";
-import ReceiptSearchControl from "../Subscriptions/ReceiptSearchControl";
+import ReceiptSearchControl from "../Contracts/ReceiptSearchControl";
 //import { eventManager } from "react-toastify/dist/core";
 const CreateInvoice = (props) => {
 
-  const { subscriptionId } = useParams();
-const [sid, setSID] = useState(subscriptionId);
+  const { contractId } = useParams();
+const [sid, setSID] = useState(contractId);
   const [invoice, setInvoice] = useState({
     invoiceCategory: "Income",
     invoiceType: "",
@@ -87,7 +87,7 @@ const [sid, setSID] = useState(subscriptionId);
     allowance: 0,
   });
 
-  const [subscription, setSubscription] = useState({});
+  const [contract, setContract] = useState({});
   const [oldInvoices, setOldInvoices] = useState([]);
 
   useEffect(() => {
@@ -95,11 +95,11 @@ const [sid, setSID] = useState(subscriptionId);
     if(sid){
      
       let cloned = JSON.parse(JSON.stringify(invoice));
-      cloned.subscription = sid;
+      cloned.contract = sid;
       setInvoice(cloned);
-      getSubscription(sid).then((res) => {
+      getContract(sid).then((res) => {
        // alert(res);
-        setSubscription(res);
+        setContract(res);
         console.log(res.data);
       });
      
@@ -108,14 +108,14 @@ const [sid, setSID] = useState(subscriptionId);
 
 
   useEffect(() => {
-   if(subscription && subscription._id && subscription._id.length == 12){
-      getSubscriptionInvoices(subscription._id).then((res) => {
+   if(contract && contract._id && contract._id.length == 12){
+      getContractInvoices(contract._id).then((res) => {
         setOldInvoices(res.data);
         console.log(res.data);
       });
     }
     
-  }, [subscription]);
+  }, [contract]);
   //#endregion
 
   //#region const
@@ -405,7 +405,7 @@ const doPost = (data) => {
   };
 
   invoice.allowanceCharge.value = totalAllowance();
-  invoice.receipt = subscription;
+  invoice.receipt = contract;
   createInvoice(invoice)
     .then((res) => {
       setLoading(false);
@@ -487,43 +487,43 @@ function checkInvoice() {
 
 
 const updateReceiptAmount = (event) => {
-  let cloned = JSON.parse(JSON.stringify(subscription));
+  let cloned = JSON.parse(JSON.stringify(contract));
   cloned.receiptAmount = event.target.value;
-  setSubscription(cloned);
+  setContract(cloned);
 
 }
 
 const updateReceiptTotalInstallments = (event) => {
-  let cloned = JSON.parse(JSON.stringify(subscription));
+  let cloned = JSON.parse(JSON.stringify(contract));
   cloned.receiptTotalInstallments = event.target.value;
-  setSubscription(cloned);
+  setContract(cloned);
 }
 
 const updateReceiptTotalInvoice = (event) => {
-  let cloned = JSON.parse(JSON.stringify(subscription));
+  let cloned = JSON.parse(JSON.stringify(contract));
   cloned.receiptTotalInvoice = event.target.value;
-  setSubscription(cloned);
+  setContract(cloned);
 }
 
 const updatePackageName = (event) => {
-  let cloned = JSON.parse(JSON.stringify(subscription));
+  let cloned = JSON.parse(JSON.stringify(contract));
   cloned.packageName = event.target.value;
-  setSubscription(cloned);
+  setContract(cloned);
 }
 
 const updatePackagePrice = (event) => {
-  let cloned = JSON.parse(JSON.stringify(subscription));
+  let cloned = JSON.parse(JSON.stringify(contract));
   cloned.packagePrice = event.target.value;
-  setSubscription(cloned);
+  setContract(cloned);
 }
 
 const handleSelectReceipt = (selectedReceipt) => {
   console.log(selectedReceipt);
   let cloned = JSON.parse(JSON.stringify(invoice));
-  cloned.subscription = selectedReceipt;
+  cloned.contract = selectedReceipt;
   setInvoice(cloned);
 
-  setSubscription(selectedReceipt);
+  setContract(selectedReceipt);
 }
 
 return (
@@ -737,11 +737,11 @@ return (
                 {t("sidebar.Receipt")}
               </div>
               <div className="col col-auto">
-                <ReceiptSearchControl handleSelectSubscription={handleSelectReceipt} clientId={invoice.contact} />
+                <ReceiptSearchControl handleSelectContract={handleSelectReceipt} clientId={invoice.contact} />
               </div>
             </div>
 
-            {subscription && subscription._id ? (<>
+            {contract && contract._id ? (<>
               <div className="mb-3 col ">
                 <div className="col col-auto">{t("receipt.receiptAmount")} </div>
                 <div className="col">
@@ -749,7 +749,7 @@ return (
                     type="text"
                     className="form-control"
                     placeholder={t("receipt.receiptAmount")}
-                    value={subscription.subscriptionAmount}
+                    value={contract.contractAmount}
                     onChange={updateReceiptAmount}
                   />
                 </div>
@@ -762,7 +762,7 @@ return (
                     type="text"
                     readOnly
                     className="form-control"
-                    value={totalInstallments(subscription)}
+                    value={totalInstallments(contract)}
                     placeholder={t("receipt.receiptTotalInstallments")}
                     
                   />
@@ -791,7 +791,7 @@ return (
                   <input
                     type="text"
                     className="form-control"
-                    value={subscription.packagePrice}
+                    value={contract.packagePrice}
                     placeholder={t("receipt.packagePrice")}
                     onChange={updatePackagePrice}
                   />
