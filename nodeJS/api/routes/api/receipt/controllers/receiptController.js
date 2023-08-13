@@ -148,7 +148,7 @@ router.get("/get/:id", async (req, res) => {
 function newSeq(x) {
   //d =new Date()
   //return d.getFullYear() + '-' +parseInt(d.getMonth() + 1) + "-" +d.getDate() + '-'+"0000".substring(0,4-x.toString().length)+x.toString()
-  return "RCP-" + "00000".substring(0, 5 - x.toString().length) + x.toString();
+  return "CON-" + "00000".substring(0, 5 - x.toString().length) + x.toString();
 }
 
 router.post("/create", verifyToken, async (req, res, next) => {
