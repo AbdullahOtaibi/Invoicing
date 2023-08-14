@@ -23,7 +23,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { event } from "jquery";
 import ConfirmButton from "react-confirmation-button";
 import ContactSearchControl from "../Contact/ContactSearchControl";
-import ReceiptSearchControl from "../Contracts/ReceiptSearchControl";
+import ContractSearchControl from "../Contracts/ContractSearchControl";
 //import { eventManager } from "react-toastify/dist/core";
 const CreateInvoice = (props) => {
 
@@ -737,7 +737,7 @@ return (
                 {t("sidebar.Receipt")}
               </div>
               <div className="col col-auto">
-                <ReceiptSearchControl handleSelectContract={handleSelectReceipt} clientId={invoice.contact} />
+                <ContractSearchControl handleSelectContract={handleSelectReceipt} clientId={invoice.contact} />
               </div>
             </div>
 

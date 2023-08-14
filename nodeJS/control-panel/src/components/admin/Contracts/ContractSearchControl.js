@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./ContractsSearchControl.css";
-import { MdSearch, MdPhone, MdContactPage } from "react-icons/md";
+import { MdSearch, MdPhone, MdContactPage, MdEditDocument, MdDocumentScanner, MdOutlineDocumentScanner, MdBalance, MdMoney, MdReceipt, MdMoneyOff } from "react-icons/md";
+import { LiaBalanceScaleSolid, LiaFileContractSolid } from 'react-icons/lia'
 import { useTranslation } from "react-i18next";
 import { searchContract } from "./ContractsAPI";
 import { json } from "react-router-dom";
@@ -112,28 +113,34 @@ const ContractSearchControl = (props) => {
                     handleSelectContract(item);
                   }}
                 >
-                  {(props.contactType && props.contactType.length == 1) ? <div>{item.seqNumber}</div> :
+                  {
                     (
                       <>
                         <div className="row">
                           <div className="mb-3 col ">
 
                             <div>
-                              <MdContactPage size={25} />{" "}
+                            
                               <span className="text-secondary">
-                                {item.seqNumber}
+                              <LiaFileContractSolid size={25} className="text-info" />{" "}
+                                {item.seqNumber} {" "}
+                             
+                              <MdContactPage size={25}  className="text-info"  />{" "}
+                                {item.contact.contactName} {" "}
+                         
+                              <MdMoney size={25}  className="text-info" />{" "}
+                                {item.contractBalance} JOD
                               </span>
+
                             </div>
 
+                     
+
                           </div>
 
 
                         </div>
-                        <div className="row">
-                          <div className="mb-3 col ">
-                            aaa
-                          </div>
-                        </div>
+                       
                       </>
                     )
                   }
