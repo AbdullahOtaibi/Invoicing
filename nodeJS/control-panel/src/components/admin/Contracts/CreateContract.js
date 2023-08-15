@@ -24,12 +24,12 @@ const CreateContract = (props) => {
     company: localStorage.getItem("company"), 
     status: "Active" ,
     contractDate: new Date(), 
-    contractTotalInstallments: 0.00,
+    contractTotalReceipts: 0.00,
     contractBalance: 0.00, 
-    contractTotalInvoice: 0.00 , 
+    contractTotalInvoiced: 0.00 , 
     contractReminingAmount: 0.00 ,
     contractAmount:0.00 , 
-    installments: [
+    receipts: [
     ]
   }) ;  
   
@@ -37,10 +37,10 @@ const CreateContract = (props) => {
   const { t } = useTranslation();
 
   const [currentEditableItem, setCurrentEditableItem] = useState({
-    installmentSequance: contract.installments.length +1,
-    installmentAmount: 0,
-    installmentDate:new Date(),
-    installmentNote: ""
+    receiptSequance: contract.receipts.length +1,
+    receiptAmount: 0,
+    receiptDate:new Date(),
+    receiptNote: ""
   });
 
   function numericFormat(val) {
@@ -51,19 +51,19 @@ const CreateContract = (props) => {
   const removeItem = (id) => {
     console.log("removeItem id=" +id)
     let cloned = JSON.parse(JSON.stringify(contract));
-    cloned.installments = cloned.installments.filter((item) => item.installmentSequance != id);
-     console.log(cloned.installments )
-    for( let i= 0 ;  i < cloned.installments.length ; i++)
+    cloned.receipts = cloned.receipts.filter((item) => item.receiptSequance != id);
+     console.log(cloned.receipts )
+    for( let i= 0 ;  i < cloned.receipts.length ; i++)
     {
     
-      cloned.installments[i].installmentSequance = i+1;
+      cloned.receipts[i].receiptSequance = i+1;
     }
 
     setCurrentEditableItem({
-      installmentSequance: cloned.installments.length +1 ,
-      installmentAmount: 0,
-      installmentNote: "",
-      installmentDate: new Date() , 
+      receiptSequance: cloned.receipts.length +1 ,
+      receiptAmount: 0,
+      receiptNote: "",
+      receiptDate: new Date() , 
     });
 
     setContract(cloned);
@@ -79,23 +79,23 @@ const CreateContract = (props) => {
     let cloned = JSON.parse(JSON.stringify(contract));
     console.log("before push installment ")
     console.log(contract) ;
-    cloned.installments.push(
+    cloned.receipts.push(
     {...currentEditableItem}
     );
 
-    for( let i= 0 ;  i < cloned.installments.length ; i++)
+    for( let i= 0 ;  i < cloned.receipts.length ; i++)
     {
-          cloned.installments[i].installmentSequance = i+1;
+          cloned.receipts[i].receiptSequance = i+1;
     }
 
     console.log("AFTER push installment ")
     console.log(cloned) ;
 
     setCurrentEditableItem({
-      installmentSequance: cloned.installments.length +1 ,
-      installmentAmount: 0,
-      installmentNote: "",
-      installmentDate: new Date() , 
+      receiptSequance: cloned.receipts.length +1 ,
+      receiptAmount: 0,
+      receiptNote: "",
+      receiptDate: new Date() , 
     });
     setContract(cloned);
     
@@ -104,23 +104,23 @@ const CreateContract = (props) => {
   };
 
 
-  const updateInstallmentAmount = (event) => {
+  const updatereceiptAmount = (event) => {
     let cloned = JSON.parse(JSON.stringify(currentEditableItem));
-    cloned.installmentAmount = event.target.value;
+    cloned.receiptAmount = event.target.value;
     setCurrentEditableItem(cloned);
   };
   
 
-  const updateInstallmentNote = (event) => {
+  const updatereceiptNote = (event) => {
     let cloned = JSON.parse(JSON.stringify(currentEditableItem));
-    cloned.installmentNote = event.target.value;
+    cloned.receiptNote = event.target.value;
     setCurrentEditableItem(cloned);
   };
 
-  const updateInstallmentDate = (date) => {
+  const updatereceiptDate = (date) => {
     let cloned = JSON.parse(JSON.stringify(currentEditableItem));
-    console.log("updateInstallmentDate::" +date)
-    cloned.installmentDate = date;
+    console.log("updatereceiptDate::" +date)
+    cloned.receiptDate = date;
     setCurrentEditableItem(cloned);
     
   };
@@ -129,13 +129,13 @@ const CreateContract = (props) => {
   function checkItemIsValid() {
     let itemIsValid = true;
 
-    if (isBlank(currentEditableItem.installmentAmount)) {
+    if (isBlank(currentEditableItem.receiptAmount)) {
       viewItemValidMessage("Fill the installment amount");
       itemIsValid = false;
     }
 
-    if(! isBlank(currentEditableItem.installmentAmount) 
-    && parseFloat(currentEditableItem.installmentAmount) > parseFloat(contract.contractReminingAmount)  )
+    if(! isBlank(currentEditableItem.receiptAmount) 
+    && parseFloat(currentEditableItem.receiptAmount) > parseFloat(contract.contractReminingAmount)  )
      {
       viewItemValidMessage("The max installment amount equals " +contract.contractReminingAmount);
       itemIsValid = false;
@@ -285,19 +285,19 @@ function updateContractCalculation()  {
   console.log("before fill contract" ) ;
   console.log(contract)
 let contractAmount = contract.contractAmount || 0 ;
-let contractTotalInvoice = contract.contractTotalInvoice || 0;
+let contractTotalInvoiced = contract.contractTotalInvoiced || 0;
 let totalInstallments=0;
 let contractReminingAmount = 0; 
 
-for( let i= 0 ;  i < contract.installments.length ; i++)
+for( let i= 0 ;  i < contract.receipts.length ; i++)
 {
 
-  totalInstallments += parseFloat(contract.installments[i].installmentAmount )
+  totalInstallments += parseFloat(contract.receipts[i].receiptAmount )
 }
 
 let cloned = JSON.parse(JSON.stringify(contract));
-cloned.contractTotalInstallments = totalInstallments;
-cloned.contractBalance = totalInstallments - parseFloat(contractTotalInvoice);
+cloned.contractTotalReceipts = totalInstallments;
+cloned.contractBalance = totalInstallments - parseFloat(contractTotalInvoiced);
 cloned.contractReminingAmount = parseFloat(contractAmount) - totalInstallments 
 setContract(cloned) ;
 console.log("after fill contract:" ) ;
@@ -522,18 +522,18 @@ useEffect( ()=>{updateContractCalculation()} , [currentEditableItem ]) ;
                 <div className="mb-3 row">
 
                 <div className="mb-3 col ">
-                    <div className="col col-auto">{t("contracts.contractTotalInstallments")}</div>
+                    <div className="col col-auto">{t("contracts.contractTotalReceipts")}</div>
                     <div className="col col-auto">
-                       JOD {contract.contractTotalInstallments.toFixed(2)} 
+                       JOD {contract.contractTotalReceipts.toFixed(2)} 
                     </div>
                   </div>
                 
                 
 
                 <div className="mb-3 col ">
-                    <div className="col col-auto">{t("contracts.contractTotalInvoice")}</div>
+                    <div className="col col-auto">{t("contracts.contractTotalInvoiced")}</div>
                     <div className="col col-auto">
-                       JOD {contract.contractTotalInvoice.toFixed(2)} 
+                       JOD {contract.contractTotalInvoiced.toFixed(2)} 
                     </div>
                   </div>
 
@@ -559,7 +559,7 @@ useEffect( ()=>{updateContractCalculation()} , [currentEditableItem ]) ;
                 
             <div className="mb-3 row ">
               <div className="col col-auto text-info">
-                {t("contracts.installments")}{" "}
+                {t("contracts.receipts")}{" "}
               </div>
               <div className="col">
                 <hr />
@@ -573,26 +573,26 @@ useEffect( ()=>{updateContractCalculation()} , [currentEditableItem ]) ;
                     <tr className="table-light">
                       <th width="5%">#</th>
                    
-                      <th width="20%">{t("contracts.installmentAmount")} </th>
-                      <th width="20%">{t("contracts.installmentDate")} </th>
-                      <th width="35%">{t("contracts.installmentNote")}</th>
+                      <th width="20%">{t("contracts.receiptAmount")} </th>
+                      <th width="20%">{t("contracts.receiptDate")} </th>
+                      <th width="35%">{t("contracts.receiptNote")}</th>
                      
                       <th width="20%"></th>
                     </tr>
                   </thead>
 
                   <tbody>
-                    { contract.installments? contract.installments.map((item) => (
+                    { contract.receipts? contract.receipts.map((item) => (
                       <tr>
-                        <td> {item.installmentSequance} </td>
-                        <td>{item.installmentAmount}</td>
-                        { <td>{item.installmentDate ? moment(item.installmentDate).format("DD/MM/yyyy") : "Not Set"} </td> }
+                        <td> {item.receiptSequance} </td>
+                        <td>{item.receiptAmount}</td>
+                        { <td>{item.receiptDate ? moment(item.receiptDate).format("DD/MM/yyyy") : "Not Set"} </td> }
                       
-                        <td>{item.installmentNote} </td>
+                        <td>{item.receiptNote} </td>
     
                         <td>
                           <ConfirmButton
-                            onConfirm={() => removeItem(item.installmentSequance)}
+                            onConfirm={() => removeItem(item.receiptSequance)}
                             onCancel={() => console.log("cancel")}
                             buttonText={t("dashboard.delete")}
                             confirmText={t("contracts.confirm")}
@@ -615,25 +615,25 @@ useEffect( ()=>{updateContractCalculation()} , [currentEditableItem ]) ;
                     )) : ""}
 
                     <tr className="d-print-none">
-                      <td>{contract.installments.length + 1}</td>
+                      <td>{contract.receipts.length + 1}</td>
                       <td>
                         <input
                           type="number"
-                          className={fieldClass(currentEditableItem.installmentAmount)}
-                          value={currentEditableItem.installmentAmount}
-                          onChange={updateInstallmentAmount}
+                          className={fieldClass(currentEditableItem.receiptAmount)}
+                          value={currentEditableItem.receiptAmount}
+                          onChange={updatereceiptAmount}
                           min={0}
                         
                         />
                       </td>
                       <td>
-                         <DatePicker className="form-control"  dateFormat="dd/MM/yyyy" selected = {new Date(currentEditableItem.installmentDate) } 
-                         onChange={(date)=> updateInstallmentDate(date)}
+                         <DatePicker className="form-control"  dateFormat="dd/MM/yyyy" selected = {new Date(currentEditableItem.receiptDate) } 
+                         onChange={(date)=> updatereceiptDate(date)}
                          />
                       </td>
                       <td>
-                    <textarea className="form-control"  value={currentEditableItem.installmentNote}
-                    onChange={updateInstallmentNote}
+                    <textarea className="form-control"  value={currentEditableItem.receiptNote}
+                    onChange={updatereceiptNote}
                     ></textarea>
                       </td>
    

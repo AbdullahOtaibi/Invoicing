@@ -20,6 +20,12 @@ const ContractSchema = new Schema({
     contractAmount: Number,
     packagePrice: Number,
     numberOfSet: Number,
+    contractBalance: Number,
+    contractReminingAmount: Number,
+    contractTotalReceipts:Number, 
+    contractTotalInvoiced:Number,
+
+
     note: String,
     deleted: {
         type: Boolean,
@@ -29,8 +35,7 @@ const ContractSchema = new Schema({
         type: Boolean,
         default: true
     },
-    contractBalance: Number,
-    contractReminingAmount: Number,
+    
     installments: [
         {
             installmentSequance: Number,

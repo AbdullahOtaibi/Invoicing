@@ -298,7 +298,7 @@ function updateContractCalculation()  {
   console.log("before fill contract" ) ;
   console.log(contract)
 let contractAmount = contract.contractAmount || 0 ;
-let contractTotalInvoice = contract.contractTotalInvoice || 0;
+let contractTotalInvoiced = contract.contractTotalInvoice || 0;
 let totalInstallments=0;
 let contractReminingAmount = 0; 
 
@@ -309,8 +309,8 @@ for( let i= 0 ;  i < contract.installments.length ; i++)
 }
 
 let cloned = JSON.parse(JSON.stringify(contract));
-cloned.contractTotalInstallments = totalInstallments;
-cloned.contractBalance = totalInstallments - parseFloat(contractTotalInvoice);
+cloned.contractTotalReceipts = totalInstallments;
+cloned.contractBalance = totalInstallments - parseFloat(contractTotalInvoiced);
 cloned.contractReminingAmount = parseFloat(contractAmount) - totalInstallments 
 setContract(cloned) ;
 console.log("after fill contract:" ) ;
@@ -536,9 +536,9 @@ useEffect( ()=>{updateContractCalculation()} , [currentEditableItem ]) ;
              <div className="mb-3 row">
 
              <div className="mb-3 col ">
-                 <div className="col col-auto">{t("contracts.contractTotalInstallments")}</div>
+                 <div className="col col-auto">{t("contracts.contractTotalReceipts")}</div>
                  <div className="col col-auto">
-                    JOD {contract.contractTotalInstallments? contract.contractTotalInstallments.toFixed(2) : contract.contractTotalInstallments} 
+                    JOD {contract.contractTotalReceipts? contract.contractTotalReceipts.toFixed(2) : contract.contractTotalReceipts} 
                  </div>
                </div>
              

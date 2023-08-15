@@ -210,7 +210,7 @@ const getTotalInstallments = () =>{
               <div className="mb-3 row">
 
                 <div className="mb-3 col   ">
-                  <div className="col col-auto">{t("contracts.contractTotalInstallments")}</div>
+                  <div className="col col-auto">{t("contracts.contractTotalReceipts")}</div>
                   <div className="col col-auto">
                     JOD {contract.installments ? getTotalInstallments().toFixed(2) : '0.00'}
                   </div>
@@ -219,7 +219,7 @@ const getTotalInstallments = () =>{
 
 
                 <div className="mb-3 col   ">
-                  <div className="col col-auto">{t("contracts.contractTotalInvoice")}</div>
+                  <div className="col col-auto">{t("contracts.contractTotalInvoiced")}</div>
                   <div className="col col-auto">
                     JOD {contract.packagePrice ? contract.packagePrice.toFixed(2) : contract.packagePrice}
                   </div>
