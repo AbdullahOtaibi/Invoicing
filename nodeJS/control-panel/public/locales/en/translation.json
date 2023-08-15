@@ -597,7 +597,15 @@
     "add": "Add",
     "ContractInformation": "Contract Information",
     "packageInformation": "Package Information",
-    "editContract": "Edit Contract"
+    "editContract": "Edit Contract" ,
+    "contractTotalReceipts" : "Contract Total Receipts",
+    "contractTotalInvoiced" : "Contract Total Invoiced" ,
+    "receiptAmount" : "Receipt Amount" ,
+    "receiptDate" : "Receipt Date" ,
+    "receiptNote" : "Receipt Note" ,
+    "receipts" : "Receipts"
+
+
 
   }
 }

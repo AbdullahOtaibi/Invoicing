@@ -161,7 +161,7 @@ const CreateContract = (props) => {
       cloned.packageName = item.packageName;
       cloned.package = item._id;
       cloned.packagePrice = item.price; 
-      cloned.numberOfSet = item.numberOfSet; 
+      cloned.packageNumberOfSet = item.numberOfSet; 
       if(!contract.contractAmount) 
       {
         cloned.contractAmount =  item.price;
@@ -418,7 +418,7 @@ useEffect( ()=>{updateContractCalculation()} , [currentEditableItem ]) ;
                     placeholder={t("contracts.packagePrice")}
                     
                     value={
-                      contract.packagePrice
+                      contract.packageNumberOfSet
                     }
                   />
                 </div>
@@ -582,8 +582,9 @@ useEffect( ()=>{updateContractCalculation()} , [currentEditableItem ]) ;
                   </thead>
 
                   <tbody>
-                    { contract.receipts? contract.receipts.map((item) => (
-                      <tr>
+                    { 
+                    contract.receipts? contract.receipts.map((item) => (
+                      <tr key={ item.receiptSequance} >
                         <td> {item.receiptSequance} </td>
                         <td>{item.receiptAmount}</td>
                         { <td>{item.receiptDate ? moment(item.receiptDate).format("DD/MM/yyyy") : "Not Set"} </td> }

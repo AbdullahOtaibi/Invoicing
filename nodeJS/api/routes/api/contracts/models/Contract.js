@@ -19,7 +19,7 @@ const ContractSchema = new Schema({
     },
     contractAmount: Number,
     packagePrice: Number,
-    numberOfSet: Number,
+    packageNumberOfSet: Number,
     contractBalance: Number,
     contractReminingAmount: Number,
     contractTotalReceipts:Number, 
