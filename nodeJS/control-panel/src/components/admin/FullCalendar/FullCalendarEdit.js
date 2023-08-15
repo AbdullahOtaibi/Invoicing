@@ -6,6 +6,7 @@ import { updateFullCalendar, deleteFullCalendar} from "./FullCalendarAPI";
 import ConfirmButton from "react-confirmation-button";
 import {MdDelete} from  "react-icons/md"
 import ContactSearchControl from "../Contact/ContactSearchControl";
+import ContractSearchControl from "../Contracts/ContractSearchControl";
 let startDate = new Date() ;
 if(startDate.getMinutes() >0 && startDate.getMinutes() < 30 ) 
 {
@@ -36,6 +37,8 @@ const FullCalendarEdit = (props) => {
 
    useEffect ( () => {
         setFullCalendar(props.getfullCalendarObj);
+
+     console.log( "props.getfullCalendarObj" +  JSON.stringify(props.getfullCalendarObj))
    }, []) 
   
  
@@ -192,6 +195,13 @@ const setStatus = (event)=> {
     }
   };
 
+  const  handleSelectContract = (selectedContract) => {
+    console.log("insert handleSelectContract method");
+    let cloned = JSON.parse(JSON.stringify(fullCalendar));
+    cloned.contract = selectedContract._id;
+    setFullCalendar(cloned);
+  }	
+
   const selectedEmployee = (item) => {
     if (item) {
       let cloned = JSON.parse(JSON.stringify(fullCalendar));
@@ -260,6 +270,16 @@ const setStatus = (event)=> {
         </div>
 
 
+        <div className="row">
+          <div className="mb-3 col ">
+            <div className="col col-auto">{t("FullCalendar.contract")} </div>
+
+            <div className="col">            
+            <ContractSearchControl handleSelectContract={handleSelectContract} clientId={fullCalendar.contact}  value = { fullCalendar.contractSequanceNumber } />
+
+            </div>
+          </div>
+        </div>
    
 
         <div className="row">

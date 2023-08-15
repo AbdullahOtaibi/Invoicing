@@ -49,6 +49,10 @@ const FullCalendarSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Contact'
     } ,
+    contract:{ 
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Contract'
+    } ,
     employeeName: String, 
     employee:{ 
         type: mongoose.Schema.Types.ObjectId,

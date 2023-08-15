@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { creatFullCalendar } from "./FullCalendarAPI";
 import ContactSearchControl from "../Contact/ContactSearchControl";
+import ContractSearchControl from "../Contracts/ContractSearchControl";
 let startDate = new Date() ;
 if(startDate.getMinutes() >0 && startDate.getMinutes() < 30 ) 
 {
@@ -70,7 +71,13 @@ const FullCalendarNew = (props) => {
     setFullCalendar(cloned);
   };
 
- 
+  //const [contract, setContract] = useState({});
+  const  handleSelectContract = (selectedContract) => {
+    console.log("insert handleSelectContract method");
+    let cloned = JSON.parse(JSON.stringify(fullCalendar));
+    cloned.contract = selectedContract._id;
+    setFullCalendar(cloned);
+  }			
 const setMobile = (event) => {
   let cloned = JSON.parse(JSON.stringify(fullCalendar));
   cloned.mobile = event.target.value;
@@ -180,12 +187,15 @@ const setStatus = (event)=> {
 
   const selectedConatct = (item) => {
     if (item) {
+      console.log("selectedConatct ....") ;
       let cloned = JSON.parse(JSON.stringify(fullCalendar));
       cloned.contactName = item.contactName;
       cloned.contact = item._id;
       cloned.title = item.contactName;
       cloned.mobile = item.mobile; 
+      cloned.contract = ""; 
       setFullCalendar(cloned);
+     // handleSelectContract(null)
       
     }
   };
@@ -221,6 +231,8 @@ const setStatus = (event)=> {
             </div>
           </div>
         </div>
+
+    
       <div className="row">
           <div className="mb-3 col ">
             <div className="col col-auto">{t("FullCalendar.title")} </div>
@@ -259,7 +271,16 @@ const setStatus = (event)=> {
           </div>
         </div>
 
-        
+        <div className="row">
+          <div className="mb-3 col ">
+            <div className="col col-auto">{t("FullCalendar.contract")} {fullCalendar.contractSeqNumber}  </div>
+
+            <div className="col">            
+            <ContractSearchControl handleSelectContract={handleSelectContract} clientId={fullCalendar.contact} value = ""/>
+
+            </div>
+          </div>
+        </div>
 
         <div className="row">
           <div className="mb-3 col ">

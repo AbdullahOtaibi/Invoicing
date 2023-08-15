@@ -64,16 +64,6 @@ const ContractSearchControl = (props) => {
     */
   };
 
-  /*
-  const onBlurSearchContract = (item) => {
-    setSelectedId(item);
-    if (props.handleSelectContract) {
-      props.handleSelectContract(item);
-    }
-    setSelectedContractText(item.contactName);
-    setContractItems([]);
-  };
-  */
   const [contractItems, setContractItems] = useState([]);
   const handleSelectContract = (item) => {
     setSelectedId(item);

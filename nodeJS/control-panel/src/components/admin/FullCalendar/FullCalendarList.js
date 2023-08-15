@@ -76,7 +76,10 @@ const FullCalenderList = (props) => {
               allDay: item.allDay,
               mobile: item.mobile,
               employeeName: item.employeeName ,
-              status:  item.status
+              status:  item.status ,
+              contract: item.contract ,
+             contractSequanceNumber : item.contract ? item.contract.seqNumber : "" ,
+            contact: item.contact
             };
           })
         );
