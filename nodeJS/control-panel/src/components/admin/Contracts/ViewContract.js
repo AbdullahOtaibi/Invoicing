@@ -247,7 +247,7 @@ const getTotalInstallments = () =>{
 
               <div className="mb-3 row ">
                 <div className="col col-auto text-info">
-                  {t("contracts.installments")}{" "}
+                  {t("contracts.receipts")}{" "}
                 </div>
                 <div className="col">
                   <hr />
@@ -257,29 +257,33 @@ const getTotalInstallments = () =>{
               <div className="row">
                 <div className="col table-responsive">
                   <table className="table table-sm needs-validation ">
+                  
+
                     <thead>
-                      <tr className="table-light">
-                        <th width="5%">#</th>
-
-                        <th width="20%">{t("contracts.installmentAmount") + "  (JOD)"} </th>
-                        <th width="20%">{t("contracts.installmentDate")} </th>
-                        <th width="35%">{t("contracts.installmentNote")}</th>
-
-
-                      </tr>
-                    </thead>
+                    <tr className="table-light">
+                      <th width="5%">#</th>
+                   
+                      <th width="20%">{t("contracts.receiptAmount")} </th>
+                      <th width="20%">{t("contracts.receiptDate")} </th>
+                      <th width="35%">{t("contracts.receiptNote")}</th>
+                     
+                     
+                    </tr>
+                  </thead>
 
                     <tbody>
-                      {contract.installments ? contract.installments.map((item) => (
-                        <tr>
-                          <td> {item.installmentSequance} </td>
-                          <td>{item.installmentAmount}</td>
-                          <td>{item.installmentDate ? moment(item.installmentDate).format("DD/MM/yyyy") : "Not Set"} </td>
-                          <td>{item.installmentNote} </td>
-
-
-                        </tr>
-                      )) : <tr></tr>}
+                    { 
+                    contract.receipts? contract.receipts.map((item) => (
+                      <tr key={ item.receiptSequance} >
+                        <td> {item.receiptSequance} </td>
+                        <td>{item.receiptAmount}</td>
+                        { <td>{item.receiptDate ? moment(item.receiptDate).format("DD/MM/yyyy") : "Not Set"} </td> }
+                      
+                        <td>{item.receiptNote} </td>
+    
+                      
+                      </tr>
+                    )) : <tr></tr>}
 
 
                     </tbody>
