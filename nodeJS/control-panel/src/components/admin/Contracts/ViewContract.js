@@ -17,7 +17,9 @@ import {
   MdCollections,
   MdMoney,
   MdCancel ,
-  MdCalendarViewMonth
+  MdCalendarViewMonth ,
+  MdAddTask,
+  MdCollectionsBookmark
 } from "react-icons/md";
 import { ThreeDots } from 'react-loader-spinner';
 import { useTranslation } from "react-i18next";
@@ -84,13 +86,13 @@ const getTotalInstallments = () =>{
             </div>
             <div class="row text-right">
                 <div className="mb-3  col justify-content-end">
-                  <Link className="btn btn-secondary btn-lg" to="/admin/Contract">
-                    <MdCalendarViewMonth size={20} /> &nbsp; {t("contracts.createAppointment")}
+                  <Link className="btn btn-success btn-lg" to="/admin/Contract">
+                    <MdAddTask size={20} /> &nbsp; {t("contracts.createAppointment")}
                   </Link>{" "}
                   &nbsp;
 
-                  <Link className="btn btn-primary btn-lg mx-1" to={"/invoices/createForContract/" + contract._id}>
-                    <MdEdit size={20} />
+                  <Link className="btn btn-info btn-lg mx-1" to={"/invoices/createForContract/" + contract._id}>
+                    <MdCollectionsBookmark size={20} />
                     &nbsp; {t("invoice.createInvoice")}
                   </Link>
 
