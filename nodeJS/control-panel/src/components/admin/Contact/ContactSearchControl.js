@@ -89,6 +89,7 @@ const onBlurSearchContact = (item) => {
           <MdSearch size={20} />
         </span>
         <input
+        readOnly= { props.readOnly? "readnoly" : ""}
           className={fieldClass1(selectedContactText)}
           placeholder="Type to search..."
           autoComplete="false"
@@ -99,15 +100,16 @@ const onBlurSearchContact = (item) => {
         />
       </div>
 
-      {contactItems && contactItems.length > 0 ? (
+      {contactItems && contactItems.length > 0 &&  ! props.readOnly ? (
         <ul className="list-group scrollbar p-2" id="style-7">
-          {contactItems
+          {contactItems 
             ? contactItems.map((item) => (
                 <>
                
                   <li
                     className="searchItem  list-group-item list-group-item-light"
                     onClick={() => {
+                      if( ! props.readOnly)  
                       handleSelectContact(item);
                     }}
                   >

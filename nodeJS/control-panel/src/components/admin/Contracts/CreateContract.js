@@ -72,12 +72,12 @@ const CreateContract = (props) => {
   const addItem = (event) => {
 
     if (!checkItemIsValid()) {
-      console.log("installment item is not valid...");
+      console.log("receipt item is not valid...");
       return false;
     }
 
     let cloned = JSON.parse(JSON.stringify(contract));
-    console.log("before push installment ")
+    console.log("before push receipt ")
     console.log(contract) ;
     cloned.receipts.push(
     {...currentEditableItem}
@@ -88,7 +88,7 @@ const CreateContract = (props) => {
           cloned.receipts[i].receiptSequance = i+1;
     }
 
-    console.log("AFTER push installment ")
+    console.log("AFTER push receipt ")
     console.log(cloned) ;
 
     setCurrentEditableItem({
@@ -99,7 +99,7 @@ const CreateContract = (props) => {
     });
     setContract(cloned);
     
-    console.log("installment added to contract") ;
+    console.log("receipt added to contract") ;
     //updateContractCalculation();
   };
 
@@ -130,14 +130,14 @@ const CreateContract = (props) => {
     let itemIsValid = true;
 
     if (isBlank(currentEditableItem.receiptAmount)) {
-      viewItemValidMessage("Fill the installment amount");
+      viewItemValidMessage("Fill the receipt amount");
       itemIsValid = false;
     }
 
     if(! isBlank(currentEditableItem.receiptAmount) 
     && parseFloat(currentEditableItem.receiptAmount) > parseFloat(contract.contractReminingAmount)  )
      {
-      viewItemValidMessage("The max installment amount equals " +contract.contractReminingAmount);
+      viewItemValidMessage("The max receipt amount equals " +contract.contractReminingAmount);
       itemIsValid = false;
      }
     return itemIsValid;
@@ -165,8 +165,8 @@ const CreateContract = (props) => {
       if(!contract.contractAmount) 
       {
         cloned.contractAmount =  item.price;
-        let totalInstallments =cloned.totalInstallments|| 0 ;
-        cloned.contractReminingAmount = parseFloat(item.price) - totalInstallments ;
+        let contractTotalReceipts =cloned.contractTotalReceipts|| 0 ;
+        cloned.contractReminingAmount = parseFloat(item.price) - contractTotalReceipts ;
 
       } 
         setContract(cloned);
@@ -190,8 +190,8 @@ const CreateContract = (props) => {
    
    let cloned =JSON.parse(JSON.stringify(contract)) ;
      cloned.contractAmount = parseFloat(event.target.value); 
-     let totalInstallments =cloned.totalInstallments|| 0 ;
-     cloned.contractReminingAmount = parseFloat(cloned.contractAmount)  - parseFloat( totalInstallments) ;
+     let contractTotalReceipts =cloned.contractTotalReceipts|| 0 ;
+     cloned.contractReminingAmount = parseFloat(cloned.contractAmount)  - parseFloat( contractTotalReceipts) ;
     setContract(cloned)
 
   }
@@ -286,19 +286,19 @@ function updateContractCalculation()  {
   console.log(contract)
 let contractAmount = contract.contractAmount || 0 ;
 let contractTotalInvoiced = contract.contractTotalInvoiced || 0;
-let totalInstallments=0;
+let contractTotalReceipts=0;
 let contractReminingAmount = 0; 
 
 for( let i= 0 ;  i < contract.receipts.length ; i++)
 {
 
-  totalInstallments += parseFloat(contract.receipts[i].receiptAmount )
+  contractTotalReceipts += parseFloat(contract.receipts[i].receiptAmount )
 }
 
 let cloned = JSON.parse(JSON.stringify(contract));
-cloned.contractTotalReceipts = totalInstallments;
-cloned.contractBalance = totalInstallments - parseFloat(contractTotalInvoiced);
-cloned.contractReminingAmount = parseFloat(contractAmount) - totalInstallments 
+cloned.contractTotalReceipts = contractTotalReceipts;
+cloned.contractBalance = contractTotalReceipts - parseFloat(contractTotalInvoiced);
+cloned.contractReminingAmount = parseFloat(contractAmount) - contractTotalReceipts 
 setContract(cloned) ;
 console.log("after fill contract:" ) ;
 console.log(contract) ;

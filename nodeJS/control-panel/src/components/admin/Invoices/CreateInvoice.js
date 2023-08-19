@@ -121,11 +121,13 @@ const [sid, setSID] = useState(contractId);
   //#region const
 
   const totalInstallments=  (element) => {
+   
     let total = 0;
     element.installments.forEach((installment) => {
       total += installment.installmentAmount;
     });
     return total;
+   
   };
 
   const totalInvoiced = () => {

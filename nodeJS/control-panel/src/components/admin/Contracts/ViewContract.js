@@ -15,7 +15,9 @@ import {
   MdContacts,
   MdPhone,
   MdCollections,
-  MdMoney
+  MdMoney,
+  MdCancel ,
+  MdCalendarViewMonth
 } from "react-icons/md";
 import { ThreeDots } from 'react-loader-spinner';
 import { useTranslation } from "react-i18next";
@@ -26,7 +28,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getContract, removeContract } from "./ContractsAPI"
 import moment from "moment";
-
+import Listinv from "../Invoices/ListInv"
 const ViewContract = (props) => {
 
   let navigate = useNavigate();
@@ -34,6 +36,8 @@ const ViewContract = (props) => {
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
   const [contract, setContract] = useState({});
+  const[filter , setFilter] = useState({ }) 
+
   useEffect(() => {
     setLoading(true);
     console.log("contractId:" + contractId);
@@ -42,6 +46,11 @@ const ViewContract = (props) => {
         setContract(res)
         console.log("contract:")
         console.log(JSON.stringify(res));
+        let filterData = {} 
+        filterData.contract =res;
+        setFilter(filterData)
+        console.log("filter Data" ) 
+        console.log(filterData)
       }
     ).catch((error) => { console.log(error) })
     setLoading(false);
@@ -63,7 +72,7 @@ const getTotalInstallments = () =>{
       <>
         <div className="card">
           <div className="card-body">
-            <h5 className="card-title"> <MdReceipt size={20} />   {t("contracts.ContractInformation")} ({contract.seqNumber})</h5>
+            <h5 className="card-title"> <MdReceipt size={20} />   {t("contracts.ContractInformation")} <span className='text-info'>({contract.seqNumber})</span></h5>
             <div className="container text-center">
               <ThreeDots
                 type="ThreeDots"
@@ -73,6 +82,22 @@ const getTotalInstallments = () =>{
                 visible={loading}
               />
             </div>
+            <div class="row text-right">
+                <div className="mb-3  col justify-content-end">
+                  <Link className="btn btn-secondary btn-lg" to="/admin/Contract">
+                    <MdCalendarViewMonth size={20} /> &nbsp; {t("contracts.createAppointment")}
+                  </Link>{" "}
+                  &nbsp;
+
+                  <Link className="btn btn-primary btn-lg mx-1" to={"/invoices/createForContract/" + contract._id}>
+                    <MdEdit size={20} />
+                    &nbsp; {t("invoice.createInvoice")}
+                  </Link>
+
+                 
+
+                </div>
+              </div>
             <br />
             <form className="needs-validation">
 
@@ -144,7 +169,7 @@ const getTotalInstallments = () =>{
                   <div className="col col-auto">{t("contracts.packagePrice")}</div>
                   <div className="col col-auto">
                     {
-                      contract.packagePrice ? contract.packagePrice.toFixed(2) : contract.packagePrice
+                      contract.packagePrice ? contract.packagePrice.toFixed(3) : contract.packagePrice
                     }
                   </div>
                 </div>
@@ -187,7 +212,7 @@ const getTotalInstallments = () =>{
                 <div className="mb-3 col   ">
                   <div className="col col-auto">{t("contracts.contractAmount")}</div>
                   <div className="col col-auto">
-                    {contract.contractAmount ? contract.contractAmount.toFixed(2) : contract.contractAmount}
+                    {contract.contractAmount ? contract.contractAmount.toFixed(3) : contract.contractAmount}
                   </div>
                 </div>
 
@@ -212,7 +237,7 @@ const getTotalInstallments = () =>{
                 <div className="mb-3 col   ">
                   <div className="col col-auto">{t("contracts.contractTotalReceipts")}</div>
                   <div className="col col-auto">
-                    JOD {contract.installments ? getTotalInstallments().toFixed(2) : '0.00'}
+                    JOD {contract.installments ? getTotalInstallments().toFixed(3) : '0.00'}
                   </div>
                 </div>
 
@@ -221,14 +246,14 @@ const getTotalInstallments = () =>{
                 <div className="mb-3 col   ">
                   <div className="col col-auto">{t("contracts.contractTotalInvoiced")}</div>
                   <div className="col col-auto">
-                    JOD {contract.packagePrice ? contract.packagePrice.toFixed(2) : contract.packagePrice}
+                    JOD {contract.packagePrice ? contract.packagePrice.toFixed(3) : contract.packagePrice}
                   </div>
                 </div>
 
                 <div className="mb-3 col    ">
                   <div className="col col-auto">{t("contracts.contractBalance")}</div>
                   <div className="col col-auto">
-                    JOD {contract.contractBalance ? contract.contractBalance.toFixed(2) : '0.00'}
+                    JOD {contract.contractBalance ? contract.contractBalance.toFixed(3) : '0.00'}
                   </div>
                 </div>
 
@@ -239,7 +264,7 @@ const getTotalInstallments = () =>{
                 <div className="mb-3 col   ">
                   <div className="col col-auto">{t("contracts.contractReminingAmount")}</div>
                   <div className="col col-auto">
-                    JOD {contract.contractReminingAmount ? contract.contractReminingAmount.toFixed(2) : '0.00'}
+                    JOD {contract.contractReminingAmount ? contract.contractReminingAmount.toFixed(3) : '0.00'}
                   </div>
                 </div>
               </div>
@@ -261,11 +286,11 @@ const getTotalInstallments = () =>{
 
                     <thead>
                     <tr className="table-light">
-                      <th width="5%">#</th>
+                      <th width="20%">#</th>
                    
                       <th width="20%">{t("contracts.receiptAmount")} </th>
                       <th width="20%">{t("contracts.receiptDate")} </th>
-                      <th width="35%">{t("contracts.receiptNote")}</th>
+                      <th width="40%">{t("contracts.receiptNote")}</th>
                      
                      
                     </tr>
@@ -276,7 +301,7 @@ const getTotalInstallments = () =>{
                     contract.receipts? contract.receipts.map((item) => (
                       <tr key={ item.receiptSequance} >
                         <td> {item.receiptSequance} </td>
-                        <td>{item.receiptAmount}</td>
+                        <td>{numericFormat(item.receiptAmount)}</td>
                         { <td>{item.receiptDate ? moment(item.receiptDate).format("DD/MM/yyyy") : "Not Set"} </td> }
                       
                         <td>{item.receiptNote} </td>
@@ -287,7 +312,14 @@ const getTotalInstallments = () =>{
 
 
                     </tbody>
-                    <tfoot></tfoot>
+                    <tfoot className="table-light">
+                   
+                      <td className="text-info" > Grand Total</td>
+                      <td>{numericFormat(contract.contractTotalReceipts)}</td>
+                      <td colSpan="2"></td>
+                     
+                    
+                    </tfoot>
                   </table>
 
                 </div>
@@ -295,8 +327,27 @@ const getTotalInstallments = () =>{
 
 
 
+              <div className="mb-3 row ">
+                <div className="col col-auto text-info">
+                  {t("contracts.invoices")}{" "}
+                </div>
+                <div className="col">
+                  <hr />
+                </div>
+              </div>
 
+              <div className='row'>
+               <Listinv status ="all" filter = {filter}/>  
+              </div>
 
+              <div className="mb-3 row ">
+                <div className="col col-auto text-info">
+                  {t("contracts.appointments")}{" "}
+                </div>
+                <div className="col">
+                  <hr />
+                </div>
+              </div>
 
               <div class="row text-right">
                 <div className="mb-3  col justify-content-end">
@@ -305,20 +356,12 @@ const getTotalInstallments = () =>{
                   </Link>{" "}
                   &nbsp;
 
-                  <Link className="btn btn-primary btn-lg mx-1" to={"/invoices/createForContract/" + contract._id}>
-                    <MdEdit size={20} />
-                    &nbsp; {t("invoice.createInvoice")}
-                  </Link>
-
+                  
                   <Link className="btn btn-primary btn-lg" to={"/admin/Contract/edit/" + contract._id}>
                     <MdEdit size={20} />
                     &nbsp; {t("dashboard.edit")}
                   </Link>
 
-                  
-
-
-                 
                 </div>
               </div>
             </form>
@@ -329,7 +372,9 @@ const getTotalInstallments = () =>{
 
     ) : "No Data Found"));
 
-
+    function numericFormat(val) {
+      return !isNaN(val) ? val.toFixed(3) : val;
+    }
 };
 
 export default ViewContract

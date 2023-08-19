@@ -39,7 +39,7 @@ const ListInv = (props) => {
         let startDate = null;
         let endDate = null;
         let clientId = null;
-
+        let contractId=null 
         if (status == "all") {
             if (props.filter && props.filter.status && props.filter.status != "all") {
                 status = props.filter.status;
@@ -56,6 +56,12 @@ const ListInv = (props) => {
                 clientId = props.filter.contact._id;
             }
 
+            if (props.filter && props.filter.contract) {
+                console.log("insert filter invoice contract ...");
+                contractId = props.filter.contract._id;
+                console.log("contractId:" +contractId) ;
+            }
+
 
         }
         setInvoicesPage(newPage);
@@ -64,7 +70,8 @@ const ListInv = (props) => {
             status: status,
             startDate: startDate,
             endDate: endDate,
-            clientId: clientId
+            clientId: clientId ,
+            contractId: contractId
         }).then(data => {
             setLoading(false);
             setNewInvoices(data.items || []);
@@ -112,6 +119,7 @@ const ListInv = (props) => {
                           
 
                         </th>
+                        <th>   {t("invoice.status")} </th>
                         <th>  {t("invoice.TaxExclusiveAmount")} </th>
                         <th>  {t("invoice.AllowanceTotalAmount")}</th>
                         <th>  {t("invoice.TaxInclusiveAmount")}</th>
@@ -146,6 +154,7 @@ const ListInv = (props) => {
 
                                     </Link>
                                 </td>
+                                <td> {item.status}</td>
                                 <td> {item.legalMonetaryTotal.taxExclusiveAmount.toFixed(3)}</td>
                                 <td> {item.legalMonetaryTotal.allowanceTotalAmount.toFixed(3)}</td>
                                 <td> {item.legalMonetaryTotal.taxInclusiveAmount.toFixed(3)}</td>
@@ -160,8 +169,11 @@ const ListInv = (props) => {
 
                                 {(props.status) != "posted" ?
                                     <td className="justify-content-end" style={{ textAlign: 'end' }}>
-                                        {item.status!='posted' && item.status != 'reverted'?(<><Link className="btn btn-primary" to={"/admin/invoices/edit/" + item._id} title={t("dashboard.edit")} > Edit <MdEdit /> </Link> &nbsp </>):null}
-                                        {/* <Link className="btn btn-danger" to="#" title={t("dashboard.delete")} onClick={e => deleteInvoice(item._id)} ><MdDelete /></Link> */}
+                                      <><Link className="btn btn-primary" to={"/admin/invoices/edit/" + item._id} title={t("dashboard.edit")}  
+                                        style={{ pointerEvents: item.status=='posted' || item.status == 'reverted' ? 'none' : 'auto'
+                                        , color:  item.status=='posted' || item.status == 'reverted'  ? 'gray' : '' }}>
+                                        Edit <MdEdit /> </Link> </>
+                                       
                                     </td>
                                     : ""
                                 }

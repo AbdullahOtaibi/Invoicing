@@ -603,7 +603,10 @@
     "receiptAmount" : "Receipt Amount" ,
     "receiptDate" : "Receipt Date" ,
     "receiptNote" : "Receipt Note" ,
-    "receipts" : "Receipts"
+    "receipts" : "Receipts" ,
+    "invoices" : "Invoices" ,
+    "appointments" : "Appointments" ,
+    "createAppointment" : "Create Appointment"
 
 
 

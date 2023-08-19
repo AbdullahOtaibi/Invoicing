@@ -61,6 +61,7 @@ const getNewStatus = (Invoice) => {
 
 
 router.post("/filter", verifyToken, async (req, res) => {
+  console.log(" insert filter invoice method type post  ")
   if (!req.user) {
     res.json({ message: "unauthorized access" });
   }
@@ -74,11 +75,14 @@ router.post("/filter", verifyToken, async (req, res) => {
     let pageSize = filters.pageSize || 20;
     let vendorId = filters.vendorId || null;
     let clientId = filters.clientId || null;
+    let contractId = filters.contractId || null ; 
     let deleted = filters.deleted || false;
     let status = filters.status || null;
     let InvoiceBy = filters.InvoiceBy || "_idDesc";
     let startDate = filters.startDate || null;
     let endDate = filters.endDate || null;
+
+
     // companyID: localStorage.getItem("companyId"),
     //let companyId
     //pending, 1=new, 2=Partially Confirmed, 3=All Items Confirmed, 4=Partially Available, 5=All Items Available, 100=Closed
@@ -117,6 +121,18 @@ router.post("/filter", verifyToken, async (req, res) => {
       queryParams["$and"].push({ contact: clientId });
     }
 
+    if(contractId) 
+    {
+
+      queryParams["$and"].push({
+        "contract": {
+          $eq:contractId,
+        },
+      });
+     
+
+      
+    }
      if (status){
        
         queryParams["$and"].push({ status: status });

@@ -31,9 +31,6 @@ const EditContract = (props) => {
       res.contactName = res.contact.contactName;
       res.contactMobile = res.contact.mobile; 
       res.packageName = res.package.packageName;
-      //res.contact = res.contact._id;
-     
-
       setContract(res);
 
       console.log("contract:" )
@@ -44,10 +41,10 @@ const EditContract = (props) => {
   } , []) ; 
 
   const [currentEditableItem, setCurrentEditableItem] = useState({
-    installmentSequance: contract.installments? contract.installments.length +1 : 0,
-    installmentAmount: 0,
-    installmentDate:new Date(),
-    installmentNote: ""
+    receiptSequance: contract.installments? contract.installments.length +1 : 0,
+    receiptAmount: 0,
+    receiptDate:new Date(),
+    receiptNote: ""
   });
 
   function numericFormat(val) {
@@ -58,19 +55,19 @@ const EditContract = (props) => {
   const removeItem = (id) => {
     console.log("removeItem id=" +id)
     let cloned = JSON.parse(JSON.stringify(contract));
-    cloned.installments = cloned.installments.filter((item) => item.installmentSequance != id);
-     console.log(cloned.installments )
-    for( let i= 0 ;  i < cloned.installments.length ; i++)
+    cloned.receipts = cloned.receipts.filter((item) => item.receiptSequance != id);
+     console.log(cloned.receipts )
+    for( let i= 0 ;  i < cloned.receipts.length ; i++)
     {
     
-      cloned.installments[i].installmentSequance = i+1;
+      cloned.receipts[i].receiptSequance = i+1;
     }
 
     setCurrentEditableItem({
-      installmentSequance: cloned.installments.length +1 ,
-      installmentAmount: 0,
-      installmentNote: "",
-      installmentDate: new Date() , 
+      receiptSequance: cloned.receipts.length +1 ,
+      receiptAmount: 0,
+      receiptNote: "",
+      receiptDate: new Date() , 
     });
 
     setContract(cloned);
@@ -79,55 +76,55 @@ const EditContract = (props) => {
   const addItem = (event) => {
 
     if (!checkItemIsValid()) {
-      console.log("installment item is not valid...");
+      console.log("receipt item is not valid...");
       return false;
     }
 
     let cloned = JSON.parse(JSON.stringify(contract));
-    console.log("before push installment ")
+    console.log("before push receipt ")
     console.log(contract) ;
-    cloned.installments.push(
+    cloned.receipts.push(
     {...currentEditableItem}
     );
 
-    for( let i= 0 ;  i < cloned.installments.length ; i++)
+    for( let i= 0 ;  i < cloned.receipts.length ; i++)
     {
-          cloned.installments[i].installmentSequance = i+1;
+          cloned.receipts[i].receiptSequance = i+1;
     }
 
-    console.log("AFTER push installment ")
+    console.log("AFTER push receipt ")
     console.log(cloned) ;
 
     setCurrentEditableItem({
-      installmentSequance: cloned.installments.length +1 ,
-      installmentAmount: 0,
-      installmentNote: "",
-      installmentDate: new Date() , 
+      receiptSequance: cloned.receipts.length +1 ,
+      receiptAmount: 0,
+      receiptNote: "",
+      receiptDate: new Date() , 
     });
     setContract(cloned);
     
-    console.log("installment added to contract") ;
+    console.log("receipt added to contract") ;
     //updateContractCalculation();
   };
 
 
-  const updateInstallmentAmount = (event) => {
+  const updatereceiptAmount = (event) => {
     let cloned = JSON.parse(JSON.stringify(currentEditableItem));
-    cloned.installmentAmount = event.target.value;
+    cloned.receiptAmount = event.target.value;
     setCurrentEditableItem(cloned);
   };
   
 
-  const updateInstallmentNote = (event) => {
+  const updatereceiptNote = (event) => {
     let cloned = JSON.parse(JSON.stringify(currentEditableItem));
-    cloned.installmentNote = event.target.value;
+    cloned.receiptNote = event.target.value;
     setCurrentEditableItem(cloned);
   };
 
-  const updateInstallmentDate = (date) => {
+  const updatereceiptDate = (date) => {
     let cloned = JSON.parse(JSON.stringify(currentEditableItem));
-    console.log("updateInstallmentDate::" +date)
-    cloned.installmentDate = date;
+    console.log("updatereceiptDate::" +date)
+    cloned.receiptDate = date;
     setCurrentEditableItem(cloned);
     
   };
@@ -136,15 +133,15 @@ const EditContract = (props) => {
   function checkItemIsValid() {
     let itemIsValid = true;
 
-    if (isBlank(currentEditableItem.installmentAmount)) {
-      viewItemValidMessage("Fill the installment amount");
+    if (isBlank(currentEditableItem.receiptAmount)) {
+      viewItemValidMessage("Fill the receipt amount");
       itemIsValid = false;
     }
 
-    if(! isBlank(currentEditableItem.installmentAmount) 
-    && parseFloat(currentEditableItem.installmentAmount) > parseFloat(contract.contractReminingAmount)  )
+    if(! isBlank(currentEditableItem.receiptAmount) 
+    && parseFloat(currentEditableItem.receiptAmount) > parseFloat(contract.contractReminingAmount)  )
      {
-      viewItemValidMessage("The max installment amount equals " +contract.contractReminingAmount);
+      viewItemValidMessage("The max receipt amount equals " +contract.contractReminingAmount);
       itemIsValid = false;
      }
     return itemIsValid;
@@ -172,16 +169,11 @@ const EditContract = (props) => {
       if(!contract.contractAmount) 
       {
         cloned.contractAmount =  item.price;
-        let totalInstallments =cloned.totalInstallments|| 0 ;
-        cloned.contractReminingAmount = parseFloat(item.price) - totalInstallments ;
+        let contractTotalReceipts =cloned.contractTotalReceipts|| 0 ;
+        cloned.contractReminingAmount = parseFloat(item.price) - contractTotalReceipts ;
 
       } 
-      
         setContract(cloned);
-      
-      
-     
-      
     }
   };
 
@@ -202,8 +194,8 @@ const EditContract = (props) => {
    
    let cloned =JSON.parse(JSON.stringify(contract)) ;
      cloned.contractAmount = parseFloat(event.target.value); 
-     let totalInstallments =cloned.totalInstallments|| 0 ;
-     cloned.contractReminingAmount = parseFloat(cloned.contractAmount)  - parseFloat( totalInstallments) ;
+     let contractTotalReceipts =cloned.contractTotalReceipts|| 0 ;
+     cloned.contractReminingAmount = parseFloat(cloned.contractAmount)  - parseFloat( contractTotalReceipts) ;
     setContract(cloned)
 
   }
@@ -254,7 +246,7 @@ const EditContract = (props) => {
     setLoading(true) ;
 
     if(checkData()) {
-      updateContract(contract).then((res)=> {
+     updateContract(contract).then((res)=> {
         toast("success!") ;
          window.location.href = "/admin/Contract/view/" + res._id;
   
@@ -292,406 +284,416 @@ const viewItemValidMessage = (message) => {
   });
 };
 
-function updateContractCalculation()  {
-  if(!contract.installments) { return false }
+function updateContractCalculation()  { 
+  if(!contract.receipts) return false ;
+  
   console.log("updateContractCalculation method ....")
   console.log("before fill contract" ) ;
   console.log(contract)
 let contractAmount = contract.contractAmount || 0 ;
-let contractTotalInvoiced = contract.contractTotalInvoice || 0;
-let totalInstallments=0;
+let contractTotalInvoiced = contract.contractTotalInvoiced || 0;
+let contractTotalReceipts=0;
 let contractReminingAmount = 0; 
+let cloned = JSON.parse(JSON.stringify(contract));
 
-for( let i= 0 ;  i < contract.installments.length ; i++)
+console.log("contract.receipts.length=" + contract.receipts.length )
+for( let i= 0 ;  i < contract.receipts.length ; i++)
 {
-
-  totalInstallments += parseFloat(contract.installments[i].installmentAmount )
+  console.log("(contract.receipts[i].receiptAmount:" +(contract.receipts[i].receiptAmount)) ;
+  contractTotalReceipts += parseFloat(contract.receipts[i].receiptAmount )
 }
 
-let cloned = JSON.parse(JSON.stringify(contract));
-cloned.contractTotalReceipts = totalInstallments;
-cloned.contractBalance = totalInstallments - parseFloat(contractTotalInvoiced);
-cloned.contractReminingAmount = parseFloat(contractAmount) - totalInstallments 
+console.log("contractTotalReceipts:" +contractTotalReceipts)
+cloned.contractTotalReceipts = contractTotalReceipts;
+cloned.contractBalance = contractTotalReceipts - parseFloat(contractTotalInvoiced);
+cloned.contractReminingAmount = parseFloat(contractAmount) - contractTotalReceipts 
+
 setContract(cloned) ;
 console.log("after fill contract:" ) ;
 console.log(contract) ;
 } 
-useEffect( ()=>{updateContractCalculation()} , [currentEditableItem ]) ; 
 
+useEffect( ()=>{  updateContractCalculation()} , [currentEditableItem ]) ; 
 
-  return (
-    contract._id ?  <>
-   <div className="card">
-     <div className="card-body">
-       <h5 className="card-title"> <MdReceipt size= {20} />   {t("contracts.editContract")}</h5>
-       <div className="container text-center">
-         <ThreeDots
-           type="ThreeDots"
-           color="#00BFFF"
-           height={100}
-           width={100}
-           visible={loading}
-         />
-       </div>
-       <br />
-       <form className="needs-validation">
-       
+  return ( contract && contract.contractTotalReceipts && contract.receipts ?
+    <>
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title"> <MdReceipt size= {20} />   {t("contracts.editContract")} <span className='text-info'>({contract.seqNumber})</span></h5>
+          <div className="container text-center">
+            <ThreeDots
+              type="ThreeDots"
+              color="#00BFFF"
+              height={100}
+              width={100}
+              visible={loading}
+            />
+          </div>
+          <br />
+          <form className="needs-validation">
+          
 
-       <div className="mb-3 row ">
-           <div className="col col-auto text-info">
-             {t("contracts.contactInformation")}{" "}
-           </div>
-           <div className="col">
-             <hr />
-           </div>
-         </div>
+          <div className="mb-3 row ">
+              <div className="col col-auto text-info">
+                {t("contracts.contactInformation")}{" "}
+              </div>
+              <div className="col">
+                <hr />
+              </div>
+            </div>
 
-         <div className="mb-3 row">
-             
-             <div className="mb-3 col ">
-                 <div className="col col-auto">{t("contracts.contactName") }</div>
-                 <div className="col col-auto">
-                 <ContactSearchControl
-                 handleSelectContact={setConatct}
-                 wasValidated={wasValidated}
-                 value = {contract.contactName}
-                 contactType = {["Client" , "Vendor"]}
+            <div className="mb-3 row">
+                
+                <div className="mb-3 col ">
+                    <div className="col col-auto">{t("contracts.contactName")}</div>
+                    <div className="col col-auto">
+                    <ContactSearchControl
+                    handleSelectContact={setConatct}
+                    wasValidated={wasValidated}
+                    value = {contract.contactName}
+                    contactType = {["Client" , "Vendor"]}
+                    readOnly= {true}
 
-               />
-                 </div>
-               </div>
- 
- 
-               <div className="mb-3 col ">
-                 <div className="col col-auto">{t("contracts.contactMobile")}</div>
-                 <div className="col col-auto">
-       
-                 <input
-                     type="text"
-                     className= {fieldClass(contract.contactMobile)}
-                     id="price"
-                     name="price"
-                     placeholder={t("contracts.contactMobile")}
-                     value={
-                       contract.contactMobile
-                     }
-                   />
+                  />
+                    </div>
+                  </div>
+    
+    
+                  <div className="mb-3 col ">
+                    <div className="col col-auto">{t("contracts.contactMobile")}</div>
+                    <div className="col col-auto">
+          
+                    <input
+                        type="text"
+                        className= {fieldClass(contract.contactMobile)}
+                        id="price"
+                        name="price"
+                        placeholder={t("contracts.contactMobile")}
+                        value={
+                          contract.contactMobile
+                        }
+                        readOnly="readOnly"
+                      />
+                    
+    
+                    </div>
+                  </div>
+    
+    
+                  <div className="mb-3 col ">
+                    <div className="col col-auto"></div>
+                    <div className="col col-auto">
                  
- 
-                 </div>
-               </div>
- 
- 
-               <div className="mb-3 col ">
-                 <div className="col col-auto"></div>
-                 <div className="col col-auto">
-              
-                 </div>
-               </div>
- 
- 
+                    </div>
+                  </div>
+    
+    
 
-               
- 
-             </div>
+                  
+    
+                </div>
+
+               <div className="mb-3 row ">
+              <div className="col col-auto text-info">
+                {t("contracts.packageInformation")}{" "}
+              </div>
+              <div className="col">
+                <hr />
+              </div>
+            </div>    
+            <div className="mb-3 row">
+                
+            <div className="mb-3 col ">
+                <div className="col col-auto">{t("contracts.packageName")}</div>
+                <div className="col col-auto">
+                <PackageSearchControl
+                    handleSelectPackage={setPackage}
+                    value = {contract.packageName}
+                    readOnly= {true}
+                  />
+                </div>
+              </div>
+
+
+            
+
+
+              <div className="mb-3 col ">
+                <div className="col col-auto">{t("contracts.packagePrice")}</div>
+                <div className="col col-auto">
+                <input
+                    type="text"
+                    className= "form-control"
+                    id="price"
+                    name="packagePrice"
+                    placeholder={t("contracts.packagePrice")}
+                    
+                    value={
+                      contract.packageNumberOfSet
+                    }
+                    readOnly="readonly"
+                  />
+                </div>
+              </div>
+
+
+              <div className="mb-3 col ">
+                <div className="col col-auto">{t("contracts.packageNumberOfSet")}</div>
+                <div className="col col-auto">
+                <input
+                    type="text"
+                    className= "form-control"
+                    id="packageNumberOfSet"
+                    name="packageNumberOfSet"
+                    placeholder={t("contracts.packageNumberOfSet")}
+                  
+                    value={
+                      contract.packageNumberOfSet
+                    }
+                    readOnly="readonly"
+                  />
+                </div>
+              </div>
+
+              
+
+            </div>
+              
 
             <div className="mb-3 row ">
-           <div className="col col-auto text-info">
-             {t("contracts.packageInformation")}{" "}
-           </div>
-           <div className="col">
-             <hr />
-           </div>
-         </div>    
-         <div className="mb-3 row">
-             
-         <div className="mb-3 col ">
-             <div className="col col-auto">{t("contracts.packageName")}</div>
-             <div className="col col-auto">
-             <PackageSearchControl
-                 handleSelectPackage={setPackage}
+              <div className="col col-auto text-info">
+                {t("contracts.ContractInformation")}{" "}
+              </div>
+              <div className="col">
+                <hr />
+              </div>
+            </div>
+
+            <div className="mb-3 row">
                 
-                 value = {contract.packageName}
+                <div className="mb-3 col ">
+                    <div className="col col-auto">{t("contracts.contractDate")}</div>
+                    <div className="col">
+                  <DatePicker
+                    className={fieldClass(contract.contractDate)}
+                    dateFormat="dd/MM/yyyy"
+                     selected={new Date(contract.contractDate)}
+                     onChange={(date) => setContractDate(date)}
+                     readOnly="readonly"
+                  />
+                </div>
+                  </div>
+    
+    
                 
-               />
-             </div>
-           </div>
+    
+    
+                  <div className="mb-3 col ">
+                    <div className="col col-auto">{t("contracts.contractAmount")}</div>
+                    <div className="col col-auto">
+                    <input
+                        type="number"
+                        className= {fieldClass(contract.contractAmount,0.01)}
+                        id="contractAmount"
+                        name="contractAmount"
+                        placeholder={t("contracts.contractAmount")}
+                        onChange={setContractAmount}
 
+                        value={
+                          contract.contractAmount
+                        }
+                        min= {0}
+                        readOnly="readonly"
+                        
+                      />
+                    </div>
+                  </div>
+    
+    
+    
+                  <div className="mb-3 col ">
+    <div className="col col-auto">{t("contracts.note")}</div>
+    <div className="col col-auto">
+     
+    <textarea
+        className="form-control"
+        id="note"
+        name="note"
+        onChange={setNote}
+        placeholder={t("contracts.note")}
+      >
+        {contract.note}
+      </textarea>
 
-         
-
-
-           <div className="mb-3 col ">
-             <div className="col col-auto">{t("contracts.packagePrice")}</div>
-             <div className="col col-auto">
-             <input
-                 type="text"
-                 className= "form-control"
-                 id="price"
-                 name="packagePrice"
-                 placeholder={t("contracts.packagePrice")}
+    </div>
+  </div>
                  
-                 value={
-                   contract.packagePrice
-                 }
-               />
-             </div>
-           </div>
+    
+                  
+    
+                </div>
+          
+                <div className="mb-3 row">
 
+                <div className="mb-3 col ">
+                    <div className="col col-auto">{t("contracts.contractTotalReceipts")}</div>
+                    <div className="col col-auto">
+                       JOD {contract.contractTotalReceipts.toFixed(2)} 
+                    </div>
+                  </div>
+                
+                
 
-           <div className="mb-3 col ">
-             <div className="col col-auto">{t("contracts.packageNumberOfSet")}</div>
-             <div className="col col-auto">
-             <input
-                 type="text"
-                 className= "form-control"
-                 id="packageNumberOfSet"
-                 name="packageNumberOfSet"
-                 placeholder={t("contracts.packageNumberOfSet")}
-               
-                 value={
-                   contract.numberOfSet
-                 }
-               />
-             </div>
-           </div>
+                <div className="mb-3 col ">
+                    <div className="col col-auto">{t("contracts.contractTotalInvoiced")}</div>
+                    <div className="col col-auto">
+                       JOD {contract.contractTotalInvoiced.toFixed(2)} 
+                    </div>
+                  </div>
 
-           
+                  <div className="mb-3 col ">
+                    <div className="col col-auto">{t("contracts.contractBalance")}</div>
+                    <div className="col col-auto">
+                       JOD {contract.contractBalance.toFixed(2)} 
+                    </div>
+                  </div>
+    
+                </div>
 
-         </div>
-           
-
-         <div className="mb-3 row ">
-           <div className="col col-auto text-info">
-             {t("contracts.ContractInformation")}{" "}
-           </div>
-           <div className="col">
-             <hr />
-           </div>
-         </div>
-
-         <div className="mb-3 row">
-             
-             <div className="mb-3 col ">
-                 <div className="col col-auto">{t("contracts.contractDate")}</div>
-                 <div className="col">
-               <DatePicker
-                 className={fieldClass(contract.contractDate)}
-                 dateFormat="dd/MM/yyyy"
-                  selected= {contract.contractDate? new Date(contract.contractDate) : new Date()}
-                  onChange={(date) => setContractDate(date)}
-               />
-             </div>
-               </div>
- 
- 
-             
- 
- 
-               <div className="mb-3 col ">
-                 <div className="col col-auto">{t("contracts.contractAmount")}</div>
-                 <div className="col col-auto">
-                 <input
-                     type="number"
-                     className= {fieldClass(contract.contractAmount,0.01)}
-                     id="contractAmount"
-                     name="contractAmount"
-                     placeholder={t("contracts.contractAmount")}
-                     onChange={setContractAmount}
-
-                     value={
-                       contract.contractAmount
-                     }
-                     min= {0}
-
-                     
-                   />
-                 </div>
-               </div>
- 
- 
- 
-               <div className="mb-3 col ">
- <div className="col col-auto">{t("contracts.note")}</div>
- <div className="col col-auto">
-  
- <textarea
-     className="form-control"
-     id="note"
-     name="note"
-     onChange={setNote}
-     placeholder={t("contracts.note")}
-   >
-     {contract.note}
-   </textarea>
-
- </div>
-</div>
-              
- 
-               
- 
-             </div>
-       
-             <div className="mb-3 row">
-
-             <div className="mb-3 col ">
-                 <div className="col col-auto">{t("contracts.contractTotalReceipts")}</div>
-                 <div className="col col-auto">
-                    JOD {contract.contractTotalReceipts? contract.contractTotalReceipts.toFixed(2) : contract.contractTotalReceipts} 
-                 </div>
-               </div>
-             
-             
-
-             <div className="mb-3 col ">
-                 <div className="col col-auto">{t("contracts.contractTotalInvoice")}</div>
-                 <div className="col col-auto">
-                    JOD {contract.contractTotalInvoice?contract.contractTotalInvoice.toFixed(2) : contract.contractTotalInvoice} 
-                 </div>
-               </div>
-
-               <div className="mb-3 col ">
-                 <div className="col col-auto">{t("contracts.contractBalance")}</div>
-                 <div className="col col-auto">
-                    JOD {contract.contractBalance?contract.contractBalance.toFixed(2):contract.contractBalance} 
-                 </div>
-               </div>
- 
-             </div>
-
-             <div className="mb-3 row">
+                <div className="mb-3 row">
 
 <div className="mb-3 col ">
- <div className="col col-auto">{t("contracts.contractReminingAmount")}</div>
- <div className="col col-auto">
-    JOD {contract.contractReminingAmount} 
- </div>
-</div>
-</div>
+    <div className="col col-auto">{t("contracts.contractReminingAmount")}</div>
+    <div className="col col-auto">
+       JOD {contract.contractReminingAmount} 
+    </div>
+  </div>
+  </div>
 
-             
-         <div className="mb-3 row ">
-           <div className="col col-auto text-info">
-             {t("contracts.installments")}{" "}
-           </div>
-           <div className="col">
-             <hr />
-           </div>
-         </div>    
-
-         <div className="row">
-           <div className="col table-responsive">
-             <table className="table table-sm needs-validation " style={{minHeight: '10px'} }>
-               <thead>
-                 <tr className="table-light">
-                   <th width="5%">#</th>
                 
-                   <th width="20%">{t("contracts.installmentAmount")} </th>
-                   <th width="20%">{t("contracts.installmentDate")} </th>
-                   <th width="35%">{t("contracts.installmentNote")}</th>
-                  
-                   <th width="20%"></th>
-                 </tr>
-               </thead>
+            <div className="mb-3 row ">
+              <div className="col col-auto text-info">
+                {t("contracts.receipts")}{" "}
+              </div>
+              <div className="col">
+                <hr />
+              </div>
+            </div>    
 
-               <tbody>
-                 { contract.installments? contract.installments.map((item) => (
-                   <tr>
-                     <td> {item.installmentSequance} </td>
-                     <td>{item.installmentAmount}</td>
-                     { <td>{item.installmentDate ? moment(item.installmentDate).format("DD/MM/yyyy") : "Not Set"} </td> }
+            <div className="row">
+              <div className="col table-responsive">
+                <table className="table table-sm needs-validation " style={{minHeight: '400px'} }>
+                  <thead>
+                    <tr className="table-light">
+                      <th width="5%">#</th>
                    
-                     <td>{item.installmentNote} </td>
- 
-                     <td>
-                       <ConfirmButton
-                         onConfirm={() => removeItem(item.installmentSequance)}
-                         onCancel={() => console.log("cancel")}
-                         buttonText={t("dashboard.delete")}
-                         confirmText={t("contracts.confirm")}
-                         cancelText={t("contracts.cancel")}
-                         loadingText={t("contracts.deleteingItem")}
-                         wrapClass=""
-                         buttonClass="btn d-print-none"
-                         mainClass="btn-danger"
-                         confirmClass="btn-warning"
-                         cancelClass=" btn-success"
-                         loadingClass="visually-hidden"
-                         disabledClass=""
-                         once
-                       >
-                         {"Delete "}
-                         <MdDelete/>
-                       </ConfirmButton>
-                     </td>
-                   </tr>
-                 )) : ""}
-
-                 <tr className="d-print-none">
-                   <td>{contract.installments? contract.installments.length + 1 : 1}</td>
-                   <td>
-                     <input
-                       type="number"
-                       className={fieldClass(currentEditableItem.installmentAmount)}
-                       value={currentEditableItem.installmentAmount}
-                       onChange={updateInstallmentAmount}
-                       min={0}
+                      <th width="20%">{t("contracts.receiptAmount")} </th>
+                      <th width="20%">{t("contracts.receiptDate")} </th>
+                      <th width="35%">{t("contracts.receiptNote")}</th>
                      
-                     />
-                   </td>
-                   <td>
-                      <DatePicker className="form-control"  dateFormat="dd/MM/yyyy" selected = { currentEditableItem.installmentDate? new Date(currentEditableItem.installmentDate) : new Date() } 
-                      onChange={(date)=> updateInstallmentDate(date)}
-                      />
-                   </td>
-                   <td>
-                 <textarea className="form-control"  value={currentEditableItem.installmentNote}
-                 onChange={updateInstallmentNote}
-                 ></textarea>
-                   </td>
+                      <th width="20%"></th>
+                    </tr>
+                  </thead>
 
-     
-                   <td>
-                     <button
-                       type="button"
-                       className="btn  btn-success d-print-none "
-                       onClick={addItem}
-                     >
-                       {t("contracts.add")}
-                     </button>
-                   </td>
-                 </tr>
-               </tbody>
-               <tfoot></tfoot>
-             </table>
-           </div>
-         </div>
+                  <tbody>
+                    { 
+                    contract.receipts? contract.receipts.map((item) => (
+                      <tr key={ item.receiptSequance} >
+                        <td> {item.receiptSequance} </td>
+                        <td>{item.receiptAmount}</td>
+                        { <td>{item.receiptDate ? moment(item.receiptDate).format("DD/MM/yyyy") : "Not Set"} </td> }
+                      
+                        <td>{item.receiptNote} </td>
+    
+                        <td>
+                          <ConfirmButton
+                            onConfirm={() => removeItem(item.receiptSequance)}
+                            onCancel={() => console.log("cancel")}
+                            buttonText={t("dashboard.delete")}
+                            confirmText={t("contracts.confirm")}
+                            cancelText={t("contracts.cancel")}
+                            loadingText={t("contracts.deleteingItem")}
+                            wrapClass=""
+                            buttonClass="btn d-print-none"
+                            mainClass="btn-danger"
+                            confirmClass="btn-warning"
+                            cancelClass=" btn-success"
+                            loadingClass="visually-hidden"
+                            disabledClass=""
+                            once
+                          >
+                            {"Delete "}
+                            <MdDelete/>
+                          </ConfirmButton>
+                        </td>
+                      </tr>
+                    )) : ""}
 
-       
+                    <tr className="d-print-none">
+                      <td>{contract.receipts.length + 1}</td>
+                      <td>
+                        <input
+                          type="number"
+                          className={fieldClass(currentEditableItem.receiptAmount)}
+                          value={currentEditableItem.receiptAmount}
+                          onChange={updatereceiptAmount}
+                          min={0}
+                        
+                        />
+                      </td>
+                      <td>
+                         <DatePicker className="form-control"  dateFormat="dd/MM/yyyy" selected = {new Date(currentEditableItem.receiptDate) } 
+                         onChange={(date)=> updatereceiptDate(date)}
+                         />
+                      </td>
+                      <td>
+                    <textarea className="form-control"  value={currentEditableItem.receiptNote}
+                    onChange={updatereceiptNote}
+                    ></textarea>
+                      </td>
+   
+        
+                      <td>
+                        <button
+                          type="button"
+                          className="btn  btn-success d-print-none "
+                          onClick={addItem}
+                        >
+                          {t("contracts.add")}
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot></tfoot>
+                </table>
+              </div>
+            </div>
+
+          
 
 
 
 
-         <div class="row text-right">
-           <div className="mb-3  col justify-content-end">
-             <Link className="btn btn-secondary btn-lg" to="/admin/Package">
-               <MdClose size={20} /> &nbsp; {t("Cancel")}
-             </Link>{" "}
-             &nbsp;
-             <button
-               type="button"
-               className="btn btn-primary btn-lg"
-               onClick={doPost}
-             >
-               {t("dashboard.submit")}
-             </button>
-           </div>
-         </div>
-       </form>
-     </div>
-   </div>
- </> : "Data Not Found"
+            <div class="row text-right">
+              <div className="mb-3  col justify-content-end">
+                <Link className="btn btn-secondary btn-lg" to="/admin/Package">
+                  <MdClose size={20} /> &nbsp; {t("Cancel")}
+                </Link>{" "}
+                &nbsp;
+                <button
+                  type="button"
+                  className="btn btn-primary btn-lg"
+                  onClick={doPost}
+                >
+                  {t("dashboard.submit")}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
+    : ""
   );
   
                   

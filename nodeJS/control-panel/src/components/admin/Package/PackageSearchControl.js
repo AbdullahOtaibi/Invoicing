@@ -79,6 +79,7 @@ const PackageSearchControl = (props) => {
           <MdSearch size={20} />
         </span>
         <input
+         readOnly= { props.readOnly? "readnoly" : ""}
           className={fieldClass1(selectedPackageText)}
           placeholder="Type to search..."
           autoComplete="false"
@@ -89,7 +90,7 @@ const PackageSearchControl = (props) => {
         />
       </div>
 
-      {packageItems && packageItems.length > 0 ? (
+      {packageItems && packageItems.length > 0  &&  ! props.readOnly ? (
         <ul className="list-group scrollbar p-2" id="style-7">
 
           {packageItems
@@ -99,6 +100,7 @@ const PackageSearchControl = (props) => {
                   <li
                     className="searchItem  list-group-item list-group-item-light"
                     onClick={() => {
+                      if( ! props.readOnly)  
                       handleSelectPackage(item);
                     }}
                   >

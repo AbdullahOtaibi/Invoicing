@@ -259,7 +259,7 @@ const ViewInvoice = (props) => {
 
                   {
                       
-                    (invoice.status != "reverted" ) &&
+                    (invoice.status == "posted" ) &&
                     (<>
                     <button
                       type="button"

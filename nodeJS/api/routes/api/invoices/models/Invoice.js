@@ -9,6 +9,10 @@ const InvoiceSchema = new Schema({
         type: ObjectId,
         ref: 'Subscription'
     },
+    contract: {
+        type: ObjectId,
+        ref: "Contract" 
+    } ,
     invoiceSequance:String, 
     invoiceUUID: String,
     incomeSourceSequence: String,

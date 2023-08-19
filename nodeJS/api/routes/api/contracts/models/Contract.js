@@ -36,21 +36,12 @@ const ContractSchema = new Schema({
         default: true
     },
     
-    installments: [
+    receipts: [
         {
-            installmentSequance: Number,
-            installmentAmount: Number,
-            installmentDate: { type: Date, default: Date.now },
-            expectedDate: { type: Date, default: Date.now },
-            installmentNote: String,
-            invoice: {
-                type: ObjectId,
-                ref: 'Invoice'
-            },
-            appointment: {
-                type: ObjectId,
-                ref: 'FullCalendar'
-            },
+            receiptSequance: Number,
+            receiptAmount: Number,
+            receiptDate: { type: Date, default: Date.now },
+            receiptNote: String  
         }
     ],
 
