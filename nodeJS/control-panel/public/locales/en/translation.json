@@ -491,7 +491,14 @@
     "invoiceDate": "Invoice Date",
     "reverted_Status": "Reverted Status",
     "PostedInvoiceQRCode": " Posted Invoice QR Code",
-    "RevertedInvoiceQRCode": "Reverted Invoice QR Code"
+    "RevertedInvoiceQRCode": "Reverted Invoice QR Code" ,
+    "contract" : "Contract" ,
+    "contractInformation" : "Contract Information" ,
+    "PaymentMethod":"Payment Method",
+    "insurance" : "Insurance" , 
+    "paymentMethod" : "Payment Method" , 
+    "templateNo" :  "Template No." ,
+    "percentageOfCover" : "Percentage Of Cover %"
   },
   "FullCalendar": {
     "start": "Start",
@@ -606,7 +613,8 @@
     "receipts" : "Receipts" ,
     "invoices" : "Invoices" ,
     "appointments" : "Appointments" ,
-    "createAppointment" : "Create Appointment"
+    "createAppointment" : "Create Appointment" 
+
 
 
 

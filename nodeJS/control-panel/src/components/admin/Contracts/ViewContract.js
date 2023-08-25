@@ -38,7 +38,7 @@ const ViewContract = (props) => {
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
   const [contract, setContract] = useState({});
-  const[filter , setFilter] = useState({ }) 
+  const[filterInvoice , setFilterInvoice] = useState({ }) 
 
   useEffect(() => {
     setLoading(true);
@@ -49,9 +49,9 @@ const ViewContract = (props) => {
         console.log("contract:")
         console.log(JSON.stringify(res));
         let filterData = {} 
-        filterData.contract =res;
-        setFilter(filterData)
-        console.log("filter Data" ) 
+        filterData.contractId =res._id;
+        setFilterInvoice(filterData)
+        console.log("setFilterInvoice Data" ) 
         console.log(filterData)
       }
     ).catch((error) => { console.log(error) })
@@ -283,7 +283,7 @@ const getTotalInstallments = () =>{
 
               <div className="row">
                 <div className="col table-responsive">
-                  <table className="table table-sm needs-validation ">
+                  <table className="table   table-hover ">
                   
 
                     <thead>
@@ -331,7 +331,7 @@ const getTotalInstallments = () =>{
 
               <div className="mb-3 row ">
                 <div className="col col-auto text-info">
-                  {t("contracts.invoices")}{" "}
+                  {t("contracts.invoices")}{" "} 
                 </div>
                 <div className="col">
                   <hr />
@@ -339,7 +339,7 @@ const getTotalInstallments = () =>{
               </div>
 
               <div className='row'>
-               <Listinv status ="all" filter = {filter}/>  
+              {filterInvoice.contractId ? <Listinv status ="all" filter={filterInvoice}/>: ""} 
               </div>
 
               <div className="mb-3 row ">

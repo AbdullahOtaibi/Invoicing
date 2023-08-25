@@ -46,6 +46,8 @@ const ListInv = (props) => {
             } else {
                 status = null;
             }
+        }
+
             if (props.filter && props.filter.startDate) {
                 startDate = props.filter.startDate;
             }
@@ -56,14 +58,12 @@ const ListInv = (props) => {
                 clientId = props.filter.contact._id;
             }
 
-            if (props.filter && props.filter.contract) {
+            if (props.filter && props.filter.contractId) {
+
                 console.log("insert filter invoice contract ...");
-                contractId = props.filter.contract._id;
-                console.log("contractId:" +contractId) ;
+                contractId = props.filter.contractId;  
             }
 
-
-        }
         setInvoicesPage(newPage);
         getInvoices({
             page: newPage,

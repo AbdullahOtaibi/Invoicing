@@ -10,9 +10,10 @@ const ContactSearchControl = (props) => {
   const [selectedId, setSelectedId] = useState(null);
   useEffect(() => {
     if (props) {
-      setSelectedContactText(props.value);
+      console.log("search contact props.value =" +props.value) ;
+      setSelectedContactText(props.value); 
     }
-  }, []);
+  }, [props]);
 
   const fieldClass1 = (value) => {
     let wasValidated = false;
@@ -20,12 +21,12 @@ const ContactSearchControl = (props) => {
       wasValidated = props.wasValidated;
     }
     if (!wasValidated) return "form-control";
-    return selectedId ? "form-control is-valid" : "form-control is-invalid";
+    return selectedId  ? "form-control is-valid" : "form-control is-invalid";
   };
 
   const updateSearchContactText = (event) => {
     setSelectedContactText(event.target.value);
-    if (event.target.value.length >= 3 ||  props.contactType[0] == "Employee" ) {
+    if (event.target.value.length >= 3 ||  props.contactType[0] == "Employee" ||  props.contactType[0] == "Insurance"  ) {
       let contactType = ["Client"];
       if (props.contactType) {
         contactType = props.contactType;
@@ -113,7 +114,7 @@ const onBlurSearchContact = (item) => {
                       handleSelectContact(item);
                     }}
                   >
-                    {(props.contactType && props.contactType.length == 1 && props.contactType[0] == "Employee")? <div>{ item.contactName}</div> :
+                    {(props.contactType && props.contactType.length == 1 && (props.contactType[0] == "Employee" || props.contactType[0] ==  "Insurance") )? <div>{ item.contactName}</div> :
                     (
                     
                     <div className="row">

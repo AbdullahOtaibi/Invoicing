@@ -14,7 +14,7 @@ const ContractSearchControl = (props) => {
     if (props) {
       setSelectedContractText(props.value);
     }
-  }, []);
+  }, [props]);
 
   const fieldClass1 = (value) => {
     let wasValidated = false;
@@ -68,6 +68,8 @@ const ContractSearchControl = (props) => {
   const handleSelectContract = (item) => {
     setSelectedId(item);
     if (props.handleSelectContract) {
+      console.log("call handleSelectContract method from contract search control" + item) ;
+      console.log(JSON.stringify(item))
       props.handleSelectContract(item);
     }
     setSelectedContractText(item.seqNumber);
@@ -81,6 +83,7 @@ const ContractSearchControl = (props) => {
           <MdSearch size={20} />
         </span>
         <input
+         readOnly= { props.readOnly? "readnoly" : ""}
           className={fieldClass1(selectedContractText)}
           placeholder="Type to search..."
           autoComplete="false"
@@ -91,7 +94,7 @@ const ContractSearchControl = (props) => {
         />
       </div>
 
-      {contractItems && contractItems.length > 0 ? (
+      {contractItems && contractItems.length > 0 &&  ! props.readOnly  ?  (
         <ul className="list-group scrollbar p-2" id="style-7">
           {contractItems
             ? contractItems.map((item) => (
@@ -100,6 +103,7 @@ const ContractSearchControl = (props) => {
                 <li
                   className="searchItem  list-group-item list-group-item-light"
                   onClick={() => {
+                    if( ! props.readOnly)  
                     handleSelectContract(item);
                   }}
                 >

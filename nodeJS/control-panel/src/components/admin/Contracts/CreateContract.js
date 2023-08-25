@@ -396,9 +396,7 @@ useEffect( ()=>{updateContractCalculation()} , [currentEditableItem ]) ;
                 <div className="col col-auto">
                 <PackageSearchControl
                     handleSelectPackage={setPackage}
-                   
-                    value = {contract.packageName}
-                   
+                    value = {contract.packageName} 
                   />
                 </div>
               </div>

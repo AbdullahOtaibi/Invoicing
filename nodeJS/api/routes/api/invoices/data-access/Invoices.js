@@ -12,14 +12,14 @@ const { query } = require('express');
 
 function Invoices() {
 
+
+  
+
   this.getInvoiceById = async function (invoiceId) {
     let invoice = await Invoice.findOne({ _id: invoiceId, deleted: false }).populate("user", "-password")
-      .populate("items")
-      .populate({
-        path: 'items'
-
-      })
-      .populate("status");
+    .populate("contact")
+    .populate("contract")
+    .populate("package") 
     return invoice;
   }
 

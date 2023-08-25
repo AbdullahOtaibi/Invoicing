@@ -141,7 +141,7 @@ className="mb-3 " >
     <div className="mb-3 col "></div>
   </div>
   
-  { contact.contactType != "Employee" ? (
+  { contact.contactType != "Employee"  && contact.contactType != "Insurance" ? (
 <>
 <div className="row">
     <div className="mb-3 col ">

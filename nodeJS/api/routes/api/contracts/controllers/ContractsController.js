@@ -344,6 +344,7 @@ router.post("/search/", verifyToken, async (req, res) => {
     console.log(queryParams);
     let query = Contract.find(queryParams)
       .populate("contact", "-password")
+      .populate("package")
       .sort({ "Sequance": 1 });
     result.items = await query.exec("find");
    

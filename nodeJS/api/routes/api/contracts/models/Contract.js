@@ -24,8 +24,6 @@ const ContractSchema = new Schema({
     contractReminingAmount: Number,
     contractTotalReceipts:Number, 
     contractTotalInvoiced:Number,
-
-
     note: String,
     deleted: {
         type: Boolean,

@@ -9,10 +9,6 @@ const InvoiceSchema = new Schema({
         type: ObjectId,
         ref: 'Subscription'
     },
-    contract: {
-        type: ObjectId,
-        ref: "Contract" 
-    } ,
     invoiceSequance:String, 
     invoiceUUID: String,
     incomeSourceSequence: String,
@@ -125,6 +121,14 @@ const InvoiceSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Contact'
     },
+    contract: {
+        type: ObjectId,
+        ref: "Contract" 
+    } ,
+    package: {
+        type: ObjectId,
+        ref: "Package"    
+    }, 
     company: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
@@ -152,7 +156,15 @@ const InvoiceSchema = new Schema({
     revertedXML:String, 
     encrypRevertedXML:String,
     revertedXMLResponse:String, 
-    RevertedDate:Date
+    RevertedDate:Date ,
+    paymentMethod: String, 
+    insurance:{ 
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Contact'
+    },
+    templateNo:String, 
+    percentageOfCover: Number, 
+
 }, { collection: 'Invoices' });
 
 

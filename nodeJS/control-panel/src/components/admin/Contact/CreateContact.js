@@ -63,7 +63,7 @@ const CreateContact = (props) => {
     let cloned = JSON.parse(JSON.stringify(contact));
     cloned.contactType = event.target.value;
     setContact(cloned);
-    (event.target.value=="Employee" ? setShowSubContactInfo(false) : setShowSubContactInfo(true) )
+    (event.target.value=="Employee" || event.target.value=="Insurance"  ? setShowSubContactInfo(false) : setShowSubContactInfo(true) )
   };
 
 
@@ -225,6 +225,7 @@ return isValid
                   <option value=""> أختر </option>
                   <option value="Client">Client</option>
                   <option value="Employee">Employee</option>
+                  <option value="Insurance"> Insurance </option>
                   <option value="Vendor">Vendor</option>
 
                 

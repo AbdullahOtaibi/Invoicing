@@ -57,7 +57,7 @@ const ViewInvoice = (props) => {
         console.log(data);
         setLoading(true);
         setInvoice(data);
-        console.log(data);
+        console.log(JSON.stringify(data));
         setLoading(false);
       })
       .catch((e) => {
@@ -412,6 +412,52 @@ const ViewInvoice = (props) => {
                   </div>
                 </div>
               </div>
+
+              <div className="mb-3 row ">
+            <div className="col col-auto text-info">
+              {t("invoice.contractInformation")}{" "}
+            </div>
+            <div className="col">
+              <hr />
+            </div>
+          </div>
+
+          <div className="mb-3 row ">
+            <div className="mb-3 col-2 ">
+              <div className="col col-auto">
+                {t("invoice.contract")}  
+              </div>
+              <div className="col col-auto">
+               {invoice.contract?.seqNumber}
+              </div>
+            </div>
+
+            <div className="mb-3 col ">
+                <div className="col col-auto">{t("contracts.packageName")}  </div>
+                <div className="col">
+                {invoice.package?.packageName}
+                </div>
+              </div>
+
+           
+              <div className="mb-3 col ">
+                <div className="col col-auto">{t("contracts.contractAmount")} </div>
+                <div className="col">
+                 {invoice.contract?.contractAmount} 
+                </div>
+              </div>
+
+             
+
+              <div className="mb-3 col ">
+                <div className="col col-auto">{t("contracts.contractBalance")} </div>
+                <div className="col">
+                {invoice.contract?.contractBalance} 
+                </div>
+              </div> 
+          </div>
+
+
 
               <div className="mb-3 row ">
                 <div className="col col-auto text-info">{t("invoice.Items")}</div>

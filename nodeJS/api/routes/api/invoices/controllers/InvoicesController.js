@@ -17,6 +17,7 @@ const postToTaxTypeIncome = require("../../utils/ubl-income-template");
 const postToTaxTypeRevertedIncome = require("../../utils/ubl-income-Reverted-template");
 var json2xls = require('json2xls');
 const fs = require('fs');
+const { filter } = require("compression");
 
 const getNewStatus = (Invoice) => {
   let newStatusId = Invoice.status;
@@ -71,6 +72,8 @@ router.post("/filter", verifyToken, async (req, res) => {
   var result = {};
   try {
     let filters = req.body || {};
+    console.log("filters:");
+    console.log(filters)
     let page = filters.page || 0;
     let pageSize = filters.pageSize || 20;
     let vendorId = filters.vendorId || null;
@@ -121,11 +124,12 @@ router.post("/filter", verifyToken, async (req, res) => {
       queryParams["$and"].push({ contact: clientId });
     }
 
+      console.log("abd:contractId=" +contractId) ;
     if(contractId) 
     {
 
       queryParams["$and"].push({
-        "contract": {
+        contract: {
           $eq:contractId,
         },
       });
@@ -390,6 +394,114 @@ router.post("/count", verifyToken, async (req, res) => {
   }
 });
 
+
+router.post("/getSumInvoicesByContractId", verifyToken, async (req, res) => {
+
+  console.log(JSON.stringify(req.body));
+  var contractId= req.body.contractId 
+  //contractId = '64dfc9d09ce91056e7ba9fc7'
+  var ignoreInvoiceId = req.body.ignoreInvoiceId ;
+  console.log("contractId:" +contractId) ;
+  console.log("ignoreInvoiceId:" + ignoreInvoiceId + "res" + (!ignoreInvoiceId))
+  
+  let arrQ= [] ;
+  if(!ignoreInvoiceId)
+  {
+  arrQ = [
+    {
+      '$match': {
+        'deleted': {
+          '$ne': true
+        }, 
+        'contract': {
+          '$eq': new ObjectId(contractId),
+        }
+      }
+    }, {
+      '$group': {
+        '_id': '$contract', 
+        'sum_val': {
+          '$sum': '$legalMonetaryTotal.payableAmount'
+        }
+      }
+    }
+  ]
+  }
+  else
+  {
+    [
+      {
+        '$match': {
+          'deleted': {
+            '$ne': true
+          }, 
+          'contract': {
+            '$eq': new ObjectId(contractId),
+          }
+        }
+      }, {
+        '$group': {
+          '_id': '$contract', 
+          'sum_val': {
+            '$sum': '$legalMonetaryTotal.payableAmount'
+          }
+        }
+      }
+    ]
+  }
+  let result = await Invoice.aggregate (
+   
+  );
+
+  /*
+  let result = !ignoreInvoiceId? 
+      await Invoice.aggregate([
+        {
+          '$match': {
+           'contract' : '64dfc9d09ce91056e7ba9fc7',
+           //'contract': new ObjectId(contractId), 
+            'deleted': {
+              '$ne': true
+            }
+          }
+        }, {
+          '$group': {
+            '_id': '$contact', 
+            'sum_val': {
+              '$sum': '$legalMonetaryTotal.payableAmount'
+            }
+          }
+        }
+      ]) :
+      await Invoice.aggregate([
+        {
+          '$match': {
+            'contract': contractId, 
+            'deleted': {
+              '$ne': true
+            } ,
+            '_id': {
+              '$ne': ignoreInvoiceId
+            } 
+          }
+        }, {
+          '$group': {
+            '_id': '$contact', 
+            'sum_val': {
+              '$sum': '$legalMonetaryTotal.payableAmount'
+            }
+          }
+        }
+      ]) 
+      ;
+      */
+      console.log("getSumInvoicesByContractId:" );
+      console.log(result) ;  
+  res.json(result);
+});
+
+
+
 router.post("/DachboardSummary", verifyToken, async (req, res) => {
   if (!req.user) {
     res.json({ message: "unauthorized access" });
@@ -497,6 +609,7 @@ router.get("/get/:id", async (req, res) => {
   console.log("get invoice info.");
   res.json(invoice);
 });
+
 
 router.get("/postToTaxTypeIncome/:id", verifyToken, async (req, res, next) => {
 

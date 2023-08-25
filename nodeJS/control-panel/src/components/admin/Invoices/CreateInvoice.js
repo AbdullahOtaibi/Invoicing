@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { createInvoice, getInvoice, getContractInvoices, getContract } from "./InvoicesAPI";
+import { Link, json, useParams } from "react-router-dom";
+import { createInvoice, getInvoice, getContractInvoices, getContract , getSumInvoicesByContractId } from "./InvoicesAPI";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,19 +16,22 @@ import {
   MdContactPage,
   MdContactPhone,
   MdContactMail,
+  MdWarning,
 } from "react-icons/md";
 import { v4 as uuidv4 } from "uuid";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { event } from "jquery";
+import { event, ready } from "jquery";
 import ConfirmButton from "react-confirmation-button";
 import ContactSearchControl from "../Contact/ContactSearchControl";
 import ContractSearchControl from "../Contracts/ContractSearchControl";
-//import { eventManager } from "react-toastify/dist/core";
+import {updateContract} from "../Contracts/ContractsAPI"
 const CreateInvoice = (props) => {
 
-  const { contractId } = useParams();
+const { contractId } = useParams();
 const [sid, setSID] = useState(contractId);
+const[showWarningContractBalance ,setShowWarningContractBalance] =useState(false);
+console.log("contractId paramter:" + contractId) ;
 
   const [invoice, setInvoice] = useState({
     invoiceCategory: "Income",
@@ -69,6 +72,9 @@ const [sid, setSID] = useState(contractId);
     postedXML: "",
     responseXML: "",
     AdditionalDocumentReference_uuid_Type_Reverted: uuidv4(),
+    contract: "" , 
+    paymentMethod: "Cash" ,
+    insurance : "" 
   });
 
   //#region useState
@@ -89,55 +95,94 @@ const [sid, setSID] = useState(contractId);
   });
 
   const [contract, setContract] = useState({});
-  const [oldInvoices, setOldInvoices] = useState([]);
+  const [insurance, setInsurance] = useState({});
 
+  useEffect(()=>{
+    if(invoice.contract && contract) 
+    {
+      let contractAmount = contract.contractAmount ; 
+      let contractBalance = contract.contractBalance ;
+      let payableAmount = totalPayableAmount() ; 
+      if(parseFloat(contractBalance) < parseFloat(payableAmount))
+      {
+        setShowWarningContractBalance(true);
+      }
+      else
+      
+      { setShowWarningContractBalance(false); }
+    }
+
+  } , [invoice])
   useEffect(() => {
-    //alert('sid : ' + sid);
     if(sid){
-     
       let cloned = JSON.parse(JSON.stringify(invoice));
       cloned.contract = sid;
       setInvoice(cloned);
       getContract(sid).then((res) => {
-       // alert(res);
         setContract(res);
-        console.log(res.data);
+        console.log("Contract Data, id fetched by parm:") 
+        console.log("res:" + res + JSON.stringify ( res)) ;
+       
+        let cloned = JSON.parse(JSON.stringify(invoice));
+       cloned.contract = res._id ;
+       cloned.accountingCustomerParty.partyIdentification.schemeID =  res.contact.identificationType;
+       cloned.accountingCustomerParty.partyIdentification.value =  res.contact.identificationValue
+       cloned.accountingCustomerParty.registrationName =  res.contact.contactName;
+       cloned.accountingCustomerParty.telephone = res.contact.mobile;
+       cloned.contact  = res.contact._id ; 
+      setInvoice(cloned);
+
+      console.log("contract id : " +res._id );
+      console.log("cloned.contact:" +cloned.contact) ;
+      console.log("res.contact.identificationValue : " +res.contact.identificationValue) ;
+      console.log(" res.contact.contactName: " + res.contact.contactName) ;
+      console.log("res.contact.mobile: " +res.contact.mobile) ;
+      
       });
      
     }
   }, [sid]);
 
-
-  useEffect(() => {
-   if(contract && contract._id && contract._id.length == 12){
-      getContractInvoices(contract._id).then((res) => {
-        setOldInvoices(res.data);
-        console.log(res.data);
+  
+ /* useEffect(() => {
+   
+    updateContractBalance()*/
+   /* let parms = {} 
+    parms.contractId = sid
+    parms.ignoreInvoiceId = "" 
+    getSumInvoicesByContractId(parms) .then((data) => {
+       
+        console.log("getSumInvoicesByContractId success " +sid);
+        console.log("data: " );
+        console.log(data) ;
+        if(data.length >0) 
+        console.log("sum:" +data[0].sum_val)
+      else
+      console.log("sum equals 0")
+      }) 
+      .catch((ex) => {
+        console.log("getSumInvoicesByContractId not  success ");
+        console.log(ex);
       });
-    }
-    
-  }, [contract]);
+      */
+  /*  },
+   
+    []
+  );*/
+
+
+
   //#endregion
 
   //#region const
 
-  const totalInstallments=  (element) => {
-   /*
-    let total = 0;
-    element.installments.forEach((installment) => {
-      total += installment.installmentAmount;
-    });
-    return total;
-   */
+
+  const setPaymentMethod = (event) => {
+    let cloned = JSON.parse(JSON.stringify(invoice));
+    cloned.paymentMethod = event.target.value;
+    setInvoice(cloned);
   };
 
-  const totalInvoiced = () => {
-    let total = 0;
-    oldInvoices.forEach((item) => {
-      total += item.legalMonetaryTotal.taxInclusiveAmount;
-    });
-    return total;
-  }
 
   const selectedConatct = (item) => {
     // alert(item);
@@ -159,6 +204,24 @@ const [sid, setSID] = useState(contractId);
     }
   }
   
+};
+
+const selectedInsurance =   (item) => {
+  // alert(item);
+  if (item) {
+    try {
+      console.log(JSON.stringify(item));
+      let cloned = JSON.parse(JSON.stringify(invoice));
+      cloned.insurance = item._id
+      setInvoice(cloned);
+      setInsurance(item)
+    }
+  catch (e) {
+    console.log(e);
+
+  }
+}
+
 };
 
 const updateItemName = (event) => {
@@ -383,6 +446,7 @@ const addItem = (event) => {
     allowance: 0,
   });
   setInvoice(cloned);
+ 
 };
 
 const removeItem = (id) => {
@@ -414,7 +478,10 @@ const doPost = (data) => {
       setLoading(false);
       toast.success(t("succeed"));
       //setInvoice(res.data);
-      window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
+      //update contract balance
+      updateContractBalance(); 
+
+     window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
     })
     .catch((e) => {
       setLoading(false);
@@ -423,6 +490,46 @@ const doPost = (data) => {
   console.log(data);
 };
 
+function updateContractBalance()
+{
+
+  console.log("updateContractBalance ......") ;
+  if(isBlank(invoice.contract))
+  {return false;}
+
+  let parms = {} 
+  //parms.contractId = "64dfc9d09ce91056e7ba9fc7" 
+  parms.contractId = invoice.contract 
+  parms.ignoreInvoiceId = "" 
+  getSumInvoicesByContractId(parms) .then((data) => {
+     
+      console.log("getSumInvoicesByContractId success ");
+      console.log("data: " );
+      console.log(data) ;
+      if(data.length >0) 
+      {
+        console.log("sum:" +data[0].sum_val)
+        let sumInvoices= data[0].sum_val;
+        let cloned = JSON.parse(JSON.stringify(contract));
+        cloned.contractTotalInvoiced = parseFloat(sumInvoices);
+        cloned.contractBalance = parseFloat(cloned.contractTotalReceipts) - parseFloat(sumInvoices)
+        setContract(cloned);
+        updateContract(contract).then((res)=> {
+          toast("success  update contract!") ;
+          // window.location.href = "/admin/Contract/view/" + res._id;
+    
+        }).catch((err)=> { console.log(err)}) ;
+      }
+    
+    else
+    console.log("sum equals 0")
+    }) 
+    .catch((ex) => {
+      console.log("getSumInvoicesByContractId not  success ");
+      console.log(ex);
+    });
+     
+}
 function checkItemIsValid() {
   let itemIsValid = true;
 
@@ -488,48 +595,36 @@ function checkInvoice() {
 //#endregion
 
 
-
+/*
 const updateReceiptAmount = (event) => {
   let cloned = JSON.parse(JSON.stringify(contract));
   cloned.receiptAmount = event.target.value;
   setContract(cloned);
 
 }
+*/
 
-const updateReceiptTotalInstallments = (event) => {
-  let cloned = JSON.parse(JSON.stringify(contract));
-  cloned.receiptTotalInstallments = event.target.value;
-  setContract(cloned);
-}
 
-const updateReceiptTotalInvoice = (event) => {
-  let cloned = JSON.parse(JSON.stringify(contract));
-  cloned.receiptTotalInvoice = event.target.value;
-  setContract(cloned);
-}
 
-const updatePackageName = (event) => {
-  let cloned = JSON.parse(JSON.stringify(contract));
-  cloned.packageName = event.target.value;
-  setContract(cloned);
-}
 
-const updatePackagePrice = (event) => {
-  let cloned = JSON.parse(JSON.stringify(contract));
-  cloned.packagePrice = event.target.value;
-  setContract(cloned);
-}
 
-const handleSelectReceipt = (selectedReceipt) => {
-  console.log(selectedReceipt);
-  let cloned = JSON.parse(JSON.stringify(invoice));
-  cloned.contract = selectedReceipt;
+
+
+
+const handleSelectContract = (selectedContract) => {
+console.log("insert handleSelectContract method: " + selectedContract)
+if( isBlank(selectedContract))
+{ return false}
+console.log("selectedContract:" +selectedContract + " " + JSON.stringify(selectedContract)  );
+ let cloned = JSON.parse(JSON.stringify(invoice));
+  cloned.contract = selectedContract._id;
+  cloned.package = selectedConatct.package ;
   setInvoice(cloned);
-
-  setContract(selectedReceipt);
+  setContract(selectedContract);
+  
 }
 
-return (
+return ( 
   <>
     <div className="card">
       <div className="card-body">
@@ -546,6 +641,16 @@ return (
         <br />
         <form className="needs-validation">
           <div className="row"></div>
+            
+            <div className="row">
+
+           { showWarningContractBalance &&  <div class="alert alert-warning  fs-6" role="alert">
+            <MdWarning size={40}/>
+              The Invoice Amount is greater than  contract balance!
+            </div>} 
+
+            </div>
+
           <div className="mb-3 row ">
             <div className="col col-auto text-info">
               {t("invoice.InvoiceSummery")}
@@ -649,19 +754,21 @@ return (
 
           <div className="mb-3 row">
             <div className="mb-3 col ">
-              <div className="col col-auto">{t("invoice.fullName")}</div>
-              <div className="col col-auto">
+              <div className="col col-auto">{t("invoice.fullName")} </div>
+              <div className="col col-auto">   
                 <ContactSearchControl
                   handleSelectContact={selectedConatct}
-                  wasValidated={wasValidated}
+                  wasValidated={invoice.contact?false: wasValidated}
+                  value = {invoice.accountingCustomerParty.registrationName}
+                  readOnly= { sid?true :false}
                 />
               </div>
             </div>
 
             <div className="mb-3 col ">
               <div className="col col-auto">
-                {t("invoice.IdentificationType")} -{" "}
-                {invoice.accountingCustomerParty.partyIdentification.schemeID}
+                {t("invoice.IdentificationType")}
+              
               </div>
               <div className="col col-auto">
                 <select
@@ -699,25 +806,7 @@ return (
               </div>
             </div>
 
-            {/* <div className="mb-3 col ">
-                <div className="col col-auto">{t("invoice.fullName")}</div>
-                <div className="col">
-                  <input
-                    type="text"
-                    className={
-                      checkCustomerNameIsRequired
-                        ? fieldClass(
-                            invoice.accountingCustomerParty.registrationName
-                          )
-                        : "form-control"
-                    }
-                    id="customerName"
-                    name="customerName"
-                    onChange={updateCustomerName}
-                    placeholder={t("invoice.fullName")}
-                  />
-                </div>
-              </div> */}
+       
             <div className="mb-3 col ">
               <div className="col col-auto">{t("invoice.PhoneNumber")} </div>
               <div className="col">
@@ -735,78 +824,150 @@ return (
           </div>
 
           <div className="mb-3 row ">
+            <div className="col col-auto text-info">
+              {t("invoice.contractInformation")}{" "}
+            </div>
+            <div className="col">
+              <hr />
+            </div>
+          </div>
+
+          <div className="mb-3 row ">
             <div className="mb-3 col-2 ">
               <div className="col col-auto">
-                {t("sidebar.Receipt")}
+                {t("invoice.contract")}  
               </div>
               <div className="col col-auto">
-                <ContractSearchControl handleSelectContract={handleSelectReceipt} clientId={invoice.contact} />
+                <ContractSearchControl handleSelectContract={handleSelectContract} clientId={invoice.contact} 
+               value = {contract?.seqNumber}
+               readOnly= { sid?true :false}
+                />
               </div>
             </div>
 
-            {contract && contract._id ? (<>
-              <div className="mb-3 col ">
-                <div className="col col-auto">{t("receipt.receiptAmount")} </div>
+            <div className="mb-3 col ">
+                <div className="col col-auto">{t("contracts.packageName")}  </div>
                 <div className="col">
                   <input
                     type="text"
                     className="form-control"
-                    placeholder={t("receipt.receiptAmount")}
-                    value={contract.contractAmount}
-                    onChange={updateReceiptAmount}
+                    placeholder={t("contracts.packageName")}
+                    value={contract?.package?.packageName}
+                    readOnly={true}
                   />
                 </div>
               </div>
 
+           
               <div className="mb-3 col ">
-                <div className="col col-auto">{t("receipt.receiptTotalInstallments")} </div>
-                <div className="col">
-                  <input
-                    type="text"
-                    readOnly
-                    className="form-control"
-                    value={totalInstallments(contract)}
-                    placeholder={t("receipt.receiptTotalInstallments")}
-                    
-                  />
-                </div>
-              </div>
-
-
-              <div className="mb-3 col ">
-                <div className="col col-auto">{t("receipt.receiptTotalInvoice")} </div>
+                <div className="col col-auto">{t("contracts.contractAmount")} </div>
                 <div className="col">
                   <input
                     type="text"
                     className="form-control"
-                    value={totalInvoiced()}
-                    placeholder={t("receipt.receiptTotalInvoice")}
-                    readOnly
+                    placeholder={t("contracts.contractAmount")}
+                    value={contract.contractAmount?contract.contractAmount: ""}
+                    readOnly={true}
                   />
                 </div>
               </div>
 
-
+             
 
               <div className="mb-3 col ">
-                <div className="col col-auto">{t("receipt.packagePrice")} </div>
+                <div className="col col-auto">{t("contracts.contractBalance")} </div>
                 <div className="col">
                   <input
                     type="text"
                     className="form-control"
-                    value={contract.packagePrice}
-                    placeholder={t("receipt.packagePrice")}
-                    onChange={updatePackagePrice}
+                    value={contract.contractBalance?contract.contractBalance : ""}
+                    placeholder={t("contracts.contractBalance")}
+                    readOnly={true}
                   />
                 </div>
-              </div>
-
-            </>) : null}
-
-
-
+              </div> 
           </div>
 
+
+          <div className="mb-3 row ">
+            <div className="col col-auto text-info">
+              {t("invoice.PaymentMethod")}{" "}
+            </div>
+            <div className="col">
+              <hr />
+            </div>
+          </div>
+
+          <div className="mb-3 row ">
+            <div className="mb-3 col ">
+              <div className="col col-auto">{t("invoice.paymentMethod")}</div>
+
+              <div className="col col-auto">
+                <select
+                  type="text"
+                  className={selectFieldClass(invoice.paymentMethod)}
+                  id="paymentMethod"
+                  name="paymentMethod"
+                  onChange={setPaymentMethod}
+                >
+                  <option value="Cash"> Cash </option>
+                  <option value="Visa">Visa </option>
+                  <option value="Insurance"> Insurance </option>
+                </select>
+              </div>
+            </div>
+            
+            {invoice.paymentMethod == "Insurance" ?
+            <>
+            <div className="mb-3 col ">
+              <div className="col col-auto">{t("invoice.insurance")}</div>
+              <div className="col col-auto">
+
+              <ContactSearchControl
+                  handleSelectContact={selectedInsurance}
+                  wasValidated={ invoice.paymentMethod =="Insurance" ? wasValidated : false}  
+                  value = {insurance?.contactName}
+                    contactType = {["Insurance" ]}
+                />
+
+              </div>
+            </div>
+            
+            <div className="mb-3 col ">
+                <div className="col col-auto">{t("invoice.templateNo")} </div>
+                <div className="col">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={invoice.templateNo}
+                    placeholder={t("invoice.templateNo")}
+                  
+                  />
+                </div>
+              </div> 
+
+              <div className="mb-3 col ">
+                <div className="col col-auto">{t("invoice.percentageOfCover")} </div>
+                <div className="col">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={invoice.percentageOfCover}
+                    placeholder={t("invoice.percentageOfCover")}
+                  
+                  />
+                </div>
+              </div> 
+              </>
+              :<>
+              <div className="mb-3 col "></div>
+              <div className="mb-3 col "></div>
+              <div className="mb-3 col "></div>
+              </>
+}
+
+
+            </div>
           <div className="mb-3 row ">
             <div className="col col-auto text-info">Items</div>
             <div className="col">
@@ -970,7 +1131,7 @@ return (
         </form>
       </div>
     </div>
-  </>
+  </> 
 );
 };
 

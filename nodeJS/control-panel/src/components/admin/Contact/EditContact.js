@@ -27,7 +27,7 @@ const EditContact = (props) => {
         console.log(data);
         setLoading(true);
         setContact(data);
-        (data.contactType == "Employee" ? setShowSubContactInfo(false):setShowSubContactInfo(true) )
+        (data.contactType == "Employee" || data.contactType == "Insurance" ? setShowSubContactInfo(false):setShowSubContactInfo(true) )
         console.log(data);
         setLoading(false);
       })
@@ -229,6 +229,7 @@ const EditContact = (props) => {
                       <option value=""> أختر </option>
                       <option value="Client">Client</option>
                       <option value="Employee">Employee</option>
+                      <option value= "Insurance">Insurance</option>
                       <option value="Vendor">Vendor</option>
                     </select>
                   </div>
