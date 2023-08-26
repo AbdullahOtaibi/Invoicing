@@ -31,6 +31,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { getContract, removeContract } from "./ContractsAPI"
 import moment from "moment";
 import Listinv from "../Invoices/ListInv"
+import FullCalendarNew from "../FullCalendar/FullCalendarNew";
+import FullCalendarEdit from "../FullCalendar/FullCalendarEdit";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import AppointmentLst from "../FullCalendar/AppointmentLst"
 const ViewContract = (props) => {
 
   let navigate = useNavigate();
@@ -39,6 +44,11 @@ const ViewContract = (props) => {
   const { t } = useTranslation();
   const [contract, setContract] = useState({});
   const[filterInvoice , setFilterInvoice] = useState({ }) 
+  const [popUpEvent, setPopUpEvent] = useState("");
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [fullCalendarObj, setFullCalendarObj] = useState(0);
 
   useEffect(() => {
     setLoading(true);
@@ -66,6 +76,48 @@ const getTotalInstallments = () =>{
   return total;
 }
 
+const clickNew = () => {
+  console.log("clicknew ....");
+  //setPopUpEvent("new") ;
+  setShow(true);
+  setPopUpEvent("new");
+};
+
+
+const reloadData = () => {
+ /* getFullCalendars()
+    .then((data) => {
+      console.log("test ........");
+      console.log(data);
+      setFullCalenders(
+        data.items.map((item) => {
+          return {
+            _id: item._id,
+            start: new Date(item.start),
+            end: new Date(item.end),
+            title: item.title ,
+            note: item.note,
+            contactName: item.contactName,
+            allDay: item.allDay,
+            mobile: item.mobile,
+            employeeName: item.employeeName ,
+            status:  item.status ,
+            contract: item.contract ,
+           contractSequanceNumber : item.contract ? item.contract.seqNumber : "" ,
+          contact: item.contact
+        
+        }) 
+      );
+      console.log(data);
+      setLoading(false);
+       };
+    })
+    .catch((e) => {
+      console.log(e);
+      setLoading(false);
+    });*/
+};
+
 
 
   moment.locale("en-GB");
@@ -86,7 +138,7 @@ const getTotalInstallments = () =>{
             </div>
             <div class="row text-right">
                 <div className="mb-3  col justify-content-end">
-                  <Link className="btn btn-success btn-lg" to="/admin/Contract">
+                  <Link className="btn btn-success btn-lg" onClick={clickNew}>
                     <MdAddTask size={20} /> &nbsp; {t("contracts.createAppointment")}
                   </Link>{" "}
                   &nbsp;
@@ -96,9 +148,12 @@ const getTotalInstallments = () =>{
                     &nbsp; {t("invoice.createInvoice")}
                   </Link>
 
-                 
+
 
                 </div>
+
+
+
               </div>
             <br />
             <form className="needs-validation">
@@ -344,11 +399,15 @@ const getTotalInstallments = () =>{
 
               <div className="mb-3 row ">
                 <div className="col col-auto text-info">
-                  {t("contracts.appointments")}{" "}
+                  {t("contracts.appointments")}{" "}  {contract._id}
                 </div>
                 <div className="col">
                   <hr />
                 </div>
+              </div>
+
+              <div class="row"> 
+              <AppointmentLst contractId= {contract._id}/>
               </div>
 
               <div class="row text-right">
@@ -369,7 +428,51 @@ const getTotalInstallments = () =>{
             </form>
           </div>
         </div>
+
+        <Modal show={show} onHide={handleClose}   size="lg" >
+        <Modal.Header closeButton>
+          <div className="row">
+            <div className="col">
+              {popUpEvent == "new" ? (
+                <Modal.Title >{t("FullCalendar.newAppintement")}</Modal.Title>
+              ) : (
+                ""
+              )}
+              {popUpEvent == "edit" ? (
+                <Modal.Title>{t("FullCalendar.editAppintement")}</Modal.Title>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+        </Modal.Header>
+        <Modal.Body>
+          {popUpEvent == "new" ? (
+            <FullCalendarNew
+              onSave={handleClose}
+              updateFullCalendar={reloadData}
+              contractObj = {contract} 
+            />
+          ) : (
+            ""
+          )}
+
+          {popUpEvent == "edit" ? (
+            <FullCalendarEdit
+              onSave={handleClose}
+              updateFullCalendar={reloadData}
+              getfullCalendarObj={fullCalendarObj}
+            />
+          ) : (
+            ""
+          )}
+        </Modal.Body>
+        <Modal.Footer></Modal.Footer>
+      </Modal>
+
       </>
+
+      
 
 
     ) : "No Data Found"));

@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -32,9 +32,6 @@ else
 const FullCalendarNew = (props) => {
 
 
-
-
-  
   const [fullCalendar, setFullCalendar] = useState({
     deleted: false,
     companyID: localStorage.getItem("companyId"),
@@ -44,6 +41,24 @@ const FullCalendarNew = (props) => {
     end: endDate,
     allDay: false,
   });
+
+  useEffect(()=>{
+    if(props.contractObj ) 
+    {
+   console.log("insert props.contractObj condition");
+   console.log(props.contractObj)
+   let contractObj = props.contractObj ; 
+     let cloned = JSON.parse(JSON.stringify(fullCalendar));
+     cloned.contactName = contractObj.contact.contactName ;
+     cloned.contact = contractObj.contact._id ; 
+     cloned.contract= contractObj._id;
+    cloned.contractSequanceNumber = contractObj.seqNumber;
+    cloned.title = contractObj.contact.contactName;
+    cloned.mobile = contractObj.contact.mobile; 
+     setFullCalendar(cloned);
+    }
+
+  } , [])
 
   const selectFieldClass = (value, minQuantity) => {
     if (!wasValidated) return "form-select";
@@ -225,7 +240,7 @@ const setStatus = (event)=> {
                     wasValidated={wasValidated}
                     value = {fullCalendar.contactName}
                     contactType = {["Client" , "Vendor"]}
-
+                    readOnly= { props.contractObj ? true : false}
                   />
 
             </div>
@@ -276,7 +291,11 @@ const setStatus = (event)=> {
             <div className="col col-auto">{t("FullCalendar.contract")} {fullCalendar.contractSeqNumber}  </div>
 
             <div className="col">            
-            <ContractSearchControl handleSelectContract={handleSelectContract} clientId={fullCalendar.contact} value = ""/>
+            <ContractSearchControl handleSelectContract={handleSelectContract} 
+            clientId={fullCalendar.contact} 
+            value = { fullCalendar.contractSequanceNumber }
+            readOnly= { props.contractObj ? true : false}
+            />
 
             </div>
           </div>

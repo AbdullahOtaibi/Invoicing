@@ -27,6 +27,8 @@ router.post("/filter", verifyToken, async (req, res) => {
     let deleted = filters.deleted || false;
     let status = filters.status || null;
     let employeeId = filters.employeeId|| null; 
+    let contractId = filters.contractId || null ; 
+    console.log("contractId:" +contractId) ;
     let InvoiceBy = filters.InvoiceBy || "_idDesc";
     result.page = page;
     console.log("result.page:" + result.page);
@@ -37,7 +39,7 @@ router.post("/filter", verifyToken, async (req, res) => {
       _id: -1,
     };
     let FullCalendarId = filters.FullCalendarId || null;
-
+    
     if (deleted) {
       queryParams["$and"].push({ deleted: { $eq: true } });
     } else {
@@ -56,10 +58,15 @@ router.post("/filter", verifyToken, async (req, res) => {
       queryParams["$and"].push({ contact: clientId });
    
     }
+    if(contractId) 
+    {
+      queryParams["$and"].push({ contract: contractId });
+    }
     if(employeeId) 
     {
       queryParams["$and"].push({ employee: employeeId });
     }
+
     queryParams["$and"].push({
       "companyID": {
         $eq: req.user.companyId,
@@ -79,6 +86,9 @@ router.post("/filter", verifyToken, async (req, res) => {
     console.log("queryParams:" + queryParams);
     console.log(JSON.stringify(queryParams["$and"]));
     console.log("abd:before find") ;
+    console.log("Full Calendar type filter:");
+    console.log(JSON.stringify(queryParams)) ; 
+
     let query = FullCalendar.find(queryParams)
     .populate("user", "-password")
     .populate("employee")
@@ -97,15 +107,15 @@ router.post("/filter", verifyToken, async (req, res) => {
     result.count = count;
     result.pages = Math.ceil(count / pageSize);
 
-    console.log("getting data from db");
+    console.log("fullCalendar: getting data from db ....");
     result.items = await query
       .skip(page * pageSize)
       .limit(pageSize)
       .exec("find");
 
-    res.json(result);
-
-    console.log("out.....");
+    //res.json(result);
+   console.log(JSON.stringify(result))
+    console.log("fullCalendar: out.....");
   } catch (ex) {
     console.log(ex);
     result.error = ex.message;
