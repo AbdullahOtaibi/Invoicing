@@ -2,7 +2,7 @@ import { CSSTransition } from 'react-transition-group';
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { hasPermission } from "../utils/auth";
-import { getInvoice, removeInvoice, updateInvoice, postToTaxTypeIncome , postToTaxTypeRevertedIncome } from "./InvoicesAPI";
+import { getInvoice, removeInvoice, updateInvoice, postToTaxTypeIncome , postToTaxTypeRevertedIncome , getSumInvoicesByContractId } from "./InvoicesAPI";
 import { Helmet } from "react-helmet";
 import {
   MdOutlineReceiptLong,
@@ -23,7 +23,7 @@ import { RiRefund2Fill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import QRCode from 'react-qr-code';
-
+import { getContract ,updateContract } from "../Contracts/ContractsAPI";
 
 
 
@@ -46,7 +46,7 @@ const ViewInvoice = (props) => {
   const [invoice, setInvoice] = useState();
   const [loading, setLoading] = useState(false);
   const { t, i18n } = useTranslation();
-
+  const [contract, setContract] = useState({});
 
 
   useEffect(() => {
@@ -59,6 +59,28 @@ const ViewInvoice = (props) => {
         setInvoice(data);
         console.log(JSON.stringify(data));
         setLoading(false);
+//***************************8 */
+
+let invoiceContractObj= data.contract ; 
+console.log("invoiceContractObj=" +invoiceContractObj); 
+console.log(JSON.stringify(invoiceContractObj))
+ 
+if( !isBlank(invoiceContractObj) && !isBlank(invoiceContractObj._id) ) 
+{
+  getContract(invoiceContractObj._id).then((data)=> {
+    setLoading(true);
+    setContract(data);
+    console.log("contract obj:") ;
+    console.log(data) ;
+     setLoading(false);
+  }) .catch((ex) => {
+    setLoading(false);
+    console.log("Error: trying fetch contract info" + ex);
+  });
+}
+
+//**************************** */
+
       })
       .catch((e) => {
         console.log(e);
@@ -139,6 +161,73 @@ const ViewInvoice = (props) => {
     return !isNaN(val) ? val.toFixed(3) : val;
   }
 
+  function updateContractBalance()
+{
+
+  console.log("updateContractBalance ......") ;
+  if(isBlank(invoice.contract))
+  {return false;}
+
+  let parms = {} 
+  //parms.contractId = "64dfc9d09ce91056e7ba9fc7" 
+  parms.contractId = contract._id
+  parms.ignoreInvoiceId = "" 
+  console.log("parms") 
+  console.log(parms) ; 
+  getSumInvoicesByContractId(parms) .then((data) => {
+     
+      console.log("getSumInvoicesByContractId success ! ");
+      console.log("data: " );
+      console.log(data) ;
+      let sumInvoices = 0 ;
+      if(data.length >0) 
+      {
+        console.log("sum:" +data[0].sum_val)
+         sumInvoices= data[0].sum_val;
+      }
+      else
+      {
+        console.log("sum equals 0")
+        sumInvoices = 0 ;
+      }
+
+        let cloned = JSON.parse(JSON.stringify(contract));
+        console.log("updated contract before ")
+        console.log(cloned)
+
+        cloned.contractTotalInvoiced = parseFloat(sumInvoices);
+        cloned.contractBalance = parseFloat(cloned.contractTotalReceipts) - parseFloat(sumInvoices)
+        setContract(cloned);
+        console.log("updated contract after")
+        console.log(cloned);
+        updateContract(cloned).then((res)=> {
+          console.log("success  update contract!") ;
+           window.location.href = "/admin/Contract/view/" + res._id;
+    
+        }).catch((err)=> { console.log("error update contract:" + err)}) ;
+      }
+  
+    ) 
+    .catch((ex) => {
+      console.log("getSumInvoicesByContractId not  success ");
+      console.log(ex);
+    });
+     
+}
+
+function isBlank(str) {
+  return !str || /^\s*$/.test(str);
+}
+
+const doPost = (data) => {
+  removeInvoice(invoiceId).then(
+    (res)=>{
+      updateContractBalance() ; 
+      //navigate("/admin/invoices/", { replace: true }); 
+    }
+  ) .catch( (ex)=> { console.log("Error:" + ex) ;} )
+
+} ;
   return (
     <>
       {invoice ? (
@@ -457,6 +546,56 @@ const ViewInvoice = (props) => {
               </div> 
           </div>
 
+          <div className="mb-3 row ">
+            <div className="col col-auto text-info">
+              {t("invoice.PaymentMethod")}{" "}
+            </div>
+            <div className="col">
+              <hr />
+            </div>
+          </div>
+
+          <div className="mb-3 row ">
+            <div className="mb-3 col ">
+              <div className="col col-auto">{t("invoice.paymentMethod")}</div>
+
+              <div className="col col-auto">
+              {invoice.paymentMethod}
+              </div>
+            </div>
+            
+            {invoice.paymentMethod == "Insurance" ?
+            <>
+            <div className="mb-3 col ">
+              <div className="col col-auto">{t("invoice.insurance")}</div>
+              <div className="col col-auto">
+            {invoice.insurance.contactName}
+              </div>
+            </div>
+            
+            <div className="mb-3 col ">
+                <div className="col col-auto">{t("invoice.templateNo")} </div>
+                <div className="col">
+                 {invoice.templateNo}
+                </div>
+              </div> 
+
+              <div className="mb-3 col ">
+                <div className="col col-auto">{t("invoice.percentageOfCover")} </div>
+                <div className="col">
+          {invoice.percentageOfCover}
+                </div>
+              </div> 
+              </>
+              :<>
+              <div className="mb-3 col "></div>
+              <div className="mb-3 col "></div>
+              <div className="mb-3 col "></div>
+              </>
+}
+
+
+            </div>
 
 
               <div className="mb-3 row ">
@@ -639,7 +778,7 @@ const ViewInvoice = (props) => {
                   {invoice.status != "posted" ?
                   <div className="d-print-none">
                     <ConfirmButton
-                      onConfirm={() => { removeInvoice(invoiceId); navigate("/admin/invoices/", { replace: true }); }}
+                      onConfirm={doPost}
                       onCancel={() => console.log("cancel")}
                       buttonText={t("dashboard.delete")}
                       confirmText={t("invoice.confirmDelete")}

@@ -16,10 +16,15 @@ function Invoices() {
   
 
   this.getInvoiceById = async function (invoiceId) {
-    let invoice = await Invoice.findOne({ _id: invoiceId, deleted: false }).populate("user", "-password")
+    let invoice = await Invoice.findOne({ _id: invoiceId, deleted: false })
+    .populate("user", "-password")
     .populate("contact")
     .populate("contract")
     .populate("package") 
+    .populate("insurance") 
+
+    //console.log("invoice:")
+    //console.log(invoice) 
     return invoice;
   }
 

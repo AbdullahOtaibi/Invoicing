@@ -252,7 +252,7 @@ const getTotalInstallments = () =>{
                   </div>
                 </div>
 
-                <div className="mb-3 col    ">
+                <div  className= { contract.contractBalance >0 ? "mb-3 col  text-success" :  "mb-3 col  text-warning"}>
                   <div className="col col-auto">{t("contracts.contractBalance")}</div>
                   <div className="col col-auto">
                     JOD {contract.contractBalance ? contract.contractBalance.toFixed(3) : '0.00'}

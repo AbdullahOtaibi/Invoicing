@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 var ObjectId = mongoose.Types.ObjectId;
-
 const verifyToken = require("../../utils/auth");
 
 const Invoice = require("../models/Invoice");
@@ -437,6 +436,9 @@ router.post("/getSumInvoicesByContractId", verifyToken, async (req, res) => {
           }, 
           'contract': {
             '$eq': new ObjectId(contractId),
+          },
+          '_id': {
+            '$ne': new ObjectId(contractId),
           }
         }
       }, {
@@ -450,7 +452,7 @@ router.post("/getSumInvoicesByContractId", verifyToken, async (req, res) => {
     ]
   }
   let result = await Invoice.aggregate (
-   
+    arrQ
   );
 
   /*

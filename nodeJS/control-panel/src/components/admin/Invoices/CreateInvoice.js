@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, json, useParams } from "react-router-dom";
-import { createInvoice, getInvoice, getContractInvoices, getContract , getSumInvoicesByContractId } from "./InvoicesAPI";
+import { createInvoice, getInvoice, getContractInvoices , getSumInvoicesByContractId } from "./InvoicesAPI";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -25,7 +25,7 @@ import { event, ready } from "jquery";
 import ConfirmButton from "react-confirmation-button";
 import ContactSearchControl from "../Contact/ContactSearchControl";
 import ContractSearchControl from "../Contracts/ContractSearchControl";
-import {updateContract} from "../Contracts/ContractsAPI"
+import { getContract ,updateContract } from "../Contracts/ContractsAPI";
 const CreateInvoice = (props) => {
 
 const { contractId } = useParams();
@@ -73,8 +73,8 @@ console.log("contractId paramter:" + contractId) ;
     responseXML: "",
     AdditionalDocumentReference_uuid_Type_Reverted: uuidv4(),
     contract: "" , 
-    paymentMethod: "Cash" ,
-    insurance : "" 
+    paymentMethod: "Cash" 
+    
   });
 
   //#region useState
@@ -144,34 +144,6 @@ console.log("contractId paramter:" + contractId) ;
   }, [sid]);
 
   
- /* useEffect(() => {
-   
-    updateContractBalance()*/
-   /* let parms = {} 
-    parms.contractId = sid
-    parms.ignoreInvoiceId = "" 
-    getSumInvoicesByContractId(parms) .then((data) => {
-       
-        console.log("getSumInvoicesByContractId success " +sid);
-        console.log("data: " );
-        console.log(data) ;
-        if(data.length >0) 
-        console.log("sum:" +data[0].sum_val)
-      else
-      console.log("sum equals 0")
-      }) 
-      .catch((ex) => {
-        console.log("getSumInvoicesByContractId not  success ");
-        console.log(ex);
-      });
-      */
-  /*  },
-   
-    []
-  );*/
-
-
-
   //#endregion
 
   //#region const
@@ -255,6 +227,18 @@ const updateInvoiceType = (event) => {
   if (cloned.invoiceType == "021" || taxInclusiveAmount() > 1000)
     setCheckCustomerNameIsRequired(true);
   else setCheckCustomerNameIsRequired(false);
+};
+
+const setTemplateNo = (event) => {
+  let cloned = JSON.parse(JSON.stringify(invoice));
+  cloned.invoiceType = event.target.value;
+  setInvoice(cloned);
+};
+
+const setPercentageOfCover = (event) => {
+  let cloned = JSON.parse(JSON.stringify(invoice));
+  cloned.invoiceType = event.target.value;
+  setInvoice(cloned);
 };
 
 const updateCustomerName = (event, updatedBysearchValue) => {
@@ -481,7 +465,7 @@ const doPost = (data) => {
       //update contract balance
       updateContractBalance(); 
 
-     window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
+    // window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
     })
     .catch((e) => {
       setLoading(false);
@@ -506,24 +490,29 @@ function updateContractBalance()
       console.log("getSumInvoicesByContractId success ");
       console.log("data: " );
       console.log(data) ;
+      let sumInvoices= 0 ; 
       if(data.length >0) 
       {
-        console.log("sum:" +data[0].sum_val)
-        let sumInvoices= data[0].sum_val;
+         sumInvoices= data[0].sum_val;
+      }
+        else
+        {
+        console.log("sum equals 0")
+        sumInvoices = 0 ;
+        }
+        console.log("sum:" +sumInvoices)
         let cloned = JSON.parse(JSON.stringify(contract));
         cloned.contractTotalInvoiced = parseFloat(sumInvoices);
         cloned.contractBalance = parseFloat(cloned.contractTotalReceipts) - parseFloat(sumInvoices)
         setContract(cloned);
-        updateContract(contract).then((res)=> {
-          toast("success  update contract!") ;
-          // window.location.href = "/admin/Contract/view/" + res._id;
+        updateContract(cloned).then((res)=> {
+          console.log("success  update contract!") ;
+           window.location.href = "/admin/Contract/view/" + res._id;
     
         }).catch((err)=> { console.log(err)}) ;
       }
     
-    else
-    console.log("sum equals 0")
-    }) 
+   ) 
     .catch((ex) => {
       console.log("getSumInvoicesByContractId not  success ");
       console.log(ex);
@@ -642,14 +631,17 @@ return (
         <form className="needs-validation">
           <div className="row"></div>
             
-            <div className="row">
+           
 
-           { showWarningContractBalance &&  <div class="alert alert-warning  fs-6" role="alert">
+           { showWarningContractBalance && 
+            <div className="row">  <div class="alert alert-warning  fs-6" role="alert">
             <MdWarning size={40}/>
               The Invoice Amount is greater than  contract balance!
-            </div>} 
-
             </div>
+             </div>
+            } 
+
+           
 
           <div className="mb-3 row ">
             <div className="col col-auto text-info">
@@ -900,7 +892,7 @@ return (
 
           <div className="mb-3 row ">
             <div className="mb-3 col ">
-              <div className="col col-auto">{t("invoice.paymentMethod")}</div>
+              <div className="col col-auto">{t("invoice.paymentMethod")} </div>
 
               <div className="col col-auto">
                 <select
@@ -941,6 +933,7 @@ return (
                     className="form-control"
                     value={invoice.templateNo}
                     placeholder={t("invoice.templateNo")}
+                    onChange={setTemplateNo}
                   
                   />
                 </div>
@@ -954,6 +947,7 @@ return (
                     className="form-control"
                     value={invoice.percentageOfCover}
                     placeholder={t("invoice.percentageOfCover")}
+                    onChange={setPercentageOfCover}
                   
                   />
                 </div>

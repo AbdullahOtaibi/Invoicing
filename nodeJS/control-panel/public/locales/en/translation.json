@@ -512,7 +512,8 @@
     "BeingDeleteingTheAppointment": "Being Deleteing The Appointment ...",
     "mobile": "Mobile",
     "employeeName": "Employee Name",
-    "status": "Status"
+    "status": "Status" ,
+    "contract" : "Contract"
   },
   "contact": {
     "ContactInformation": "Contact Information",

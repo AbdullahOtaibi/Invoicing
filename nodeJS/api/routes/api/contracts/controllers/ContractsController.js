@@ -95,7 +95,7 @@ router.post("/filter", verifyToken, async (req, res) => {
   }
 });
 
-//*************** */
+//****************/
 
 router.post("/count", verifyToken, async (req, res) => {
   if (!req.user) {
@@ -121,6 +121,7 @@ router.post("/count", verifyToken, async (req, res) => {
         $eq: req.user.companyId,
       },
     });
+    
     console.log("queryParams:" + queryParams);
     countQuery = Contract.find(queryParams);
     count = await countQuery.countDocuments();
@@ -134,12 +135,15 @@ router.post("/count", verifyToken, async (req, res) => {
     result.error = ex.message;
     res.json(result);
   }
-});
 
+});
 router.get("/get/:id", async (req, res) => {
   console.log("before get Contract  info. ID: " + req.params.id);
   //ReferenceError: Cannot access 'Subscription' before initialization
-  let contract = await Contract.findOne({ _id: req.params.id, deleted: false }).populate("contact", "-password").populate("package")
+  let contract = await Contract.
+  findOne({ _id: req.params.id, deleted: false })
+  .populate("contact", "-password")
+  .populate("package")
   console.log("get Contract  info.");
   res.json(contract);
 });

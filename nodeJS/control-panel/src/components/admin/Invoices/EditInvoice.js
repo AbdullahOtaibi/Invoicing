@@ -1,32 +1,73 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { createInvoice, getInvoice, updateInvoice } from "./InvoicesAPI";
+import { createInvoice, getInvoice, updateInvoice , getSumInvoicesByContractId } from "./InvoicesAPI";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThreeDots } from  'react-loader-spinner';
 import { Editor } from "@tinymce/tinymce-react";
-import { MdAdd, MdDelete , MdEdit} from "react-icons/md";
+import { MdAdd, MdDelete , MdEdit , MdWarning} from "react-icons/md";
 import { v4 as uuidv4 } from "uuid";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { event } from "jquery";
 import ConfirmButton from "react-confirmation-button";
 import ContactSearchControl from "../Contact/ContactSearchControl";
+import ContractSearchControl from "../Contracts/ContractSearchControl";
+import { getContract ,updateContract } from "../Contracts/ContractsAPI";
+import { getContact } from "../Contact/ContactAPI";
 
 const EditInvoice = (props) => {
   const [loading, setLoading] = useState(false);
   const [invoice, setInvoice] = useState({});
-
+  const [originalInvoiceAmount, setOriginalInvoiceAmount ] =useState(0) 
   const { invoiceId } = useParams();
   useEffect(() => {
     getInvoice(invoiceId)
       .then((data) => {
         setLoading(true);
        setInvoice(data);
+       setOriginalInvoiceAmount(data.legalMonetaryTotal.payableAmount); 
         setLoading(false);
         console.log("find invoice");
         console.log(data);
+        let invoiceContractObj= data.contract ; 
+        console.log("invoiceContractObj=" +invoiceContractObj); 
+        console.log(JSON.stringify(invoiceContractObj))
+         
+        if( !isBlank(invoiceContractObj) && !isBlank(invoiceContractObj._id) ) 
+        {
+          getContract(invoiceContractObj._id).then((data)=> {
+            setLoading(true);
+            setContract(data);
+            console.log("contract obj:") ;
+            console.log(data) ;
+             setLoading(false);
+          }) .catch((ex) => {
+            setLoading(false);
+            console.log("Error: trying fetch contract info" + ex);
+          });
+        }
+
+        let invoiceInsuranceObj= data.insurance ; 
+        console.log("invoiceInsuranceObj=" +invoiceInsuranceObj); 
+        console.log(JSON.stringify(invoiceInsuranceObj))
+         
+        if( !isBlank(invoiceInsuranceObj) && !isBlank(invoiceInsuranceObj._id) ) 
+        {
+          getContact(invoiceInsuranceObj._id).then((data)=> {
+            setLoading(true);
+            setInsurance(data);
+            console.log("insurance obj:") ;
+            console.log(data) ;
+             setLoading(false);
+          }) .catch((ex) => {
+            setLoading(false);
+            console.log("Error: trying fetch insurance info" + ex);
+          });
+        }
+
+
       })
       .catch((ex) => {
         setLoading(false);
@@ -36,6 +77,32 @@ const EditInvoice = (props) => {
     },
     []
   );
+
+  const [contract, setContract] = useState({});
+  const [insurance, setInsurance] = useState({});
+  const[showWarningContractBalance ,setShowWarningContractBalance] =useState(false);
+
+  useEffect(()=>{
+    if(invoice.contract && contract) 
+    {
+      let contractAmount = contract.contractAmount ; 
+      let contractBalance = contract.contractBalance ;
+      let payableAmount = totalPayableAmount() ; 
+      let balanceWithoutCurrentInvoice = (parseFloat(contractBalance) + parseFloat(originalInvoiceAmount))
+      console.log("contractBalance:" +contractBalance) ;
+      console.log("originalInvoiceAmountL::" + originalInvoiceAmount)
+      console.log("balanceWithoutCurrentInvoice :::" +balanceWithoutCurrentInvoice) ;
+      console.log("new payableAmount::::" +payableAmount) 
+      if(  parseFloat(balanceWithoutCurrentInvoice) < parseFloat(payableAmount)   )
+      {
+        setShowWarningContractBalance(true);
+      }
+      else
+      
+      { setShowWarningContractBalance(false); }
+    }
+
+  } , [invoice])
 
   //#region useState
 
@@ -55,6 +122,11 @@ const EditInvoice = (props) => {
 
   //#region const
 
+  const setPaymentMethod = (event) => {
+    let cloned = JSON.parse(JSON.stringify(invoice));
+    cloned.paymentMethod = event.target.value;
+    setInvoice(cloned);
+  };
   
   const selectedConatct = (item) => {
     // alert(item);
@@ -68,6 +140,24 @@ const EditInvoice = (props) => {
       cloned.contact  = item._id 
       setInvoice(cloned);
     }
+  };
+
+  const selectedInsurance =   (item) => {
+    // alert(item);
+    if (item) {
+      try {
+        console.log(JSON.stringify(item));
+        let cloned = JSON.parse(JSON.stringify(invoice));
+        cloned.insurance = item._id
+        setInvoice(cloned);
+        setInsurance(item)
+      }
+    catch (e) {
+      console.log(e);
+  
+    }
+  }
+  
   };
 
 
@@ -103,6 +193,18 @@ const EditInvoice = (props) => {
     if (cloned.invoiceType == "021" || taxInclusiveAmount() > 1000)
       setCheckCustomerNameIsRequired(true);
     else setCheckCustomerNameIsRequired(false);
+  };
+
+  const setTemplateNo = (event) => {
+    let cloned = JSON.parse(JSON.stringify(invoice));
+    cloned.invoiceType = event.target.value;
+    setInvoice(cloned);
+  };
+  
+  const setPercentageOfCover = (event) => {
+    let cloned = JSON.parse(JSON.stringify(invoice));
+    cloned.invoiceType = event.target.value;
+    setInvoice(cloned);
   };
 
   const updateCustomerName = (event) => {
@@ -307,8 +409,10 @@ const EditInvoice = (props) => {
       .then((res) => {
         setLoading(false);
         toast.success(t("succeed"));
-        //setInvoice(res.data);
-        window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
+      //update contract balance
+      updateContractBalance(); 
+    window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
+
       })
       .catch((e) => {
         setLoading(false);
@@ -317,6 +421,55 @@ const EditInvoice = (props) => {
     console.log(data);
   };
 
+  function updateContractBalance()
+{
+
+  console.log("updateContractBalance ......") ;
+  console.log(invoice.contract) 
+  //return false ; 
+  if(isBlank(invoice.contract) )
+  {return false;}
+  let parms = {} 
+  parms.contractId = invoice.contract._id 
+  parms.ignoreInvoiceId = "" 
+  console.log("parms:" ); 
+  console.log(parms) ;
+  
+  getSumInvoicesByContractId(parms) .then((data) => {
+     
+      console.log("getSumInvoicesByContractId success ");
+      console.log("data: " );
+      console.log(data) ;
+      let sumInvoices = 0 ;
+      if(data.length >0) 
+      {
+        console.log("sum:" +data[0].sum_val)
+         sumInvoices= data[0].sum_val;
+      }
+      else
+      {
+        sumInvoices = 0 ;
+        console.log("sum equals 0")
+      }
+        let cloned = JSON.parse(JSON.stringify(contract));
+        cloned.contractTotalInvoiced = parseFloat(sumInvoices);
+        cloned.contractBalance = parseFloat(cloned.contractTotalReceipts) - parseFloat(sumInvoices)
+        setContract(cloned);
+        //use cloned obj rather than contract obj because the setContract method need extra time. 
+        updateContract(cloned).then((res)=> {
+         console.log("res") 
+         console.log(res) ;
+        }).catch((err)=> { console.log(err)}) ;
+      }
+    
+  
+    ) 
+    .catch((ex) => {
+      console.log("getSumInvoicesByContractId not  success ");
+      console.log(ex);
+    });
+     
+}
   function checkItemIsValid() {
     let itemIsValid = true;
 
@@ -324,6 +477,8 @@ const EditInvoice = (props) => {
       viewItemValidMessage("Fill the item description");
       itemIsValid = false;
     }
+
+
 
     if (
       isBlank(currentEditableItem.unitPrice) ||
@@ -379,6 +534,20 @@ const EditInvoice = (props) => {
 
     return invoiceIsValid;
   }
+
+  const handleSelectContract = (selectedContract) => {
+    console.log("insert handleSelectContract method: " + selectedContract)
+    if( isBlank(selectedContract))
+    { return false}
+    console.log("selectedContract:" +selectedContract + " " + JSON.stringify(selectedContract)  );
+     let cloned = JSON.parse(JSON.stringify(invoice));
+      cloned.contract = selectedContract._id;
+      cloned.package = selectedConatct.package ;
+      setInvoice(cloned);
+      setContract(selectedContract);
+      
+    }
+
   //#endregion
 
   return (
@@ -398,7 +567,15 @@ const EditInvoice = (props) => {
             </div>
             <br />
             <form className="needs-validation">
-              {/* <h1> checkCustomerNameIsRequired: { checkCustomerNameIsRequired? 'true': 'false'} </h1> */}
+            
+            { showWarningContractBalance && 
+            <div className="row">  <div class="alert alert-warning  fs-6" role="alert">
+            <MdWarning size={40}/>
+              The Invoice Amount is greater than  contract balance!
+            </div>
+             </div>
+            } 
+
 
               <div className="mb-3 row ">
                 <div className="col col-auto text-info">{t("invoice.InvoiceSummery")}</div>
@@ -499,7 +676,7 @@ const EditInvoice = (props) => {
               <div className="mb-3 row">
 
               <div className="mb-3 col ">
-                <div className="col col-auto">{t("invoice.fullName")} {invoice.accountingCustomerParty.registrationName}</div>
+                <div className="col col-auto">{t("invoice.fullName")} </div>
                 <div className="col col-auto">
                   <ContactSearchControl
                     handleSelectContact={selectedConatct}
@@ -581,6 +758,155 @@ const EditInvoice = (props) => {
                   </div>
                 </div>
               </div>
+
+              
+          <div className="mb-3 row ">
+            <div className="col col-auto text-info">
+              {t("invoice.contractInformation")}{" "}
+            </div>
+            <div className="col">
+              <hr />
+            </div>
+          </div>
+
+          <div className="mb-3 row ">
+            <div className="mb-3 col-2 ">
+              <div className="col col-auto">
+                {t("invoice.contract")}  
+              </div>
+              <div className="col col-auto">
+                <ContractSearchControl handleSelectContract={handleSelectContract} clientId={invoice.contact} 
+               value = {invoice.contract?.seqNumber}
+               readOnly= { invoice.contract?true :false}
+                />
+              </div>
+            </div>
+
+             <div className="mb-3 col ">
+                <div className="col col-auto">{t("contracts.packageName")}  </div>
+                <div className="col">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder={t("contracts.packageName")}
+                    value={contract?.package?.packageName}
+                    readOnly={true}
+                  />
+                </div>
+              </div> 
+
+           
+              <div className="mb-3 col ">
+                <div className="col col-auto">{t("contracts.contractAmount")} </div>
+                <div className="col">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder={t("contracts.contractAmount")}
+                    value={contract.contractAmount?contract.contractAmount: ""}
+                    readOnly={true}
+                  />
+                </div>
+              </div> 
+
+               <div className="mb-3 col ">
+                <div className="col col-auto">{t("contracts.contractBalance")} </div>
+                <div className="col">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={contract.contractBalance?contract.contractBalance : ""}
+                    placeholder={t("contracts.contractBalance")}
+                    readOnly={true}
+                  />
+                </div>
+              </div> 
+               
+          </div>
+
+          <div className="mb-3 row ">
+            <div className="col col-auto text-info">
+              {t("invoice.PaymentMethod")}{" "}
+            </div>
+            <div className="col">
+              <hr />
+            </div>
+          </div>
+
+          <div className="mb-3 row ">
+            <div className="mb-3 col ">
+              <div className="col col-auto">{t("invoice.paymentMethod")}</div>
+
+              <div className="col col-auto">
+                <select
+                  type="text"
+                  className={selectFieldClass(invoice.paymentMethod)}
+                  id="paymentMethod"
+                  name="paymentMethod"
+                  onChange={setPaymentMethod}
+                  value={invoice.paymentMethod}
+                >
+                  <option value="Cash"> Cash </option>
+                  <option value="Visa">Visa </option>
+                  <option value="Insurance"> Insurance </option>
+                </select>
+              </div>
+            </div>
+            
+            {invoice.paymentMethod == "Insurance" ?
+            <>
+            <div className="mb-3 col ">
+              <div className="col col-auto">{t("invoice.insurance")}</div>
+              <div className="col col-auto">
+
+              <ContactSearchControl
+                  handleSelectContact={selectedInsurance}
+                  wasValidated={ invoice.paymentMethod =="Insurance" ? wasValidated : false}  
+                  value = {insurance?.contactName}
+                    contactType = {["Insurance" ]}
+                />
+
+              </div>
+            </div>
+            
+            <div className="mb-3 col ">
+                <div className="col col-auto">{t("invoice.templateNo")} </div>
+                <div className="col">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={invoice.templateNo}
+                    placeholder={t("invoice.templateNo")}
+                    onChange={setTemplateNo}
+                  
+                  />
+                </div>
+              </div> 
+
+              <div className="mb-3 col ">
+                <div className="col col-auto">{t("invoice.percentageOfCover")} </div>
+                <div className="col">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={invoice.percentageOfCover}
+                    placeholder={t("invoice.percentageOfCover")}
+                    onChange={setPercentageOfCover
+                    }
+                  
+                  />
+                </div>
+              </div> 
+              </>
+              :<>
+              <div className="mb-3 col "></div>
+              <div className="mb-3 col "></div>
+              <div className="mb-3 col "></div>
+              </>
+}
+
+
+            </div>
 
               <div className="mb-3 row ">
                 <div className="col col-auto text-info">{t("invoice.Items")}</div>
