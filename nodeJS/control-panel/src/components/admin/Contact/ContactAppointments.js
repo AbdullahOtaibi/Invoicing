@@ -59,7 +59,7 @@ const ContactAppointments = (props) => {
         setLoading(false);
         setAppointments(data.items || []);
         setPage(data.page);
-        console.log("data.items:" + JSON.stringify(data.items));
+        //console.log("data.items:" + JSON.stringify(data.items));
         console.log("data.pages:" + data.pages);
         setPages(data.pages);
         if (props.updateCount) {

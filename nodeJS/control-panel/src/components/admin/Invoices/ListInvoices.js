@@ -69,11 +69,11 @@ const ListInvoices = (props) => {
 
 
     useEffect(() => {
-        console.log('********test ....');
-        console.log(JSON.stringify(newInvoices));
+       // console.log('********test ....');
+       // console.log(JSON.stringify(newInvoices));
 
 
-    }, setNewInvoices);
+    }, [newInvoices]);
 
 
 

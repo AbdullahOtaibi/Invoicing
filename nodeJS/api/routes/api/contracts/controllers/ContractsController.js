@@ -72,7 +72,7 @@ router.post("/filter", verifyToken, async (req, res) => {
     console.log("abd:after find");
     countQuery = Contract.find(queryParams);
 
-    console.log(JSON.stringify(queryParams["$and"]));
+    //console.log(JSON.stringify(queryParams["$and"]));
 
     var count = await countQuery.countDocuments();
     result.count = count;

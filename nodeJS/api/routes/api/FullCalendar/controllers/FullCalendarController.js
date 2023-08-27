@@ -11,6 +11,7 @@ const CalendarEvents = require("../data-access/FullCalendar");
 const { json } = require("body-parser");
 
 router.post("/filter", verifyToken, async (req, res) => {
+  console.log("fullCalendar: in.....");
   if (!req.user) {
     res.json({ message: "unauthorized access" });
   }
@@ -95,13 +96,14 @@ router.post("/filter", verifyToken, async (req, res) => {
     .populate("contract")
       .sort(sortParams);
       console.log("abd:after find") ;
+      console.log(JSON.stringify(queryParams)) ;
     countQuery = FullCalendar.find(queryParams)
       .populate("user", "-password")
       .populate("employee")
       .populate("contract")
       .sort(sortParams);
 
-    console.log(JSON.stringify(queryParams["$and"]));
+    //console.log(JSON.stringify(queryParams["$and"]));
 
     var count = await countQuery.countDocuments();
     result.count = count;
@@ -113,7 +115,7 @@ router.post("/filter", verifyToken, async (req, res) => {
       .limit(pageSize)
       .exec("find");
 
-    //res.json(result);
+    res.json(result);
    console.log(JSON.stringify(result))
     console.log("fullCalendar: out.....");
   } catch (ex) {

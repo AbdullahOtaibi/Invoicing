@@ -91,7 +91,7 @@ const MainHeader = ({ notification, onHandleNotification }) => {
     <div className="navbar navbar-dark sticky-top  flex-md-nowrap pt-1 pb-0 shadow" style={{ backgroundColor: '#2d3274' }}>
 
       <div className="menu-toggle-button pl-3 pr-3" style={{ lineHeight: '0' }}>
-        <a className="nav-link" href="javascript:;" onClick={toggleSidebar} id="sidebarCollapse" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <a className="nav-link" href="#" onClick={toggleSidebar} id="sidebarCollapse" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
           <div className="my-toggl-icon">
             <span className="bar1"></span>
             <span className="bar2"></span>
@@ -100,20 +100,20 @@ const MainHeader = ({ notification, onHandleNotification }) => {
         </a>
       </div>
 
-<div lassNAme='col col-auto' style={{color:'white'}}>
+<div className='col col-auto' style={{color:'white'}}>
   {localStorage.getItem("companyName")}  :الشركة
 </div>
 
-<div lassNAme='col col-auto' style={{color:'white'}}>
+<div className='col col-auto' style={{color:'white'}}>
   الرقم الضريبي:  {localStorage.getItem("companyId")}
 </div>
 
 
-<div lassNAme='col col-auto' style={{color:'white'}}>
+<div className='col col-auto' style={{color:'white'}}>
 تسلسل مصدر الدخل:  {localStorage.getItem("incomeSourceSequence")}
 </div>
 
- <div lassNAme='col col-auto' style={{color:'white'}}>
+ <div className='col col-auto' style={{color:'white'}}>
 البريد الالكتروني:  {localStorage.getItem("email")}
 </div> 
 

@@ -34,7 +34,7 @@ const ListPackage = (props) => {
             setLoading(false);
             setPackages(data.items || []);
             setPackagesPage(data.page);
-            console.log("data.items:" + JSON.stringify(data.items));
+            //console.log("data.items:" + JSON.stringify(data.items));
             console.log("data.pages:" + data.pages);
             setpackagesPages(data.pages);
         }).catch(e => {

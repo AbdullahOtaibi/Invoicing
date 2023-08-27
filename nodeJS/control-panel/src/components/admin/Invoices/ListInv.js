@@ -23,9 +23,9 @@ const ListInv = (props) => {
     //const [startDate, setStartDate] = useState()
 
     useEffect(() => {
-        console.log('********test ....');
-        console.log(JSON.stringify(newInvoices));
-    }, setNewInvoices);
+        //console.log('********test ....');
+        //console.log(JSON.stringify(newInvoices));
+    }, [newInvoices]);
 
     const loadNewPage = (newPage) => {
         if (newPage < 0 || (newPage >= invoicesPages && invoicesPages > 0)) {
@@ -76,7 +76,7 @@ const ListInv = (props) => {
             setLoading(false);
             setNewInvoices(data.items || []);
             setInvoicesPage(data.page);
-            console.log("data.items:" + JSON.stringify(data.items));
+            //console.log("data.items:" + JSON.stringify(data.items));
             console.log("data.pages:" + data.pages);
             setInvoicesPages(data.pages);
             if (props.updateCount) {
@@ -147,7 +147,7 @@ const ListInv = (props) => {
 
                         newInvoices.map(item => (
 
-                            <tr key={'' + item.id}>
+                            <tr key={'' + item._id}>
                                 <td>
                                     <Link to={'/admin/invoices/ViewInvoice/' + item._id} className='text-info'>
                                         {item.seqNumber}

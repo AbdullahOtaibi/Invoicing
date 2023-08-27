@@ -32,7 +32,7 @@ const ContactInvoices = (props) => {
             setLoading(false);
             setInvoices(data.items || []);
             setInvoicesPage(data.page);
-            console.log("data.items:" + JSON.stringify(data.items));
+           // console.log("data.items:" + JSON.stringify(data.items));
             console.log("data.pages:" + data.pages);
             setInvoicesPages(data.pages);
             if (props.updateCount) {

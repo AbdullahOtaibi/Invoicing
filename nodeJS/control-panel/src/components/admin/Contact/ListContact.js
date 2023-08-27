@@ -52,7 +52,7 @@ const ListContact = (props) => {
             setLoading(false);
             setContacts(data.items || []);
             setContactsPage(data.page);
-            console.log("data.items:" + JSON.stringify(data.items));
+            //console.log("data.items:" + JSON.stringify(data.items));
             console.log("data.pages:" + data.pages);
             setContactsPages(data.pages);
         }).catch(e => {

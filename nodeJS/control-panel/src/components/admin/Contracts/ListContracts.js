@@ -34,7 +34,7 @@ const ListContract = (props) => {
             setLoading(false);
             setPackages(data.items || []);
             setContractsPage(data.page);
-            console.log("data.items:" + JSON.stringify(data.items));
+            //console.log("data.items:" + JSON.stringify(data.items));
             console.log("data.pages:" + data.pages);
             setcontractsPages(data.pages);
         }).catch(e => {

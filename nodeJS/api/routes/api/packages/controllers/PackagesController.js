@@ -34,7 +34,7 @@ router.post("/filter", verifyToken, async (req, res) => {
     let sortParams = {
       _id: -1,
     };
-  
+
     if (deleted) {
       queryParams["$and"].push({ deleted: { $eq: true } });
     } else {
@@ -57,7 +57,7 @@ router.post("/filter", verifyToken, async (req, res) => {
 
     queryParams["$and"].push({
       "company": {
-      $eq: req.user.company,
+        $eq: req.user.company,
       },
     });
 
@@ -71,7 +71,7 @@ router.post("/filter", verifyToken, async (req, res) => {
     console.log("abd:after find");
     countQuery = Package.find(queryParams);
 
-    console.log(JSON.stringify(queryParams["$and"]));
+    //console.log(JSON.stringify(queryParams["$and"]));
 
     var count = await countQuery.countDocuments();
     result.count = count;
@@ -138,7 +138,7 @@ router.post("/count", verifyToken, async (req, res) => {
 router.get("/get/:id", async (req, res) => {
   console.log("before get Package  info. ID: " + req.params.id);
   //ReferenceError: Cannot access 'Package' before initialization
-    let package = await Package.findOne({ _id: req.params.id, deleted: false }).populate("user", "-password")
+  let package = await Package.findOne({ _id: req.params.id, deleted: false }).populate("user", "-password")
   console.log("get Package  info.");
   res.json(package);
 });
@@ -245,14 +245,14 @@ router.get("/search/:val", verifyToken, async (req, res) => {
       company: req.user.company,
       companyID: req.user.companyId
     }
-    
-    
-    
-  
-      
+
+
+
+
+
     let query = Package.find(queryParams)
       .populate("user", "-password")
-      .sort( {"packageName" : 1});
+      .sort({ "packageName": 1 });
     result.items = await query.exec("find");
     res.json(result);
   } catch (ex) {
@@ -264,7 +264,7 @@ router.get("/search/:val", verifyToken, async (req, res) => {
 
 
 router.post("/search/", verifyToken, async (req, res) => {
-  
+
   if (req.user.role != "Administrator" && req.user.role != "Company") {
     res.json({ success: false, message: "Unauthorized" });
   }
@@ -274,22 +274,21 @@ router.post("/search/", verifyToken, async (req, res) => {
     let sortParams = {
       _id: -1,
     };
-   
-    let val= req.body.val;
+
+    let val = req.body.val;
     let queryParams = {
       deleted: false,
       company: req.user.company,
       companyID: req.user.companyId,
       status: "Active",
-     
+
     };
-    if(val ) 
-    {
-      queryParams.packageName = { $regex: val, $options: "i" } 
+    if (val) {
+      queryParams.packageName = { $regex: val, $options: "i" }
     }
     let query = Package.find(queryParams)
       .populate("user", "-password")
-      .sort( {"packageName" : 1});
+      .sort({ "packageName": 1 });
     result.items = await query.exec("find");
     res.json(result);
   } catch (ex) {
@@ -298,8 +297,8 @@ router.post("/search/", verifyToken, async (req, res) => {
     res.json(result);
   }
 
-  
- 
+
+
 });
 
 module.exports = router;

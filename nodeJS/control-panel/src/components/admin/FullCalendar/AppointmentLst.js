@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getFullCalendars} from "../FullCalendar/FullCalendarAPI"
+import { getFullCalendars } from "../FullCalendar/FullCalendarAPI"
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { MdEdit, MdLocalShipping } from "react-icons/md";
@@ -17,7 +17,7 @@ const AppointmentLst = (props) => {
   const [show, setShow] = useState(false);
   const [popUpEvent, setPopUpEvent] = useState("");
   const [fullCalendarObj, setFullCalendarObj] = useState(0);
-  const[fullCalenders ,  setFullCalenders] = useState({})
+  const [fullCalenders, setFullCalenders] = useState({})
   const handleEventSelection = (e) => {
     if (e) {
       console.log(e, "Event data");
@@ -31,8 +31,8 @@ const AppointmentLst = (props) => {
   };
 
   useEffect(() => {
-  loadNewPage(0);
-  }, []);
+    loadNewPage(0);
+  }, [props]);
 
   const loadNewPage = (newPage) => {
     if (newPage < 0 || (newPage >= pages && pages > 0)) {
@@ -43,60 +43,59 @@ const AppointmentLst = (props) => {
     setLoading(true);
 
     setPage(newPage);
-    let filter=  
+    let filter =
     {
       page: newPage
     }
 
-   if(props && props.contractId) 
-   {
-    filter.contractId = props.contractId 
-   }
+    if (props && props.contractId) {
+      filter.contractId = props.contractId
+    }
 
-   //****************************/
-   console.log("filter appointment list: filter.contractId" + filter.contractId + "props.contracctId:" +props.contractId) ;
-   console.log(filter) ;
+    //****************************/
+    console.log("filter appointment list: filter.contractId" + filter.contractId + "props.contracctId:" + props.contractId);
+    console.log(filter);
 
-   getFullCalendars(filter)
-   .then((data) => {
-     console.log("Full calendar Data:");
-     console.log(data);
-     setAppointments(data.items || []);
+    getFullCalendars(filter)
+      .then((data) => {
+        console.log("Full calendar Data:");
+        console.log(data);
+        setAppointments(data.items || []);
 
-/*
-     setFullCalenders(
-       data.items.map((item) => {
-         return {
-           _id: item._id,
-           start: new Date(item.start),
-           end: new Date(item.end),
-           title: item.title ,
-           note: item.note,
-           contactName: item.contactName,
-           allDay: item.allDay,
-           mobile: item.mobile,
-           employeeName: item.employeeName ,
-           status:  item.status ,
-           contract: item.contract ,
-          contractSequanceNumber : item.contract ? item.contract.seqNumber : "" ,
-         contact: item.contact
-       
-       }}
-       ) 
-     );*/
-     //console.log(data);
-     setLoading(false);
+        /*
+             setFullCalenders(
+               data.items.map((item) => {
+                 return {
+                   _id: item._id,
+                   start: new Date(item.start),
+                   end: new Date(item.end),
+                   title: item.title ,
+                   note: item.note,
+                   contactName: item.contactName,
+                   allDay: item.allDay,
+                   mobile: item.mobile,
+                   employeeName: item.employeeName ,
+                   status:  item.status ,
+                   contract: item.contract ,
+                  contractSequanceNumber : item.contract ? item.contract.seqNumber : "" ,
+                 contact: item.contact
+               
+               }}
+               ) 
+             );*/
+        //console.log(data);
+        setLoading(false);
       }
-   ) .catch((e) => {
-     console.log("Error fetch appointements: " + e);
-     setLoading(false);
-   });
+      ).catch((e) => {
+        console.log("Error fetch appointements: " + e);
+        setLoading(false);
+      });
 
 
-   //**************************** */
- 
-};
- 
+    //**************************** */
+
+  };
+
 
   moment.locale("en-GB");
   const localizer = momentLocalizer(moment);
@@ -118,33 +117,33 @@ const AppointmentLst = (props) => {
             </tr>
           </thead>
           <tbody>
-            {appointments && appointments.length> 0?(<>{
-                appointments.map(a => (<tr key={a._id}>
-                    <td>{a.title}</td>
-                    <td>{a.mobile}</td>
-                    <td>{moment(a.start).format("DD/MM/yyyy hh:mm A")}</td>
-                    <td>{moment(a.end).format("DD/MM/yyyy hh:mm A")}</td>
-                    <td>{moment(a.start).fromNow()}  </td>
-                    <td>{a.note}</td>
-                    <td> {a.employee? a.employee.contactName : ""} </td>
-                    <td className= { getStyleStatus(a.status)   }>{a.status} </td>
-                </tr>))
-            }</>):(<></>)}
+            {appointments && appointments.length > 0 ? (<>{
+              appointments.map(a => (<tr key={a._id}>
+                <td>{a.title}</td>
+                <td>{a.mobile}</td>
+                <td>{moment(a.start).format("DD/MM/yyyy hh:mm A")}</td>
+                <td>{moment(a.end).format("DD/MM/yyyy hh:mm A")}</td>
+                <td>{moment(a.start).fromNow()}  </td>
+                <td>{a.note}</td>
+                <td> {a.employee ? a.employee.contactName : ""} </td>
+                <td className={getStyleStatus(a.status)}>{a.status} </td>
+              </tr>))
+            }</>) : (<></>)}
           </tbody>
         </table>
       </div>
     </>
   );
 
-function getStyleStatus(val) {
-  if(val == "Completed")
-  return "text-success"
-  else   if(val == "Scheduled")
-  return "text-info"
-  else  
-  return "text-danger"
+  function getStyleStatus(val) {
+    if (val == "Completed")
+      return "text-success"
+    else if (val == "Scheduled")
+      return "text-info"
+    else
+      return "text-danger"
 
-}
+  }
 };
 
 export default AppointmentLst;
