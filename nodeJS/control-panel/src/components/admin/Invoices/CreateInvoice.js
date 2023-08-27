@@ -1109,9 +1109,9 @@ return (
 
           <div class="row text-right">
             <div className="mb-3  col justify-content-end">
-              <Link className="btn btn-secondary btn-lg" to="/admin/invoices">
+              <a className="btn btn-secondary btn-lg" href="#" onClick={() => {window.history.back()}}>
                 <MdClose size={20} /> &nbsp; {t("Cancel")}
-              </Link>{" "}
+              </a>{" "}
               &nbsp;
               <button
                 type="button"

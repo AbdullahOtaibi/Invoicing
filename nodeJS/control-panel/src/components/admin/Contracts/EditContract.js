@@ -581,8 +581,8 @@ useEffect( ()=>{  updateContractCalculation()} , [currentEditableItem ]) ;
             </div>    
 
             <div className="row">
-              <div className="col table-responsive">
-                <table className="table table-sm needs-validation " style={{minHeight: '400px'} }>
+              <div className="col">
+                <table className="table table-sm needs-validation " style={{} }>
                   <thead>
                     <tr className="table-light">
                       <th width="5%">#</th>
@@ -598,14 +598,14 @@ useEffect( ()=>{  updateContractCalculation()} , [currentEditableItem ]) ;
                   <tbody>
                     { 
                     contract.receipts? contract.receipts.map((item) => (
-                      <tr key={ item.receiptSequance} >
+                      <tr key={item._id} >
                         <td> {item.receiptSequance} </td>
                         <td>{item.receiptAmount}</td>
                         { <td>{item.receiptDate ? moment(item.receiptDate).format("DD/MM/yyyy") : "Not Set"} </td> }
                       
                         <td>{item.receiptNote} </td>
     
-                        <td>
+                        <td className="text-end">
                           <ConfirmButton
                             onConfirm={() => removeItem(item.receiptSequance)}
                             onCancel={() => console.log("cancel")}
@@ -653,7 +653,7 @@ useEffect( ()=>{  updateContractCalculation()} , [currentEditableItem ]) ;
                       </td>
    
         
-                      <td>
+                      <td className="text-end">
                         <button
                           type="button"
                           className="btn  btn-success d-print-none "

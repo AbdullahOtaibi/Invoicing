@@ -178,7 +178,7 @@ const ListInv = (props) => {
                                     </Link>
                                 </td>
                                 <td>
-                                    {item.contract.seqNumber}
+                                    {item.contract?item.contract.seqNumber:null}
                                 </td>
                                 <td> {item.status}</td>
                                 <td> {item.legalMonetaryTotal.taxExclusiveAmount.toFixed(3)}</td>
