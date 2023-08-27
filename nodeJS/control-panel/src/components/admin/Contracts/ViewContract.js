@@ -75,6 +75,12 @@ const ViewContract = (props) => {
     });
     return total;
   }
+  const handleAppoinmentSelected = (item) => {
+
+    setPopUpEvent('edit');
+    setFullCalendarObj(item);
+    setShow(true);
+  }
 
   const clickNew = () => {
     console.log("clicknew ....");
@@ -400,7 +406,7 @@ const ViewContract = (props) => {
 
               <div className="mb-3 row ">
                 <div className="col col-auto text-info">
-                  {t("contracts.appointments")}{" "}  {contract._id}
+                  {t("contracts.appointments")}{" "}
                 </div>
                 <div className="col">
                   <hr />
@@ -408,7 +414,9 @@ const ViewContract = (props) => {
               </div>
 
               <div className="row">
-                <AppointmentLst contractId={contract._id} />
+                {contract && contract._id ? (
+                  <AppointmentLst contractId={contract._id} handleAppoinmentSelected={handleAppoinmentSelected} />
+                ) : null}
               </div>
 
               <div className="row text-right">

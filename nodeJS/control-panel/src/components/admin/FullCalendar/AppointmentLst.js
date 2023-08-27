@@ -29,6 +29,12 @@ const AppointmentLst = (props) => {
       // console.log("FullCalendarId:" + fullCalendarId) ;
     }
   };
+  const handleAppoinmentSelected = (item) => {
+    if(props.handleAppoinmentSelected){
+      props.handleAppoinmentSelected(item);
+    }
+    return true;
+  };
 
   useEffect(() => {
     loadNewPage(0);
@@ -119,7 +125,8 @@ const AppointmentLst = (props) => {
           <tbody>
             {appointments && appointments.length > 0 ? (<>{
               appointments.map(a => (<tr key={a._id}>
-                <td>{a.title}</td>
+                <td>
+                  <a href="#" onClick={(e) => {e.preventDefault();handleAppoinmentSelected(a);return true;}}>{a.title}</a></td>
                 <td>{a.mobile}</td>
                 <td>{moment(a.start).format("DD/MM/yyyy hh:mm A")}</td>
                 <td>{moment(a.end).format("DD/MM/yyyy hh:mm A")}</td>
