@@ -4,24 +4,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { hasPermission } from "../utils/auth";
 
 import { Helmet } from "react-helmet";
-import {
-  MdOutlineReceiptLong,
-  MdEdit,
-  MdClose,
-  MdHistoryToggleOff,
-  MdPayment,
-  MdLocalShipping,
-  MdOutlineCancel,
-  MdContacts,
-  MdPhone,
-  MdCollections,
-  MdMoney,
-  MdCancel,
-  MdCalendarViewMonth,
-  MdAddTask,
-  MdCollectionsBookmark,
-  MdOutlineLocalPrintshop
-} from "react-icons/md";
+import { MdEdit, MdClose, MdAddTask, MdCollectionsBookmark, MdOutlineLocalPrintshop } from "react-icons/md";
 import { ThreeDots } from 'react-loader-spinner';
 import { useTranslation } from "react-i18next";
 import ConfirmButton from "react-confirmation-button";
@@ -155,9 +138,9 @@ const ViewContract = (props) => {
                   &nbsp; {t("invoice.createInvoice")}
                 </Link>
 
-                <a href="#" className="btn btn-dark btn-lg mx-1" onClick={() => {window.print();}}>
+                <a href="#" className="btn btn-dark btn-lg mx-1" onClick={() => { window.print(); }}>
                   <MdOutlineLocalPrintshop size={20} />
-                 
+
                 </a>
 
 
@@ -427,7 +410,29 @@ const ViewContract = (props) => {
               </div>
 
               <div className="row text-right">
-                <div className="mb-3  col justify-content-end">
+                {(contract.receipts == null || contract.receipts.length == 0)&& (contract.invoices == null || contract.invoices.length == 0)? (
+            
+                <ConfirmButton
+                  onConfirm={() => {removeContract(contract._id)}}
+                  onCancel={() => console.log("cancel")}
+                  buttonText={t("dashboard.delete")}
+                  confirmText={t("invoice.confirmDelete")}
+                  cancelText={t("invoice.cancelDelete")}
+                  loadingText={t("invoice.BeingDeleteingTheInvoice")}
+                  wrapClass="col col-10 text-end"
+                  buttonClass="btn btn-lg d-print-none"
+                  mainClass="btn-warning mx-2"
+                  confirmClass="btn-danger mx-2"
+                  cancelClass=" btn-success "
+                  loadingClass="visually-hidden"
+                  disabledClass=""
+                  once
+                >
+                  {"Delete "}
+                  <MdDelete />
+                </ConfirmButton>
+              ):null}
+                <div className="mb-3  col col text-end">
                   <Link className="btn btn-secondary btn-lg d-print-none" to="/admin/Contract">
                     <MdClose size={20} /> &nbsp; {t("Cancel")}
                   </Link>{" "}
@@ -459,7 +464,10 @@ const ViewContract = (props) => {
                 ) : (
                   ""
                 )}
+
+
               </div>
+              
             </div>
           </Modal.Header>
           <Modal.Body>

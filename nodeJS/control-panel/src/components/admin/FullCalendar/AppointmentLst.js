@@ -108,7 +108,7 @@ const AppointmentLst = (props) => {
 
   return (
     <>
-      <div style={{ height: 700 }}>
+      <div style={{ }}>
         <table className="table">
           <thead>
             <tr>
