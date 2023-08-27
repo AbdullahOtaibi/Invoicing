@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getContactInvoices } from "./ContactAPI";
+import { getContactInvoices, getContact } from "./ContactAPI";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import {MdEdit, MdLocalShipping} from "react-icons/md";
@@ -10,11 +10,23 @@ const ContactInvoices = (props) => {
     const [invoicesPages, setInvoicesPages] = useState(0);
     const [invoicesPage,setInvoicesPage] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [contact, setContact] = useState({});
 
     useEffect(() => {
         loadNewPage(0);
-    }, []);
+    }, [contact]);
 
+    useEffect(() => {
+        getContact(props.contactId).then(data => {
+            console.log("data:" + JSON.stringify(data));
+            setContact(data);
+        }
+        ).catch(e => {
+            console.log(e);
+        });
+    }, [props])
+   
+   
     const loadNewPage = (newPage) => {
         if (newPage < 0 || (newPage >= invoicesPages && invoicesPages > 0)) {
             return;
@@ -25,10 +37,21 @@ const ContactInvoices = (props) => {
 
 
         setInvoicesPage(newPage);
-        getContactInvoices({
+        let filter = {
             page: newPage,
             clientId: props.contactId
-        }).then(data => {
+        }
+        if(contact && contact.contactType && contact.contactType == "Insurance"){
+            filter = {
+                page: newPage,
+                insuranceId: props.contactId
+                
+            }
+
+            
+        }
+        //alert(JSON.stringify(contact));
+        getContactInvoices(filter).then(data => {
             setLoading(false);
             setInvoices(data.items || []);
             setInvoicesPage(data.page);
@@ -65,7 +88,7 @@ const ContactInvoices = (props) => {
                     <tr>
                         <th>
                             <a href="#" >
-                                {t("invoice.invoiceNo")}
+                                {t("invoice.invoiceNo")} 
                             </a>
 
                         </th>

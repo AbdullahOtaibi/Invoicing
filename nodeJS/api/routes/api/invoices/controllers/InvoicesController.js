@@ -77,6 +77,7 @@ router.post("/filter", verifyToken, async (req, res) => {
     let pageSize = filters.pageSize || 20;
     let vendorId = filters.vendorId || null;
     let clientId = filters.clientId || null;
+    let insuranceId = filters.insuranceId || null;
     let contractId = filters.contractId || null ; 
     let deleted = filters.deleted || false;
     let status = filters.status || null;
@@ -121,6 +122,10 @@ router.post("/filter", verifyToken, async (req, res) => {
 
     if (clientId) {
       queryParams["$and"].push({ contact: clientId });
+    }
+    
+    if(insuranceId){
+      queryParams["$and"].push({ insurance: insuranceId });
     }
 
       console.log("abd:contractId=" +contractId) ;
