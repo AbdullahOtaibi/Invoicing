@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { getSummary } from './DashboardAPI'
 import React, { useState, useEffect } from 'react'
 import { Helmet } from "react-helmet";
-import { MdPeople, MdOutlineCardGiftcard, MdOutlineFactCheck, MdOutlinePriceChange } from 'react-icons/md'
+import { MdPeople, MdOutlineCardGiftcard, MdOutlineFactCheck, MdOutlinePriceChange, MdOutlineMoveUp } from 'react-icons/md'
 import { languages  } from '../../../globals';
 import { getEnabledLanguages } from '../../../services/TranslationsService';
 
@@ -30,6 +30,7 @@ const Summary = ({ notification, onHandleNotification }) => {
     const[countNewInvoices, setcountNewInvoices] = useState({}) ;
     const[countPostedInvoices , setCountPostedInvoices] =useState({}) ;
     const[countStuckInvoices , setcountStuckInvoices] =useState({}) ;
+    const[countRevertedInvoices , setcountRevertedInvoices] =useState({}) ;
 useEffect(()=>{
     getInvoiceSummary({status:"new" }) .
     then((data)=> {
@@ -47,12 +48,23 @@ useEffect(()=>{
         console.log("error fetching count posted invoices:" + e);
     })
 
+    
+
     getInvoiceSummary({status:"stuck" }) .
     then((data)=> {
         setcountStuckInvoices(data[0])
     }).catch(e=>{
         console.log("error fetching count stuck invoices:" + e);
     })
+
+    getInvoiceSummary({status:"reverted" }) .
+    then((data)=> {
+        setcountRevertedInvoices(data[0])
+    }).catch(e=>{
+        console.log("error fetching count reverted invoices:" + e);
+    })
+
+    
 },[]);
     console.log("Languages:=============");
     console.log(languages);
@@ -76,7 +88,7 @@ useEffect(()=>{
             <br />
             
             <div className="row row-cards-one">
-                <div className="col-md-12 col-lg-6 col-xl-4">
+                <div className="col-md-12 col-lg-6 col-xl-3">
                     <div className="mycard bg2">
                         <div className="left">
                             <h5 className="title">{t("invoice.NewInvoices")}</h5>
@@ -94,7 +106,7 @@ useEffect(()=>{
                     </div>
                 </div>
 
-                <div className="col-md-12 col-lg-6 col-xl-4">
+                <div className="col-md-12 col-lg-6 col-xl-3">
                     <div className="mycard bg6">
                         <div className="left">
                             <h5 className="title">{t("invoice.PostedInvoices")}</h5>
@@ -109,7 +121,7 @@ useEffect(()=>{
                     </div>
                 </div>
 
-                <div className="col-md-12 col-lg-6 col-xl-4">
+                <div className="col-md-12 col-lg-6 col-xl-3">
                     <div className="mycard bg1">
                         <div className="left">
                             <h5 className="title"> {t("invoice.StuckInvoices")} </h5>
@@ -125,6 +137,24 @@ useEffect(()=>{
                         </div>
                     </div>
                 </div>
+
+                <div className="col-md-12 col-lg-6 col-xl-3">
+                    <div className="mycard bg4">
+                        <div className="left">
+                            <h5 className="title"> {t("invoice.revertedInvoices")} </h5>
+                            <span className="number">
+                               {countRevertedInvoices.count}
+                            </span>
+                            <a href="/admin/invoices?status=reverted" className="link">{t("viewAll")}</a>
+                        </div>
+                        <div className="right d-flex align-self-center">
+                            <div className="icon">
+                                <MdOutlineMoveUp />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
                 {/* <div className="col-md-12 col-lg-6 col-xl-3">
                     <div className="mycard bg4">
