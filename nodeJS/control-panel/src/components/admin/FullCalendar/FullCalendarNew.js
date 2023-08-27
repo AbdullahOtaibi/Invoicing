@@ -2,26 +2,24 @@ import { React, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { creatFullCalendar } from "./FullCalendarAPI";
+import { creatFullCalendar, checkForIntersection } from "./FullCalendarAPI";
 import ContactSearchControl from "../Contact/ContactSearchControl";
 import ContractSearchControl from "../Contracts/ContractSearchControl";
-let startDate = new Date() ;
-if(startDate.getMinutes() >0 && startDate.getMinutes() < 30 ) 
-{
-startDate.setMinutes(0)
+import { MdWarning } from "react-icons/md";
+
+let startDate = new Date();
+if (startDate.getMinutes() > 0 && startDate.getMinutes() < 30) {
+  startDate.setMinutes(0)
 }
-else
-{
+else {
   startDate.setMinutes(30)
 }
 
-let endDate = new Date() ;
-if(endDate.getMinutes() < 30 ) 
-{
+let endDate = new Date();
+if (endDate.getMinutes() < 30) {
   endDate.setMinutes(30)
 }
-else
-{
+else {
   endDate.setMinutes(60)
 }
 
@@ -31,34 +29,45 @@ else
 
 const FullCalendarNew = (props) => {
 
-
+  const [intersection, setIntersection] = useState(false);
   const [fullCalendar, setFullCalendar] = useState({
     deleted: false,
     companyID: localStorage.getItem("companyId"),
     company: localStorage.getItem("company"),
-   // status: "Scheduled" ,
+    // status: "Scheduled" ,
     start: startDate,
     end: endDate,
     allDay: false,
   });
 
-  useEffect(()=>{
-    if(props.contractObj ) 
-    {
-   console.log("insert props.contractObj condition");
-   console.log(props.contractObj)
-   let contractObj = props.contractObj ; 
-     let cloned = JSON.parse(JSON.stringify(fullCalendar));
-     cloned.contactName = contractObj.contact.contactName ;
-     cloned.contact = contractObj.contact._id ; 
-     cloned.contract= contractObj._id;
-    cloned.contractSequanceNumber = contractObj.seqNumber;
-    cloned.title = contractObj.contact.contactName;
-    cloned.mobile = contractObj.contact.mobile; 
-     setFullCalendar(cloned);
+  useEffect(() => {
+    if (fullCalendar && fullCalendar.contact && fullCalendar.start && fullCalendar.end) {
+      checkForIntersection({ contactId: fullCalendar.contact, startDate: fullCalendar.start, endDate: fullCalendar.end }).then((res) => {
+        console.log("checkForIntersection ....");
+        console.log(res);
+        setIntersection(res.exists);
+       
+      });
     }
 
-  } , [])
+  }, [ fullCalendar.contact, fullCalendar.start, fullCalendar.end]);
+
+  useEffect(() => {
+    if (props.contractObj) {
+      console.log("insert props.contractObj condition");
+      console.log(props.contractObj)
+      let contractObj = props.contractObj;
+      let cloned = JSON.parse(JSON.stringify(fullCalendar));
+      cloned.contactName = contractObj.contact.contactName;
+      cloned.contact = contractObj.contact._id;
+      cloned.contract = contractObj._id;
+      cloned.contractSequanceNumber = contractObj.seqNumber;
+      cloned.title = contractObj.contact.contactName;
+      cloned.mobile = contractObj.contact.mobile;
+      setFullCalendar(cloned);
+    }
+
+  }, [])
 
   const selectFieldClass = (value, minQuantity) => {
     if (!wasValidated) return "form-select";
@@ -87,23 +96,23 @@ const FullCalendarNew = (props) => {
   };
 
   //const [contract, setContract] = useState({});
-  const  handleSelectContract = (selectedContract) => {
+  const handleSelectContract = (selectedContract) => {
     console.log("insert handleSelectContract method");
     let cloned = JSON.parse(JSON.stringify(fullCalendar));
     cloned.contract = selectedContract._id;
     setFullCalendar(cloned);
-  }			
-const setMobile = (event) => {
-  let cloned = JSON.parse(JSON.stringify(fullCalendar));
-  cloned.mobile = event.target.value;
-  setFullCalendar(cloned);
-};
+  }
+  const setMobile = (event) => {
+    let cloned = JSON.parse(JSON.stringify(fullCalendar));
+    cloned.mobile = event.target.value;
+    setFullCalendar(cloned);
+  };
 
-const setStatus = (event)=> {
-  let cloned = JSON.parse(JSON.stringify(fullCalendar));
-  cloned.status = event.target.value;
-  setFullCalendar(cloned);
-}
+  const setStatus = (event) => {
+    let cloned = JSON.parse(JSON.stringify(fullCalendar));
+    cloned.status = event.target.value;
+    setFullCalendar(cloned);
+  }
 
   const setNote = (event) => {
     let cloned = JSON.parse(JSON.stringify(fullCalendar));
@@ -156,14 +165,13 @@ const setStatus = (event)=> {
       console.log("ready to add new calendar ...");
       creatFullCalendar(fullCalendar)
         .then((res) => {
-   
+
           console.log("fullCalendar has been created ....");
-          if(props.onSave){
+          if (props.onSave) {
             props.onSave();
           }
-          if( props.updateFullCalendar) 
-          {
-            props.updateFullCalendar() ;
+          if (props.updateFullCalendar) {
+            props.updateFullCalendar();
           }
           //setShow(false);
         })
@@ -191,7 +199,7 @@ const setStatus = (event)=> {
 
     console.log(
       " ( new Date(fullCalendar.start) >= new Date(fullCalendar.end))" +
-        (new Date(fullCalendar.start) >= new Date(fullCalendar.end))
+      (new Date(fullCalendar.start) >= new Date(fullCalendar.end))
     );
     if (new Date(fullCalendar.start) >= new Date(fullCalendar.end)) {
       console.log("End Date must be greater than Start Date");
@@ -202,16 +210,16 @@ const setStatus = (event)=> {
 
   const selectedConatct = (item) => {
     if (item) {
-      console.log("selectedConatct ....") ;
+      console.log("selectedConatct ....");
       let cloned = JSON.parse(JSON.stringify(fullCalendar));
       cloned.contactName = item.contactName;
       cloned.contact = item._id;
       cloned.title = item.contactName;
-      cloned.mobile = item.mobile; 
-      cloned.contract = ""; 
+      cloned.mobile = item.mobile;
+      cloned.contract = "";
       setFullCalendar(cloned);
-     // handleSelectContract(null)
-      
+      // handleSelectContract(null)
+
     }
   };
 
@@ -229,26 +237,36 @@ const setStatus = (event)=> {
   return (
     <>
       <form>
+        {intersection == true ? (<div className="row">
+          <div className="col">
+            <div className="alert alert-warning" role="alert">
+              <MdWarning size={40} />
+              Contact already has an appointment in the selected time range
+            </div>
+          </div>
+        </div>) : null}
 
-      <div className="row">
+
+
+        <div className="row">
           <div className="mb-3 col ">
             <div className="col col-auto">{t("FullCalendar.contactName")} </div>
 
-            <div className="col">            
-<ContactSearchControl
-                    handleSelectContact={selectedConatct}
-                    wasValidated={wasValidated}
-                    value = {fullCalendar.contactName}
-                    contactType = {["Client" , "Vendor"]}
-                    readOnly= { props.contractObj ? true : false}
-                  />
+            <div className="col">
+              <ContactSearchControl
+                handleSelectContact={selectedConatct}
+                wasValidated={wasValidated}
+                value={fullCalendar.contactName}
+                contactType={["Client", "Vendor"]}
+                readOnly={props.contractObj ? true : false}
+              />
 
             </div>
           </div>
         </div>
 
-    
-      <div className="row">
+
+        <div className="row">
           <div className="mb-3 col ">
             <div className="col col-auto">{t("FullCalendar.title")} </div>
 
@@ -265,8 +283,8 @@ const setStatus = (event)=> {
             </div>
           </div>
         </div>
-   
-      
+
+
 
         <div className="row">
           <div className="mb-3 col ">
@@ -290,12 +308,12 @@ const setStatus = (event)=> {
           <div className="mb-3 col ">
             <div className="col col-auto">{t("FullCalendar.contract")} {fullCalendar.contractSeqNumber}  </div>
 
-            <div className="col">            
-            <ContractSearchControl handleSelectContract={handleSelectContract} 
-            clientId={fullCalendar.contact} 
-            value = { fullCalendar.contractSequanceNumber }
-            readOnly= { props.contractObj ? true : false}
-            />
+            <div className="col">
+              <ContractSearchControl handleSelectContract={handleSelectContract}
+                clientId={fullCalendar.contact}
+                value={fullCalendar.contractSequanceNumber}
+                readOnly={props.contractObj ? true : false}
+              />
 
             </div>
           </div>
@@ -345,13 +363,13 @@ const setStatus = (event)=> {
           <div className="mb-3 col ">
             <div className="col col-auto">{t("FullCalendar.employeeName")} </div>
 
-            <div className="col">            
-<ContactSearchControl
-                    handleSelectContact={selectedEmployee}
-                    wasValidated={false}
-                    value = {fullCalendar.employeeName}
-                    contactType = {["Employee"]}
-                  />
+            <div className="col">
+              <ContactSearchControl
+                handleSelectContact={selectedEmployee}
+                wasValidated={false}
+                value={fullCalendar.employeeName}
+                contactType={["Employee"]}
+              />
 
             </div>
           </div>
@@ -359,30 +377,30 @@ const setStatus = (event)=> {
 
 
         <div className="row">
-        <div className="mb-3 col ">
-        <div className="col col-auto">{t("FullCalendar.status")} </div>
-        <div className="col">
-                  <select
-                    type="text"
-                    className={selectFieldClass(fullCalendar.status)}
-                    id="status"
-                    name="title"
-                    onChange={setStatus}
-                  >
-                    <option value="Scheduled"> Scheduled </option>
-                    <option value="Completed">Completed</option>
-                    <option value="In Complete">In Complete</option>
-                  </select>
-              
+          <div className="mb-3 col ">
+            <div className="col col-auto">{t("FullCalendar.status")} </div>
+            <div className="col">
+              <select
+                type="text"
+                className={selectFieldClass(fullCalendar.status)}
+                id="status"
+                name="title"
+                onChange={setStatus}
+              >
+                <option value="Scheduled"> Scheduled </option>
+                <option value="Completed">Completed</option>
+                <option value="In Complete">In Complete</option>
+              </select>
 
+
+            </div>
+          </div>
         </div>
-        </div>
-        </div>
 
 
 
 
-   
+
         <div className="row">
           <div className="mb-3 col ">
             <div className="col col-auto">{t("FullCalendar.note")} </div>
@@ -433,7 +451,7 @@ const setStatus = (event)=> {
       </form>
     </>
   );
-  
+
 };
 
 export default FullCalendarNew;

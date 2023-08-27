@@ -28,6 +28,10 @@ export const creatFullCalendar = (fullCalendar) => {
     return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/FullCalendars/create", fullCalendar);
 }
 
+export const checkForIntersection = (filters) => {
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/FullCalendars/checkForIntersection", filters);
+}
+
 export const updateFullCalendar= (fullCalendar) => {
     return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/FullCalendars/update", fullCalendar);
 }
