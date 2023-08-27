@@ -110,7 +110,6 @@ const ContactSearchControl = (props) => {
           </div>
           <div className="row">
             <div className="col">
-
               <ul className="list-group scrollbar" id="style-7">
                 {contactItems
                   ? contactItems.map((item) => (

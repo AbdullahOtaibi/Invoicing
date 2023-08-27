@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./Search.css";
-import { MdSearch} from "react-icons/md";
+import { MdSearch } from "react-icons/md";
 import { useTranslation } from "react-i18next";
-import { searchPackage} from "./PackageAPI";
+import { searchPackage } from "./PackageAPI";
 import { json } from "react-router-dom";
 const PackageSearchControl = (props) => {
   const { t } = useTranslation();
@@ -26,22 +26,22 @@ const PackageSearchControl = (props) => {
 
   const updateSearchPackageText = (event) => {
     setSelectedPackageText(event.target.value);
-   // if (event.target.value.length >= 3 ||  props.contactType[0] == "Employee" ) {
-    
-   let filter = {
-    val: event.target.value,
-    //contactType: contactType, 
-  };
+    // if (event.target.value.length >= 3 ||  props.contactType[0] == "Employee" ) {
 
-   searchPackage(filter)
-        .then((data) => {
-          console.log(data.items);
-          setPackageItems(data.items);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    
+    let filter = {
+      val: event.target.value,
+      //contactType: contactType, 
+    };
+
+    searchPackage(filter)
+      .then((data) => {
+        console.log(data.items);
+        setPackageItems(data.items);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+
     /*  } else {
       setPackageItems([]);
     }
@@ -50,15 +50,15 @@ const PackageSearchControl = (props) => {
     props.handleSelectPackage(null);
   };
 
-  
+
   const onBlurSearchPackage = (event) => {
-     //event.preventDefault();
-     // setPackageItems([]);
-     /*if(selectedId)
-     {
-      setPackageItems([]);
-     }
-     */
+    //event.preventDefault();
+    // setPackageItems([]);
+    /*if(selectedId)
+    {
+     setPackageItems([]);
+    }
+    */
   };
 
 
@@ -79,7 +79,7 @@ const PackageSearchControl = (props) => {
           <MdSearch size={20} />
         </span>
         <input
-         readOnly= { props.readOnly? "readnoly" : ""}
+          readOnly={props.readOnly ? "readnoly" : ""}
           className={fieldClass1(selectedPackageText)}
           placeholder="Type to search..."
           autoComplete="false"
@@ -90,52 +90,65 @@ const PackageSearchControl = (props) => {
         />
       </div>
 
-      {packageItems && packageItems.length > 0  &&  ! props.readOnly ? (
-        <ul className="list-group scrollbar p-2" id="style-7">
+      {packageItems && packageItems.length > 0 && !props.readOnly ? (
 
-          {packageItems
-            ? packageItems.map((item) => (
-                <>
-               
-                  <li
-                    className="searchItem  list-group-item list-group-item-light"
-                    onClick={() => {
-                      if( ! props.readOnly)  
-                      handleSelectPackage(item);
-                    }}
-                  >
-                    {
-                    (
-                    
-                    <div className="row">
-                      <div className="mb-3 col ">
-                      
-                 
-                        <div>
-                        <span class= "text-info">{ "Package: "}</span>    
-                        <span className="text-secondary"> {item.packageName}  </span>
-                        </div>
-                        <div>
-                        <span class= "text-info">{ "Price: "}</span> 
-                        <span className="text-secondary"> </span>{item.price} 
-                        </div>
-                        <div>
-                        <span class= "text-info">{ "Number Of Set: "}</span> 
-                        <span className="text-secondary"> {item.numberOfSet} </span>
-                        </div>
-                       
-                         
-                       
-                   
-                      </div>
-                    </div>
-                    )
-                   }
-                  </li>
-                </>
-              ))
-            : null}
-        </ul>
+
+        <div className="scrollbar p-2" style={{ maxHeight: '376px', overflowY: 'auto', position: 'absolute', width: '420px', zIndex: 99 }}>
+          <div className="row  mb-2">
+            <div className="col text-end">
+              <button type='button' className="btn btn-sm btn-outline-danger w-100" onClick={() => setPackageItems([])}>CLOSE</button>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <ul className="list-group " id="style-7">
+                {packageItems
+                  ? packageItems.map((item) => (
+                    <>
+
+                      <li
+                        className="searchItem  list-group-item list-group-item-light"
+                        onClick={() => {
+                          if (!props.readOnly)
+                            handleSelectPackage(item);
+                        }}
+                      >
+                        {
+                          (
+
+                            <div className="row">
+                              <div className="mb-3 col ">
+
+
+                                <div>
+                                  <span class="text-info">{"Package: "}</span>
+                                  <span className="text-secondary"> {item.packageName}  </span>
+                                </div>
+                                <div>
+                                  <span class="text-info">{"Price: "}</span>
+                                  <span className="text-secondary"> </span>{item.price}
+                                </div>
+                                <div>
+                                  <span class="text-info">{"Number Of Set: "}</span>
+                                  <span className="text-secondary"> {item.numberOfSet} </span>
+                                </div>
+
+
+
+
+                              </div>
+                            </div>
+                          )
+                        }
+                      </li>
+                    </>
+                  ))
+                  : null}
+              </ul>
+            </div>
+          </div>
+        </div>
+
       ) : null}
     </>
   );

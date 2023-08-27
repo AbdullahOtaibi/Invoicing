@@ -26,8 +26,8 @@ const ReceiptSearchControl = (props) => {
 
   const updateSearchReceiptText = (event) => {
     setSelectedReceiptText(event.target.value);
-    if (event.target.value.length >= 3 ) {
-      
+    if (event.target.value.length >= 3) {
+
       let filter = {
         val: event.target.value,
         clientId: props.clientId
@@ -49,27 +49,27 @@ const ReceiptSearchControl = (props) => {
     props.handleSelectReceipt(null);
   };
 
-  
+
   const onBlurSearchReceipt = (event) => {
-     //event.preventDefault();
-     // setReceiptItems([]);
-     /*if(selectedId)
-     {
-      setReceiptItems([]);
-     }
-     */
+    //event.preventDefault();
+    // setReceiptItems([]);
+    /*if(selectedId)
+    {
+     setReceiptItems([]);
+    }
+    */
   };
 
-/*
-const onBlurSearchReceipt = (item) => {
-  setSelectedId(item);
-  if (props.handleSelectReceipt) {
-    props.handleSelectReceipt(item);
-  }
-  setSelectedReceiptText(item.contactName);
-  setReceiptItems([]);
-};
-*/
+  /*
+  const onBlurSearchReceipt = (item) => {
+    setSelectedId(item);
+    if (props.handleSelectReceipt) {
+      props.handleSelectReceipt(item);
+    }
+    setSelectedReceiptText(item.contactName);
+    setReceiptItems([]);
+  };
+  */
   const [receiptItems, setReceiptItems] = useState([]);
   const handleSelectReceipt = (item) => {
     setSelectedId(item);
@@ -98,41 +98,52 @@ const onBlurSearchReceipt = (item) => {
       </div>
 
       {receiptItems && receiptItems.length > 0 ? (
-        <ul className="list-group scrollbar p-2" id="style-7">
-          {receiptItems
-            ? receiptItems.map((item) => (
-                <>
-               
-                  <li
-                    className="searchItem  list-group-item list-group-item-light"
-                    onClick={() => {
-                      handleSelectReceipt(item);
-                    }}
-                  >
-                    {(props.contactType && props.contactType.length == 1)? <div>{ item.seqNumber}</div> :
-                    (
-                    
-                    <div className="row">
-                      <div className="mb-3 col ">
+        <div className="scrollbar p-2" style={{ maxHeight: '376px', overflowY: 'auto', position: 'absolute', width: '420px', zIndex: 99 }}>
+          <div className="row  mb-2">
+            <div className="col text-end">
+              <button type='button' className="btn btn-sm btn-outline-danger w-100" onClick={() => setReceiptItems([])}>CLOSE</button>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <ul className="list-group scrollbar p-2" id="style-7">
+                {receiptItems
+                  ? receiptItems.map((item) => (
+                    <>
 
-                        <div>
-                          <MdContactPage size={25} />{" "}
-                          <span className="text-secondary">
-                            {item.seqNumber}
-                          </span>
-                        </div>
-                       
-                      </div>
+                      <li
+                        className="searchItem  list-group-item list-group-item-light"
+                        onClick={() => {
+                          handleSelectReceipt(item);
+                        }}
+                      >
+                        {(props.contactType && props.contactType.length == 1) ? <div>{item.seqNumber}</div> :
+                          (
 
-                      
-                    </div>
-                    )
-                   }
-                  </li>
-                </>
-              ))
-            : null}
-        </ul>
+                            <div className="row">
+                              <div className="mb-3 col ">
+
+                                <div>
+                                  <MdContactPage size={25} />{" "}
+                                  <span className="text-secondary">
+                                    {item.seqNumber}
+                                  </span>
+                                </div>
+
+                              </div>
+
+
+                            </div>
+                          )
+                        }
+                      </li>
+                    </>
+                  ))
+                  : null}
+              </ul>
+            </div>
+          </div>
+        </div>
       ) : null}
     </>
   );

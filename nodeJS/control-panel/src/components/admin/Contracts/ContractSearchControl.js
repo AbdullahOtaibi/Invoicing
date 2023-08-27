@@ -47,10 +47,10 @@ const ContractSearchControl = (props) => {
     }
 
     setSelectedId(null);
-    if(props.handleSelectContract){
+    if (props.handleSelectContract) {
       props.handleSelectContract(null);
     }
-   
+
   };
 
 
@@ -68,7 +68,7 @@ const ContractSearchControl = (props) => {
   const handleSelectContract = (item) => {
     setSelectedId(item);
     if (props.handleSelectContract) {
-      console.log("call handleSelectContract method from contract search control" + item) ;
+      console.log("call handleSelectContract method from contract search control" + item);
       console.log(JSON.stringify(item))
       props.handleSelectContract(item);
     }
@@ -83,7 +83,7 @@ const ContractSearchControl = (props) => {
           <MdSearch size={20} />
         </span>
         <input
-         readOnly= { props.readOnly? "readnoly" : ""}
+          readOnly={props.readOnly ? "readnoly" : ""}
           className={fieldClass1(selectedContractText)}
           placeholder="Type to search..."
           autoComplete="false"
@@ -94,55 +94,66 @@ const ContractSearchControl = (props) => {
         />
       </div>
 
-      {contractItems && contractItems.length > 0 &&  ! props.readOnly  ?  (
-        <ul className="list-group scrollbar p-2" id="style-7">
-          {contractItems
-            ? contractItems.map((item) => (
-              <>
+      {contractItems && contractItems.length > 0 && !props.readOnly ? (
+        <div className="scrollbar p-2" style={{ maxHeight: '376px', overflowY: 'auto', position: 'absolute', width: '420px', zIndex: 99 }}>
+          <div className="row  mb-2">
+            <div className="col text-end">
+              <button type='button' className="btn btn-sm btn-outline-danger w-100" onClick={() => setContractItems([])}>CLOSE</button>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <ul className="list-group scrollbar p-2" id="style-7">
+                {contractItems
+                  ? contractItems.map((item) => (
+                    <>
 
-                <li
-                  className="searchItem  list-group-item list-group-item-light"
-                  onClick={() => {
-                    if( ! props.readOnly)  
-                    handleSelectContract(item);
-                  }}
-                >
-                  {
-                    (
-                      <>
-                        <div className="row">
-                          <div className="mb-3 col ">
+                      <li
+                        className="searchItem  list-group-item list-group-item-light"
+                        onClick={() => {
+                          if (!props.readOnly)
+                            handleSelectContract(item);
+                        }}
+                      >
+                        {
+                          (
+                            <>
+                              <div className="row">
+                                <div className="mb-3 col ">
 
-                            <div>
-                            
-                              <span className="text-secondary">
-                              <LiaFileContractSolid size={25} className="text-info" />{" "}
-                                {item.seqNumber} {" "}
-                             
-                              <MdContactPage size={25}  className="text-info"  />{" "}
-                                {item.contact.contactName} {" "}
-                         
-                              <MdMoney size={25}  className="text-info" />{" "}
-                                {item.contractBalance} JOD
-                              </span>
+                                  <div>
 
-                            </div>
+                                    <span className="text-secondary">
+                                      <LiaFileContractSolid size={25} className="text-info" />{" "}
+                                      {item.seqNumber} {" "}
 
-                     
+                                      <MdContactPage size={25} className="text-info" />{" "}
+                                      {item.contact.contactName} {" "}
 
-                          </div>
+                                      <MdMoney size={25} className="text-info" />{" "}
+                                      {item.contractBalance} JOD
+                                    </span>
+
+                                  </div>
 
 
-                        </div>
-                       
-                      </>
-                    )
-                  }
-                </li>
-              </>
-            ))
-            : null}
-        </ul>
+
+                                </div>
+
+
+                              </div>
+
+                            </>
+                          )
+                        }
+                      </li>
+                    </>
+                  ))
+                  : null}
+              </ul>
+            </div>
+          </div>
+        </div>
       ) : null}
     </>
   );
