@@ -3,10 +3,10 @@ import { getSummary } from './DashboardAPI'
 import React, { useState, useEffect } from 'react'
 import { Helmet } from "react-helmet";
 import { MdPeople, MdOutlineCardGiftcard, MdOutlineFactCheck, MdOutlinePriceChange, MdOutlineMoveUp } from 'react-icons/md'
-import { languages  } from '../../../globals';
+import { languages } from '../../../globals';
 import { getEnabledLanguages } from '../../../services/TranslationsService';
 
-import {getInvoiceSummary} from '../../admin/Invoices/InvoicesAPI'
+import { getInvoiceSummary } from '../../admin/Invoices/InvoicesAPI'
 
 
 
@@ -16,7 +16,7 @@ import {getInvoiceSummary} from '../../admin/Invoices/InvoicesAPI'
 const Summary = ({ notification, onHandleNotification }) => {
 
 
-    
+
     const { t } = useTranslation();
     const [summary, setSummary] = useState({
         orders: 0,
@@ -24,55 +24,55 @@ const Summary = ({ notification, onHandleNotification }) => {
         quotations: 0,
         products: 0,
         newOrders: 0,
-        newClients:0
+        newClients: 0
     });
 
-    const[countNewInvoices, setcountNewInvoices] = useState({}) ;
-    const[countPostedInvoices , setCountPostedInvoices] =useState({}) ;
-    const[countStuckInvoices , setcountStuckInvoices] =useState({}) ;
-    const[countRevertedInvoices , setcountRevertedInvoices] =useState({}) ;
-useEffect(()=>{
-    getInvoiceSummary({status:"new" }) .
-    then((data)=> {
-        console.log("abd") ;
-        console.log(data[0]) ;
-        setcountNewInvoices(data[0])
-    }).catch(e=>{
-        console.log("error fetching count new invoices:" + e);
-    })
+    const [countNewInvoices, setcountNewInvoices] = useState({});
+    const [countPostedInvoices, setCountPostedInvoices] = useState({});
+    const [countStuckInvoices, setcountStuckInvoices] = useState({});
+    const [countRevertedInvoices, setcountRevertedInvoices] = useState({});
+    useEffect(() => {
+        getInvoiceSummary({ status: "new" }).
+            then((data) => {
+                console.log("abd");
+                console.log(data[0]);
+                setcountNewInvoices(data[0])
+            }).catch(e => {
+                console.log("error fetching count new invoices:" + e);
+            })
 
-    getInvoiceSummary({status:"posted" }) .
-    then((data)=> {
-        setCountPostedInvoices(data[0])
-    }).catch(e=>{
-        console.log("error fetching count posted invoices:" + e);
-    })
+        getInvoiceSummary({ status: "posted" }).
+            then((data) => {
+                setCountPostedInvoices(data[0])
+            }).catch(e => {
+                console.log("error fetching count posted invoices:" + e);
+            })
 
-    
 
-    getInvoiceSummary({status:"stuck" }) .
-    then((data)=> {
-        setcountStuckInvoices(data[0])
-    }).catch(e=>{
-        console.log("error fetching count stuck invoices:" + e);
-    })
 
-    getInvoiceSummary({status:"reverted" }) .
-    then((data)=> {
-        setcountRevertedInvoices(data[0])
-    }).catch(e=>{
-        console.log("error fetching count reverted invoices:" + e);
-    })
+        getInvoiceSummary({ status: "stuck" }).
+            then((data) => {
+                setcountStuckInvoices(data[0])
+            }).catch(e => {
+                console.log("error fetching count stuck invoices:" + e);
+            })
 
-    
-},[]);
+        getInvoiceSummary({ status: "reverted" }).
+            then((data) => {
+                setcountRevertedInvoices(data[0])
+            }).catch(e => {
+                console.log("error fetching count reverted invoices:" + e);
+            })
+
+
+    }, []);
     console.log("Languages:=============");
     console.log(languages);
-   
-   
 
 
-  
+
+
+
 
     return (
         <div className="conatiner">
@@ -86,14 +86,14 @@ useEffect(()=>{
 
             </div>
             <br />
-            
+
             <div className="row row-cards-one">
                 <div className="col-md-12 col-lg-6 col-xl-3">
                     <div className="mycard bg2">
                         <div className="left">
                             <h5 className="title">{t("invoice.NewInvoices")}</h5>
                             <span className="number">
-                            {countNewInvoices.count}
+                                {countNewInvoices.count}
                             </span>
                             <a href="/admin/invoices?status=new" className="link">{t("viewAll")}</a>
                         </div>
@@ -126,7 +126,7 @@ useEffect(()=>{
                         <div className="left">
                             <h5 className="title"> {t("invoice.StuckInvoices")} </h5>
                             <span className="number">
-                               {countStuckInvoices.count}
+                                {countStuckInvoices.count}
                             </span>
                             <a href="/admin/invoices?status=stuck" className="link">{t("viewAll")}</a>
                         </div>
@@ -143,7 +143,7 @@ useEffect(()=>{
                         <div className="left">
                             <h5 className="title"> {t("invoice.revertedInvoices")} </h5>
                             <span className="number">
-                               {countRevertedInvoices.count}
+                                {countRevertedInvoices.count}
                             </span>
                             <a href="/admin/invoices?status=reverted" className="link">{t("viewAll")}</a>
                         </div>
@@ -178,66 +178,66 @@ useEffect(()=>{
             </div>
 
             <div className="row row-cards-one">
-                
-                <div className="col-md-6 col-xl-4">
+
+                <div className="col-md-6 col-xl-3">
                     <div className="card c-info-box-area">
                         <div className="c-info-box box2">
                             <p>  {countNewInvoices.count} </p>
                         </div>
                         <div className="c-info-box-content">
                             <h6 className="title text-left text-info">Total Summary:</h6>
-                  
+
                             <table className='text text-left'>
                                 <tbody>
                                     <tr>
-                                        <td > {t("invoice.sumTaxInclusiveAmount")}  </td> 
-                                        <td>{ numericFormat(countNewInvoices.sumTaxInclusiveAmount)}</td>
+                                        <td > {t("invoice.sumTaxInclusiveAmount")}  </td>
+                                        <td>{numericFormat(countNewInvoices.sumTaxInclusiveAmount)}</td>
                                     </tr>
                                     <tr >
-                                        <td className='pr-2'>{t("invoice.sumAllowanceTotalAmount")}   </td> 
-                                        <td>{ numericFormat(countNewInvoices.sumAllowanceTotalAmount)}</td>
+                                        <td className='pr-2'>{t("invoice.sumAllowanceTotalAmount")}   </td>
+                                        <td>{numericFormat(countNewInvoices.sumAllowanceTotalAmount)}</td>
                                     </tr>
                                 </tbody>
                                 <tfoot className='font-weight-bold text-info'>
-                                <td> {t("invoice.taxExclusiveAmount")}  </td> 
-                                <td>{ numericFormat(countNewInvoices.taxExclusiveAmount)}</td>
+                                    <td> {t("invoice.taxExclusiveAmount")}  </td>
+                                    <td>{numericFormat(countNewInvoices.taxExclusiveAmount)}</td>
                                 </tfoot>
                             </table>
 
-                        
+
                         </div>
                     </div>
                 </div>
-                <div className="col-md-6 col-xl-4">
+                <div className="col-md-6 col-xl-3">
                     <div className="card c-info-box-area">
                         <div className="c-info-box box4">
                             <p>{countPostedInvoices.count}</p>
                         </div>
                         <div className="c-info-box-content">
                             <h6 className="title text-left text-success">Total Summary:</h6>
-                     
+
                             <table className='text text-left'>
                                 <tbody>
                                     <tr>
-                                        <td > {t("invoice.sumTaxInclusiveAmount")}  </td> 
-                                        <td>{ numericFormat(countPostedInvoices.sumTaxInclusiveAmount)}</td>
+                                        <td > {t("invoice.sumTaxInclusiveAmount")}  </td>
+                                        <td>{numericFormat(countPostedInvoices.sumTaxInclusiveAmount)}</td>
                                     </tr>
                                     <tr >
-                                        <td className='pr-2'>{t("invoice.sumAllowanceTotalAmount")}   </td> 
-                                        <td>{ numericFormat(countPostedInvoices.sumAllowanceTotalAmount)}</td>
+                                        <td className='pr-2'>{t("invoice.sumAllowanceTotalAmount")}   </td>
+                                        <td>{numericFormat(countPostedInvoices.sumAllowanceTotalAmount)}</td>
                                     </tr>
                                 </tbody>
                                 <tfoot className='font-weight-bold text-success'>
-                                <td> {t("invoice.taxExclusiveAmount")}  </td> 
-                                <td>{ numericFormat(countPostedInvoices.taxExclusiveAmount)}</td>
+                                    <td> {t("invoice.taxExclusiveAmount")}  </td>
+                                    <td>{numericFormat(countPostedInvoices.taxExclusiveAmount)}</td>
                                 </tfoot>
                             </table>
-                       
+
                         </div>
                     </div>
                 </div>
 
-                <div className="col-md-6 col-xl-4">
+                <div className="col-md-6 col-xl-3">
                     <div className="card c-info-box-area">
                         <div className="c-info-box box1">
                             <p>{countStuckInvoices.count}</p>
@@ -247,17 +247,17 @@ useEffect(()=>{
                             <table className='text text-left'>
                                 <tbody>
                                     <tr>
-                                        <td > {t("invoice.sumTaxInclusiveAmount")}  </td> 
-                                        <td>{ numericFormat(countStuckInvoices.sumTaxInclusiveAmount)}</td>
+                                        <td > {t("invoice.sumTaxInclusiveAmount")}  </td>
+                                        <td>{numericFormat(countStuckInvoices.sumTaxInclusiveAmount)}</td>
                                     </tr>
                                     <tr >
-                                        <td className='pr-2'>{t("invoice.sumAllowanceTotalAmount")}   </td> 
-                                        <td>{ numericFormat(countStuckInvoices.sumAllowanceTotalAmount)}</td>
+                                        <td className='pr-2'>{t("invoice.sumAllowanceTotalAmount")}   </td>
+                                        <td>{numericFormat(countStuckInvoices.sumAllowanceTotalAmount)}</td>
                                     </tr>
                                 </tbody>
                                 <tfoot className='font-weight-bold text-warning'>
-                                <td> {t("invoice.taxExclusiveAmount")}  </td> 
-                                <td>{ numericFormat(countStuckInvoices.taxExclusiveAmount)}</td>
+                                    <td> {t("invoice.taxExclusiveAmount")}  </td>
+                                    <td>{numericFormat(countStuckInvoices.taxExclusiveAmount)}</td>
                                 </tfoot>
                             </table>
 
@@ -265,6 +265,33 @@ useEffect(()=>{
                     </div>
                 </div>
 
+                <div className="col-md-6 col-xl-3">
+                    <div className="card c-info-box-area">
+                        <div className="c-info-box box4">
+                            <p>{countStuckInvoices.count}</p>
+                        </div>
+                        <div className="c-info-box-content">
+                            <h6 className="title text-left text-warning ">Total Summary:</h6>
+                            <table className='text text-left'>
+                                <tbody>
+                                    <tr>
+                                        <td > {t("invoice.sumTaxInclusiveAmount")}  </td>
+                                        <td>{numericFormat(countRevertedInvoices.sumTaxInclusiveAmount)}</td>
+                                    </tr>
+                                    <tr >
+                                        <td className='pr-2'>{t("invoice.sumAllowanceTotalAmount")}   </td>
+                                        <td>{numericFormat(countRevertedInvoices.sumAllowanceTotalAmount)}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot className='font-weight-bold text-warning'>
+                                    <td> {t("invoice.taxExclusiveAmount")}  </td>
+                                    <td>{numericFormat(countRevertedInvoices.taxExclusiveAmount)}</td>
+                                </tfoot>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
                 {/* <div className="col-md-6 col-xl-3">
                     <div className="card c-info-box-area">
                         <div className="c-info-box box3">
@@ -289,9 +316,8 @@ useEffect(()=>{
         </div>
     )
 
-    function numericFormat(val)
-    {
-        return ! isNaN (val)? val.toFixed(3): val ; 
+    function numericFormat(val) {
+        return !isNaN(val) ? val.toFixed(3) : val;
     }
 }
 

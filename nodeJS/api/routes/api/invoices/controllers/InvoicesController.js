@@ -176,6 +176,7 @@ router.post("/filter", verifyToken, async (req, res) => {
     console.log("queryParams:" + queryParams);
     query = Invoice.find(queryParams)
       .populate("user", "-password")
+      .populate("contract")
       .sort(sortParams);
 
     countQuery = Invoice.find(queryParams)

@@ -139,6 +139,9 @@ const ListInv = (props) => {
                           
 
                         </th>
+                        <th>
+                            {t("contracts.contractNo")}
+                        </th>
                         <th>   {t("invoice.status")} </th>
                         <th>  {t("invoice.TaxExclusiveAmount")} </th>
                         <th>  {t("invoice.AllowanceTotalAmount")}</th>
@@ -174,6 +177,9 @@ const ListInv = (props) => {
 
                                     </Link>
                                 </td>
+                                <td>
+                                    {item.contract.seqNumber}
+                                </td>
                                 <td> {item.status}</td>
                                 <td> {item.legalMonetaryTotal.taxExclusiveAmount.toFixed(3)}</td>
                                 <td> {item.legalMonetaryTotal.allowanceTotalAmount.toFixed(3)}</td>
@@ -189,11 +195,11 @@ const ListInv = (props) => {
 
                                 {(props.status) != "posted" ?
                                     <td className="justify-content-end" style={{ textAlign: 'end' }}>
-                                      <><Link className="btn btn-primary" to={"/admin/invoices/edit/" + item._id} title={t("dashboard.edit")}  
+                                      <><Link className="btn btn-primary d-print-none" to={"/admin/invoices/edit/" + item._id} title={t("dashboard.edit")}  
                                         style={{ pointerEvents: item.status=='posted' || item.status == 'reverted' ? 'none' : 'auto'
                                         , color:  item.status=='posted' || item.status == 'reverted'  ? 'gray' : '' }}>
                                         Edit <MdEdit /> </Link> </>
-                                       <a href="#" onClick={() => {printExternal('/admin/invoices/ViewInvoice/' + item._id)}} className="btn btn-dark" title={t("dashboard.print")} style={{ marginLeft: '5px' }}>
+                                       <a href="#" onClick={() => {printExternal('/admin/invoices/ViewInvoice/' + item._id)}} className="btn btn-dark d-print-none" title={t("dashboard.print")} style={{ marginLeft: '5px' }}>
                                         <MdPrint />
                                         </a>
                                     </td>

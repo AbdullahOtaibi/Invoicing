@@ -576,6 +576,7 @@
     "seqNumber": "Sequance Number"
   },
   "contracts": {
+    "contractNo": "Contract No.",
     "contracts": "Contracts",
     "addNewContract": "Add New Contract",
     "contractName": "Contract Name",
