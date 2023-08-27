@@ -10,8 +10,8 @@ const ContactSearchControl = (props) => {
   const [selectedId, setSelectedId] = useState(null);
   useEffect(() => {
     if (props) {
-      console.log("search contact props.value =" +props.value) ;
-      setSelectedContactText(props.value); 
+      console.log("search contact props.value =" + props.value);
+      setSelectedContactText(props.value);
     }
   }, [props]);
 
@@ -21,12 +21,12 @@ const ContactSearchControl = (props) => {
       wasValidated = props.wasValidated;
     }
     if (!wasValidated) return "form-control";
-    return selectedId  ? "form-control is-valid" : "form-control is-invalid";
+    return selectedId ? "form-control is-valid" : "form-control is-invalid";
   };
 
   const updateSearchContactText = (event) => {
     setSelectedContactText(event.target.value);
-    if (event.target.value.length >= 3 ||  props.contactType[0] == "Employee" ||  props.contactType[0] == "Insurance"  ) {
+    if (event.target.value.length >= 3 || props.contactType[0] == "Employee" || props.contactType[0] == "Insurance") {
       let contactType = ["Client"];
       if (props.contactType) {
         contactType = props.contactType;
@@ -52,27 +52,27 @@ const ContactSearchControl = (props) => {
     props.handleSelectContact(null);
   };
 
-  
+
   const onBlurSearchContact = (event) => {
-     //event.preventDefault();
-     // setContactItems([]);
-     /*if(selectedId)
-     {
-      setContactItems([]);
-     }
-     */
+    //event.preventDefault();
+    // setContactItems([]);
+    /*if(selectedId)
+    {
+     setContactItems([]);
+    }
+    */
   };
 
-/*
-const onBlurSearchContact = (item) => {
-  setSelectedId(item);
-  if (props.handleSelectContact) {
-    props.handleSelectContact(item);
-  }
-  setSelectedContactText(item.contactName);
-  setContactItems([]);
-};
-*/
+  /*
+  const onBlurSearchContact = (item) => {
+    setSelectedId(item);
+    if (props.handleSelectContact) {
+      props.handleSelectContact(item);
+    }
+    setSelectedContactText(item.contactName);
+    setContactItems([]);
+  };
+  */
   const [contactItems, setContactItems] = useState([]);
   const handleSelectContact = (item) => {
     setSelectedId(item);
@@ -90,7 +90,7 @@ const onBlurSearchContact = (item) => {
           <MdSearch size={20} />
         </span>
         <input
-        readOnly= { props.readOnly? "readnoly" : ""}
+          readOnly={props.readOnly ? "readnoly" : ""}
           className={fieldClass1(selectedContactText)}
           placeholder="Type to search..."
           autoComplete="false"
@@ -101,69 +101,81 @@ const onBlurSearchContact = (item) => {
         />
       </div>
 
-      {contactItems && contactItems.length > 0 &&  ! props.readOnly ? (
-        <ul className="list-group scrollbar p-2" id="style-7">
-          {contactItems 
-            ? contactItems.map((item) => (
-                <>
-               
-                  <li
-                    className="searchItem  list-group-item list-group-item-light"
-                    onClick={() => {
-                      if( ! props.readOnly)  
-                      handleSelectContact(item);
-                    }}
-                  >
-                    {(props.contactType && props.contactType.length == 1 && (props.contactType[0] == "Employee" || props.contactType[0] ==  "Insurance") )? <div>{ item.contactName}</div> :
-                    (
-                    
-                    <div className="row">
-                      <div className="mb-3 col ">
-                        <h5 className="mt-2 text-info">
-                          {" "}
-                          {t("contact.searchContactInfo")}
-                        </h5>
+      {contactItems && contactItems.length > 0 && !props.readOnly ? (
+        <div className="scrollbar p-2" style={{ maxHeight: '376px', overflowY: 'auto', position: 'absolute', width: '420px', zIndex: 99 }}>
+          <div className="row  mb-2">
+            <div className="col text-end">
+              <button type='button' className="btn btn-sm btn-outline-danger w-100" onClick={() => setContactItems([])}>CLOSE</button>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
 
-                        <div>
-                          <MdContactPage size={25} />{" "}
-                          <span className="text-secondary">
-                            {item.contactName}
-                          </span>
-                        </div>
-                        <div>
-                          <MdPhone size={25} />{" "}
-                          <span className="text-secondary"> {item.mobile}</span>
-                        </div>
-                      </div>
+              <ul className="list-group scrollbar" id="style-7">
+                {contactItems
+                  ? contactItems.map((item) => (
+                    <>
 
-                      <div className="mb-3 col ">
-                        <h5 className="mt-2 text-info">
-                          {" "}
-                          {t("contact.searchSubContactInfo")}
-                        </h5>
+                      <li
+                        className="searchItem  list-group-item list-group-item-light"
+                        onClick={() => {
+                          if (!props.readOnly)
+                            handleSelectContact(item);
+                        }}
+                      >
+                        {(props.contactType && props.contactType.length == 1 && (props.contactType[0] == "Employee" || props.contactType[0] == "Insurance")) ? <div>{item.contactName}</div> :
+                          (
 
-                        <div>
-                          <MdContactPage size={25} />{" "}
-                          <span className="text-secondary">
-                            {item.subContactName
-                              ? item.subContactName
-                              : t("contact.searchContactEmpty")}
-                          </span>
-                        </div>
-                        <div>
-                          <MdPhone size={25} />{" "}
-                          {item.subContactMobile?item.subContactMobile:  t("contact.searchContactEmpty")}
-                        </div>
+                            <div className="row">
+                              <div className="mb-3 col ">
+                                <h5 className="mt-2 text-info">
+                                  {" "}
+                                  {t("contact.searchContactInfo")}
+                                </h5>
 
-                      </div>
-                    </div>
-                    )
-                   }
-                  </li>
-                </>
-              ))
-            : null}
-        </ul>
+                                <div>
+                                  <MdContactPage size={25} />{" "}
+                                  <span className="text-secondary">
+                                    {item.contactName}
+                                  </span>
+                                </div>
+                                <div>
+                                  <MdPhone size={25} />{" "}
+                                  <span className="text-secondary"> {item.mobile}</span>
+                                </div>
+                              </div>
+
+                              <div className="mb-3 col ">
+                                <h5 className="mt-2 text-info">
+                                  {" "}
+                                  {t("contact.searchSubContactInfo")}
+                                </h5>
+
+                                <div>
+                                  <MdContactPage size={25} />{" "}
+                                  <span className="text-secondary">
+                                    {item.subContactName
+                                      ? item.subContactName
+                                      : t("contact.searchContactEmpty")}
+                                  </span>
+                                </div>
+                                <div>
+                                  <MdPhone size={25} />{" "}
+                                  {item.subContactMobile ? item.subContactMobile : t("contact.searchContactEmpty")}
+                                </div>
+
+                              </div>
+                            </div>
+                          )
+                        }
+                      </li>
+                    </>
+                  ))
+                  : null}
+              </ul>
+            </div>
+          </div>
+        </div>
       ) : null}
     </>
   );
