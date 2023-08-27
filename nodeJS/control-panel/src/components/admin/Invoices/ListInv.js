@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next"
-import { MdCollectionsBookmark, MdDelete, MdEdit, MdAdd, MdLocalShipping } from "react-icons/md"
+import { MdCollectionsBookmark, MdDelete, MdEdit, MdAdd, MdLocalShipping, MdPrint } from "react-icons/md"
 import { getInvoices }
     from './InvoicesAPI'
 import { ThreeDots } from 'react-loader-spinner'
@@ -92,6 +92,26 @@ const ListInv = (props) => {
         loadNewPage(0);
     }, [props]);
 
+    function printExternal(url) {
+        var printWindow = window.open( url);
+    
+        printWindow.addEventListener('load', function() {
+            this.setTimeout(function() {
+                if (Boolean(printWindow.chrome)) {
+                    printWindow.print();
+                    setTimeout(function(){
+                        printWindow.close();
+                    }, 500);
+                } else {
+                    printWindow.print();
+                    printWindow.close();
+                }
+            }, 1000);
+           
+        }, true);
+        
+    }
+
 
     return (
         <>{loading ? (
@@ -173,7 +193,9 @@ const ListInv = (props) => {
                                         style={{ pointerEvents: item.status=='posted' || item.status == 'reverted' ? 'none' : 'auto'
                                         , color:  item.status=='posted' || item.status == 'reverted'  ? 'gray' : '' }}>
                                         Edit <MdEdit /> </Link> </>
-                                       
+                                       <a href="#" onClick={() => {printExternal('/admin/invoices/ViewInvoice/' + item._id)}} className="btn btn-dark" title={t("dashboard.print")} style={{ marginLeft: '5px' }}>
+                                        <MdPrint />
+                                        </a>
                                     </td>
                                     : ""
                                 }

@@ -19,7 +19,8 @@ import {
   MdCancel,
   MdCalendarViewMonth,
   MdAddTask,
-  MdCollectionsBookmark
+  MdCollectionsBookmark,
+  MdOutlineLocalPrintshop
 } from "react-icons/md";
 import { ThreeDots } from 'react-loader-spinner';
 import { useTranslation } from "react-i18next";
@@ -153,6 +154,12 @@ const ViewContract = (props) => {
                   <MdCollectionsBookmark size={20} />
                   &nbsp; {t("invoice.createInvoice")}
                 </Link>
+
+                <a href="#" className="btn btn-dark btn-lg mx-1" onClick={() => {window.print();}}>
+                  <MdOutlineLocalPrintshop size={20} />
+                 
+                </a>
+
 
 
 
@@ -421,13 +428,13 @@ const ViewContract = (props) => {
 
               <div className="row text-right">
                 <div className="mb-3  col justify-content-end">
-                  <Link className="btn btn-secondary btn-lg" to="/admin/Contract">
+                  <Link className="btn btn-secondary btn-lg d-print-none" to="/admin/Contract">
                     <MdClose size={20} /> &nbsp; {t("Cancel")}
                   </Link>{" "}
                   &nbsp;
 
 
-                  <Link className="btn btn-primary btn-lg" to={"/admin/Contract/edit/" + contract._id}>
+                  <Link className="btn btn-primary btn-lg d-print-none" to={"/admin/Contract/edit/" + contract._id}>
                     <MdEdit size={20} />
                     &nbsp; {t("dashboard.edit")}
                   </Link>
