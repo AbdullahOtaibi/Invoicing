@@ -225,39 +225,24 @@ className="mb-3 " >
 
   </div>
 
-  <div className="row">
+  <div className="row action-bar">
 
 
 
-<div className="row text-right">
-  <div className="mb-3  col justify-content-end">
-    <Link className="btn btn-secondary btn-lg mx-2" to={"/admin/Contact"}>
-      <MdClose size={20} /> &nbsp; {t("close")}
-    </Link>
-    &nbsp;
-
-
-
-    <Link className="btn btn-primary btn-lg" to={"/admin/Contact/edit/" + contact._id}>
-      <MdEdit size={20} />
-      &nbsp; {t("dashboard.edit")}
-    </Link>
-
-  </div>
-
-
-  <ConfirmButton
+<div className="row ">
+  <div className="col ">
+<ConfirmButton
     onConfirm={() => { removeContact(contactId); navigate("/admin/Contact/", { replace: true }); }}
     onCancel={() => console.log("cancel")}
     buttonText={t("dashboard.delete")}
     confirmText={t("invoice.confirmDelete")}
     cancelText={t("invoice.cancelDelete")}
     loadingText={t("contact.BeingDeleteingTheContact")}
-    wrapClass="fdfdf"
-    buttonClass="btn btn-lg"
+    wrapClass="row"
+    buttonClass="btn btn-lg w-25"
     mainClass="btn-warning mx-2"
-    confirmClass="btn-danger mx-2"
-    cancelClass=" btn-success "
+    confirmClass="btn-danger mx-2 col col-auto order-2 w-25"
+    cancelClass=" btn-success col col-auto order-1 w-25"
     loadingClass="visually-hidden"
     disabledClass=""
     once
@@ -265,6 +250,26 @@ className="mb-3 " >
     {"Delete "}
     <MdDelete />
   </ConfirmButton>
+  </div>
+  <div className="mb-3  col text-end">
+    <Link className="btn btn-secondary btn-lg mx-2 w-25" to={"/admin/Contact"}>
+      <MdClose size={20} /> &nbsp; {t("close")}
+    </Link>
+    &nbsp;
+
+
+
+    <Link className="btn btn-primary btn-lg w-25" to={"/admin/Contact/edit/" + contact._id}>
+      <MdEdit size={20} />
+      &nbsp; {t("dashboard.edit")}
+    </Link>
+
+   
+  </div>
+ 
+
+
+ 
 
 </div>
 
