@@ -17,8 +17,8 @@ const CreateContact = (props) => {
   const [contact, setContact] = useState({
     contactType: "Client",
     deleted: false, 
-    companyID: localStorage.getItem("companyId")
-   // company: localStorage.getItem("company") 
+    companyID: localStorage.getItem("companyId") ,
+    company: localStorage.getItem("company") 
   });
   const [wasValidated, setWasValidated] = useState(false);
 

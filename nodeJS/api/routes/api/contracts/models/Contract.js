@@ -5,6 +5,11 @@ const ObjectId = Schema.ObjectId;
 const ContractSchema = new Schema({
     _id: ObjectId,
     seqNumber: String,
+    companyID: String,
+    company: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Company'
+    } ,
     package: {
         type: ObjectId,
         ref: 'Package'
