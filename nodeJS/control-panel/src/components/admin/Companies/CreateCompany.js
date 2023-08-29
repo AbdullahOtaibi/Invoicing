@@ -351,7 +351,7 @@ const CreateCompany = (props) => {
                         </div>
                     </div>
 
-                    <div className="mb-3 text-end col justify-content-end" >
+                    <div className="mb-3 text-end col justify-content-end action-bar" >
                         <Link className="add-btn btn-danger" to='/admin/companies' >
                             <MdClose size={20} /> &nbsp; 
                             {t("dashboard.cancel")}</Link> &nbsp;

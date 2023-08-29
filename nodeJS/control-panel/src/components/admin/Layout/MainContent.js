@@ -154,7 +154,7 @@ const MainContent = ({notification, onHandleNotification}) => {
             <title>{'Invoicing | Admin | '} </title>
             <meta name="robots" content="noindex" />
         </Helmet>
-        <main className="content-area"  >
+        <main className="content-area" style={{paddingBottom:'90px'}} >
             <Suspense fallback={<div>Loading ...</div>} >
                 <Routes>
 

@@ -1107,7 +1107,7 @@ return (
             </div>
           </div>
 
-          <div class="row text-right">
+          <div class="row text-right action-bar">
             <div className="mb-3  col justify-content-end">
               <a className="btn btn-secondary btn-lg" href="#" onClick={() => {window.history.back()}}>
                 <MdClose size={20} /> &nbsp; {t("Cancel")}

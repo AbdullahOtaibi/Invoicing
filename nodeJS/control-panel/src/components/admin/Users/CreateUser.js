@@ -340,7 +340,7 @@ const CreateUser = (props) => {
 
 
 
-                    <div className="mb-3 text-end col justify-content-end" >
+                    <div className="mb-3 text-end col justify-content-end action-bar" >
                         <Link className="btn btn-warning" to='/admin/users' >{t("dashboard.cancel")}</Link> &nbsp;
                         <button type="button" className="btn btn-primary" onClick={doPost}>{t("dashboard.submit")}</button>
                     </div>
