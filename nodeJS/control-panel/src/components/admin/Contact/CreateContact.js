@@ -413,7 +413,7 @@ onChange={setNote}>  </textarea>
   </div>
 
           
-  <div class = "row text-right">
+  <div class = "row text-right action-bar">
           <div className="mb-3  col justify-content-end">
             <Link className="btn btn-secondary btn-lg" to="/admin/contact">
             <MdClose size={20} /> &nbsp; {t("Cancel")}

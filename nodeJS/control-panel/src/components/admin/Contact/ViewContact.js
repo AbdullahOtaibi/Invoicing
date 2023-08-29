@@ -12,7 +12,7 @@ import {
   MdPayment,
   MdLocalShipping,
   MdOutlineCancel,
-  MdContacts ,
+  MdContacts,
   MdPhone,
   MdAddTask
 
@@ -57,7 +57,7 @@ const ViewContact = (props) => {
   const [showDeleteButton ,setShowDeleteButton ] = useState(true) ;
   useEffect(() => {
     setLoading(true);
-   // console.log("contactId:" +contactId) ; 
+    // console.log("contactId:" +contactId) ; 
     getContact(contactId)
       .then((data) => {
         console.log("test ........");
@@ -137,133 +137,133 @@ const ViewContact = (props) => {
 
 
             <form>
-      {contact ? (
+              {contact ? (
 
-<Tabs
-defaultActiveKey={"info"}
-transition={false}
-id="noanim-tab-example"
-className="mb-3 " >
-<Tab eventKey="info" title={t("contact.ContactInformation") } tabClassName="tab-item">
-  <br />
-  <div className="mb-3 row ">
-    <div className="col col-auto text-info">{t("contact.ContactInformation")} </div>
-    <div className="col">
-      <hr />
-    </div>
-  </div>
-  <div className="row">
+                <Tabs
+                  defaultActiveKey={"info"}
+                  transition={false}
+                  id="noanim-tab-example"
+                  className="mb-3 " >
+                  <Tab eventKey="info" title={t("contact.ContactInformation")} tabClassName="tab-item">
+                    <br />
+                    <div className="mb-3 row ">
+                      <div className="col col-auto text-info">{t("contact.ContactInformation")} </div>
+                      <div className="col">
+                        <hr />
+                      </div>
+                    </div>
+                    <div className="row">
 
-  <div className="mb-3 col ">
-      <div className="col col-auto"> {t("contact.contactType")  }</div>
+                      <div className="mb-3 col ">
+                        <div className="col col-auto"> {t("contact.contactType")}</div>
 
-      <div className="col">
-        {contact.contactType}
-      </div>
-    </div>
+                        <div className="col">
+                          {contact.contactType}
+                        </div>
+                      </div>
 
-    <div className="mb-3 col ">
-      <div className="col col-auto"> {t("contact.contactName")} </div>
-      <div className="col">
-        {contact.contactName}
-      </div>
-    </div>
-
-
-    <div className="mb-3 col ">
-      <div className="col col-auto"> {t("contact.mobile")}</div>
-
-      <div className="col">
-        {contact.mobile}
-      </div>
-    </div>
-
-    <div className="mb-3 col "></div>
-  </div>
-  
-  { contact.contactType != "Employee"  && contact.contactType != "Insurance" ? (
-<>
-<div className="row">
-    <div className="mb-3 col ">
-      <div className="col col-auto"> {t("contact.identificationType")}</div>
-      <div className="col">
-        {contact.identificationType}
-      </div>
-    </div>
-
-    <div className="mb-3 col ">
-      <div className="col col-auto"> {t("contact.identificationValue")}</div>
-
-      <div className="col">
-        {contact.identificationValue}
-      </div>
-    </div>
-
-    <div className="mb-3 col ">
-      <div className="col col-auto"> {t("contact.email")}</div>
-
-      <div className="col">
-        {contact.email}
-      </div>
-    </div>
-
-    <div className="mb-3 col "></div>
-  </div>
-  <div className="mb-3 row ">
-    <div className="col col-auto text-info">{t("contact.subContactInformation")}</div>
-    <div className="col">
-      <hr />
-    </div>
-  </div>
-  <div className="row">
-    <div className="mb-3 col ">
-      <div className="col col-auto"> {t("contact.subContactName")}</div>
-      <div className="col">
-        {contact.subContactName}
-      </div>
-    </div>
-
-    <div className="mb-3 col ">
-      <div className="col col-auto"> {t("contact.subContactMobile")}</div>
-
-      <div className="col">
-        {contact.subContactMobile}
-      </div>
-    </div>
-
-    <div className="mb-3 col ">
-      <div className="col col-auto"> {t("contact.subContactEmail")}</div>
-
-      <div className="col">
-        {contact.subContactEmail}
-      </div>
-    </div>
-
-    <div className="mb-3 col "></div>
-  </div>
-</>
-  )
-  : ""}
-
-  <div className="row">
-    <div className="mb-3 col ">
-      <div className="col col-auto"> {t("contact.note")}</div>
-      <div className="col">
-        {contact.note}
-      </div>
-    </div>
+                      <div className="mb-3 col ">
+                        <div className="col col-auto"> {t("contact.contactName")} </div>
+                        <div className="col">
+                          {contact.contactName}
+                        </div>
+                      </div>
 
 
-    <div className="mb-3 col ">
-      <div className="col col-auto"> {t("contact.createdDate")}</div>
-      <div className="col">
-        {getCreatedDate()}
-      </div>
-    </div>
-    <div className="mb-3 col "></div>
-    <div className="mb-3 col "></div>
+                      <div className="mb-3 col ">
+                        <div className="col col-auto"> {t("contact.mobile")}</div>
 
-  </div>
+                        <div className="col">
+                          {contact.mobile}
+                        </div>
+                      </div>
+
+                      <div className="mb-3 col "></div>
+                    </div>
+
+                    {contact.contactType != "Employee" && contact.contactType != "Insurance" ? (
+                      <>
+                        <div className="row">
+                          <div className="mb-3 col ">
+                            <div className="col col-auto"> {t("contact.identificationType")}</div>
+                            <div className="col">
+                              {contact.identificationType}
+                            </div>
+                          </div>
+
+                          <div className="mb-3 col ">
+                            <div className="col col-auto"> {t("contact.identificationValue")}</div>
+
+                            <div className="col">
+                              {contact.identificationValue}
+                            </div>
+                          </div>
+
+                          <div className="mb-3 col ">
+                            <div className="col col-auto"> {t("contact.email")}</div>
+
+                            <div className="col">
+                              {contact.email}
+                            </div>
+                          </div>
+
+                          <div className="mb-3 col "></div>
+                        </div>
+                        <div className="mb-3 row ">
+                          <div className="col col-auto text-info">{t("contact.subContactInformation")}</div>
+                          <div className="col">
+                            <hr />
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="mb-3 col ">
+                            <div className="col col-auto"> {t("contact.subContactName")}</div>
+                            <div className="col">
+                              {contact.subContactName}
+                            </div>
+                          </div>
+
+                          <div className="mb-3 col ">
+                            <div className="col col-auto"> {t("contact.subContactMobile")}</div>
+
+                            <div className="col">
+                              {contact.subContactMobile}
+                            </div>
+                          </div>
+
+                          <div className="mb-3 col ">
+                            <div className="col col-auto"> {t("contact.subContactEmail")}</div>
+
+                            <div className="col">
+                              {contact.subContactEmail}
+                            </div>
+                          </div>
+
+                          <div className="mb-3 col "></div>
+                        </div>
+                      </>
+                    )
+                      : ""}
+
+                    <div className="row">
+                      <div className="mb-3 col ">
+                        <div className="col col-auto"> {t("contact.note")}</div>
+                        <div className="col">
+                          {contact.note}
+                        </div>
+                      </div>
+
+
+                      <div className="mb-3 col ">
+                        <div className="col col-auto"> {t("contact.createdDate")}</div>
+                        <div className="col">
+                          {getCreatedDate()}
+                        </div>
+                      </div>
+                      <div className="mb-3 col "></div>
+                      <div className="mb-3 col "></div>
+
+                    </div>
 
   <div className="row action-bar">
 
@@ -271,7 +271,7 @@ className="mb-3 " >
 
 <div className="row ">
   <div className="col ">
-{ showDeleteButton? <ConfirmButton
+<ConfirmButton
     onConfirm={() => { removeContact(contactId); navigate("/admin/Contact/", { replace: true }); }}
     onCancel={() => console.log("cancel")}
     buttonText={t("dashboard.delete")}
@@ -284,12 +284,12 @@ className="mb-3 " >
     confirmClass="btn-danger mx-2 col col-auto order-2 w-25"
     cancelClass=" btn-success col col-auto order-1 w-25"
     loadingClass="visually-hidden"
-    disabledClass="text-danger"
+    disabledClass=""
+    once
   >
     {"Delete "}
     <MdDelete />
-  </ConfirmButton>:null
-}
+  </ConfirmButton>
   </div>
   <div className="mb-3  col text-end">
     <Link className="btn btn-secondary btn-lg mx-2 w-25" to={"/admin/Contact"}>
@@ -299,34 +299,33 @@ className="mb-3 " >
 
 
 
-    <Link className="btn btn-primary btn-lg w-25" to={"/admin/Contact/edit/" + contact._id}>
-      <MdEdit size={20} />
-      &nbsp; {t("dashboard.edit")}
-    </Link>
-
-   
-  </div>
- 
+                          <Link className="btn btn-primary btn-lg w-25" to={"/admin/Contact/edit/" + contact._id}>
+                            <MdEdit size={20} />
+                            &nbsp; {t("dashboard.edit")}
+                          </Link>
 
 
- 
+                        </div>
 
-</div>
 
-</div>
 
-</Tab>
+
+
+                      </div>
+
+                    </div>
+
+                  </Tab>
 
 
 {contact.contactType != "Employee" && <Tab eventKey="invoices" title={t("sidebar.invoices")} tabClassName="tab-item">
- { contact._id &&<ContactInvoices contactId={contact._id} countInvoicesList = {countInvoicesList} />}
+  <ContactInvoices contactId={contactId} />
 </Tab>} 
 {contact.contactType != "Insurance" && 
  <Tab eventKey="appointments"  title= { contact.contactType != "Employee" ? t("Appointments") :t("contact.employeeAppointments")}   tabClassName="tab-item">
   
 
 <>
-<div className="row action-bar">
 <div className="row text-right">
     <div className="mb-3  col justify-content-end">
       <Link className="btn btn-success btn-lg" onClick={clickNew}>
@@ -334,31 +333,28 @@ className="mb-3 " >
       </Link>{" "}
       </div>
       </div>
-      </div>
-                {contact._id &&<AppointmentLst clientId={ contact.contactType != "Employee"? contact._id : null} 
+      
+                  <AppointmentLst clientId={ contact.contactType != "Employee"? contact._id : null} 
                   employeeId={contact.contactType == "Employee" ? contact._id : null} 
-                  handleAppoinmentSelected={handleAppoinmentSelected}
-                  countAppointementsList = {countAppointementsList} 
-                  />
-                  }
+                  handleAppoinmentSelected={handleAppoinmentSelected}/>
                   </>
                 
 
-</Tab>
-  }
+                    </Tab>
+                  }
 
 
 
-</Tabs>
-      ) : "Not Found"}
-              
+                </Tabs>
+              ) : "Not Found"}
 
 
 
 
 
 
-          
+
+
 
 
 
@@ -369,49 +365,49 @@ className="mb-3 " >
         <>No Data Found contactId: {contactId}</>
       )}
 
-<Modal show={show} onHide={handleClose} size="lg" >
-          <Modal.Header closeButton>
-            <div className="row">
-              <div className="col">
-                {popUpEvent == "new" ? (
-                  <Modal.Title >{t("FullCalendar.newAppintement")}</Modal.Title>
-                ) : (
-                  ""
-                )}
-                {popUpEvent == "edit" ? (
-                  <Modal.Title>{t("FullCalendar.editAppintement")}</Modal.Title>
-                ) : (
-                  ""
-                )}
+      <Modal show={show} onHide={handleClose} size="lg" >
+        <Modal.Header closeButton>
+          <div className="row">
+            <div className="col">
+              {popUpEvent == "new" ? (
+                <Modal.Title >{t("FullCalendar.newAppintement")}</Modal.Title>
+              ) : (
+                ""
+              )}
+              {popUpEvent == "edit" ? (
+                <Modal.Title>{t("FullCalendar.editAppintement")}</Modal.Title>
+              ) : (
+                ""
+              )}
 
 
-              </div>
-              
             </div>
-          </Modal.Header>
-          <Modal.Body>
-            {popUpEvent == "new" ? (
-              <FullCalendarNew
-                onSave={handleClose}
-                //updateFullCalendar={reloadData}
-                contactObj={contact}
-              />
-            ) : (
-              ""
-            )}
 
-            {popUpEvent == "edit" ? (
-              <FullCalendarEdit
-                onSave={handleClose}
+          </div>
+        </Modal.Header>
+        <Modal.Body>
+          {popUpEvent == "new" ? (
+            <FullCalendarNew
+              onSave={handleClose}
+              //updateFullCalendar={reloadData}
+              contactObj={contact}
+            />
+          ) : (
+            ""
+          )}
+
+          {popUpEvent == "edit" ? (
+            <FullCalendarEdit
+              onSave={handleClose}
               //  updateFullCalendar={reloadData}
               getfullCalendarObj={fullCalendarObj}
-              />
-            ) : (
-              ""
-            )}
-          </Modal.Body>
-          <Modal.Footer></Modal.Footer>
-        </Modal>
+            />
+          ) : (
+            ""
+          )}
+        </Modal.Body>
+        <Modal.Footer></Modal.Footer>
+      </Modal>
 
 
     </>
