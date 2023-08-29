@@ -13,7 +13,9 @@ import {
   MdLocalShipping,
   MdOutlineCancel,
   MdContacts ,
-  MdPhone
+  MdPhone,
+  MdAddTask
+
 } from "react-icons/md";
 import { ThreeDots } from 'react-loader-spinner';
 import { useTranslation } from "react-i18next";
@@ -25,6 +27,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { Tabs, Tab } from 'react-bootstrap'
 import ContactInvoices from './ContactInvoices';
 import ContactAppointments from './ContactAppointments'
+import AppointmentLst from "../FullCalendar/AppointmentLst"
+import FullCalendarNew from "../FullCalendar/FullCalendarNew";
+import FullCalendarEdit from "../FullCalendar/FullCalendarEdit";
+import Modal from "react-bootstrap/Modal";
+
+
+
 const ViewContact = (props) => {
 
   let navigate = useNavigate();
@@ -40,7 +49,11 @@ const ViewContact = (props) => {
   const [contact, setContact] = useState();
   const [loading, setLoading] = useState(false);
   const { t, i18n } = useTranslation();
-
+  const [fullCalendarObj, setFullCalendarObj] = useState(0);
+  const [popUpEvent, setPopUpEvent] = useState("");
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     setLoading(true);
@@ -74,9 +87,23 @@ const ViewContact = (props) => {
     return str;
   }
 
+  const handleAppoinmentSelected = (item) => {
+
+    setPopUpEvent('edit');
+    setFullCalendarObj(item);
+    setShow(true);
+  }
+
+  const clickNew = () => {
+    console.log("clicknew ....");
+    //setPopUpEvent("new") ;
+    setShow(true);
+    setPopUpEvent("new");
+  };
+
   return (
     <>
-      {contact ? (
+      {contact?.contactName ? (
         <div className="card">
           <h5 className="card-header">
             <MdContacts /> {t("contact.ContactInformation")}   <span className="text-info px-1">  {contact.contactName}  <MdPhone size={20} />  {contact.mobile}  </span>
@@ -281,13 +308,28 @@ className="mb-3 " >
 {contact.contactType != "Employee" && <Tab eventKey="invoices" title={t("sidebar.invoices")} tabClassName="tab-item">
   <ContactInvoices contactId={contactId} />
 </Tab>} 
+{contact.contactType != "Insurance" && 
+ <Tab eventKey="appointments"  title= { contact.contactType != "Employee" ? t("Appointments") :t("contact.employeeAppointments")}   tabClassName="tab-item">
+  
 
-{contact.contactType != "Employee" ? (<Tab eventKey="appointments" title={t("Appointments") } tabClassName="tab-item">
-  <ContactAppointments contactId={contactId} />
+<>
+<div className="row text-right">
+    <div className="mb-3  col justify-content-end">
+      <Link className="btn btn-success btn-lg" onClick={clickNew}>
+        <MdAddTask size={20} /> &nbsp; {t("contracts.createAppointment")}
+      </Link>{" "}
+      </div>
+      </div>
+      
+                  <AppointmentLst clientId={ contact.contactType != "Employee"? contact._id : null} 
+                  employeeId={contact.contactType == "Employee" ? contact._id : null} 
+                  handleAppoinmentSelected={handleAppoinmentSelected}/>
+                  </>
+                
 
-</Tab>) :  (<Tab eventKey="appointments" title={t("contact.employeeAppointments") } tabClassName="tab-item">
-  <ContactAppointments employeeId={contactId} />
-</Tab>)}
+</Tab>
+  }
+
 
 
 </Tabs>
@@ -309,6 +351,52 @@ className="mb-3 " >
       ) : (
         <>No Data Found contactId: {contactId}</>
       )}
+
+<Modal show={show} onHide={handleClose} size="lg" >
+          <Modal.Header closeButton>
+            <div className="row">
+              <div className="col">
+                {popUpEvent == "new" ? (
+                  <Modal.Title >{t("FullCalendar.newAppintement")}</Modal.Title>
+                ) : (
+                  ""
+                )}
+                {popUpEvent == "edit" ? (
+                  <Modal.Title>{t("FullCalendar.editAppintement")}</Modal.Title>
+                ) : (
+                  ""
+                )}
+
+
+              </div>
+              
+            </div>
+          </Modal.Header>
+          <Modal.Body>
+            {popUpEvent == "new" ? (
+              <FullCalendarNew
+                onSave={handleClose}
+                //updateFullCalendar={reloadData}
+                contactObj={contact}
+              />
+            ) : (
+              ""
+            )}
+
+            {popUpEvent == "edit" ? (
+              <FullCalendarEdit
+                onSave={handleClose}
+              //  updateFullCalendar={reloadData}
+              getfullCalendarObj={fullCalendarObj}
+              />
+            ) : (
+              ""
+            )}
+          </Modal.Body>
+          <Modal.Footer></Modal.Footer>
+        </Modal>
+
+
     </>
   );
 

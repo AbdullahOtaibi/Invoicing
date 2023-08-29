@@ -66,6 +66,28 @@ const FullCalendarNew = (props) => {
       cloned.mobile = contractObj.contact.mobile;
       setFullCalendar(cloned);
     }
+    if (props.contactObj) {
+      console.log("insert props.contractObj condition");
+      console.log(props.contractObj)
+      let contactObj = props.contactObj;
+      let cloned = JSON.parse(JSON.stringify(fullCalendar));
+      if(contactObj.contactType == "Employee")
+      {
+        cloned.employeeName = contactObj.contactName;
+        cloned.employee = contactObj._id; 
+      }
+      else
+      {
+        cloned.contactName = contactObj.contactName;
+        cloned.contact = contactObj._id; 
+    
+      }
+      cloned.title = contactObj.contactName;
+      cloned.mobile = contactObj.mobile;
+      setFullCalendar(cloned);
+      
+    }
+
 
   }, [])
 

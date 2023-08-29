@@ -74,39 +74,7 @@ const ViewContract = (props) => {
   };
 
 
-  const reloadData = () => {
-    /* getFullCalendars()
-       .then((data) => {
-         console.log("test ........");
-         console.log(data);
-         setFullCalenders(
-           data.items.map((item) => {
-             return {
-               _id: item._id,
-               start: new Date(item.start),
-               end: new Date(item.end),
-               title: item.title ,
-               note: item.note,
-               contactName: item.contactName,
-               allDay: item.allDay,
-               mobile: item.mobile,
-               employeeName: item.employeeName ,
-               status:  item.status ,
-               contract: item.contract ,
-              contractSequanceNumber : item.contract ? item.contract.seqNumber : "" ,
-             contact: item.contact
-           
-           }) 
-         );
-         console.log(data);
-         setLoading(false);
-          };
-       })
-       .catch((e) => {
-         console.log(e);
-         setLoading(false);
-       });*/
-  };
+
 
 
 
@@ -474,7 +442,7 @@ const ViewContract = (props) => {
             {popUpEvent == "new" ? (
               <FullCalendarNew
                 onSave={handleClose}
-                updateFullCalendar={reloadData}
+               // updateFullCalendar={reloadData}
                 contractObj={contract}
               />
             ) : (
@@ -484,7 +452,7 @@ const ViewContract = (props) => {
             {popUpEvent == "edit" ? (
               <FullCalendarEdit
                 onSave={handleClose}
-                updateFullCalendar={reloadData}
+                //updateFullCalendar={reloadData}
                 getfullCalendarObj={fullCalendarObj}
               />
             ) : (

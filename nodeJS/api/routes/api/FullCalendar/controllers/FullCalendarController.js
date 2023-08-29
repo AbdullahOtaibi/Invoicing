@@ -37,6 +37,7 @@ router.post("/filter", verifyToken, async (req, res) => {
       $and: [],
     };
     let sortParams = {
+
       _id: -1,
     };
     let FullCalendarId = filters.FullCalendarId || null;
@@ -62,6 +63,7 @@ router.post("/filter", verifyToken, async (req, res) => {
     if (contractId) {
       queryParams["$and"].push({ contract: contractId });
     }
+
     if (employeeId) {
       queryParams["$and"].push({ employee: employeeId });
     }
@@ -236,6 +238,9 @@ router.post("/create", verifyToken, async (req, res, next) => {
     res.json({ success: false, message: "Unauthorized" });
   }
 
+  if(req.body.contract == ""){
+    req.body.contract = null;
+  }
   const newObject = new FullCalendar({
     user: req.user.id,
     company: req.user.company,

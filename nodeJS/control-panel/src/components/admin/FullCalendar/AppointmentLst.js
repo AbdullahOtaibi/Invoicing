@@ -54,8 +54,17 @@ const AppointmentLst = (props) => {
       page: newPage
     }
 
+    if (props && props.clientId) {
+      filter.clientId = props.clientId
+    }
+
     if (props && props.contractId) {
       filter.contractId = props.contractId
+    }
+
+    if(props && props.employeeId)
+    {
+      filter.employeeId = props.employeeId
     }
 
     //****************************/

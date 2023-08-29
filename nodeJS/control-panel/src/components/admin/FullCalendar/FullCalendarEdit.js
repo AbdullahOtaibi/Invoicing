@@ -415,7 +415,7 @@ const setStatus = (event)=> {
         <div className="mb-3 row ">
           <div className="col">
           <ConfirmButton
-                              onConfirm={() =>{  deleteFullCalendar(fullCalendar._id) ;  console.log("delete") ;  props.onSave(); props.updateFullCalendar()  } }
+                              onConfirm={() =>{  deleteFullCalendar(fullCalendar._id) ;  console.log("delete") ;  props.onSave();  if(props.updateFullCalendar) {props.updateFullCalendar()}   } }
                               onCancel={() => console.log("cancel")}
                               buttonText= {t("dashboard.delete")}
                               confirmText={t("invoice.confirmDelete")}
