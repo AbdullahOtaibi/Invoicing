@@ -16,6 +16,14 @@ const ContactInvoices = (props) => {
         loadNewPage(0);
     }, [contact]);
 
+    const countInvoiceList = () =>
+ {
+  if(props.countInvoicesList){
+    console.log("invoices.length=" +invoices.length);
+    props.countInvoicesList( invoices.length? invoices.length : 0);
+  }
+ }
+
     useEffect(() => {
         getContact(props.contactId).then(data => {
             console.log("data:" + JSON.stringify(data));
@@ -24,8 +32,18 @@ const ContactInvoices = (props) => {
         ).catch(e => {
             console.log(e);
         });
+
+        countInvoiceList();
     }, [props])
    
+    
+    useEffect(() => {
+       
+
+        countInvoiceList();
+    }, [invoices])
+ 
+
    
     const loadNewPage = (newPage) => {
         if (newPage < 0 || (newPage >= invoicesPages && invoicesPages > 0)) {

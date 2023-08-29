@@ -36,9 +36,21 @@ const AppointmentLst = (props) => {
     return true;
   };
 
+ const countAppointementsList = () =>
+ {
+  if(props.countAppointementsList){
+    console.log("appointments.length=" +appointments.length);
+    props.countAppointementsList( appointments? appointments.length : 0);
+  }
+ }
   useEffect(() => {
     loadNewPage(0);
+    countAppointementsList();
   }, [props]);
+
+  useEffect(() => {
+    countAppointementsList();
+  }, [appointments]);
 
   const loadNewPage = (newPage) => {
     if (newPage < 0 || (newPage >= pages && pages > 0)) {

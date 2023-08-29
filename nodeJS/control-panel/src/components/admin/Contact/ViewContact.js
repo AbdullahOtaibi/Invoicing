@@ -54,7 +54,7 @@ const ViewContact = (props) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  const [showDeleteButton ,setShowDeleteButton ] = useState(true) ;
   useEffect(() => {
     setLoading(true);
    // console.log("contactId:" +contactId) ; 
@@ -72,6 +72,9 @@ const ViewContact = (props) => {
         setLoading(false);
       });
   }, []);
+
+  useEffect(()=>{countAppointementsList() ; countInvoicesList()} , [props])
+  
 
   function getCreatedDate() {
     let x = contact.createdDate.toString();
@@ -92,6 +95,16 @@ const ViewContact = (props) => {
     setPopUpEvent('edit');
     setFullCalendarObj(item);
     setShow(true);
+  }
+
+  const countAppointementsList = (count) => {
+   
+   if( parseInt(count) > 0) setShowDeleteButton(false) ;
+
+  }
+
+  const countInvoicesList = (count) => {
+    if( parseInt(count) > 0) setShowDeleteButton(false) ;
   }
 
   const clickNew = () => {
@@ -258,7 +271,7 @@ className="mb-3 " >
 
 <div className="row ">
   <div className="col ">
-<ConfirmButton
+{ showDeleteButton? <ConfirmButton
     onConfirm={() => { removeContact(contactId); navigate("/admin/Contact/", { replace: true }); }}
     onCancel={() => console.log("cancel")}
     buttonText={t("dashboard.delete")}
@@ -271,12 +284,12 @@ className="mb-3 " >
     confirmClass="btn-danger mx-2 col col-auto order-2 w-25"
     cancelClass=" btn-success col col-auto order-1 w-25"
     loadingClass="visually-hidden"
-    disabledClass=""
-    once
+    disabledClass="text-danger"
   >
     {"Delete "}
     <MdDelete />
-  </ConfirmButton>
+  </ConfirmButton>:null
+}
   </div>
   <div className="mb-3  col text-end">
     <Link className="btn btn-secondary btn-lg mx-2 w-25" to={"/admin/Contact"}>
@@ -306,13 +319,14 @@ className="mb-3 " >
 
 
 {contact.contactType != "Employee" && <Tab eventKey="invoices" title={t("sidebar.invoices")} tabClassName="tab-item">
-  <ContactInvoices contactId={contactId} />
+ { contact._id &&<ContactInvoices contactId={contact._id} countInvoicesList = {countInvoicesList} />}
 </Tab>} 
 {contact.contactType != "Insurance" && 
  <Tab eventKey="appointments"  title= { contact.contactType != "Employee" ? t("Appointments") :t("contact.employeeAppointments")}   tabClassName="tab-item">
   
 
 <>
+<div className="row action-bar">
 <div className="row text-right">
     <div className="mb-3  col justify-content-end">
       <Link className="btn btn-success btn-lg" onClick={clickNew}>
@@ -320,10 +334,13 @@ className="mb-3 " >
       </Link>{" "}
       </div>
       </div>
-      
-                  <AppointmentLst clientId={ contact.contactType != "Employee"? contact._id : null} 
+      </div>
+                {contact._id &&<AppointmentLst clientId={ contact.contactType != "Employee"? contact._id : null} 
                   employeeId={contact.contactType == "Employee" ? contact._id : null} 
-                  handleAppoinmentSelected={handleAppoinmentSelected}/>
+                  handleAppoinmentSelected={handleAppoinmentSelected}
+                  countAppointementsList = {countAppointementsList} 
+                  />
+                  }
                   </>
                 
 

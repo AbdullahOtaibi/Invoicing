@@ -37,8 +37,12 @@ const FullCalendarEdit = (props) => {
 
    useEffect ( () => {
         setFullCalendar(props.getfullCalendarObj);
-
      console.log( "props.getfullCalendarObj" +  JSON.stringify(props.getfullCalendarObj))
+      
+    // let cloned = JSON.parse(JSON.stringify(fullCalendar));
+   // cloned.title = "abd" ; //props.getfullCalendarObj.titleToEdit ;
+   // setFullCalendar(cloned);
+
    }, []) 
   
  

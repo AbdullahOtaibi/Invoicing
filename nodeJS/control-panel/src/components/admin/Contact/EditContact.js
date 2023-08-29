@@ -415,6 +415,7 @@ const EditContact = (props) => {
                 <div className="mb-3 col "></div>
               </div>
 
+              <div className="row action-bar">
               <div class="row text-right">
                 <div className="mb-3  col justify-content-end">
                   <Link
@@ -432,6 +433,7 @@ const EditContact = (props) => {
                     {t("dashboard.submit")}
                   </button>
                 </div>
+              </div>
               </div>
             </form>
           </div>

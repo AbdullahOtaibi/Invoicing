@@ -13,7 +13,7 @@
     "jquery": "^3.7.0",
     "qrcode": "^1.5.3",
     "react": "^18.2.0",
-    "react-big-calendar": "^1.6.9",
+    "react-big-calendar": "1.8.2",
     "react-bootstrap": "^2.7.4",
     "react-confirmation-button": "^0.2.1",
     "react-datepicker": "^4.11.0",

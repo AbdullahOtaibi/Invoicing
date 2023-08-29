@@ -74,7 +74,7 @@ const FullCalenderList = (props) => {
               note: item.note,
               contactName: item.contactName,
               allDay: item.allDay,
-              mobile: item.mobile,
+              mobile: item.mobile ,
               employeeName: item.employeeName ,
               status:  item.status ,
               contract: item.contract ,
@@ -124,7 +124,15 @@ const FullCalenderList = (props) => {
   ];
   */
 
-
+  const CustomEvent = ({ event }) => {
+    return (
+      <div>
+        <strong>{ event.title  +  "  " + moment(event.start).format("hh:mm A") +  " - " + moment(event.end).format("hh:mm A")}</strong>
+        
+       
+      </div>
+    );
+  };
 
   return (
     <>
@@ -141,6 +149,7 @@ const FullCalenderList = (props) => {
           </Button>
         </div>
       </div>
+ 
 
       <div className="container text-center">
         <ThreeDots
@@ -152,17 +161,22 @@ const FullCalenderList = (props) => {
         />
       </div>
 
-      <div style={{ height: 700 }}>
+      <div style={{ height: '150vh' }}>
         {
           <Calendar
             onSelectEvent={handleEventSelection}
             step={60}
             events={FullCalenders} // {evnts1}   //{FullCalenders}
+            components={{
+              event: CustomEvent // Pass the custom component as the event key
+            }}
             defaultDate={new Date()}
             popup={true}
             onShowMore={(events, date) =>
               this.setState({ showModal: true, FullCalenders })
             }
+            startAccessor="start"
+      endAccessor="end"
             showAllEvents={true}
             localizer={localizer}
             eventPropGetter={(event) => {
@@ -176,7 +190,7 @@ const FullCalenderList = (props) => {
                 else if( event.status == "In Complete") 
                 backgroundColor =  "RGBA(220,53,69,var(--bs-bg-opacity,1)" ;
              console.log("backgroundColor =" +backgroundColor ) ;
-             return { style: { backgroundColor  } }
+             return { style: { backgroundColor  }, title:'ssssss' }
             }}
           />
         }
