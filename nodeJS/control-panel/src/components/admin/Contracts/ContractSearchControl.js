@@ -53,6 +53,14 @@ const ContractSearchControl = (props) => {
 
   };
 
+  const handleCloseSearch = () => {
+    setContractItems([]);
+    alert('close');
+    if(props.handleCloseSearch){
+      props.handleCloseSearch();
+    }
+  }
+
 
   const onBlurSearchContract = (event) => {
     //event.preventDefault();
@@ -98,7 +106,7 @@ const ContractSearchControl = (props) => {
         <div className="scrollbar p-2" style={{ maxHeight: '376px', overflowY: 'auto', position: 'absolute', width: '420px', zIndex: 99 }}>
           <div className="row  mb-2">
             <div className="col text-end">
-              <button type='button' className="btn btn-sm btn-outline-danger w-100" onClick={() => setContractItems([])}>CLOSE</button>
+              <button type='button' className="btn btn-sm btn-outline-danger w-100" onClick={handleCloseSearch}>CLOSE</button>
             </div>
           </div>
           <div className="row">

@@ -60,18 +60,6 @@ const ContractSearch = (props) => {
         
             doSearch();
         
-       
-            doSearch();
-       
-       
-            doSearch();
-        
-      
-            doSearch();
-       
-       
-            doSearch();
-        
 
     }, [minValue, maxValue, seqNumber, selectedPackage, contact]);
 
@@ -89,6 +77,13 @@ const ContractSearch = (props) => {
 
         }
     }
+
+    const handleCloseSearch = () => {
+        if(props.handleCloseSearch){
+          props.handleCloseSearch();
+        }
+      }
+
 
     return (<><div className='invoiceSearch'>
         <div className='card'>
@@ -188,7 +183,7 @@ const ContractSearch = (props) => {
 
                 <div className='row mb-3'>
                     <div className='col text-end px-4 mb-2'>
-                        <button type='button' className='btn btn-secondary' onClick={() => { visiblityChanged(!searchVisible) }}><MdClose /> {t("close")}</button>
+                        <button type='button' className='btn btn-secondary' onClick={handleCloseSearch}><MdClose /> {t("close")}</button>
                         <button type='button' className='btn btn-primary mx-2' onClick={doSearch}><MdSearch /> {t("search")}</button>
                     </div>
                 </div>

@@ -48,6 +48,10 @@ const ListContract = (props) => {
 
     , []);
 
+    const handleCloseSearch = () => {
+        setSearchVisible(false);
+    }
+
     const conttactSearchFilterChanged = (filter) => {
         console.log("filter:" + JSON.stringify(filter));
         getContracts({
@@ -97,7 +101,7 @@ const ListContract = (props) => {
                     </div>
 
                      <div className='row'>
-                      { searchVisible &&  <ContractSearch searchFilterChanged={conttactSearchFilterChanged}/> }
+                      { searchVisible &&  <ContractSearch searchFilterChanged={conttactSearchFilterChanged} handleCloseSearch={handleCloseSearch}/> }
                      </div>
 
                     <div className="container text-center">
