@@ -2,7 +2,7 @@ import { CSSTransition } from 'react-transition-group';
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { hasPermission } from "../utils/auth";
-import { getInvoice, removeInvoice, updateInvoice, postToTaxTypeIncome , postToTaxTypeRevertedIncome , getSumInvoicesByContractId } from "./InvoicesAPI";
+import { getInvoice, removeInvoice, updateInvoice, postToTaxTypeIncome, postToTaxTypeRevertedIncome, getSumInvoicesByContractId } from "./InvoicesAPI";
 import { Helmet } from "react-helmet";
 import {
   MdOutlineReceiptLong,
@@ -23,7 +23,7 @@ import { RiRefund2Fill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import QRCode from 'react-qr-code';
-import { getContract ,updateContract } from "../Contracts/ContractsAPI";
+import { getContract, updateContract } from "../Contracts/ContractsAPI";
 
 
 
@@ -59,27 +59,26 @@ const ViewInvoice = (props) => {
         setInvoice(data);
         console.log(JSON.stringify(data));
         setLoading(false);
-//***************************8 */
+        //***************************8 */
 
-let invoiceContractObj= data.contract ; 
-console.log("invoiceContractObj=" +invoiceContractObj); 
-console.log(JSON.stringify(invoiceContractObj))
- 
-if( !isBlank(invoiceContractObj) && !isBlank(invoiceContractObj._id) ) 
-{
-  getContract(invoiceContractObj._id).then((data)=> {
-    setLoading(true);
-    setContract(data);
-    console.log("contract obj:") ;
-    console.log(data) ;
-     setLoading(false);
-  }) .catch((ex) => {
-    setLoading(false);
-    console.log("Error: trying fetch contract info" + ex);
-  });
-}
+        let invoiceContractObj = data.contract;
+        console.log("invoiceContractObj=" + invoiceContractObj);
+        console.log(JSON.stringify(invoiceContractObj))
 
-//**************************** */
+        if (!isBlank(invoiceContractObj) && !isBlank(invoiceContractObj._id)) {
+          getContract(invoiceContractObj._id).then((data) => {
+            setLoading(true);
+            setContract(data);
+            console.log("contract obj:");
+            console.log(data);
+            setLoading(false);
+          }).catch((ex) => {
+            setLoading(false);
+            console.log("Error: trying fetch contract info" + ex);
+          });
+        }
+
+        //**************************** */
 
       })
       .catch((e) => {
@@ -122,10 +121,10 @@ if( !isBlank(invoiceContractObj) && !isBlank(invoiceContractObj._id) )
     setLoading(true);
     postToTaxTypeIncome(invoice._id).then(res => {
       setLoading(false);
-    //  setInvoice({ ...invoice, status: 'posted' });
+      //  setInvoice({ ...invoice, status: 'posted' });
       console.log("success invoice ......");
       // window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
-       window.location.href =  "/admin/invoices/ViewInvoice/" +invoice._id;
+      window.location.href = "/admin/invoices/ViewInvoice/" + invoice._id;
       //console.log(res.data);
     }).catch(e => {
       console.log("error post to tax");
@@ -144,7 +143,7 @@ if( !isBlank(invoiceContractObj) && !isBlank(invoiceContractObj._id) )
       //setInvoice({ ...invoice, reverted_Status: 'posted' });
       console.log("success invoice ......");
       // window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
-      window.location.href =  "/admin/invoices/ViewInvoice/" +invoice._id;
+      window.location.href = "/admin/invoices/ViewInvoice/" + invoice._id;
       //console.log(res.data);
     }).catch(e => {
       console.log("error post to tax");
@@ -161,73 +160,69 @@ if( !isBlank(invoiceContractObj) && !isBlank(invoiceContractObj._id) )
     return !isNaN(val) ? val.toFixed(3) : val;
   }
 
-  function updateContractBalance()
-{
+  function updateContractBalance() {
 
-  console.log("updateContractBalance ......") ;
-  if(isBlank(invoice.contract))
-  {return false;}
+    console.log("updateContractBalance ......");
+    if (isBlank(invoice.contract)) { return false; }
 
-  let parms = {} 
-  //parms.contractId = "64dfc9d09ce91056e7ba9fc7" 
-  parms.contractId = contract._id
-  parms.ignoreInvoiceId = "" 
-  console.log("parms") 
-  console.log(parms) ; 
-  getSumInvoicesByContractId(parms) .then((data) => {
-     
+    let parms = {}
+    //parms.contractId = "64dfc9d09ce91056e7ba9fc7" 
+    parms.contractId = contract._id
+    parms.ignoreInvoiceId = ""
+    console.log("parms")
+    console.log(parms);
+    getSumInvoicesByContractId(parms).then((data) => {
+
       console.log("getSumInvoicesByContractId success ! ");
-      console.log("data: " );
-      console.log(data) ;
-      let sumInvoices = 0 ;
-      if(data.length >0) 
-      {
-        console.log("sum:" +data[0].sum_val)
-         sumInvoices= data[0].sum_val;
+      console.log("data: ");
+      console.log(data);
+      let sumInvoices = 0;
+      if (data.length > 0) {
+        console.log("sum:" + data[0].sum_val)
+        sumInvoices = data[0].sum_val;
       }
-      else
-      {
+      else {
         console.log("sum equals 0")
-        sumInvoices = 0 ;
+        sumInvoices = 0;
       }
 
-        let cloned = JSON.parse(JSON.stringify(contract));
-        console.log("updated contract before ")
-        console.log(cloned)
+      let cloned = JSON.parse(JSON.stringify(contract));
+      console.log("updated contract before ")
+      console.log(cloned)
 
-        cloned.contractTotalInvoiced = parseFloat(sumInvoices);
-        cloned.contractBalance = parseFloat(cloned.contractTotalReceipts) - parseFloat(sumInvoices)
-        setContract(cloned);
-        console.log("updated contract after")
-        console.log(cloned);
-        updateContract(cloned).then((res)=> {
-          console.log("success  update contract!") ;
-           window.location.href = "/admin/Contract/view/" + res._id;
-    
-        }).catch((err)=> { console.log("error update contract:" + err)}) ;
-      }
-  
-    ) 
-    .catch((ex) => {
-      console.log("getSumInvoicesByContractId not  success ");
-      console.log(ex);
-    });
-     
-}
+      cloned.contractTotalInvoiced = parseFloat(sumInvoices);
+      cloned.contractBalance = parseFloat(cloned.contractTotalReceipts) - parseFloat(sumInvoices)
+      setContract(cloned);
+      console.log("updated contract after")
+      console.log(cloned);
+      updateContract(cloned).then((res) => {
+        console.log("success  update contract!");
+        window.location.href = "/admin/Contract/view/" + res._id;
 
-function isBlank(str) {
-  return !str || /^\s*$/.test(str);
-}
-
-const doPost = (data) => {
-  removeInvoice(invoiceId).then(
-    (res)=>{
-      updateContractBalance() ; 
-      //navigate("/admin/invoices/", { replace: true }); 
+      }).catch((err) => { console.log("error update contract:" + err) });
     }
-  ) .catch( (ex)=> { console.log("Error:" + ex) ;} )
 
-} ;
+    )
+      .catch((ex) => {
+        console.log("getSumInvoicesByContractId not  success ");
+        console.log(ex);
+      });
+
+  }
+
+  function isBlank(str) {
+    return !str || /^\s*$/.test(str);
+  }
+
+  const doPost = (data) => {
+    removeInvoice(invoiceId).then(
+      (res) => {
+        updateContractBalance();
+        //navigate("/admin/invoices/", { replace: true }); 
+      }
+    ).catch((ex) => { console.log("Error:" + ex); })
+
+  };
   return (
     <>
       {invoice ? (
@@ -250,89 +245,89 @@ const doPost = (data) => {
 
             <form>
 
-            <div className='row p-3 d-none d-print-flex'>
-              <div className='col col-auto'>
-                {/* <img src='https://www.tailorbrands.com/wp-content/uploads/2020/07/mcdonalds-logo.jpg' style={{width:'100px'}} /> */}
-                <img src={process.env.REACT_APP_MEDIA_BASE_URL + '/uploads/' +  localStorage.getItem("logoUrl")} style={{width:'100px'}} />
-              </div>
-              <div className='col'>
-                <h5>
-                {localStorage.getItem("companyName")}
-                <br/>
-                {t("invoice.incomeInvoice")}
-                </h5>
-               
-              </div>
+              <div className='row p-3 d-none d-print-flex'>
+                <div className='col col-auto'>
+                  {/* <img src='https://www.tailorbrands.com/wp-content/uploads/2020/07/mcdonalds-logo.jpg' style={{width:'100px'}} /> */}
+                  <img src={process.env.REACT_APP_MEDIA_BASE_URL + '/uploads/' + localStorage.getItem("logoUrl")} style={{ width: '100px' }} />
+                </div>
+                <div className='col'>
+                  <h5>
+                    {localStorage.getItem("companyName")}
+                    <br />
+                    {t("invoice.incomeInvoice")}
+                  </h5>
 
-              <div className='col col-auto text-center'>
-              {invoice && invoice.responseXML ?(<>
-                  <QRCode
-                    title="GeeksForGeeks"
-                    value={''+JSON.parse(invoice.responseXML).EINV_QR}
-                    bgColor={'white'}
-                    fgColor={'#18bc9c'}
-                    size={100}
-                  />
-                   <div className="pt-3"> {t("invoice.PostedInvoiceQRCode")}</div>
-                  </>):null}
+                </div>
+
+                <div className='col col-auto text-center'>
+                  {invoice && invoice.responseXML ? (<>
+                    <QRCode
+                      title="GeeksForGeeks"
+                      value={'' + JSON.parse(invoice.responseXML).EINV_QR}
+                      bgColor={'white'}
+                      fgColor={'#18bc9c'}
+                      size={100}
+                    />
+                    <div className="pt-3"> {t("invoice.PostedInvoiceQRCode")}</div>
+                  </>) : null}
+                </div>
+
+
+                <div className='col col-auto text-center'>
+                  {invoice && invoice.revertedXMLResponse ? (<>
+                    <QRCode
+                      title="GeeksForGeeks"
+                      value={'' + JSON.parse(invoice.revertedXMLResponse).EINV_QR}
+                      bgColor={'white'}
+                      fgColor={'#e74c3c'}
+                      size={100}
+                    />
+                    <div className="pt-3"> {t("invoice.RevertedInvoiceQRCode")}</div>
+                  </>) : null}
+                </div>
+
               </div>
-
-
-              <div className='col col-auto text-center'>
-              {invoice && invoice.revertedXMLResponse ?(<>
-                  <QRCode
-                    title="GeeksForGeeks"
-                    value={''+JSON.parse(invoice.revertedXMLResponse).EINV_QR}
-                    bgColor={'white'}
-                    fgColor={'#e74c3c'}
-                    size={100}
-                  />
-                   <div className="pt-3"> {t("invoice.RevertedInvoiceQRCode")}</div>
-                  </>):null}
-              </div>
-
-            </div>
 
               <div className="row text-right d-print-none">
-              
-                <div className='col text-start mb-3 text-center'> 
-                {/* <span> test : {JSON.parse(invoice.responseXML).EINV_QR}</span> */}
-                  { invoice && invoice.responseXML ?(<>
-                  <QRCode
-                    title="GeeksForGeeks"
-                    value={''+JSON.parse(invoice.responseXML).EINV_QR}
-                    bgColor={'white'}
-                    fgColor={'#18bc9c'}
-                    size={150}
-                  />
-                 
-                   <div className="pt-3"> {t("invoice.PostedInvoiceQRCode")}</div>
-                  </>):null}
-                  
-                  
+
+                <div className='col text-start mb-3 text-center'>
+                  {/* <span> test : {JSON.parse(invoice.responseXML).EINV_QR}</span> */}
+                  {invoice && invoice.responseXML ? (<>
+                    <QRCode
+                      title="GeeksForGeeks"
+                      value={'' + JSON.parse(invoice.responseXML).EINV_QR}
+                      bgColor={'white'}
+                      fgColor={'#18bc9c'}
+                      size={150}
+                    />
+
+                    <div className="pt-3"> {t("invoice.PostedInvoiceQRCode")}</div>
+                  </>) : null}
+
+
                 </div>
 
                 <div className='col text-start mb-3 text-center'>
-                  {invoice && invoice.revertedXMLResponse ?(<>
-                  <QRCode
-                    title="GeeksForGeeks"
-                    value={''+JSON.parse(invoice.revertedXMLResponse).EINV_QR}
-                    bgColor={'white'}
-                    fgColor={'#e74c3c'}
-                    size={150}
-                  />
-                  <div className="pt-3">  {t("invoice.RevertedInvoiceQRCode")} </div>
-                  </>):null}
-                  
-                  
+                  {invoice && invoice.revertedXMLResponse ? (<>
+                    <QRCode
+                      title="GeeksForGeeks"
+                      value={'' + JSON.parse(invoice.revertedXMLResponse).EINV_QR}
+                      bgColor={'white'}
+                      fgColor={'#e74c3c'}
+                      size={150}
+                    />
+                    <div className="pt-3">  {t("invoice.RevertedInvoiceQRCode")} </div>
+                  </>) : null}
+
+
                 </div>
-                
+
                 <div class="mb-3  col justify-content-end">
 
-                <button type='button' className='btn btn-lg btn-dark d-print-none' onClick={() => {window.print()}}>
-                      <MdPrint size={28} />
-                    </button>
-                    
+                  <button type='button' className='btn btn-lg btn-dark d-print-none' onClick={() => { window.print() }}>
+                    <MdPrint size={28} />
+                  </button>
+
 
                   {
                     (invoice.status != "posted") &&
@@ -347,17 +342,17 @@ const doPost = (data) => {
                   }
 
                   {
-                      
-                    (invoice.status == "posted" ) &&
+
+                    (invoice.status == "posted") &&
                     (<>
-                    <button
-                      type="button"
-                      className="btn btn-danger btn-lg mx-2 d-print-none"
-                      onClick={doPostRevertedInvoice}
-                    >
-                      <RiRefund2Fill size={20} />
-                      {t("invoice.revertInvoice")}
-                    </button></>)
+                      <button
+                        type="button"
+                        className="btn btn-danger btn-lg mx-2 d-print-none"
+                        onClick={doPostRevertedInvoice}
+                      >
+                        <RiRefund2Fill size={20} />
+                        {t("invoice.revertInvoice")}
+                      </button></>)
                   }
 
 
@@ -384,12 +379,12 @@ const doPost = (data) => {
                   </div>
                 </div>
 
-              
+
                 <div className="mb-3 col ">
                   <div className="col col-auto"> {t("invoice.status")}</div>
 
                   <div className="col">
-                    {invoice.isPosted?'posted':invoice.status}
+                    {invoice.isPosted ? 'posted' : invoice.status}
                   </div>
                 </div>
 
@@ -404,7 +399,7 @@ const doPost = (data) => {
 
 
                 <div className="mb-3 col "></div>
-                
+
               </div>
 
               <div className="row">
@@ -503,99 +498,99 @@ const doPost = (data) => {
               </div>
 
               <div className="mb-3 row ">
-            <div className="col col-auto text-info">
-              {t("invoice.contractInformation")}{" "}
-            </div>
-            <div className="col">
-              <hr />
-            </div>
-          </div>
-
-          <div className="mb-3 row ">
-            <div className="mb-3 col-2 ">
-              <div className="col col-auto">
-                {t("invoice.contract")}  
-              </div>
-              <div className="col col-auto">
-               {invoice.contract?.seqNumber}
-              </div>
-            </div>
-
-            <div className="mb-3 col ">
-                <div className="col col-auto">{t("contracts.packageName")}  </div>
+                <div className="col col-auto text-info">
+                  {t("invoice.contractInformation")}{" "}
+                </div>
                 <div className="col">
-                {invoice.package?.packageName}
+                  <hr />
                 </div>
               </div>
 
-           
-              <div className="mb-3 col ">
-                <div className="col col-auto">{t("contracts.contractAmount")} </div>
-                <div className="col">
-                 {invoice.contract?.contractAmount} 
+              <div className="mb-3 row ">
+                <div className="mb-3 col-2 ">
+                  <div className="col col-auto">
+                    {t("invoice.contract")}
+                  </div>
+                  <div className="col col-auto">
+                    {invoice.contract?.seqNumber}
+                  </div>
+                </div>
+
+                <div className="mb-3 col ">
+                  <div className="col col-auto">{t("contracts.packageName")}  </div>
+                  <div className="col">
+                    {invoice.package?.packageName}
+                  </div>
+                </div>
+
+
+                <div className="mb-3 col ">
+                  <div className="col col-auto">{t("contracts.contractAmount")} </div>
+                  <div className="col">
+                    {invoice.contract?.contractAmount}
+                  </div>
+                </div>
+
+
+
+                <div className="mb-3 col ">
+                  <div className="col col-auto">{t("contracts.contractBalance")} </div>
+                  <div className="col">
+                    {invoice.contract?.contractBalance}
+                  </div>
                 </div>
               </div>
 
-             
-
-              <div className="mb-3 col ">
-                <div className="col col-auto">{t("contracts.contractBalance")} </div>
-                <div className="col">
-                {invoice.contract?.contractBalance} 
+              <div className="mb-3 row ">
+                <div className="col col-auto text-info">
+                  {t("invoice.PaymentMethod")}{" "}
                 </div>
-              </div> 
-          </div>
-
-          <div className="mb-3 row ">
-            <div className="col col-auto text-info">
-              {t("invoice.PaymentMethod")}{" "}
-            </div>
-            <div className="col">
-              <hr />
-            </div>
-          </div>
-
-          <div className="mb-3 row ">
-            <div className="mb-3 col ">
-              <div className="col col-auto">{t("invoice.paymentMethod")}</div>
-
-              <div className="col col-auto">
-              {invoice.paymentMethod}
+                <div className="col">
+                  <hr />
+                </div>
               </div>
-            </div>
-            
-            {invoice.paymentMethod == "Insurance" ?
-            <>
-            <div className="mb-3 col ">
-              <div className="col col-auto">{t("invoice.insurance")}</div>
-              <div className="col col-auto">
-            {invoice.insurance.contactName}
+
+              <div className="mb-3 row ">
+                <div className="mb-3 col ">
+                  <div className="col col-auto">{t("invoice.paymentMethod")}</div>
+
+                  <div className="col col-auto">
+                    {invoice.paymentMethod}
+                  </div>
+                </div>
+
+                {invoice.paymentMethod == "Insurance" ?
+                  <>
+                    <div className="mb-3 col ">
+                      <div className="col col-auto">{t("invoice.insurance")}</div>
+                      <div className="col col-auto">
+                        {invoice.insurance.contactName}
+                      </div>
+                    </div>
+
+                    <div className="mb-3 col ">
+                      <div className="col col-auto">{t("invoice.templateNo")} </div>
+                      <div className="col">
+                        {invoice.templateNo}
+                      </div>
+                    </div>
+
+                    <div className="mb-3 col ">
+                      <div className="col col-auto">{t("invoice.percentageOfCover")} </div>
+                      <div className="col">
+                        {invoice.percentageOfCover}
+                      </div>
+                    </div>
+                  </>
+                  : <>
+                    <div className="mb-3 col "></div>
+                    <div className="mb-3 col "></div>
+                    <div className="mb-3 col "></div>
+                  </>
+                }
+
+
               </div>
-            </div>
-            
-            <div className="mb-3 col ">
-                <div className="col col-auto">{t("invoice.templateNo")} </div>
-                <div className="col">
-                 {invoice.templateNo}
-                </div>
-              </div> 
-
-              <div className="mb-3 col ">
-                <div className="col col-auto">{t("invoice.percentageOfCover")} </div>
-                <div className="col">
-          {invoice.percentageOfCover}
-                </div>
-              </div> 
-              </>
-              :<>
-              <div className="mb-3 col "></div>
-              <div className="mb-3 col "></div>
-              <div className="mb-3 col "></div>
-              </>
-}
-
-
-            </div>
 
 
               <div className="mb-3 row ">
@@ -755,51 +750,51 @@ const doPost = (data) => {
                 ) : null}
 
 
+                <div className="row action-bar">
+                  <div className="row text-right">
+
+                    {invoice.status != "posted" ?
+                      <div className="col d-print-none">
+                        <ConfirmButton
+                          onConfirm={doPost}
+                          onCancel={() => console.log("cancel")}
+                          buttonText={t("dashboard.delete")}
+                          confirmText={t("invoice.confirmDelete")}
+                          cancelText={t("invoice.cancelDelete")}
+                          loadingText={t("contact.BeingDeleteingTheContact")}
+                          wrapClass="row"
+                          buttonClass="btn btn-lg w-25"
+                          mainClass="btn-warning mx-2"
+                          confirmClass="btn-danger mx-2 col col-auto order-2 w-25"
+                          cancelClass=" btn-success col col-auto order-1 w-25"
+                          loadingClass="visually-hidden"
+                          disabledClass=""
+                          once
+                        >
+                          {"Delete "}
+                          <MdDelete />
+                        </ConfirmButton>
+                      </div>
+                      : ""}
+
+                    <div className="mb-3  col justify-content-end">
+                      <Link className="btn btn-secondary btn-lg mx-2 d-print-none" to={"/admin/invoices?status=" + invoice.status}>
+                        <MdClose size={20} /> &nbsp; {t("close")}
+                      </Link>
+                      &nbsp;
 
 
 
+                      {invoice.status != "posted" ? <Link className="btn btn-primary btn-lg d-print-none" to={"/admin/Invoices/edit/" + invoice._id}>
+                        <MdEdit size={20} />
+                        &nbsp; {t("dashboard.edit")}
+                      </Link> : ""}
 
-                <div className="row text-right">
-                  <div className="mb-3  col justify-content-end">
-                    <Link className="btn btn-secondary btn-lg mx-2 d-print-none" to={"/admin/invoices?status=" + invoice.status}>
-                      <MdClose size={20} /> &nbsp; {t("close")}
-                    </Link>
-                    &nbsp;
+                    </div>
 
-
-
-                    {invoice.status != "posted" ? <Link className="btn btn-primary btn-lg d-print-none" to={"/admin/Invoices/edit/" + invoice._id}>
-                      <MdEdit size={20} />
-                      &nbsp; {t("dashboard.edit")}
-                    </Link> : ""}
 
                   </div>
-
-                  {invoice.status != "posted" ?
-                  <div className="d-print-none">
-                    <ConfirmButton
-                      onConfirm={doPost}
-                      onCancel={() => console.log("cancel")}
-                      buttonText={t("dashboard.delete")}
-                      confirmText={t("invoice.confirmDelete")}
-                      cancelText={t("invoice.cancelDelete")}
-                      loadingText={t("invoice.BeingDeleteingTheInvoice")}
-                      wrapClass="fdfdf"
-                      buttonClass="btn btn-lg d-print-none"
-                      mainClass="btn-warning mx-2"
-                      confirmClass="btn-danger mx-2"
-                      cancelClass=" btn-success "
-                      loadingClass="visually-hidden"
-                      disabledClass=""
-                      once
-                    >
-                      {"Delete "}
-                      <MdDelete />
-                    </ConfirmButton>
-                    </div>
-                    : ""}
                 </div>
-
               </div>
 
 

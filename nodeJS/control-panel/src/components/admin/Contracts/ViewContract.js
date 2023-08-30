@@ -378,7 +378,7 @@ const ViewContract = (props) => {
               </div>
               <div className="row action-bar">
               <div className="col ">
-                {/* {(contract.receipts == null || contract.receipts.length == 0)&& (contract.invoices == null || contract.invoices.length == 0)? ( */}
+                {(contract.receipts == null || contract.receipts.length == 0)&& (contract.invoices == null || contract.invoices.length == 0)? (
             
                 <ConfirmButton
                   onConfirm={() => {removeContract(contract._id)}}
@@ -399,9 +399,9 @@ const ViewContract = (props) => {
                   {"Delete "}
                   <MdDelete />
                 </ConfirmButton>
-             // ):null}
+             ):null}
           </div>
-             <div className="col ">
+             <div className="col text-end">
                   <Link className="btn btn-secondary btn-lg d-print-none" to="/admin/Contract">
                     <MdClose size={20} /> &nbsp; {t("Cancel")}
                   </Link>{" "}

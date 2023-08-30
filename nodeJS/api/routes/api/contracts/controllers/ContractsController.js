@@ -25,6 +25,11 @@ router.post("/filter", verifyToken, async (req, res) => {
     let clientId = filters.clientId || null;
     let deleted = filters.deleted || false;
     let status = filters.status || null;
+    let seqNumber = filters.seqNumber || null;
+    let minValue = filters.minValue || null;
+    let maxValue = filters.maxValue || null;
+    let package = filters.package || null;
+    let contact = filters.contact || null;
 
     result.page = page;
     console.log("result.page:" + result.page);
@@ -34,6 +39,27 @@ router.post("/filter", verifyToken, async (req, res) => {
     let sortParams = {
       _id: -1,
     };
+
+    if(minValue  ){
+      queryParams["$and"].push({ contractBalance: { $gte: minValue } });
+    }
+    if(package  ){
+      queryParams["$and"].push({ package: { $eq: package } });
+    }
+    if(contact  ){
+      queryParams["$and"].push({ contact: { $eq: contact } });
+    }
+    
+    
+      console.log(filters);
+    if(maxValue ){
+      queryParams["$and"].push({ contractBalance: { $lte: maxValue } });
+    }
+    if(seqNumber && seqNumber.length > 0){
+      queryParams["$and"].push({ seqNumber: { $regex: seqNumber, $options: "i" } });
+    }
+
+
 
     if (deleted) {
       queryParams["$and"].push({ deleted: { $eq: true } });

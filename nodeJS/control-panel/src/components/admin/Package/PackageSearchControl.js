@@ -50,6 +50,14 @@ const PackageSearchControl = (props) => {
     props.handleSelectPackage(null);
   };
 
+  const unsetPackage = () => {
+    setSelectedPackageText("");
+    setSelectedId(null);
+    if (props.handleSelectPackage) {
+      props.handleSelectPackage(null);
+    }
+  };
+
 
   const onBlurSearchPackage = (event) => {
     //event.preventDefault();
@@ -96,7 +104,7 @@ const PackageSearchControl = (props) => {
         <div className="scrollbar p-2" style={{ maxHeight: '376px', overflowY: 'auto', position: 'absolute', width: '420px', zIndex: 99 }}>
           <div className="row  mb-2">
             <div className="col text-end">
-              <button type='button' className="btn btn-sm btn-outline-danger w-100" onClick={() => setPackageItems([])}>CLOSE</button>
+              <button type='button' className="btn btn-sm btn-outline-danger w-100" onClick={() => {setPackageItems([]);unsetPackage();} }>CLOSE</button>
             </div>
           </div>
           <div className="row">

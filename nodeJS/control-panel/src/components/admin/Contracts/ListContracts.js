@@ -46,7 +46,31 @@ const ListContract = (props) => {
     }
 
 
-    , []) 
+    , []);
+
+    const conttactSearchFilterChanged = (filter) => {
+        console.log("filter:" + JSON.stringify(filter));
+        getContracts({
+            page: contractsPage,
+            contact: filter.contact,
+            package: filter.package,
+            seqNumber: filter.seqNumber,
+            minValue: filter.minValue,
+            maxValue: filter.maxValue,
+            status: filter.status,
+        }).then(data => {
+            setLoading(false);
+            setPackages(data.items || []);
+            setContractsPage(data.page);
+            //console.log("data.items:" + JSON.stringify(data.items));
+            console.log("data.pages:" + data.pages);
+            setcontractsPages(data.pages);
+        }).catch(e => {
+            setLoading(false);
+            console.log(e);
+        });
+    }
+    
 
     return (
         <div className="conatiner">
@@ -73,7 +97,7 @@ const ListContract = (props) => {
                     </div>
 
                      <div className='row'>
-                      { searchVisible &&  <ContractSearch/> }
+                      { searchVisible &&  <ContractSearch searchFilterChanged={conttactSearchFilterChanged}/> }
                      </div>
 
                     <div className="container text-center">
