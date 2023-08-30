@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 
 export const postSecured = (relativeUrl, data) => {
     const promise = new Promise((resolve, reject) => {
@@ -90,7 +90,7 @@ export const downloadXLSFile = async (URL) => {
     const headers = { 'Content-Type': 'blob', "authorization": "Bearer " + localStorage.getItem("jwt") };
 
     const config = { method: 'POST', url: URL, responseType: 'arraybuffer', headers };
-    const theUrl = URL;
+    
 
     return new Promise((resolve, reject) => {
         try {

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getSecured, postSecured } from './ApiClient'
+import { getSecured } from './ApiClient'
 
 
 
