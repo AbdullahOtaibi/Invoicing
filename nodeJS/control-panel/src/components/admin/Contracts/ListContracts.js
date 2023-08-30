@@ -7,7 +7,7 @@ import { getLocalizedText } from '../utils/utils'
 import { hasPermission } from '../utils/auth';
 import { Helmet } from "react-helmet";
 import { getContracts } from './ContractsAPI'
-
+import ContractSearch from './ContractSearch'
 
 
 
@@ -25,6 +25,8 @@ const ListContract = (props) => {
             return;
         }
     }
+    const [searchVisible, setSearchVisible] = useState(false);
+
     useEffect( ()=> {
 
         getContracts({
@@ -64,12 +66,15 @@ const ListContract = (props) => {
 
                         <div className='col-md-4 col-sm-6' style={{ textAlign: 'end' }}>
                             
-                          
+                        <button type="button" className="btn-success btn-lg mx-1" onClick={() => { setSearchVisible(!searchVisible); }} ><MdSearch size={20} />  {t("search")}</button>
                             <a className="add-btn btn-info btn-lg" href={"/admin/Contract/create"}><MdAdd size={20} />  {t("dashboard.add")}</a>
                             
                         </div>
                     </div>
 
+                     <div className='row'>
+                      { searchVisible &&  <ContractSearch/> }
+                     </div>
 
                     <div className="container text-center">
                         <ThreeDots

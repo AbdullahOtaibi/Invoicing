@@ -615,9 +615,9 @@
     "receipts" : "Receipts" ,
     "invoices" : "Invoices" ,
     "appointments" : "Appointments" ,
-    "createAppointment" : "Create Appointment" 
-
-
+    "createAppointment" : "Create Appointment" ,
+   "lessThanOrEqualBalance" :"Less Than or Equal Balance",
+"greaterThanOrEqualBalance" : "Greater Than or Equal Balance"
 
 
   }

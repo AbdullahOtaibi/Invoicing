@@ -376,9 +376,9 @@ const ViewContract = (props) => {
                   <AppointmentLst contractId={contract._id} handleAppoinmentSelected={handleAppoinmentSelected} />
                 ) : null}
               </div>
-
-              <div className="row text-right">
-                {(contract.receipts == null || contract.receipts.length == 0)&& (contract.invoices == null || contract.invoices.length == 0)? (
+              <div className="row action-bar">
+              <div className="col ">
+                {/* {(contract.receipts == null || contract.receipts.length == 0)&& (contract.invoices == null || contract.invoices.length == 0)? ( */}
             
                 <ConfirmButton
                   onConfirm={() => {removeContract(contract._id)}}
@@ -386,12 +386,12 @@ const ViewContract = (props) => {
                   buttonText={t("dashboard.delete")}
                   confirmText={t("invoice.confirmDelete")}
                   cancelText={t("invoice.cancelDelete")}
-                  loadingText={t("invoice.BeingDeleteingTheInvoice")}
-                  wrapClass="col col-10 text-end"
-                  buttonClass="btn btn-lg d-print-none"
+                  loadingText={t("contact.BeingDeleteingTheContact")}
+                  wrapClass="row"
+                  buttonClass="btn btn-lg w-25"
                   mainClass="btn-warning mx-2"
-                  confirmClass="btn-danger mx-2"
-                  cancelClass=" btn-success "
+                  confirmClass="btn-danger mx-2 col col-auto order-2 w-25"
+                  cancelClass=" btn-success col col-auto order-1 w-25"
                   loadingClass="visually-hidden"
                   disabledClass=""
                   once
@@ -399,8 +399,9 @@ const ViewContract = (props) => {
                   {"Delete "}
                   <MdDelete />
                 </ConfirmButton>
-              ):null}
-                <div className="mb-3  col col text-end">
+             // ):null}
+          </div>
+             <div className="col ">
                   <Link className="btn btn-secondary btn-lg d-print-none" to="/admin/Contract">
                     <MdClose size={20} /> &nbsp; {t("Cancel")}
                   </Link>{" "}
@@ -413,7 +414,10 @@ const ViewContract = (props) => {
                   </Link>
 
                 </div>
+
               </div>
+         
+
             </form>
           </div>
         </div>
