@@ -342,7 +342,7 @@ const FullCalendarNew = (props) => {
         </div>
 
         <div className="row">
-          <div className="mb-3 col ">
+          <div className="mb-3 col col-6">
             <div className="col col-auto">{t("FullCalendar.start")} </div>
 
             <div className="col">
@@ -359,10 +359,8 @@ const FullCalendarNew = (props) => {
               />
             </div>
           </div>
-        </div>
 
-        <div className="row">
-          <div className="mb-3 col ">
+          <div className="mb-3 col col-6">
             <div className="col col-auto">{t("FullCalendar.end")} </div>
 
             <div className="col">
@@ -380,6 +378,8 @@ const FullCalendarNew = (props) => {
             </div>
           </div>
         </div>
+
+       
 
         <div className="row">
           <div className="mb-3 col ">

@@ -116,7 +116,7 @@ router.post("/filter", verifyToken, async (req, res) => {
       .exec("find");
 
     res.json(result);
-    console.log(JSON.stringify(result))
+    //console.log(JSON.stringify(result))
     console.log("fullCalendar: out.....");
   } catch (ex) {
     console.log(ex);

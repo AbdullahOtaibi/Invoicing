@@ -2,51 +2,47 @@ import { React, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { updateFullCalendar, deleteFullCalendar} from "./FullCalendarAPI";
+import { updateFullCalendar, deleteFullCalendar } from "./FullCalendarAPI";
 import ConfirmButton from "react-confirmation-button";
-import {MdDelete} from  "react-icons/md"
+import { MdDelete } from "react-icons/md"
 import ContactSearchControl from "../Contact/ContactSearchControl";
 import ContractSearchControl from "../Contracts/ContractSearchControl";
-let startDate = new Date() ;
-if(startDate.getMinutes() >0 && startDate.getMinutes() < 30 ) 
-{
-startDate.setMinutes(0)
+let startDate = new Date();
+if (startDate.getMinutes() > 0 && startDate.getMinutes() < 30) {
+  startDate.setMinutes(0)
 }
-else
-{
+else {
   startDate.setMinutes(30)
 }
 
-let endDate = new Date() ;
-if(endDate.getMinutes() < 30 ) 
-{
+let endDate = new Date();
+if (endDate.getMinutes() < 30) {
   endDate.setMinutes(30)
 }
-else
-{
+else {
   endDate.setMinutes(60)
 }
 
 
 const FullCalendarEdit = (props) => {
- 
 
 
 
-    const [fullCalendar, setFullCalendar] = useState({});
 
-   useEffect ( () => {
-        setFullCalendar(props.getfullCalendarObj);
-     console.log( "props.getfullCalendarObj" +  JSON.stringify(props.getfullCalendarObj))
-      
+  const [fullCalendar, setFullCalendar] = useState({});
+
+  useEffect(() => {
+    setFullCalendar(props.getfullCalendarObj);
+    console.log("props.getfullCalendarObj" + JSON.stringify(props.getfullCalendarObj))
+
     // let cloned = JSON.parse(JSON.stringify(fullCalendar));
-   // cloned.title = "abd" ; //props.getfullCalendarObj.titleToEdit ;
-   // setFullCalendar(cloned);
+    // cloned.title = "abd" ; //props.getfullCalendarObj.titleToEdit ;
+    // setFullCalendar(cloned);
 
-   }, []) 
-  
- 
-   const selectFieldClass = (value, minQuantity) => {
+  }, [])
+
+
+  const selectFieldClass = (value, minQuantity) => {
     if (!wasValidated) return "form-select";
     if (isNaN(minQuantity))
       return value ? "form-select is-valid" : "form-select is-invalid";
@@ -79,18 +75,18 @@ const FullCalendarEdit = (props) => {
     setFullCalendar(cloned);
   };
 
-  
-const setStatus = (event)=> {
-  let cloned = JSON.parse(JSON.stringify(fullCalendar));
-  cloned.status = event.target.value;
-  console.log("status: event.target.value:" + event.target.value) ;
-  setFullCalendar(cloned);
-}
+
+  const setStatus = (event) => {
+    let cloned = JSON.parse(JSON.stringify(fullCalendar));
+    cloned.status = event.target.value;
+    console.log("status: event.target.value:" + event.target.value);
+    setFullCalendar(cloned);
+  }
 
   const setNote = (event) => {
     let cloned = JSON.parse(JSON.stringify(fullCalendar));
     cloned.note = event.target.value;
-    console.log("note value:" +event.target.value) 
+    console.log("note value:" + event.target.value)
     setFullCalendar(cloned);
   };
 
@@ -142,15 +138,14 @@ const setStatus = (event)=> {
           //setInvoice(res.data);
           // window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
           console.log("fullCalendar has been updated ....");
-          
-          if(props.onSave){
+
+          if (props.onSave) {
             props.onSave();
           }
-          if( props.updateFullCalendar) 
-          {
-            props.updateFullCalendar() ;
+          if (props.updateFullCalendar) {
+            props.updateFullCalendar();
           }
-          
+
         })
         .catch((e) => {
           console.log(e);
@@ -176,7 +171,7 @@ const setStatus = (event)=> {
 
     console.log(
       " ( new Date(fullCalendar.start) >= new Date(fullCalendar.end))" +
-        (new Date(fullCalendar.start) >= new Date(fullCalendar.end))
+      (new Date(fullCalendar.start) >= new Date(fullCalendar.end))
     );
     if (new Date(fullCalendar.start) >= new Date(fullCalendar.end)) {
       console.log("End Date must be greater than Start Date");
@@ -193,18 +188,18 @@ const setStatus = (event)=> {
       cloned.contactName = item.contactName;
       cloned.contact = item._id;
       cloned.title = item.contactName;
-      cloned.mobile = item.mobile; 
+      cloned.mobile = item.mobile;
       setFullCalendar(cloned);
-      
+
     }
   };
 
-  const  handleSelectContract = (selectedContract) => {
+  const handleSelectContract = (selectedContract) => {
     console.log("insert handleSelectContract method");
     let cloned = JSON.parse(JSON.stringify(fullCalendar));
     cloned.contract = selectedContract._id;
     setFullCalendar(cloned);
-  }	
+  }
 
   const selectedEmployee = (item) => {
     if (item) {
@@ -217,234 +212,233 @@ const setStatus = (event)=> {
 
   return (
     <>
-    {fullCalendar.contactName ? (
-      <form>
-         
-      <div className="row">
-          <div className="mb-3 col ">
-            <div className="col col-auto">{t("FullCalendar.contactName")} </div>
+      {fullCalendar.contactName ? (
+        <form>
 
-            <div className="col">        
-<ContactSearchControl
-                    handleSelectContact={selectedConatct}
-                    wasValidated={wasValidated}
-                     value = { fullCalendar.contactName }
-                     contactType = {["Client" , "Vendor"]}
-                  />
+          <div className="row">
+            <div className="mb-3 col ">
+              <div className="col col-auto">{t("FullCalendar.contactName")} </div>
 
+              <div className="col">
+                <ContactSearchControl
+                  handleSelectContact={selectedConatct}
+                  wasValidated={wasValidated}
+                  value={fullCalendar.contactName}
+                  contactType={["Client", "Vendor"]}
+                />
+
+              </div>
             </div>
           </div>
-        </div>
 
-      <div className="row">
-          <div className="mb-3 col ">
-            <div className="col col-auto">{t("FullCalendar.title")} </div>
+          <div className="row">
+            <div className="mb-3 col ">
+              <div className="col col-auto">{t("FullCalendar.title")} </div>
 
-            <div className="col">
-              <input
-                type="text"
-                className={fieldClass(fullCalendar.title)}
-                id="title"
-                name="title"
-                placeholder={t("FullCalendar.title")}
-                value={fullCalendar.title}
-                onChange={setTitle}
-              ></input>
+              <div className="col">
+                <input
+                  type="text"
+                  className={fieldClass(fullCalendar.title)}
+                  id="title"
+                  name="title"
+                  placeholder={t("FullCalendar.title")}
+                  value={fullCalendar.title}
+                  onChange={setTitle}
+                ></input>
+              </div>
             </div>
           </div>
-        </div>
 
-   
-        <div className="row">
-          <div className="mb-3 col ">
-            <div className="col col-auto">{t("FullCalendar.mobile")} </div>
 
-            <div className="col">
-              <input
-                type="text"
-                className="form-control"
-                id="mobile"
-                name="mobile"
-                placeholder={t("FullCalendar.mobile")}
-                value={fullCalendar.mobile}
-                onChange={setMobile}
-              ></input>
+          <div className="row">
+            <div className="mb-3 col ">
+              <div className="col col-auto">{t("FullCalendar.mobile")} </div>
+
+              <div className="col">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="mobile"
+                  name="mobile"
+                  placeholder={t("FullCalendar.mobile")}
+                  value={fullCalendar.mobile}
+                  onChange={setMobile}
+                ></input>
+              </div>
             </div>
           </div>
-        </div>
 
 
-        <div className="row">
-          <div className="mb-3 col ">
-            <div className="col col-auto">{t("FullCalendar.contract")} </div>
+          <div className="row">
+            <div className="mb-3 col ">
+              <div className="col col-auto">{t("FullCalendar.contract")} </div>
 
-            <div className="col">            
-            <ContractSearchControl handleSelectContract={handleSelectContract} clientId={fullCalendar.contact}  value = { fullCalendar.contractSequanceNumber } />
+              <div className="col">
+                <ContractSearchControl handleSelectContract={handleSelectContract} clientId={fullCalendar.contact} value={fullCalendar.contractSequanceNumber} />
 
+              </div>
             </div>
           </div>
-        </div>
-   
 
-        <div className="row">
-          <div className="mb-3 col ">
-            <div className="col col-auto">{t("FullCalendar.start")} </div>
 
-            <div className="col">
-              <DatePicker
-                className={fieldClass(fullCalendar.start)}
-                showTimeSelect
-                dateFormat="dd/MM/yyyy hh:mm a"
-                selected={
-                  fullCalendar.start ? new Date(fullCalendar.start) : new Date()
-                }
-                onChange={(date) => {
-                  setStartDate(date);
-                }}
-              />
+          <div className="row">
+            <div className="mb-3 col col-6">
+              <div className="col col-auto">{t("FullCalendar.start")} </div>
+
+              <div className="col">
+                <DatePicker
+                  className={fieldClass(fullCalendar.start)}
+                  showTimeSelect
+                  dateFormat="dd/MM/yyyy hh:mm a"
+                  selected={
+                    fullCalendar.start ? new Date(fullCalendar.start) : new Date()
+                  }
+                  onChange={(date) => {
+                    setStartDate(date);
+                  }}
+                />
+              </div>
+            </div>
+            <div className="mb-3 col col-6">
+              <div className="col col-auto">{t("FullCalendar.end")} </div>
+
+              <div className="col">
+                <DatePicker
+                  className={checkDate(fullCalendar.start, fullCalendar.end)}
+                  showTimeSelect
+                  dateFormat="dd/MM/yyyy hh:mm a"
+                  selected={
+                    fullCalendar.end ? new Date(fullCalendar.end) : new Date()
+                  }
+                  onChange={(date) => {
+                    setEndDate(date);
+                  }}
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="row">
-          <div className="mb-3 col ">
-            <div className="col col-auto">{t("FullCalendar.end")} </div>
+       
 
-            <div className="col">
-              <DatePicker
-                className={checkDate(fullCalendar.start, fullCalendar.end)}
-                showTimeSelect
-                dateFormat="dd/MM/yyyy hh:mm a"
-                selected={
-                  fullCalendar.end ? new Date(fullCalendar.end) : new Date()
-                }
-                onChange={(date) => {
-                  setEndDate(date);
-                }}
-              />
+          <div className="row">
+            <div className="mb-3 col ">
+              <div className="col col-auto">{t("FullCalendar.employeeName")} </div>
+
+              <div className="col">
+                <ContactSearchControl
+                  handleSelectContact={selectedEmployee}
+                  wasValidated={false}
+                  value={fullCalendar.employeeName}
+                  contactType={["Employee"]}
+                />
+
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="row">
-          <div className="mb-3 col ">
-            <div className="col col-auto">{t("FullCalendar.employeeName")} </div>
+          <div className="row">
+            <div className="mb-3 col ">
+              <div className="col col-auto">{t("FullCalendar.status")} {fullCalendar.status} </div>
+              <div className="col">
+                <select
+                  type="text"
+                  className={selectFieldClass(fullCalendar.status)}
+                  id="status"
+                  name="status"
+                  onChange={setStatus}
+                  value={fullCalendar.status}
 
-            <div className="col">            
-<ContactSearchControl
-                    handleSelectContact={selectedEmployee}
-                    wasValidated={false}
-                    value = {fullCalendar.employeeName}
-                    contactType = {["Employee"]}
-                  />
+                >
 
+                  <option value="Scheduled"> Scheduled </option>
+                  <option value="Completed">Completed</option>
+                  <option value="In Complete">In Complete</option>
+                </select>
+
+
+              </div>
             </div>
           </div>
-        </div>
-
-        <div className="row">
-        <div className="mb-3 col ">
-        <div className="col col-auto">{t("FullCalendar.status")} {fullCalendar.status} </div>
-        <div className="col">
-                  <select
-                    type="text"
-                    className={selectFieldClass(fullCalendar.status)}
-                    id="status"
-                    name="status"
-                    onChange={setStatus}
-                    value={fullCalendar.status}
-                  
-                  >
-                     
-                    <option value="Scheduled"> Scheduled </option>
-                    <option value="Completed">Completed</option>
-                    <option value="In Complete">In Complete</option>
-                  </select>
-              
-
-        </div>
-        </div>
-        </div>
 
 
-        <div className="row">
-          <div className="mb-3 col ">
-            <div className="col col-auto">{t("FullCalendar.note")} </div>
+          <div className="row">
+            <div className="mb-3 col ">
+              <div className="col col-auto">{t("FullCalendar.note")} </div>
 
-            <div className="col">
-              <textarea
-                className="form-control"
-                id="note"
-                name="note"
-                placeholder={t("FullCalendar.note")}
-                onChange={setNote}
-                value={fullCalendar.note}
-              >
-                
+              <div className="col">
+                <textarea
+                  className="form-control"
+                  id="note"
+                  name="note"
+                  placeholder={t("FullCalendar.note")}
+                  onChange={setNote}
+                  value={fullCalendar.note}
+                >
+
                   {fullCalendar.note}
-              </textarea>
+                </textarea>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="row">
-          <div className="mb-3 col ">
-            <div className="col col-auto">{t("FullCalendar.allDay")} </div>
+          <div className="row">
+            <div className="mb-3 col ">
+              <div className="col col-auto">{t("FullCalendar.allDay")} </div>
 
+              <div className="col">
+                <input
+                  type="checkbox"
+                  id="allDay"
+                  name="allDay"
+                  placeholder={t("FullCalendar.allDay")}
+                  onChange={setAllDay}
+                  value={fullCalendar.allDay}
+                  defaultChecked={fullCalendar.allDay}
+                ></input>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-3 row ">
             <div className="col">
-              <input
-                type="checkbox"
-                id="allDay"
-                name="allDay"
-                placeholder={t("FullCalendar.allDay")}
-                onChange={setAllDay}
-                value={fullCalendar.allDay}
-                defaultChecked={fullCalendar.allDay}
-              ></input>
+              <button
+                type="button"
+                className="btn btn-primary btn-lg w-100 ml-2"
+                onClick={dopost}
+              >
+                {t("dashboard.submit")}
+              </button>
             </div>
           </div>
-        </div>
+          <div className="mb-3 row ">
+            <div className="col">
+              <ConfirmButton
+                onConfirm={() => { deleteFullCalendar(fullCalendar._id); console.log("delete"); props.onSave(); if (props.updateFullCalendar) { props.updateFullCalendar() } }}
+                onCancel={() => console.log("cancel")}
+                buttonText={t("dashboard.delete")}
+                confirmText={t("invoice.confirmDelete")}
+                cancelText={t("invoice.cancelDelete")}
+                loadingText={t("FullCalendar.BeingDeleteingTheAppointment")}
+                wrapClass="d-grid gap-2"
+                buttonClass="btn btn-lg"
+                mainClass="btn-warning mx-2 w-100"
+                confirmClass="btn-danger "
+                cancelClass=" btn-success"
+                loadingClass="visually-hidden"
+                disabledClass=""
 
-        <div className="mb-3 row ">
-          <div className="col">
-            <button
-              type="button"
-              className="btn btn-primary btn-lg w-100 ml-2"
-              onClick={dopost}
-            >
-              {t("dashboard.submit")}
-            </button>
+                once
+
+              >
+                {"Delete "}
+                <MdDelete />
+              </ConfirmButton>
+            </div>
           </div>
-        </div>
-        <div className="mb-3 row ">
-          <div className="col">
-          <ConfirmButton
-                              onConfirm={() =>{  deleteFullCalendar(fullCalendar._id) ;  console.log("delete") ;  props.onSave();  if(props.updateFullCalendar) {props.updateFullCalendar()}   } }
-                              onCancel={() => console.log("cancel")}
-                              buttonText= {t("dashboard.delete")}
-                              confirmText={t("invoice.confirmDelete")}
-                              cancelText={t("invoice.cancelDelete")}
-                              loadingText={t("FullCalendar.BeingDeleteingTheAppointment")}
-                              wrapClass="d-grid gap-2"
-                              buttonClass="btn btn-lg"
-                              mainClass="btn-warning mx-2 w-100"
-                              confirmClass="btn-danger "
-                              cancelClass=" btn-success"
-                              loadingClass="visually-hidden"
-                              disabledClass=""
-                              
-                              once
-                            
-                            >
-                              {"Delete "}
-                              <MdDelete />
-                            </ConfirmButton>
-             </div>
-        </div> 
-      </form>
-    ) : "Data Not Found ..."}
+        </form>
+      ) : "Data Not Found ..."}
     </>
-    
+
   );
 };
 
