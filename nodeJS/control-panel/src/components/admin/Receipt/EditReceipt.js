@@ -24,6 +24,7 @@ const EditReceipt = (props) => {
  const { receiptId } = useParams();
 
   useEffect( () => {
+  if(receiptId )  {
     setLoading(true) ;
     console.log("start") 
   console.log("receiptId:" +receiptId) ; 
@@ -37,7 +38,22 @@ const EditReceipt = (props) => {
     }
   ).catch((error) =>{ console.log(error)}) 
   setLoading(false) ; 
-  } , []) ; 
+  } 
+}
+  , []) ; 
+
+  useEffect( () => { 
+    setLoading(true) ;
+    if(props.selectedReceiptObj)
+    {
+      setReceipt(props.selectedReceiptObj) ;
+      setContactItem(props.selectedReceiptObj.contact);
+      console.log("props.selectedReceiptObj.contact"+ props.selectedReceiptObj.contact) ;
+      setContractItem(props.selectedReceiptObj.contract)
+    }
+    setLoading(false) ;
+  } , [props.selectedReceiptObj]) ;
+
   function numericFormat(val) {
 
     return !isNaN(val) ? val.toFixed(3) : val;
@@ -124,8 +140,14 @@ const EditReceipt = (props) => {
     setLoading(true) ;
     if(checkData()) {
       updateReceipt(receipt).then((res)=> {
-        toast("success!") ;
-         window.location.href = "/admin/Receipt/view/" + res._id;
+        viewItemValidMessage("success!") ;
+        if(props.onSave == null )
+        {
+          window.location.href = "/admin/Receipt/view/" + res._id;
+        }
+        else 
+        {props.onSave();}
+     
   
       }).catch((err)=> { console.log(err)}) ;
     }
@@ -163,9 +185,9 @@ const viewItemValidMessage = (message) => {
 
   return (
     <>
-      <div className="card">
+      <div className= { props.selectedReceiptObj == null ? "card" : ""}>
         <div className="card-body">
-          <h5 className="card-title"> <MdReceipt size= {20} />   {t("receipt.editReceipt")}  <span className='text-info'>({receipt.seqNumber})</span></h5>
+          <h5 className="card-title"> <MdReceipt size= {20} />   {props.selectedReceiptObj ==null? t("receipt.editReceipt") : ""}  <span className='text-info'>({receipt.seqNumber})</span></h5>
           <div className="container text-center">
             <ThreeDots
               type="ThreeDots"
@@ -195,9 +217,11 @@ const viewItemValidMessage = (message) => {
                     <div className="col col-auto">
                     <ContactSearchControl
                     handleSelectContact={setContact}
-                    wasValidated={wasValidated}
+                    wasValidated={ props.selectedReceiptObj? false: wasValidated}
                     value = {contactItem?.contactName}
                     contactType = {["Client" , "Vendor"]}
+                    readOnly = {props.selectedReceiptObj? true :false}
+                  
                   />
                     </div>
                   </div>
@@ -252,9 +276,10 @@ const viewItemValidMessage = (message) => {
                     <div className="col col-auto">
                     <ContractSearchControl
                     handleSelectContract={setContract}
-                    wasValidated={false}
+                    wasValidated={ props.selectedReceiptObj?false: wasValidated}
                     value = {contractItem?.seqNumber}
                     clientId={contactItem?._id} 
+                    readOnly = {props.selectedReceiptObj? true:false}
                   />
                     </div>
                   </div>
@@ -314,7 +339,7 @@ const viewItemValidMessage = (message) => {
     
     
                   <div className="mb-3 col ">
-    <div className="col col-auto">{t("receipt.note")} {receipt.note} </div>
+    <div className="col col-auto">{t("receipt.note")}  </div>
     <div className="col col-auto">
      
     <textarea
@@ -338,15 +363,15 @@ const viewItemValidMessage = (message) => {
 
 
 
-            <div class="row text-right action-bar">
+            <div class ={ props.selectedReceiptObj ? "row text-right " : "row text-right action-bar" } >
               <div className="mb-3  col justify-content-end">
-                <Link className="btn btn-secondary btn-lg" to="/admin/Receipt">
+               { !props.selectedReceiptObj &&  <Link className="btn btn-secondary btn-lg" to="/admin/Receipt">
                   <MdClose size={20} /> &nbsp; {t("Cancel")}
-                </Link>{" "}
+                </Link> }
                 &nbsp;
                 <button
                   type="button"
-                  className="btn btn-primary btn-lg"
+                  className= {!props.selectedReceiptObj? "btn btn-primary btn-lg" : "btn btn-primary btn-lg w-100" }
                   onClick={doPost}
                 >
                   {t("dashboard.submit")}

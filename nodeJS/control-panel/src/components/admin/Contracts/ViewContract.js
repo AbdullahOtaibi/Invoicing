@@ -22,6 +22,7 @@ import Button from "react-bootstrap/Button";
 import AppointmentLst from "../FullCalendar/AppointmentLst"
 import CreateReceipt from "../Receipt/CreateReceipt"
 import EditReceipt from "../Receipt/EditReceipt"
+import ReceiptListControl from "../Receipt/ReceiptListControl"
 
 const ViewContract = (props) => {
 
@@ -56,7 +57,7 @@ const ViewContract = (props) => {
  
 
   const [fullCalendarObj, setFullCalendarObj] = useState(0);
-
+  const [selectedReceiptObj, setSelectedReceiptObj] = useState(0);
   useEffect(() => {
     setLoading(true);
     console.log("contractId:" + contractId);
@@ -89,6 +90,11 @@ const ViewContract = (props) => {
     setShowOppo(true);
   }
 
+  const handleReceiptSelected = (item) => {
+    setPopUpEvent('edit');
+    setSelectedReceiptObj(item);
+    setshowReceipt(true);
+  }
 
 
 
@@ -322,53 +328,10 @@ const ViewContract = (props) => {
                   <hr />
                 </div>
               </div>
-
-              <div className="row">
-                <div className="col table-responsive">
-                  <table className="table   table-hover ">
-
-
-                    <thead>
-                      <tr className="table-light">
-                        <th width="20%">#</th>
-
-                        <th width="20%">{t("contracts.receiptAmount")} </th>
-                        <th width="20%">{t("contracts.receiptDate")} </th>
-                        <th width="40%">{t("contracts.receiptNote")}</th>
-
-
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {
-                        contract.receipts ? contract.receipts.map((item) => (
-                          <tr key={item.receiptSequance} >
-                            <td> {item.receiptSequance} </td>
-                            <td>{numericFormat(item.receiptAmount)}</td>
-                            {<td>{item.receiptDate ? moment(item.receiptDate).format("DD/MM/yyyy") : "Not Set"} </td>}
-
-                            <td>{item.receiptNote} </td>
-
-
-                          </tr>
-                        )) : <tr></tr>}
-
-
-                    </tbody>
-                    <tfoot className="table-light">
-                      <tr>
-                        <td className="text-info" > Grand Total</td>
-                        <td>{numericFormat(contract.contractTotalReceipts)}</td>
-                        <td colSpan="2"></td>
-
-                      </tr>
-
-                    </tfoot>
-                  </table>
-
-                </div>
-              </div>
+              {contract && contract._id ? (
+              <ReceiptListControl contractId={contract._id} handleReceiptSelected= {handleReceiptSelected}/>
+              ) : null}
+            
 
 
 
@@ -523,7 +486,7 @@ const ViewContract = (props) => {
             {popUpEvent == "edit" ? (
               <EditReceipt
                 onSave={handleCloseReceipt}
-                contractObj={contract}
+                selectedReceiptObj={selectedReceiptObj}
               />
             ) : (
               ""

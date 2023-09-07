@@ -26,7 +26,7 @@ router.post("/filter", verifyToken, async (req, res) => {
     let clientId = filters.clientId || null;
     let deleted = filters.deleted || false;
     let status = filters.status || null;
-   
+    let contractId = filters.contractId || null;
     result.page = page;
     console.log("result.page:" + result.page);
     let queryParams = {
@@ -48,6 +48,10 @@ router.post("/filter", verifyToken, async (req, res) => {
 
     if (status) {
       queryParams["$and"].push({ status: status });
+    }
+
+    if( contractId ){
+      queryParams["$and"].push({ contract: contractId });
     }
 
     queryParams["$and"].push({
@@ -167,6 +171,7 @@ router.post("/create", verifyToken, async (req, res, next) => {
   console.log("before create");
   console.log(req.body)
 
+
   
   let count = await Receipt.countDocuments({
     "companyID": {
@@ -197,6 +202,7 @@ router.post("/update/", verifyToken, async (req, res) => {
     res.json({ success: false, message: "Unauthorized" });
   }
 
+  
   //TODO: if user is vendor check if item product belongs to the same vendor
   Receipt.findOneAndUpdate(
     { _id: req.body._id },

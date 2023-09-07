@@ -122,7 +122,10 @@ const CreateReceipt = (props) => {
     if(checkData()) {
       createReceipt(receipt).then((res)=> {
         toast("success!") ;
+        if(props.onSave == null )
          window.location.href = "/admin/Receipt/view/" + res._id;
+        else
+        props.onSave() ;
   
       }).catch((err)=> { console.log(err)}) ;
     }
@@ -160,7 +163,7 @@ const viewItemValidMessage = (message) => {
 
   return (
     <>
-      <div className="card">
+      <div  className= {props.contractObj == null ?"card" : "" }>
         <div className="card-body">
           {props.contractObj== null && <h5 className="card-title"> <MdReceipt size= {20} />   {t("receipt.createReceipt")}</h5> }
           <div className="container text-center">

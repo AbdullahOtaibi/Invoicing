@@ -7,12 +7,13 @@ import { getLocalizedText } from '../utils/utils'
 import { hasPermission } from '../utils/auth';
 import { Helmet } from "react-helmet";
 import { getReceipts } from './ReceiptAPI'
-
+import ReceiptListControl from './ReceiptListControl'
 
 
 
 const ListReceipt = (props) => {
-
+    
+    
     const { t, i18n } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [packages , setPackages] = useState([]) ; 
@@ -45,6 +46,7 @@ const ListReceipt = (props) => {
 
 
     , []) 
+
 
     return (
         <div className="conatiner">
@@ -83,92 +85,8 @@ const ListReceipt = (props) => {
                     <br />
 
                
-
-                    <div className="table-responsive">
-
-
-                        <table className="table   table-hover">
-                            <thead>
-                                <tr>
-                                    <th>
-                                      
-                                            {t("receipt.seqNumber")}
-                                    
-
-                                    </th>
-
-                                    <th>    {t("receipt.contactName")}  </th>
-                                    <th>    {t("receipt.contract")}  </th>
-                                    <th>
-                                     
-                                            {t("receipt.receiptAmount")}
-                                  
-
-                                    </th>
-                                    <th>{t("receipt.note")} </th>
-                                 
-                           
-
-                                   
-                                  
-                                  
-
-
-
-                                </tr>
-
-
-                            </thead>
-                            <tbody>
-                                {
-                                    packages.map(item => (
-
-                                        <tr key={'' + item.id}>
-                                            <td>
-                                                <Link to={'/admin/Receipt/view/' + item._id} className='text-info'>
-                                                    {item.seqNumber}
-
-                                                </Link>
-                                            </td>
-
-                                            <td> {item.contact?.contactName}</td>
-                                             <td>{item.contract?.seqNumber}</td>
-                                            <td>{item.receiptAmount}</td>
-                                            <td>{item.note}</td>
-                                           
-                                  
-
-                                        </tr>
-                                    ))
-                                }
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th colSpan="7" className="text-right">
-                                        <nav aria-label="Page navigation example">
-                                            <ul className="pagination">
-
-                                                {receiptsPages > 1 ? (<li className="page-item"><label className="page-link" href="#" onClick={() => loadNewPage(receiptsPage - 1)}>Previous</label></li>) : null}
-
-                                                {Array.from(Array(receiptsPages), (e, i) => {
-                                                    console.log('i:' + i, "receiptsPages:" + receiptsPages);
-                                                    return <li className={i == receiptsPage ? "page-item active" : "page-item"} key={i}>
-                                                        <label className="page-link" onClick={() => loadNewPage(i)}>
-                                                            {i + 1}
-                                                        </label>
-                                                    </li>
-                                                })}
-
-
-                                                {receiptsPages > 1 ? (<li className="page-item"><label className="page-link" href="#" onClick={() => loadNewPage(receiptsPage + 1)}>Next</label></li>) : null}
-
-                                            </ul>
-                                        </nav>
-                                    </th>
-                                </tr>
-                            </tfoot> 
-                        </table>
-                    </div>
+                    <ReceiptListControl/>
+               
 
 
                     <br />
