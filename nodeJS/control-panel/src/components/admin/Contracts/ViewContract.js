@@ -20,6 +20,9 @@ import FullCalendarEdit from "../FullCalendar/FullCalendarEdit";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import AppointmentLst from "../FullCalendar/AppointmentLst"
+import CreateReceipt from "../Receipt/CreateReceipt"
+import EditReceipt from "../Receipt/EditReceipt"
+
 const ViewContract = (props) => {
 
   let navigate = useNavigate();
@@ -29,9 +32,29 @@ const ViewContract = (props) => {
   const [contract, setContract] = useState({});
   const [filterInvoice, setFilterInvoice] = useState({})
   const [popUpEvent, setPopUpEvent] = useState("");
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [showOppo, setShowOppo] = useState(false);
+  const handleCloseOppo = () => setShowOppo(false);
+  const handleShowOppo = () => setShowOppo(true);
+
+  const clickNewOppo = () => {
+    console.log("clicknew oppo ....");
+    setShowOppo(true);
+    setPopUpEvent("new");
+  };
+
+
+  const [showReceipt, setshowReceipt] = useState(false);
+  const handleCloseReceipt = () => setshowReceipt(false);
+  const handleShowReceipt = () => setshowReceipt(true);
+  
+  const clickNewReceipt = () => {
+    console.log("clicknew Receipt ....");
+    setshowReceipt(true);
+    setPopUpEvent("new");
+  };
+
+ 
+
   const [fullCalendarObj, setFullCalendarObj] = useState(0);
 
   useEffect(() => {
@@ -63,15 +86,9 @@ const ViewContract = (props) => {
 
     setPopUpEvent('edit');
     setFullCalendarObj(item);
-    setShow(true);
+    setShowOppo(true);
   }
 
-  const clickNew = () => {
-    console.log("clicknew ....");
-    //setPopUpEvent("new") ;
-    setShow(true);
-    setPopUpEvent("new");
-  };
 
 
 
@@ -96,7 +113,13 @@ const ViewContract = (props) => {
             </div>
             <div className="row text-right">
               <div className="mb-3  col justify-content-end">
-                <Link className="btn btn-success btn-lg" onClick={clickNew}>
+
+              <Link className="btn btn-secondary btn-lg" onClick={clickNewReceipt}>
+                  <MdReceipt size={20} /> &nbsp; {t("contracts.createReceipt")}
+                </Link>{" "}
+                &nbsp;
+
+                <Link className="btn btn-success btn-lg" onClick={clickNewOppo}>
                   <MdAddTask size={20} /> &nbsp; {t("contracts.createAppointment")}
                 </Link>{" "}
                 &nbsp;
@@ -422,7 +445,7 @@ const ViewContract = (props) => {
           </div>
         </div>
 
-        <Modal show={show} onHide={handleClose} size="lg" >
+        <Modal show={showOppo} onHide={handleCloseOppo} size="lg" >
           <Modal.Header closeButton>
             <div className="row">
               <div className="col">
@@ -445,7 +468,7 @@ const ViewContract = (props) => {
           <Modal.Body>
             {popUpEvent == "new" ? (
               <FullCalendarNew
-                onSave={handleClose}
+                onSave={handleCloseOppo}
                // updateFullCalendar={reloadData}
                 contractObj={contract}
               />
@@ -455,7 +478,7 @@ const ViewContract = (props) => {
 
             {popUpEvent == "edit" ? (
               <FullCalendarEdit
-                onSave={handleClose}
+                onSave={handleCloseOppo}
                 //updateFullCalendar={reloadData}
                 getfullCalendarObj={fullCalendarObj}
               />
@@ -466,6 +489,48 @@ const ViewContract = (props) => {
           <Modal.Footer></Modal.Footer>
         </Modal>
 
+
+        <Modal show={showReceipt} onHide={handleCloseReceipt} size="lg" >
+          <Modal.Header closeButton>
+            <div className="row">
+              <div className="col">
+                {popUpEvent == "new" ? (
+                  <Modal.Title >{t("receipt.createReceipt")}</Modal.Title>
+                ) : (
+                  ""
+                )}
+                {popUpEvent == "edit" ? (
+                  <Modal.Title>{t("receipt.editReceipt")}</Modal.Title>
+                ) : (
+                  ""
+                )}
+
+
+              </div>
+              
+            </div>
+          </Modal.Header>
+          <Modal.Body>
+            {popUpEvent == "new" ? (
+              <CreateReceipt
+                onSave={handleCloseReceipt}
+                contractObj={contract}
+              />
+            ) : (
+              ""
+            )}
+
+            {popUpEvent == "edit" ? (
+              <EditReceipt
+                onSave={handleCloseReceipt}
+                contractObj={contract}
+              />
+            ) : (
+              ""
+            )}
+          </Modal.Body>
+          <Modal.Footer></Modal.Footer>
+        </Modal>
       </>
 
 

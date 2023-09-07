@@ -57,7 +57,7 @@ const ViewReceipt = (props) => {
       <>
         <div className="card">
           <div className="card-body">
-            <h5 className="card-title"> <MdReceipt size= {20} />   {t("receipt.ReceiptInformation")} ({receipt.seqNumber})</h5>
+            <h5 className="card-title"> <MdReceipt size= {20} />   {t("receipt.ReceiptInformation")}  <span className='text-info'>({receipt.seqNumber})</span> </h5>
             <div className="container text-center">
               <ThreeDots
                 type="ThreeDots"
@@ -85,7 +85,7 @@ const ViewReceipt = (props) => {
                   <div className="mb-3 col ">
                       <div className="col col-auto">{t("receipt.contactName")}</div>
                       <div className="col col-auto">
-              {receipt.contactName}
+              {receipt.contact?.contactName}
                       </div>
                     </div>
       
@@ -93,7 +93,7 @@ const ViewReceipt = (props) => {
                     <div className="mb-3 col ">
                       <div className="col col-auto">{t("receipt.contactMobile")}</div>
                       <div className="col col-auto">
-            {receipt.contactMobile}
+            {receipt.contact?.mobile}
                       
       
                       </div>
@@ -115,7 +115,7 @@ const ViewReceipt = (props) => {
   
                  <div className="mb-3 row ">
                 <div className="col col-auto text-info">
-                  {t("receipt.packageInformation")}{" "}
+                  {t("receipt.contractInformation")}{" "}
                 </div>
                 <div className="col">
                   <hr />
@@ -124,9 +124,9 @@ const ViewReceipt = (props) => {
               <div className="mb-3 row">
                   
               <div className="mb-3 col ">
-                  <div className="col col-auto">{t("receipt.packageName")}</div>
+                  <div className="col col-auto">{t("receipt.contract")}</div>
                   <div className="col col-auto">
-             {receipt.packageName}
+             {receipt.contract?.seqNumber}
                   </div>
                 </div>
   
@@ -135,20 +135,12 @@ const ViewReceipt = (props) => {
   
   
                 <div className="mb-3 col ">
-                  <div className="col col-auto">{t("receipt.packagePrice")}</div>
-                  <div className="col col-auto">
-                  {
-                        receipt.packagePrice? receipt.packagePrice.toFixed(2) : receipt.packagePrice
-                      }
-                  </div>
+
                 </div>
   
   
                 <div className="mb-3 col ">
-                  <div className="col col-auto">{t("receipt.packageNumberOfSet")}</div>
-                  <div className="col col-auto">
-         { receipt.packageNumberOfSet}
-                  </div>
+
                 </div>
   
                 
@@ -201,93 +193,7 @@ const ViewReceipt = (props) => {
       
                   </div>
             
-                  <div className="mb-3 row">
-  
-                  <div className="mb-3 col   ">
-                      <div className="col col-auto">{t("receipt.receiptTotalInstallments")}</div>
-                      <div className="col col-auto">
-                         JOD {receipt.receiptTotalInstallments? receipt.receiptTotalInstallments.toFixed(2) : receipt.receiptTotalInstallments} 
-                      </div>
-                    </div>
                   
-                  
-  
-                  <div className="mb-3 col   ">
-                      <div className="col col-auto">{t("receipt.receiptTotalInvoice")}</div>
-                      <div className="col col-auto">
-                         JOD {receipt.receiptTotalInvoice? receipt.receiptTotalInvoice.toFixed(2) : receipt.receiptTotalInvoice} 
-                      </div>
-                    </div>
-  
-                    <div className="mb-3 col    ">
-                      <div className="col col-auto">{t("receipt.receiptBalance")}</div>
-                      <div className="col col-auto">
-                         JOD {receipt.receiptBalance ? receipt.receiptBalance.toFixed(2) : receipt.receiptBalance } 
-                      </div>
-                    </div>
-      
-                  </div>
-  
-                  <div className="mb-3 row">
-  
-  <div className="mb-3 col   ">
-      <div className="col col-auto">{t("receipt.receiptReminingAmount")}</div>
-      <div className="col col-auto">
-         JOD {receipt.receiptReminingAmount? receipt.receiptReminingAmount.toFixed(2) : receipt.receiptReminingAmount } 
-      </div>
-    </div>
-    </div>
-  
-                  
-              <div className="mb-3 row ">
-                <div className="col col-auto text-info">
-                  {t("receipt.installments")}{" "}
-                </div>
-                <div className="col">
-                  <hr />
-                </div>
-              </div>    
-  
-              <div className="row">
-                <div className="col table-responsive">
-                  <table className="table table-sm needs-validation ">
-                    <thead>
-                      <tr className="table-light">
-                        <th width="5%">#</th>
-                     
-                        <th width="20%">{t("receipt.installmentAmount") +  "  (JOD)"} </th>
-                        <th width="20%">{t("receipt.installmentDate")} </th>
-                        <th width="35%">{t("receipt.installmentNote")}</th>
-                       
-                    
-                      </tr>
-                    </thead>
-  
-                    <tbody>
-                      { receipt.installments? receipt.installments.map((item) => (
-                        <tr>
-                          <td> {item.installmentSequance} </td>
-                          <td>{item.installmentAmount}</td>
-                          <td>{item.installmentDate ? moment(item.installmentDate).format("DD/MM/yyyy") : "Not Set"} </td>
-                          <td>{item.installmentNote} </td>
-      
-                          
-                        </tr>
-                      )) : <tr></tr>}
-  
-
-                    </tbody>
-                    <tfoot></tfoot>
-                  </table>
-                  
-                </div>
-              </div>
-  
-            
-  
-  
-  
-  
               <div class="row text-right">
                 <div className="mb-3  col justify-content-end">
                   <Link className="btn btn-secondary btn-lg" to="/admin/Receipt">

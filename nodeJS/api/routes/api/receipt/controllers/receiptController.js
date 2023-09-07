@@ -68,6 +68,8 @@ router.post("/filter", verifyToken, async (req, res) => {
     console.log("abd:before find");
     let query = Receipt.find(queryParams)
       .populate("user", "-password")
+      .populate("contact")
+      .populate("contract")
       .sort({ name: 1 });
     console.log("abd:after find");
     countQuery = Receipt.find(queryParams);
@@ -139,7 +141,10 @@ router.post("/count", verifyToken, async (req, res) => {
 router.get("/get/:id", async (req, res) => {
   console.log("before get Receipt  info. ID: " + req.params.id);
   //ReferenceError: Cannot access 'Receipt' before initialization
-    let receipt = await Receipt.findOne({ _id: req.params.id, deleted: false }).populate("user", "-password")
+    let receipt = await Receipt.findOne({ _id: req.params.id, deleted: false })
+    .populate("user", "-password")
+    .populate("contact")
+    .populate("contract");
   console.log("get receipt  info.");
   res.json(receipt);
 });
@@ -148,7 +153,7 @@ router.get("/get/:id", async (req, res) => {
 function newSeq(x) {
   //d =new Date()
   //return d.getFullYear() + '-' +parseInt(d.getMonth() + 1) + "-" +d.getDate() + '-'+"0000".substring(0,4-x.toString().length)+x.toString()
-  return "CON-" + "00000".substring(0, 5 - x.toString().length) + x.toString();
+  return "RCP-" + "00000".substring(0, 5 - x.toString().length) + x.toString();
 }
 
 router.post("/create", verifyToken, async (req, res, next) => {

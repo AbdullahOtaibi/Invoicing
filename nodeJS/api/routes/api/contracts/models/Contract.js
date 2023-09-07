@@ -39,14 +39,7 @@ const ContractSchema = new Schema({
         default: true
     },
     
-    receipts: [
-        {
-            receiptSequance: Number,
-            receiptAmount: Number,
-            receiptDate: { type: Date, default: Date.now },
-            receiptNote: String  
-        }
-    ],
+    
 
 }, { collection: 'Contracts' });
 

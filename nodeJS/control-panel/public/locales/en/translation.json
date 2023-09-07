@@ -573,7 +573,9 @@
     "receiptTotalInstallments": "Receipt Total Installments",
     "receiptBalance": "receipt Balance",
     "editReceipt": "Edit Receipt",
-    "seqNumber": "Sequance Number"
+    "seqNumber": "Sequance Number",
+    "contract" : "Contract" ,
+    "contractInformation" : "Contract Information" 
   },
   "contracts": {
     "contractNo": "Contract No.",

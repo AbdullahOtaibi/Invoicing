@@ -55,7 +55,7 @@ const ContractSearchControl = (props) => {
 
   const handleCloseSearch = () => {
     setContractItems([]);
-    alert('close');
+    //alert('close');
     if(props.handleCloseSearch){
       props.handleCloseSearch();
     }

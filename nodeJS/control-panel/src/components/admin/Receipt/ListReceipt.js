@@ -98,39 +98,20 @@ const ListReceipt = (props) => {
                                     </th>
 
                                     <th>    {t("receipt.contactName")}  </th>
+                                    <th>    {t("receipt.contract")}  </th>
                                     <th>
                                      
                                             {t("receipt.receiptAmount")}
                                   
 
                                     </th>
-                                    <th>
-                                     
-                                     {t("receipt.receiptTotalInstallments")}
+                                    <th>{t("receipt.note")} </th>
+                                 
                            
-
-                             </th>
-                             <th>
-                                     
-                                     {t("receipt.receiptTotalInvoice")}
-                           
-
-                             </th>
-                                
 
                                    
-                                    <th>
-                                      
-                                            {t("receipt.packageName")}
-                                     
-
-                                    </th>
-                                    <th>
-                                      
-                                      {t("receipt.packagePrice")}
-                               
-
-                              </th>
+                                  
+                                  
 
 
 
@@ -149,15 +130,11 @@ const ListReceipt = (props) => {
 
                                                 </Link>
                                             </td>
-                                            <td> {item.contactName}</td>
 
+                                            <td> {item.contact?.contactName}</td>
+                                             <td>{item.contract?.seqNumber}</td>
                                             <td>{item.receiptAmount}</td>
-                                         
-
-                                            <td> {item.receiptTotalInvoice}</td>
-                                            <td>{item.receiptAmount}</td>
-                                            <td> { item.packageName}</td>
-                                            <td> { item.packagePrice}</td>
+                                            <td>{item.note}</td>
                                            
                                   
 

@@ -13,10 +13,6 @@ const ReceiptSchema = new Schema({
     },
     seqNumber: String, 
     receiptAmount: Number, 
-    receiptTotalInstallments: {type: Number , default: 0} ,
-    receiptReminingAmount: {type: Number , default: 0} ,
-    receiptBalance:{type: Number , default: 0} ,
-    receiptTotalInvoice: {type: Number , default: 0} ,
     receiptDate: {type:Date , default: Date.now} , 
     note:String,
     status: {
@@ -27,23 +23,10 @@ const ReceiptSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Contact'
     } ,
-    contactName:String, 
-    contactMobile:String, 
-    package:{ 
+    contract: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Package'
+        ref: 'Contract' 
     } ,
-    packageName:String, 
-    packagePrice:Number, 
-    packageNumberOfSet:Number ,
-    installments : [
-        {
-            installmentSequance: Number, 
-            installmentAmount: Number , 
-            installmentDate:{ type: Date, default: Date.now},
-            installmentNote: String,
-        }
-    ] , 
     deleted: {
         type:Boolean,
         default:false

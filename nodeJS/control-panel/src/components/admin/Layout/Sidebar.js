@@ -121,6 +121,15 @@ const Sidebar = () => {
                     </li>) : null}
 
 
+                    {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("invoices.view") > -1 ? (
+                    <li className={getClass('/admin/Receipt')}>
+                        <Link className="wave-effect waves-effect waves-button" to="/admin/Receipt" >
+                            <MdReceipt size={18} /> &nbsp; {t("sidebar.Receipt")}
+                        </Link >
+                    </li>) : null}
+
+
+
                
 
                 {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("invoices.view") > -1 ? (

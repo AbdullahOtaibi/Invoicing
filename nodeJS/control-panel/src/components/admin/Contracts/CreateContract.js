@@ -36,109 +36,14 @@ const CreateContract = (props) => {
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
-  const [currentEditableItem, setCurrentEditableItem] = useState({
-    receiptSequance: contract.receipts.length + 1,
-    receiptAmount: 0,
-    receiptDate: new Date(),
-    receiptNote: ""
-  });
+
 
   function numericFormat(val) {
 
     return !isNaN(val) ? val.toFixed(3) : val;
   }
 
-  const removeItem = (id) => {
-    console.log("removeItem id=" + id)
-    let cloned = JSON.parse(JSON.stringify(contract));
-    cloned.receipts = cloned.receipts.filter((item) => item.receiptSequance != id);
-    console.log(cloned.receipts)
-    for (let i = 0; i < cloned.receipts.length; i++) {
 
-      cloned.receipts[i].receiptSequance = i + 1;
-    }
-
-    setCurrentEditableItem({
-      receiptSequance: cloned.receipts.length + 1,
-      receiptAmount: 0,
-      receiptNote: "",
-      receiptDate: new Date(),
-    });
-
-    setContract(cloned);
-  };
-
-  const addItem = (event) => {
-
-    if (!checkItemIsValid()) {
-      console.log("receipt item is not valid...");
-      return false;
-    }
-
-    let cloned = JSON.parse(JSON.stringify(contract));
-    console.log("before push receipt ")
-    console.log(contract);
-    cloned.receipts.push(
-      { ...currentEditableItem }
-    );
-
-    for (let i = 0; i < cloned.receipts.length; i++) {
-      cloned.receipts[i].receiptSequance = i + 1;
-    }
-
-    console.log("AFTER push receipt ")
-    console.log(cloned);
-
-    setCurrentEditableItem({
-      receiptSequance: cloned.receipts.length + 1,
-      receiptAmount: 0,
-      receiptNote: "",
-      receiptDate: new Date(),
-    });
-    setContract(cloned);
-
-    console.log("receipt added to contract");
-    //updateContractCalculation();
-  };
-
-
-  const updatereceiptAmount = (event) => {
-    let cloned = JSON.parse(JSON.stringify(currentEditableItem));
-    cloned.receiptAmount = event.target.value;
-    setCurrentEditableItem(cloned);
-  };
-
-
-  const updatereceiptNote = (event) => {
-    let cloned = JSON.parse(JSON.stringify(currentEditableItem));
-    cloned.receiptNote = event.target.value;
-    setCurrentEditableItem(cloned);
-  };
-
-  const updatereceiptDate = (date) => {
-    let cloned = JSON.parse(JSON.stringify(currentEditableItem));
-    console.log("updatereceiptDate::" + date)
-    cloned.receiptDate = date;
-    setCurrentEditableItem(cloned);
-
-  };
-
-
-  function checkItemIsValid() {
-    let itemIsValid = true;
-
-    if (isBlank(currentEditableItem.receiptAmount)) {
-      viewItemValidMessage("Fill the receipt amount");
-      itemIsValid = false;
-    }
-
-    if (!isBlank(currentEditableItem.receiptAmount)
-      && parseFloat(currentEditableItem.receiptAmount) > parseFloat(contract.contractReminingAmount)) {
-      viewItemValidMessage("The max receipt amount equals " + contract.contractReminingAmount);
-      itemIsValid = false;
-    }
-    return itemIsValid;
-  }
   const setConatct = (item) => {
     if (item) {
       let cloned = JSON.parse(JSON.stringify(contract));
@@ -149,7 +54,6 @@ const CreateContract = (props) => {
 
     }
   };
-
 
 
   const setPackage = (item) => {
@@ -182,7 +86,6 @@ const CreateContract = (props) => {
 
   const setContractAmount = (event) => {
     console.log("setContractAmount " + event.target.value);
-    // +  event.target.value
 
     let cloned = JSON.parse(JSON.stringify(contract));
     cloned.contractAmount = parseFloat(event.target.value);
@@ -295,7 +198,7 @@ const CreateContract = (props) => {
     console.log("after fill contract:");
     console.log(contract);
   }
-  useEffect(() => { updateContractCalculation() }, [currentEditableItem]);
+
 
   return (
     <>
@@ -408,7 +311,7 @@ const CreateContract = (props) => {
                     placeholder={t("contracts.packagePrice")}
 
                     value={
-                      contract.packageNumberOfSet
+                      contract.packagePrice
                     }
                   />
                 </div>
@@ -547,104 +450,8 @@ const CreateContract = (props) => {
             </div>
 
 
-            <div className="mb-3 row ">
-              <div className="col col-auto text-info">
-                {t("contracts.receipts")}{" "}
-              </div>
-              <div className="col">
-                <hr />
-              </div>
-            </div>
 
-            <div className="row">
-              <div className="col table-responsive">
-                <table className="table table-sm needs-validation " style={{ minHeight: '400px' }}>
-                  <thead>
-                    <tr className="table-light">
-                      <th width="5%">#</th>
-
-                      <th width="20%">{t("contracts.receiptAmount")} </th>
-                      <th width="20%">{t("contracts.receiptDate")} </th>
-                      <th width="35%">{t("contracts.receiptNote")}</th>
-
-                      <th width="20%"></th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {
-                      contract.receipts ? contract.receipts.map((item) => (
-                        <tr key={item.receiptSequance} >
-                          <td> {item.receiptSequance} </td>
-                          <td>{item.receiptAmount}</td>
-                          {<td>{item.receiptDate ? moment(item.receiptDate).format("DD/MM/yyyy") : "Not Set"} </td>}
-
-                          <td>{item.receiptNote} </td>
-
-                          <td>
-                            <ConfirmButton
-                              onConfirm={() => removeItem(item.receiptSequance)}
-                              onCancel={() => console.log("cancel")}
-                              buttonText={t("dashboard.delete")}
-                              confirmText={t("contracts.confirm")}
-                              cancelText={t("contracts.cancel")}
-                              loadingText={t("contracts.deleteingItem")}
-                              wrapClass=""
-                              buttonClass="btn d-print-none"
-                              mainClass="btn-danger"
-                              confirmClass="btn-warning"
-                              cancelClass=" btn-success"
-                              loadingClass="visually-hidden"
-                              disabledClass=""
-                              once
-                            >
-                              {"Delete "}
-                              <MdDelete />
-                            </ConfirmButton>
-                          </td>
-                        </tr>
-                      )) : ""}
-
-                    <tr className="d-print-none">
-                      <td>{contract.receipts.length + 1}</td>
-                      <td>
-                        <input
-                          type="number"
-                          className={fieldClass(currentEditableItem.receiptAmount)}
-                          value={currentEditableItem.receiptAmount}
-                          onChange={updatereceiptAmount}
-                          min={0}
-
-                        />
-                      </td>
-                      <td>
-                        <DatePicker className="form-control" dateFormat="dd/MM/yyyy" selected={new Date(currentEditableItem.receiptDate)}
-                          onChange={(date) => updatereceiptDate(date)}
-                        />
-                      </td>
-                      <td>
-                        <textarea className="form-control" value={currentEditableItem.receiptNote}
-                          onChange={updatereceiptNote}
-                        ></textarea>
-                      </td>
-
-
-                      <td>
-                        <button
-                          type="button"
-                          className="btn  btn-success d-print-none "
-                          onClick={addItem}
-                        >
-                          {t("contracts.add")}
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tfoot></tfoot>
-                </table>
-              </div>
-            </div>
-
+      
 
 
 
