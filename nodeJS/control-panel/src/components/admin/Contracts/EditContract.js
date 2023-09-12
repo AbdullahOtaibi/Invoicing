@@ -315,7 +315,7 @@ console.log(contract) ;
 
 useEffect( ()=>{  updateContractCalculation()} , [currentEditableItem ]) ; 
 
-  return ( contract && contract.contractTotalReceipts && contract.receipts ?
+  return ( contract ?
     <>
       <div className="card">
         <div className="card-body">
@@ -630,7 +630,7 @@ useEffect( ()=>{  updateContractCalculation()} , [currentEditableItem ]) ;
                     )) : ""}
 
                     <tr className="d-print-none">
-                      <td>{contract.receipts.length + 1}</td>
+                      <td>{contract.receipts?contract.receipts.length + 1:0}</td>
                       <td>
                         <input
                           type="number"
