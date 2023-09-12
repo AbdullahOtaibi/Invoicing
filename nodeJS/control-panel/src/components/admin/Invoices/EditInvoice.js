@@ -1049,7 +1049,7 @@ const EditInvoice = (props) => {
               </div>
               <div class = "row text-right">
               <div className="mb-3  col justify-content-end">
-                <Link className="btn btn-secondary btn-lg" to={"/admin/invoices?status=" + invoice.status}>
+                <Link className="btn btn-secondary btn-lg" to={"#"} onClick={() => window.history.back()}>
                   {t("dashboard.cancel")}
                 </Link>{" "}
                 &nbsp;
