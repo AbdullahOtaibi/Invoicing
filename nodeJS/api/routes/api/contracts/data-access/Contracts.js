@@ -12,5 +12,10 @@ function Contracts() {
     return contract;
   }
 
+  this.getContractsByContactId = async function (contactId) {
+    let contract = await Contract.find({ contact: contactId, deleted: false }).populate("client", "-password")
+    return contract;
+  }
+
 }
 module.exports = new Contracts();  

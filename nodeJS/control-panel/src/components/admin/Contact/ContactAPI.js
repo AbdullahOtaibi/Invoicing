@@ -10,6 +10,12 @@ export const getContact = (contactId) => {
 
 }
 
+
+export const getContractsByContactId = (contactId) => {
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/contracts/getContractsByContactId/" + contactId);
+
+}
+
 export const getContacts = (filters) => {
     console.log("url:" +process.env.REACT_APP_API_BASE_URL + "/v1/contacts/filter") ;
     return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/contacts/filter", filters);

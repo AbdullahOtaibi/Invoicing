@@ -163,6 +163,19 @@ router.post("/count", verifyToken, async (req, res) => {
   }
 
 });
+
+//
+router.get("/getContractsByContactId/:id", async (req, res) => {
+  console.log("before get Client Contracts  info. ID: " + req.params.id);
+  //ReferenceError: Cannot access 'Subscription' before initialization
+  let contracts = await Contract.
+    find({ contact: req.params.id, deleted: false })
+    .populate("contact", "-password")
+    .populate("package")
+  console.log("get Contract  info.");
+  res.json(contracts);
+});
+
 router.get("/get/:id", async (req, res) => {
   console.log("before get Contract  info. ID: " + req.params.id);
   //ReferenceError: Cannot access 'Subscription' before initialization

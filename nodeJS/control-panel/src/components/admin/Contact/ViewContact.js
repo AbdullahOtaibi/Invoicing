@@ -2,7 +2,7 @@ import { CSSTransition } from 'react-transition-group';
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { hasPermission } from "../utils/auth";
-import { getContact, removeContact } from "./ContactAPI"
+import { getContact, removeContact, getContractsByContactId } from "./ContactAPI"
 import { Helmet } from "react-helmet";
 import {
   MdOutlineReceiptLong,
@@ -47,6 +47,7 @@ const ViewContact = (props) => {
 
   const { contactId } = useParams();
   const [contact, setContact] = useState();
+  const [contracts, setContracts] = useState([]);
   const [loading, setLoading] = useState(false);
   const { t, i18n } = useTranslation();
   const [fullCalendarObj, setFullCalendarObj] = useState(0);
@@ -54,7 +55,7 @@ const ViewContact = (props) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [showDeleteButton ,setShowDeleteButton ] = useState(true) ;
+  const [showDeleteButton, setShowDeleteButton] = useState(true);
   useEffect(() => {
     setLoading(true);
     // console.log("contactId:" +contactId) ; 
@@ -73,8 +74,24 @@ const ViewContact = (props) => {
       });
   }, []);
 
-  useEffect(()=>{countAppointementsList() ; countInvoicesList()} , [props])
-  
+  useEffect(() => { 
+    getContractsByContactId(contactId)
+      .then((data) => {
+        console.log("test ........");
+        console.log(data);
+        setLoading(true);
+        setContracts(data);
+        console.log(data);
+        setLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => { countAppointementsList(); countInvoicesList() }, [props])
+
 
   function getCreatedDate() {
     let x = contact.createdDate.toString();
@@ -98,13 +115,13 @@ const ViewContact = (props) => {
   }
 
   const countAppointementsList = (count) => {
-   
-   if( parseInt(count) > 0) setShowDeleteButton(false) ;
+
+    if (parseInt(count) > 0) setShowDeleteButton(false);
 
   }
 
   const countInvoicesList = (count) => {
-    if( parseInt(count) > 0) setShowDeleteButton(false) ;
+    if (parseInt(count) > 0) setShowDeleteButton(false);
   }
 
   const clickNew = () => {
@@ -265,37 +282,37 @@ const ViewContact = (props) => {
 
                     </div>
 
-  <div className="row action-bar">
+                    <div className="row action-bar">
 
 
 
-<div className="row ">
-  <div className="col ">
-<ConfirmButton
-    onConfirm={() => { removeContact(contactId); navigate("/admin/Contact/", { replace: true }); }}
-    onCancel={() => console.log("cancel")}
-    buttonText={t("dashboard.delete")}
-    confirmText={t("invoice.confirmDelete")}
-    cancelText={t("invoice.cancelDelete")}
-    loadingText={t("contact.BeingDeleteingTheContact")}
-    wrapClass="row"
-    buttonClass="btn btn-lg w-25"
-    mainClass="btn-warning mx-2"
-    confirmClass="btn-danger mx-2 col col-auto order-2 w-25"
-    cancelClass=" btn-success col col-auto order-1 w-25"
-    loadingClass="visually-hidden"
-    disabledClass=""
-    once
-  >
-    {"Delete "}
-    <MdDelete />
-  </ConfirmButton>
-  </div>
-  <div className="mb-3  col text-end">
-    <Link className="btn btn-secondary btn-lg mx-2 w-25" to={"/admin/Contact"}>
-      <MdClose size={20} /> &nbsp; {t("close")}
-    </Link>
-    &nbsp;
+                      <div className="row ">
+                        <div className="col ">
+                          <ConfirmButton
+                            onConfirm={() => { removeContact(contactId); navigate("/admin/Contact/", { replace: true }); }}
+                            onCancel={() => console.log("cancel")}
+                            buttonText={t("dashboard.delete")}
+                            confirmText={t("invoice.confirmDelete")}
+                            cancelText={t("invoice.cancelDelete")}
+                            loadingText={t("contact.BeingDeleteingTheContact")}
+                            wrapClass="row"
+                            buttonClass="btn btn-lg w-25"
+                            mainClass="btn-warning mx-2"
+                            confirmClass="btn-danger mx-2 col col-auto order-2 w-25"
+                            cancelClass=" btn-success col col-auto order-1 w-25"
+                            loadingClass="visually-hidden"
+                            disabledClass=""
+                            once
+                          >
+                            {"Delete "}
+                            <MdDelete />
+                          </ConfirmButton>
+                        </div>
+                        <div className="mb-3  col text-end">
+                          <Link className="btn btn-secondary btn-lg mx-2 w-25" to={"/admin/Contact"}>
+                            <MdClose size={20} /> &nbsp; {t("close")}
+                          </Link>
+                          &nbsp;
 
 
 
@@ -318,31 +335,102 @@ const ViewContact = (props) => {
                   </Tab>
 
 
-{contact.contactType != "Employee" && <Tab eventKey="invoices" title={t("sidebar.invoices")} tabClassName="tab-item">
-  <ContactInvoices contactId={contactId} />
-</Tab>} 
-{contact.contactType != "Insurance" && 
- <Tab eventKey="appointments"  title= { contact.contactType != "Employee" ? t("Appointments") :t("contact.employeeAppointments")}   tabClassName="tab-item">
-  
+                  {contact.contactType != "Employee" && <Tab eventKey="invoices" title={t("sidebar.invoices")} tabClassName="tab-item">
+                    <ContactInvoices contactId={contactId} />
+                  </Tab>}
+                  {contact.contactType != "Insurance" &&
+                    <Tab eventKey="appointments" title={contact.contactType != "Employee" ? t("Appointments") : t("contact.employeeAppointments")} tabClassName="tab-item">
 
-<>
-<div className="row text-right">
-    <div className="mb-3  col justify-content-end">
-      <Link className="btn btn-success btn-lg" onClick={clickNew}>
-        <MdAddTask size={20} /> &nbsp; {t("contracts.createAppointment")}
-      </Link>{" "}
-      </div>
-      </div>
-      
-                  <AppointmentLst clientId={ contact.contactType != "Employee"? contact._id : null} 
-                  employeeId={contact.contactType == "Employee" ? contact._id : null} 
-                  handleAppoinmentSelected={handleAppoinmentSelected}/>
-                  </>
-                
+
+                      <>
+                        <div className="row text-right">
+                          <div className="mb-3  col justify-content-end">
+                            <Link className="btn btn-success btn-lg" onClick={clickNew}>
+                              <MdAddTask size={20} /> &nbsp; {t("contracts.createAppointment")}
+                            </Link>{" "}
+                          </div>
+                        </div>
+
+                        <AppointmentLst clientId={contact.contactType != "Employee" ? contact._id : null}
+                          employeeId={contact.contactType == "Employee" ? contact._id : null}
+                          handleAppoinmentSelected={handleAppoinmentSelected} />
+                      </>
+
 
                     </Tab>
                   }
+                  <Tab eventKey="contracts" title={t("Contracts")} tabClassName="tab-item">
+                    <table className="table table-striped table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col"> {t("contracts.seqNumber")}</th>
+                          <th scope="col">{t("contracts.contactName")}</th>
+                          <th scope="col">{t("contracts.contractAmount")}</th>
+                          
+                          <th scope="col">
+                            {t("contracts.contractTotalInvoiced")}
+                          </th>
+                          <th scope="col">
+                            {t("contracts.packageName")}
+                          </th>
+                          <th scope="col">
+                            {t("contracts.packagePrice")}
+                          </th>
+                         
+                          
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {contracts.map((contract) => (
+                          <tr key={contract._id}>
+                            <td>
+                              <Link to={'/admin/Contract/view/' + contract._id} className='text-info'>
+                                {contract.seqNumber}
 
+                              </Link>
+                            </td>
+                            <td>
+                              {contract.contact?.contactName}
+                            </td>
+                            <td>
+                              {contract.contractAmount}
+                            </td>
+                            <td>
+                              {contract.contractTotalReceipts}
+                            </td>
+                            <td>
+                              {contract.contractTotalInvoiced ? contract.contractTotalInvoiced : '0.00'}
+                            </td>
+                            <td>
+                              {contract.package?.packageName}
+                            </td>
+                            <td>
+                              {contract.packagePrice}
+                            </td>
+                           
+                            <td>
+                              <Link
+
+                                className="btn btn-primary btn-sm"
+                                to={"/admin/Contract/view/" + contract._id}
+                              >
+                                <MdEdit size={20} />
+                              </Link>
+                              &nbsp;
+                              <Link
+                                className="btn btn-danger btn-sm"
+                                to={"/admin/Contract/view/" + contract._id}
+                              >
+                                <MdDelete size={20} />
+                              </Link>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+
+                  </Tab>
 
 
                 </Tabs>

@@ -15,7 +15,7 @@ const ListContract = (props) => {
 
     const { t, i18n } = useTranslation();
     const [loading, setLoading] = useState(false);
-    const [packages , setPackages] = useState([]) ; 
+    const [packages, setPackages] = useState([]);
 
     //const [contactsSort, setContactsSort] = useState('_idDesc');
     const [contractsPage, setContractsPage] = useState(0);
@@ -27,11 +27,11 @@ const ListContract = (props) => {
     }
     const [searchVisible, setSearchVisible] = useState(false);
 
-    useEffect( ()=> {
+    useEffect(() => {
 
         getContracts({
             page: contractsPage,
-            
+
         }).then(data => {
             setLoading(false);
             setPackages(data.items || []);
@@ -46,7 +46,7 @@ const ListContract = (props) => {
     }
 
 
-    , []);
+        , []);
 
     const handleCloseSearch = () => {
         setSearchVisible(false);
@@ -74,7 +74,7 @@ const ListContract = (props) => {
             console.log(e);
         });
     }
-    
+
 
     return (
         <div className="conatiner">
@@ -93,16 +93,16 @@ const ListContract = (props) => {
                         </div>
 
                         <div className='col-md-4 col-sm-6' style={{ textAlign: 'end' }}>
-                            
-                        <button type="button" className="btn-success btn-lg mx-1" onClick={() => { setSearchVisible(!searchVisible); }} ><MdSearch size={20} />  {t("search")}</button>
+
+                            <button type="button" className="btn-success btn-lg mx-1" onClick={() => { setSearchVisible(!searchVisible); }} ><MdSearch size={20} />  {t("search")}</button>
                             <a className="add-btn btn-info btn-lg" href={"/admin/Contract/create"}><MdAdd size={20} />  {t("dashboard.add")}</a>
-                            
+
                         </div>
                     </div>
 
-                     <div className='row'>
-                      { searchVisible &&  <ContractSearch searchFilterChanged={conttactSearchFilterChanged} handleCloseSearch={handleCloseSearch}/> }
-                     </div>
+                    <div className='row'>
+                        {searchVisible && <ContractSearch searchFilterChanged={conttactSearchFilterChanged} handleCloseSearch={handleCloseSearch} />}
+                    </div>
 
                     <div className="container text-center">
                         <ThreeDots
@@ -115,7 +115,7 @@ const ListContract = (props) => {
                     </div>
                     <br />
 
-               
+
 
                     <div className="table-responsive">
 
@@ -124,46 +124,36 @@ const ListContract = (props) => {
                             <thead>
                                 <tr>
                                     <th>
-                                      
-                                            {t("contracts.seqNumber")}
-                                    
-
+                                        {t("contracts.seqNumber")}
                                     </th>
 
-                                    <th>    {t("contracts.contactName")}  </th>
                                     <th>
-                                     
-                                            {t("contracts.contractAmount")}
-                                  
-
+                                        {t("contracts.contactName")}
                                     </th>
                                     <th>
-                                     
-                                     {t("contracts.contractTotalReceipts")}
-                           
-
-                             </th>
-                             <th>
-                                     
-                                     {t("contracts.contractTotalInvoiced")}
-                           
-
-                             </th>
-                                
-
-                                   
+                                        {t("contracts.contractAmount")}
+                                    </th>
                                     <th>
-                                      
-                                            {t("contracts.packageName")}
-                                     
+                                        {t("contracts.contractTotalReceipts")}
+                                    </th>
+                                    <th>
+                                        {t("contracts.contractTotalInvoiced")}
+                                    </th>
+
+
+
+                                    <th>
+
+                                        {t("contracts.packageName")}
+
 
                                     </th>
                                     <th>
-                                      
-                                      {t("contracts.packagePrice")}
-                               
 
-                              </th>
+                                        {t("contracts.packagePrice")}
+
+
+                                    </th>
 
 
 
@@ -185,15 +175,15 @@ const ListContract = (props) => {
                                             <td> {item.contact?.contactName}</td>
 
                                             <td>{item.contractAmount}</td>
-                                         
 
-                                          <td>{item.contractTotalReceipts}</td>
-                                          <td> {item.contractTotalInvoiced?item.contractTotalInvoiced:'0.00'}</td>
-                                        
-                                            <td> { item.package?.packageName}</td>
-                                            <td> { item.packagePrice}</td>
-                                           
-                                  
+
+                                            <td>{item.contractTotalReceipts}</td>
+                                            <td> {item.contractTotalInvoiced ? item.contractTotalInvoiced : '0.00'}</td>
+
+                                            <td> {item.package?.packageName}</td>
+                                            <td> {item.packagePrice}</td>
+
+
 
                                         </tr>
                                     ))
@@ -223,7 +213,7 @@ const ListContract = (props) => {
                                         </nav>
                                     </th>
                                 </tr>
-                            </tfoot> 
+                            </tfoot>
                         </table>
                     </div>
 
