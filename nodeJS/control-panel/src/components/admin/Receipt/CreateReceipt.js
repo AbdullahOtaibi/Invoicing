@@ -11,6 +11,9 @@ import ContractSearchControl from "../Contracts/ContractSearchControl";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+import { updateContractCalculation } from "./utils";
+
+
 const CreateReceipt = (props) => {
 
   const [wasValidated, setWasValidated] = useState(false);
@@ -120,12 +123,21 @@ const CreateReceipt = (props) => {
     setWasValidated(true) ;
     setLoading(true) ;
     if(checkData()) {
-      createReceipt(receipt).then((res)=> {
-        toast("success!") ;
+      createReceipt(receipt).then((res) => {
+        
+        let updatedContract = {} 
+        if (props.contractObj) {
+          
+          updatedContract = updateContractCalculation(props.contractObj);
+        }
+
+        toast("success!");
+        
         if(props.onSave == null )
          window.location.href = "/admin/Receipt/view/" + res._id;
         else
-        props.onSave() ;
+          props.onSave();
+        
   
       }).catch((err)=> { console.log(err)}) ;
     }
@@ -159,43 +171,6 @@ const viewItemValidMessage = (message) => {
   });
 };
 
-
-function updateContractCalculation() {
-
-  if(! props.contractObj) return ; 
-  let contract = props.contractObj ;
-  console.log("updateContractCalculation method ....")
-  console.log("before fill contract");
-  console.log(contract)
-  let contractAmount = contract.contractAmount || 0;
-  let contractTotalInvoiced = contract.contractTotalInvoiced || 0;
-  let contractTotalReceipts = 0;
-  let contractReminingAmount = 0;
-
-  let filter = {} 
-  filter.contractId = contract._id ;
-  getSumReceiptByContractId({
-    filter
-    
-}).then(data => {
-    setLoading(false);
-    console.log("getSumReceiptByContractId:" + JSON.stringify(data));
-    contractTotalReceipts = data.total || 0;
-
-    setLoading(true);
-}).catch(e => {
-    setLoading(false);
-    console.log(e);
-});
-  let cloned = JSON.parse(JSON.stringify(contract));
-  cloned.contractTotalReceipts = contractTotalReceipts;
-  cloned.contractBalance = contractTotalReceipts - parseFloat(contractTotalInvoiced);
-  cloned.contractReminingAmount = parseFloat(contractAmount) - contractTotalReceipts
-  setContract(cloned);
-  
-  console.log("after fill contract:");
-  console.log(contract);
-}
 
 
   return (

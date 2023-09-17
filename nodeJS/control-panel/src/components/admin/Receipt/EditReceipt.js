@@ -10,6 +10,7 @@ import ContactSearchControl from "../Contact/ContactSearchControl";
 import ContractSearchControl from "../Contracts/ContractSearchControl";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { updateContractCalculation } from "./utils";
 
 const EditReceipt = (props) => {
 
@@ -49,7 +50,7 @@ const EditReceipt = (props) => {
       setReceipt(props.selectedReceiptObj) ;
       setContactItem(props.selectedReceiptObj.contact);
       console.log("props.selectedReceiptObj.contact"+ props.selectedReceiptObj.contact) ;
-      setContractItem(props.selectedReceiptObj.contract)
+      setContractItem(props.selectedReceiptObj.contract)   
     }
     setLoading(false) ;
   } , [props.selectedReceiptObj]) ;
@@ -139,14 +140,23 @@ const EditReceipt = (props) => {
     setWasValidated(true) ;
     setLoading(true) ;
     if(checkData()) {
-      updateReceipt(receipt).then((res)=> {
+      updateReceipt(receipt).then((res) => {
+        
+        let updatedContract = {} 
+        if (receipt.contract) {
+         updatedContract =  updateContractCalculation(receipt.contract);
+        }
+
         viewItemValidMessage("success!") ;
         if(props.onSave == null )
         {
           window.location.href = "/admin/Receipt/view/" + res._id;
         }
         else 
-        {props.onSave();}
+        {
+         
+          props.onSave();
+        }
      
   
       }).catch((err)=> { console.log(err)}) ;

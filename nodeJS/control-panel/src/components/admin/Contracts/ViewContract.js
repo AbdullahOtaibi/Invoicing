@@ -26,6 +26,9 @@ import ReceiptListControl from "../Receipt/ReceiptListControl"
 
 const ViewContract = (props) => {
 
+
+  
+      
   let navigate = useNavigate();
   const { contractId } = useParams();
   const [loading, setLoading] = useState(false);
@@ -478,6 +481,7 @@ const ViewContract = (props) => {
               <CreateReceipt
                 onSave={handleCloseReceipt}
                 contractObj={contract}
+                
               />
             ) : (
               ""

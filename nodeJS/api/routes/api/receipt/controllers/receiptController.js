@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const verifyToken = require("../../utils/auth");
-
+var ObjectId = mongoose.Types.ObjectId;
 const Receipt = require("../models/Receipt");
 
 
@@ -327,24 +327,31 @@ router.post("/search/", verifyToken, async (req, res) => {
 router.post("/getSumReceiptByContractId", verifyToken, async (req, res) => {
 
   console.log(JSON.stringify(req.body));
-  var contractId= req.body.contractId 
+  var contractId = req.body.contractId; 
   console.log("contractId:" +contractId) ;
   
   let arrQ= [] ;
   arrQ = [
     {
       '$match': {
-        'contract': new ObjectId( contractId)
+        'contract': {
+          '$eq': new ObjectId(req.body.filter.contractId),
+        }
       }
-    }, {
+    },
+    
+    {
       '$group': {
-        '_id': '$contract', 
+        '_id': '$contract',
         'total': {
           '$sum': '$receiptAmount'
         }
       }
     }
   ]
+
+  console.log("arrQ:" + JSON.stringify(arrQ));
+
   let result = await Receipt.aggregate (
     arrQ
   );
