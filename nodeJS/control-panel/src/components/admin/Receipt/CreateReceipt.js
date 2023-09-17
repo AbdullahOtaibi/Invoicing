@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThreeDots } from  'react-loader-spinner';
 import {  MdClose, MdCollections, MdContacts, MdReceipt , MdDelete} from "react-icons/md";
-import  {createReceipt} from './ReceiptAPI'
+import  {createReceipt , getSumReceiptByContractId} from './ReceiptAPI'
 import ContactSearchControl from "../Contact/ContactSearchControl";
 import ContractSearchControl from "../Contracts/ContractSearchControl";
 import DatePicker from "react-datepicker";
@@ -159,6 +159,43 @@ const viewItemValidMessage = (message) => {
   });
 };
 
+
+function updateContractCalculation() {
+
+  if(! props.contractObj) return ; 
+  let contract = props.contractObj ;
+  console.log("updateContractCalculation method ....")
+  console.log("before fill contract");
+  console.log(contract)
+  let contractAmount = contract.contractAmount || 0;
+  let contractTotalInvoiced = contract.contractTotalInvoiced || 0;
+  let contractTotalReceipts = 0;
+  let contractReminingAmount = 0;
+
+  let filter = {} 
+  filter.contractId = contract._id ;
+  getSumReceiptByContractId({
+    filter
+    
+}).then(data => {
+    setLoading(false);
+    console.log("getSumReceiptByContractId:" + JSON.stringify(data));
+    contractTotalReceipts = data.total || 0;
+
+    setLoading(true);
+}).catch(e => {
+    setLoading(false);
+    console.log(e);
+});
+  let cloned = JSON.parse(JSON.stringify(contract));
+  cloned.contractTotalReceipts = contractTotalReceipts;
+  cloned.contractBalance = contractTotalReceipts - parseFloat(contractTotalInvoiced);
+  cloned.contractReminingAmount = parseFloat(contractAmount) - contractTotalReceipts
+  setContract(cloned);
+  
+  console.log("after fill contract:");
+  console.log(contract);
+}
 
 
   return (

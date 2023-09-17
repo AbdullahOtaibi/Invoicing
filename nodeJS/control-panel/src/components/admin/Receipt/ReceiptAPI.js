@@ -36,7 +36,10 @@ export const searchReceipt = (filters) => {
 
 }
 
-
+export const getSumReceiptByContractId = (params) => {
+    console.log("url:" +process.env.REACT_APP_API_BASE_URL + "/v1/receipt/getSumReceiptByContractId") ;
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/receipt/getSumReceiptByContractId", params);
+}
 
 
 

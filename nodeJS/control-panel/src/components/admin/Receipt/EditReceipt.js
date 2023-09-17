@@ -356,12 +356,8 @@ const viewItemValidMessage = (message) => {
     </div>
   </div>
                  
-    
-                  
-    
+  
                 </div>
-
-
 
             <div class ={ props.selectedReceiptObj ? "row text-right " : "row text-right action-bar" } >
               <div className="mb-3  col justify-content-end">

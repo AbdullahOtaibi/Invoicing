@@ -275,8 +275,6 @@ router.get("/search/:val", verifyToken, async (req, res) => {
     
     
     
-  
-      
     let query = Receipt.find(queryParams)
       .populate("user", "-password")
       .populate("package")
@@ -325,5 +323,35 @@ router.post("/search/", verifyToken, async (req, res) => {
   
 
 });
+
+router.post("/getSumReceiptByContractId", verifyToken, async (req, res) => {
+
+  console.log(JSON.stringify(req.body));
+  var contractId= req.body.contractId 
+  console.log("contractId:" +contractId) ;
+  
+  let arrQ= [] ;
+  arrQ = [
+    {
+      '$match': {
+        'contract': new ObjectId( contractId)
+      }
+    }, {
+      '$group': {
+        '_id': '$contract', 
+        'total': {
+          '$sum': '$receiptAmount'
+        }
+      }
+    }
+  ]
+  let result = await Receipt.aggregate (
+    arrQ
+  );
+      console.log("getSumReceiptByContractId:" );
+      console.log(result) ;  
+  res.json(result);
+});
+
 
 module.exports = router;
