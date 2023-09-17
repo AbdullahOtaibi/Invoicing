@@ -120,27 +120,35 @@ const CreateReceipt = (props) => {
   }
 
   const doPost = (event) => {
+   
     setWasValidated(true) ;
     setLoading(true) ;
     if(checkData()) {
-      createReceipt(receipt).then((res) => {
+      createReceipt(receipt).then(async (res) => {
         
         let updatedContract = {} 
-        if (props.contractObj) {
+        if (receipt.contract) {
+          alert('update contract calculation');
+          updatedContract = await updateContractCalculation(receipt.contract);
+          alert('update contract calculation2');
+        } else {
           
-          updatedContract = updateContractCalculation(props.contractObj);
         }
+        alert(JSON.stringify(res));
 
         toast("success!");
         
         if(props.onSave == null )
          window.location.href = "/admin/Receipt/view/" + res._id;
         else
-          props.onSave();
+          props.onSave(updatedContract);
         
   
-      }).catch((err)=> { console.log(err)}) ;
-    }
+      }).catch((err) => {
+        
+        console.log(err)
+      });
+    } 
     setLoading(false) ; 
   }
  

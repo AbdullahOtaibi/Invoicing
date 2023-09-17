@@ -140,11 +140,12 @@ const EditReceipt = (props) => {
     setWasValidated(true) ;
     setLoading(true) ;
     if(checkData()) {
-      updateReceipt(receipt).then((res) => {
+      updateReceipt(receipt).then(async (res) => {
         
         let updatedContract = {} 
         if (receipt.contract) {
-         updatedContract =  updateContractCalculation(receipt.contract);
+          updatedContract = await updateContractCalculation(receipt.contract);
+         // updateContractCalculation(receipt.contract).then(updated => { }).catch(err => { })
         }
 
         viewItemValidMessage("success!") ;
@@ -155,7 +156,7 @@ const EditReceipt = (props) => {
         else 
         {
          
-          props.onSave();
+          props.onSave(updatedContract);
         }
      
   
