@@ -34,9 +34,11 @@ const ContactSchema = new Schema({
     company: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
-    } 
-   
- 
+    } , 
+    contactTotalReceipt: Number,
+    contactTotalInvoiced: Number,
+    contactTotalBalance: Number
+
 }, { collection: 'Contacts' });
 
 module.exports = Contact = mongoose.model("Contact", ContactSchema);

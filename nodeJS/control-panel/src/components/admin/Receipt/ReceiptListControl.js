@@ -34,6 +34,10 @@ const ReceiptListControl = (props) => {
         if (props.contractId) {
             filter.contractId = props.contractId;
         }
+        if (props.contactId) {
+            filter.contactId = props.contactId;
+        }
+        
 
         getReceipts(
            filter

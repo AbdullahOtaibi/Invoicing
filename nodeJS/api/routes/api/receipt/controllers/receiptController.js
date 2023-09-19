@@ -27,6 +27,8 @@ router.post("/filter", verifyToken, async (req, res) => {
     let deleted = filters.deleted || false;
     let status = filters.status || null;
     let contractId = filters.contractId || null;
+    let contactId = filters.contactId || null;
+
     result.page = page;
     console.log("result.page:" + result.page);
     let queryParams = {
@@ -52,6 +54,11 @@ router.post("/filter", verifyToken, async (req, res) => {
 
     if( contractId ){
       queryParams["$and"].push({ contract: contractId });
+    }
+
+    if(contactId)
+    {
+      queryParams["$and"].push({ contact: contactId });
     }
 
     queryParams["$and"].push({
@@ -327,7 +334,7 @@ router.post("/search/", verifyToken, async (req, res) => {
 router.post("/getSumReceiptByContractId", verifyToken, async (req, res) => {
 
   console.log(JSON.stringify(req.body));
-  var contractId = req.body.contractId; 
+  var contractId = req.body.filter.contractId; 
   console.log("contractId:" +contractId) ;
   
   let arrQ= [] ;
@@ -335,7 +342,7 @@ router.post("/getSumReceiptByContractId", verifyToken, async (req, res) => {
     {
       '$match': {
         'contract': {
-          '$eq': new ObjectId(req.body.filter.contractId),
+          '$eq': new ObjectId(contractId),
         }
       }
     },
@@ -359,6 +366,8 @@ router.post("/getSumReceiptByContractId", verifyToken, async (req, res) => {
       console.log(result) ;  
   res.json(result);
 });
+
+
 
 
 module.exports = router;

@@ -5,6 +5,7 @@ import { updateContract  } from '../Contracts/ContractsAPI'
 
 export function updateContractCalculation(contractObj) {
     return new Promise((resolve, reject) => {
+
         let contract = contractObj || {};
         console.log("updateContractCalculation method ....")
         console.log("before fill contract");
@@ -44,6 +45,7 @@ export function updateContractCalculation(contractObj) {
             updateContract(cloned).then((res) => {
                 //  toast("success!");
                 // window.location.href = "/admin/Contract/view/" + res._id;
+                console.log("updateContractCalculation method ...." + JSON.stringify(cloned)) ;
                 resolve(cloned);
                 return;
 

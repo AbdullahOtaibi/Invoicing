@@ -45,6 +45,12 @@ const CreateReceipt = (props) => {
    setContactItem(props.contractObj.contact) ;
   }}, [props.contractObj]) ;
 
+ 
+  useEffect(() => { if(props.contactObj) { setContact(props.contactObj) ; 
+    setReceipt({...receipt, contact: props.contactObj._id}) ;
+     setContactItem(props.contactObj) }},
+     [props.contactObj]) ;
+
   const setContact = (item) => {
     if (item) {
       let cloned =JSON.parse(JSON.stringify(receipt)) ;
@@ -127,20 +133,20 @@ const CreateReceipt = (props) => {
       createReceipt(receipt).then(async (res) => {
         
         let updatedContract = {} 
-        if (receipt.contract) {
-          alert('update contract calculation');
-          updatedContract = await updateContractCalculation(receipt.contract);
-          alert('update contract calculation2');
+        if (contractItem) {
+          updatedContract = await updateContractCalculation(contractItem);
         } else {
           
         }
-        alert(JSON.stringify(res));
-
         toast("success!");
         
         if(props.onSave == null )
          window.location.href = "/admin/Receipt/view/" + res._id;
         else
+        {
+            console.log("updatedContract:"+ JSON.stringify(updatedContract)) ;
+            props.onSave(updatedContract);
+        }
           props.onSave(updatedContract);
         
   
@@ -215,10 +221,10 @@ const viewItemValidMessage = (message) => {
                     <div className="col col-auto">
                     <ContactSearchControl
                     handleSelectContact={setContact}
-                    wasValidated= { props.contractObj? false: wasValidated}
+                    wasValidated= { props.contractObj || props.contactObj ? false: wasValidated}
                     value = {contactItem?.contactName}
                     contactType = {["Client" , "Vendor"]}
-                    readOnly = {props.contractObj?true: false}
+                    readOnly = { props.contractObj || props.contactObj  ?true: false}
                   />
                     </div>
                   </div>
@@ -237,7 +243,7 @@ const viewItemValidMessage = (message) => {
                         value={
                           contactItem.mobile
                         }
-                   readOnly = {props.contractObj?true: false}
+                   readOnly = {props.contractObj || props.contactObj?true: false}
                       />
                     
     
@@ -366,13 +372,13 @@ const viewItemValidMessage = (message) => {
             {/* <div class="row text-right action-bar"> */}
             <div class="row text-right">
               <div className="mb-3  col justify-content-end">
-             {!props.contractObj &&   <Link className="btn btn-secondary btn-lg" to="/admin/Receipt">
+             {!props.contractObj &&  !props.contactObj &&  <Link className="btn btn-secondary btn-lg" to="/admin/Receipt">
                   <MdClose size={20} /> &nbsp; {t("Cancel")}
                 </Link> }
                 &nbsp;
                 <button
                   type="button"
-                  className={props.contractObj ==null ? "btn btn-primary btn-lg" : "btn btn-primary btn-lg w-100"}
+                  className={props.contractObj ==null && props.contactObj ==null ? "btn btn-primary btn-lg" : "btn btn-primary btn-lg w-100"}
                   onClick={doPost}
                 >
                   {t("dashboard.submit")}

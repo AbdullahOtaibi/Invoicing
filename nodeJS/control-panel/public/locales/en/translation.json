@@ -535,7 +535,11 @@
     "searchContactInfo": "Contact Info:",
     "searchSubContactInfo": "Sub contact Info:",
     "employeeAppointments": "Employee Appointments",
-    "editContact": "Edit Contact"
+    "editContact": "Edit Contact",
+    "contactTotalReceipt": "Contact Total Receipt",
+    "contactTotalInvoiced": "Contact Total Invoiced",
+    "contactTotalBalance": "Contact Total Balance" ,
+    "FinanceInformation": "Finance Information" 
   },
   "Package": {
     "createPackage": "create Package",
