@@ -291,7 +291,7 @@ return (
               <div className="mb-3 col   ">
                 <div className="col col-auto">{t("contracts.contractTotalReceipts")}</div>
                 <div className="col col-auto">
-                  JOD {contract.installments ? getTotalInstallments().toFixed(3) : '0.00'}
+                  JOD {contract.contractTotalReceipts ? contract.contractTotalReceipts.toFixed(3) : '0.00'}
                 </div>
               </div>
 
@@ -300,7 +300,7 @@ return (
               <div className="mb-3 col   ">
                 <div className="col col-auto">{t("contracts.contractTotalInvoiced")}</div>
                 <div className="col col-auto">
-                  JOD {contract.packagePrice ? contract.packagePrice.toFixed(3) : contract.packagePrice}
+                  JOD {contract.contractTotalInvoiced ? contract.contractTotalInvoiced.toFixed(3) : contract.contractTotalInvoiced} 
                 </div>
               </div>
 

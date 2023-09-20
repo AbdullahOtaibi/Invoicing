@@ -179,10 +179,10 @@ router.get("/getContractsByContactId/:id", async (req, res) => {
 router.get("/get/:id", async (req, res) => {
   console.log("before get Contract  info. ID: " + req.params.id);
   //ReferenceError: Cannot access 'Subscription' before initialization
-  let contract = await Contract.
-  findOne({ _id: req.params.id, deleted: false })
-  .populate("contact", "-password")
-  .populate("package")
+  let contract = await Contracts.getContractById(req.params.id);
+  // findOne({ _id: req.params.id, deleted: false })
+  // .populate("contact", "-password")
+  // .populate("package")
   console.log("get Contract  info.");
   res.json(contract);
 });
