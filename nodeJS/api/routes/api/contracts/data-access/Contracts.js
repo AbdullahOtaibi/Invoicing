@@ -9,26 +9,8 @@ const { query } = require('express');
 
 function Contracts() {
 
-  this.getContractById = async function (id) {
-    let contract = await Contract.findOne({ _id: id, deleted: false })
-      .populate("contact", "-password")
-      .populate("package");
-    let contractInvoices = await Invoice.find({ contract: id, deleted: false });
-    let contractReceipts = await Receipt.find({ contract: id, deleted: false });
-    if (contractInvoices) {
-      let totalInvoiced = 0;
-      contractInvoices.forEach((invoice) => {
-        totalInvoiced += invoice.legalMonetaryTotal.taxInclusiveAmount;
-      });
-      contract.contractTotalInvoiced = totalInvoiced;
-    }
-    if(contractReceipts){
-      let totalReceipted = 0;
-      contractReceipts.forEach((receipt) => {
-        totalReceipted += receipt.receiptAmount;
-      });
-      contract.contractTotalReceipts = totalReceipted;
-    }
+  this.getContractById = async function (receiptId) {
+    let contract = await Contract.findOne({ _id: receiptId, deleted: false }).populate("client", "-password")
     return contract;
   }
 
