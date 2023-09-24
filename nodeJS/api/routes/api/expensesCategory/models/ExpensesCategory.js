@@ -9,6 +9,7 @@ const ExpensesCategorySchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
     } ,
+    category:String,
     defaultAmount: Number,
     deleted: {
         type: Boolean,

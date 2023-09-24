@@ -176,7 +176,7 @@ router.get("/get/:id", async (req, res) => {
 
 
 function newSeq(x) {
-   return "CON-" + "00000".substring(0, 5 - x.toString().length) + x.toString();
+   return "EXP-" + "00000".substring(0, 5 - x.toString().length) + x.toString();
 }
 
 router.post("/create", verifyToken, async (req, res, next) => {
