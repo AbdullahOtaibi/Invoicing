@@ -61,8 +61,10 @@ const ViewContact = (props) => {
   const handleShow = () => setShow(true);
   const [showDeleteButton, setShowDeleteButton] = useState(true);
   useEffect(() => {
+    console.log("contactId:" + contactId);
+    console.log("props.onSave:" + props.onSave);
     setLoading(true);
-    // console.log("contactId:" +contactId) ;
+     console.log("contactId:" +contactId) ;
     getContact(contactId)
       .then((data) => {
         console.log("test ........");
@@ -141,14 +143,15 @@ const ViewContact = (props) => {
   };
 
   const [showReceipt, setshowReceipt] = useState(false);
-  const handleCloseReceipt = (_contact) => {
+  const handleCloseReceipt = () => {
     setshowReceipt(false);
-    if (_contact) setContact(_contact);
+   // if (_contact) setContact(_contact);
   };
-  const handleShowReceipt = (_contact) => {
-    setshowReceipt(true);
-    if (_contact) setContact(_contact);
-  };
+  // const handleShowReceipt = () => {
+  //   setshowReceipt(true);
+  //  // if (_contact) setContact(_contact);
+  // };
+
   const [selectedReceiptObj, setSelectedReceiptObj] = useState(0);
 
   const clickNewReceipt = () => {
@@ -613,9 +616,10 @@ const ViewContact = (props) => {
         <Modal.Body>
           {popUpEvent == "new" ? (
             <CreateReceipt
-              onSave={(cont) => {
-                handleCloseReceipt(cont);
-              }}
+              // onSave={(cont) => {
+              //   handleCloseReceipt(cont);
+              // }}
+              onSave={handleCloseReceipt}
               contactObj={contact}
             />
           ) : (
@@ -624,9 +628,10 @@ const ViewContact = (props) => {
 
           {popUpEvent == "edit" ? (
             <EditReceipt
-              onSave={(cont) => {
-                handleCloseReceipt(cont);
-              }}
+              // onSave={(cont) => {
+              //   handleCloseReceipt(cont);
+              // }}
+              onSave={handleCloseReceipt}
               selectedReceiptObj={selectedReceiptObj}
             />
           ) : (

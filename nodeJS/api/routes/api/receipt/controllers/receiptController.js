@@ -196,6 +196,7 @@ router.post("/create", verifyToken, async (req, res, next) => {
   });
   console.log("after create");
   newObject.deleted = false;
+  //await delay(200); // Introduce a delay of 100 milliseconds
   newObject._id = new mongoose.Types.ObjectId();
   let savedReceipt = await newObject.save();
   console.log("savedReceipt:" + savedReceipt);
@@ -204,25 +205,41 @@ router.post("/create", verifyToken, async (req, res, next) => {
 
 });
 
+
 router.post("/update/", verifyToken, async (req, res) => {
+
   if (req.user.role != "Administrator" && req.user.role != "Company") {
     res.json({ success: false, message: "Unauthorized" });
   }
 
-  
-  //TODO: if user is vendor check if item product belongs to the same vendor
-  Receipt.findOneAndUpdate(
+  // call the findOneAndUpdate 
+  //and then call the updateGrandTotalForReletedCollections with return the result of the updateGrandTotalForReletedCollections
+
+
+   Receipt.findOneAndUpdate(
     { _id: req.body._id },
-    req.body,
+    req.body, 
     function (err, item) {
       console.log("marked  updated...");
+      
+  
       res.json({
         success: true,
         message: "updated successfully ....",
         _id: req.body._id,
+        //updatedGrandTotal: x,
       });
     }
+
+    //console.log("marked  updated..."  + res)
+  
   );
+  let x=   Receipts.updateGrandTotalForReletedCollections(req.body._id);
+   
+// return x as result of updateGrandTotalForReletedCollections
+
+
+
 });
 
 router.get("/deleteItem/:id", verifyToken, async (req, res) => {

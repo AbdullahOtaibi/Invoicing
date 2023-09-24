@@ -10,7 +10,7 @@ import ContactSearchControl from "../Contact/ContactSearchControl";
 import ContractSearchControl from "../Contracts/ContractSearchControl";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { updateContractCalculation } from "./utils";
+//import { updateContractCalculation } from "./utils";
 
 const EditReceipt = (props) => {
 
@@ -141,12 +141,14 @@ const EditReceipt = (props) => {
     setLoading(true) ;
     if(checkData()) {
       updateReceipt(receipt).then(async (res) => {
-        
+
+        console.log("ABD: updated res :" + JSON.stringify(res)) ;
+        /*
         let updatedContract = {} 
         if (receipt.contract) {
           updatedContract = await updateContractCalculation(receipt.contract);
-         // updateContractCalculation(receipt.contract).then(updated => { }).catch(err => { })
-        }
+         
+        }*/
 
         viewItemValidMessage("success!") ;
         if(props.onSave == null )
@@ -156,7 +158,9 @@ const EditReceipt = (props) => {
         else 
         {
          
-          props.onSave(updatedContract);
+        //  props.onSave(updatedContract);
+        props.onSave();
+
         }
      
   

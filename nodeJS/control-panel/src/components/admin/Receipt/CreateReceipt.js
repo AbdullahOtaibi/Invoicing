@@ -11,7 +11,7 @@ import ContractSearchControl from "../Contracts/ContractSearchControl";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { updateContractCalculation } from "./utils";
+//import { updateContractCalculation } from "./utils";
 
 
 const CreateReceipt = (props) => {
@@ -131,23 +131,24 @@ const CreateReceipt = (props) => {
     setLoading(true) ;
     if(checkData()) {
       createReceipt(receipt).then(async (res) => {
-        
+        /*
         let updatedContract = {} 
         if (contractItem) {
           updatedContract = await updateContractCalculation(contractItem);
         } else {
           
-        }
+        }*/
         toast("success!");
         
         if(props.onSave == null )
          window.location.href = "/admin/Receipt/view/" + res._id;
         else
         {
-            console.log("updatedContract:"+ JSON.stringify(updatedContract)) ;
-            props.onSave(updatedContract);
+           // console.log("updatedContract:"+ JSON.stringify(updatedContract)) ;
+           // props.onSave(updatedContract);
+           props.onSave();
         }
-          props.onSave(updatedContract);
+         // props.onSave(updatedContract);
         
   
       }).catch((err) => {

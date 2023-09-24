@@ -64,9 +64,11 @@ const [fullCalendarObj, setFullCalendarObj] = useState(0);
 const [selectedReceiptObj, setSelectedReceiptObj] = useState(0);
 useEffect(() => {
   setLoading(true);
+  console.log("...... abdullah load contract .......:" + contractId);
   console.log("contractId:" + contractId);
   getContract(contractId).then(
     (res) => {
+      console.log("pass ..." + JSON.stringify(res));
       setContract(res)
       console.log("contract:")
       console.log(JSON.stringify(res));
@@ -76,9 +78,9 @@ useEffect(() => {
       console.log("setFilterInvoice Data")
       console.log(filterData)
     }
-  ).catch((error) => { console.log(error) })
+  ).catch((error) => { console.log( "fail fetch contract: error= " + error) })
   setLoading(false);
-}, []);
+}, [props, props.onSave, showReceipt , showOppo ]);
 
 const getTotalInstallments = () => {
   let total = 0;
