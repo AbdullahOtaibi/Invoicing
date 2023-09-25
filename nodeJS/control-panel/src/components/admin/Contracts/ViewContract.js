@@ -370,10 +370,13 @@ return (
             </div>
             <div className="row action-bar">
               <div className="col ">
-                {(contract.receipts == null || contract.receipts.length == 0) && (contract.invoices == null || contract.invoices.length == 0) ? (
+
+
+
+                 { (contract.contractTotalReceipts == 0  && contract.contractTotalInvoiced == 0  )  ? (
 
                   <ConfirmButton
-                    onConfirm={() => { removeContract(contract._id) }}
+                    onConfirm={() => { removeContract(contract._id) ; navigate("/admin/Contract/", { replace: true });}}
                     onCancel={() => console.log("cancel")}
                     buttonText={t("dashboard.delete")}
                     confirmText={t("invoice.confirmDelete")}

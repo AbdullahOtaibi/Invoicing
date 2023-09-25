@@ -24,8 +24,9 @@ import { MdAdd, MdDelete, MdReceipt } from "react-icons/md";
 import { RiRefund2Fill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {getReceipt , removeReceipt} from "./ReceiptAPI"
+import {getReceipt , removeReceipt } from "./ReceiptAPI"
 import moment from "moment";
+
 
 const ViewReceipt = (props) => {
 
@@ -205,7 +206,36 @@ const ViewReceipt = (props) => {
                       <MdEdit size={20} />
                       &nbsp; {t("dashboard.edit")}
                     </Link> 
+
+                    { !props.selectedReceiptObj && 
+                
+                <ConfirmButton
+                onConfirm={() => { removeReceipt(receipt._id).then((res) => { console.log("delete") ;  console.log( res) ; navigate("/admin/Receipt/", { replace: true });   }) }} 
+                onCancel={() => console.log("cancel")}
+                buttonText={t("dashboard.delete")}
+                confirmText={t("invoice.confirmDelete")}
+                cancelText={t("invoice.cancelDelete")}
+                loadingText={t("contact.BeingDeleteingTheContact")}
+                wrapClass="pt-2"
+                buttonClass="btn btn-lg "
+                mainClass="btn-warning"
+                confirmClass="btn-danger mx-2 col col-auto order-2"
+                cancelClass=" btn-success col col-auto order-1 "
+                loadingClass="visually-hidden"
+                disabledClass=""
+                once
+              >
+                {"Delete "}
+                <MdDelete />
+              </ConfirmButton>
+
+             
+}
+
                 </div>
+
+ 
+
               </div>
             </form>
           </div>
