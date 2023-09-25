@@ -141,7 +141,7 @@ const CreateReceipt = (props) => {
         toast("success!");
         
         if(props.onSave == null )
-         window.location.href = "/admin/Receipt/view/" + res._id;
+         window.location.href = "/admin/Receipt/view/" + res.receipt._id;
         else
         {
            // console.log("updatedContract:"+ JSON.stringify(updatedContract)) ;

@@ -1,11 +1,11 @@
 import { getSecured, postSecured } from '../../../services/ApiClient'
 
-export const removeReceipt = (contactId) => {
-    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/receipt/remove/" + contactId);
+export const removeReceipt = (id) => {
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/receipt/remove/" + id);
 }
 
-export const getReceipt = (contactId) => {
-    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/receipt/get/" + contactId);
+export const getReceipt = (id) => {
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/receipt/get/" + id);
 
 }
 

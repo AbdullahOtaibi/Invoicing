@@ -196,11 +196,16 @@ router.post("/create", verifyToken, async (req, res, next) => {
   });
   console.log("after create");
   newObject.deleted = false;
-  //await delay(200); // Introduce a delay of 100 milliseconds
   newObject._id = new mongoose.Types.ObjectId();
   let savedReceipt = await newObject.save();
   console.log("savedReceipt:" + savedReceipt);
-  res.json(savedReceipt);
+  res.json( {
+      success: true,
+      receipt: savedReceipt,
+      updatedGrandTotal : await Receipts.updateGrandTotalForReletedCollections(savedReceipt._id)
+
+  });
+
   next();
 
 });
@@ -219,26 +224,24 @@ router.post("/update/", verifyToken, async (req, res) => {
    Receipt.findOneAndUpdate(
     { _id: req.body._id },
     req.body, 
-    function (err, item) {
+     async function (err, item) {
       console.log("marked  updated...");
-      
-  
+    
       res.json({
         success: true,
         message: "updated successfully ....",
         _id: req.body._id,
-        //updatedGrandTotal: x,
+        updatedGrandTotal:  await Receipts.updateGrandTotalForReletedCollections(req.body._id),
       });
     }
+
 
     //console.log("marked  updated..."  + res)
   
   );
-  let x=   Receipts.updateGrandTotalForReletedCollections(req.body._id);
+ // let x=   Receipts.updateGrandTotalForReletedCollections(req.body._id);
    
 // return x as result of updateGrandTotalForReletedCollections
-
-
 
 });
 
@@ -248,7 +251,9 @@ router.get("/deleteItem/:id", verifyToken, async (req, res) => {
   }
   console.log("delete Receipt id:" + req.params.id);
   await Receipt.findByIdAndDelete(req.params.id);
-  res.json({ success: true, message: "deleted" });
+ let  updatedGrandTotal = await Receipts.updateGrandTotalForReletedCollections(req.params.id); 
+  res.json({ success: true, message: "deleted" , updatedGrandTotal: updatedGrandTotal});
+
 
 });
 
@@ -261,13 +266,14 @@ router.get("/remove/:id", verifyToken, async (req, res) => {
   Receipt.findByIdAndUpdate(
     req.params.id,
     { deleted: true },
-    function (err, model) {
+    async function (err, model) {
       if (err) {
         console.log("error remove item:" + e)
       }
       else if (model) {
         console.log("marked as deleted..." + model);
-        res.json({ success: true, message: "deleted" });
+        res.json({ success: true, message: "deleted" , 
+        updatedGrandTotal : await Receipts.updateGrandTotalForReletedCollections(req.params.id)});
       }
 
     }

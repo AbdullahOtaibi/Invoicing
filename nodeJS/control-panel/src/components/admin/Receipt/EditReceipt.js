@@ -5,11 +5,13 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThreeDots } from  'react-loader-spinner';
 import {  MdClose, MdCollections, MdContacts, MdReceipt , MdDelete} from "react-icons/md";
-import  {getReceipt, updateReceipt} from './ReceiptAPI'
+import  {getReceipt, updateReceipt , removeReceipt} from './ReceiptAPI'
 import ContactSearchControl from "../Contact/ContactSearchControl";
 import ContractSearchControl from "../Contracts/ContractSearchControl";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import ConfirmButton from "react-confirmation-button";
+
 //import { updateContractCalculation } from "./utils";
 
 const EditReceipt = (props) => {
@@ -387,6 +389,27 @@ const viewItemValidMessage = (message) => {
                 >
                   {t("dashboard.submit")}
                 </button>
+
+                { props.selectedReceiptObj &&  <ConfirmButton
+                    onConfirm={() => { removeReceipt(receipt._id).then((res) => { console.log("delete") ;  console.log( res) ;  props.onSave(); }) }} 
+                    onCancel={() => console.log("cancel")}
+                    buttonText={t("dashboard.delete")}
+                    confirmText={t("invoice.confirmDelete")}
+                    cancelText={t("invoice.cancelDelete")}
+                    loadingText={t("contact.BeingDeleteingTheContact")}
+                    wrapClass="row"
+                    buttonClass="btn btn-lg"
+                    mainClass="btn-warning  mx-3 w-100"
+                    confirmClass="btn-danger mx-2 col col-auto order-2  w-25"
+                    cancelClass=" btn-success col col-auto order-1 w-25"
+                    loadingClass="visually-hidden"
+                    disabledClass=""
+                    once
+                  >
+                    {"Delete "}
+                    <MdDelete />
+                  </ConfirmButton>
+}
               </div>
             </div>
 
