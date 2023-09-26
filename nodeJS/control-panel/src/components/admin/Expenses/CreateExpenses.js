@@ -4,65 +4,58 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThreeDots } from  'react-loader-spinner';
-import {  MdClose, MdCollections, MdContacts } from "react-icons/md";
+import {  MdClose, MdCollections, MdContacts, MdPayment } from "react-icons/md";
 import "react-datepicker/dist/react-datepicker.css";
 import { CSSTransition } from 'react-transition-group';
-import  {createPackage} from './ExpensesAPI'
+import  {createExpense} from './ExpensesAPI'
+import { use } from "i18next";
 
 const CreateExpenses = (props) => {
 
   const [wasValidated, setWasValidated] = useState(false);
 
-  const [Package , setPackage] = useState( { 
+  const [Expense , setExpense] = useState( { 
     deleted: false,
     companyID: localStorage.getItem("companyId"),
     company: localStorage.getItem("company"), 
-    status: "Active",
-    "frequency": "monthly",
+    totalAmount: 0.00,
+
   }) ;  
   
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
+  const [months, setMonths] = useState([ 1,2,3,4,5,6,7,8,9,10,11,12]) ;
+  const [years, setYears] = useState([]) ;
 
-  const setPackageName = (event) => {
+useEffect(() => {
+  let currentYear = new Date().getFullYear() ;
+  setYears([currentYear-1,currentYear,currentYear+1]) ;
+}, []);
 
-     let cloned =JSON.parse(JSON.stringify(Package)) ;
-     cloned.packageName = event.target.value; 
-     setPackage(cloned)
 
-  } ;
 
-  const setStatus = (event) => {
-
-    let cloned =JSON.parse(JSON.stringify(Package)) ;
-    cloned.status = event.target.value; 
-    setPackage(cloned)
-
- } ;
-
-  const setPrice = (event) => {
-    let cloned =JSON.parse(JSON.stringify(Package)) ;
-    cloned.price = event.target.value; 
-    setPackage(cloned)
-  };
-
-  const setNumberOfSet = (event) => {
-    let cloned =JSON.parse(JSON.stringify(Package)) ;
-    cloned.numberOfSet = event.target.value; 
-    setPackage(cloned)
-  };
-
-  const updateFrequency = (event) => {
-    let cloned =JSON.parse(JSON.stringify(Package)) ;
-    cloned.frequency = event.target.value; 
-    setPackage(cloned)
-  };
 
   const setNote = (event) => {
-    let cloned =JSON.parse(JSON.stringify(Package)) ;
+    let cloned =JSON.parse(JSON.stringify(Expense)) ;
     cloned.note = event.target.value; 
-    setPackage(cloned)
+    setExpense(cloned)
   };
+
+  const setYear = (event) => {
+    console.log("year:"+ event.target.value) ;
+    let cloned =JSON.parse(JSON.stringify(Expense)) ;
+    cloned.year = event.target.value;
+    setExpense(cloned)
+    console.log("year:"+ cloned.year) ;
+  };
+
+  const setMonth = (event) => {
+    console.log("month:"+ event.target.value) ;
+    let cloned =JSON.parse(JSON.stringify(Expense)) ;
+    cloned.month = event.target.value;
+    setExpense(cloned); 
+  };
+
 
   const fieldClass = (value, minQuantity) => {
     if (!wasValidated) return "form-control";
@@ -75,15 +68,16 @@ const CreateExpenses = (props) => {
         : "form-control is-invalid";
   };
 
-  const selectFieldClass = (value, minQuantity) => {
+  const selectFieldClass = (value) => {
     if (!wasValidated) return "form-select";
-    //console.log("minQuantity:"+ minQuantity) ;
-    if (isNaN(minQuantity))
+
       return value ? "form-select is-valid" : "form-select is-invalid";
-    else
+   
+/*
       return parseFloat(value) >= parseFloat(minQuantity)
         ? "form-select is-valid"
         : "form-select is-invalid";
+        */
   };
 
 
@@ -96,42 +90,29 @@ const CreateExpenses = (props) => {
     setLoading(true) ;
 
     if(checkData()) {
-      createPackage(Package).then((res)=> {
+      createExpense(Expense).then((res)=> {
         toast("success!") ;
-         window.location.href = "/admin/Package/ViewPackage/" + res._id;
+         window.location.href = "/admin/Expenses/view/" + res._id;
   
       }).catch((err)=> { console.log(err)}) ;
     }
     setLoading(false) ; 
   }
  
-
 function checkData() 
 {
   console.log( "insert checkdata ...") 
   let isValid= true;
 
- if (isBlank(Package.packageName)) 
+ if (isBlank(Expense.year)) 
  {
-  viewItemValidMessage("Fill the package Name") 
+  viewItemValidMessage("Fill the Year") 
   isValid = false ; 
  }
 
- if ( isBlank(Package.status)) 
+ if ( isBlank(Expense.month)) 
  {
-  viewItemValidMessage("Fill the package status") 
-  isValid = false ; 
- }
-
- if ( isBlank(Package.price)) 
- {
-  viewItemValidMessage("Fill the package price") 
-  isValid = false ; 
- }
- 
- if ( isBlank(Package.numberOfSet)) 
- {
-  viewItemValidMessage("Fill the Number Of Set") 
+  viewItemValidMessage("Fill the Month") 
   isValid = false ; 
  }
 
@@ -148,7 +129,7 @@ const viewItemValidMessage = (message) => {
     <>
       <div className="card">
         <div className="card-body">
-          <h5 className="card-title"> <MdCollections size= {20} />   {t("Package.createPackage")}</h5>
+          <h5 className="card-title"> <MdPayment size= {20} />   {t("Expense.createExpense")}</h5>
           <div className="container text-center">
             <ThreeDots
               type="ThreeDots"
@@ -164,7 +145,7 @@ const viewItemValidMessage = (message) => {
 
           <div className="mb-3 row ">
               <div className="col col-auto text-info">
-                {t("Package.packageInformation")}{" "}
+                {t("Expense.expenseInformation")}{" "}
               </div>
               <div className="col">
                 <hr />
@@ -174,112 +155,61 @@ const viewItemValidMessage = (message) => {
             <div className="mb-3 row">
                 
             <div className="mb-3 col ">
-                <div className="col col-auto">{t("Package.packageName")}</div>
+                <div className="col col-auto">{t("Expense.year")}</div>
                 <div className="col col-auto">
-                <input
+                <select
                     type="text"
-                    className= {fieldClass(Package.packageName)}
-                    id="packageName"
-                    name="packageName"
-                    placeholder={t("Package.packageName")}
-                    onChange={setPackageName}
+                    className= {selectFieldClass(Expense.year)}
+                    id="year"
+                    name="year"
+                    placeholder={t("Expense.year")}
                     value={
-                      Package.packageName
+                      Expense.year
                     }
-                  />
+                    onChange={ (e) => setYear (e)}
+                    >
+                    <option value=""> اخنر </option>
+                    {years.map((item) => (
+                      <option value={item}>{item}</option>
+                    ))}
+                    
+
+
+                  </select>
                 </div>
               </div>
 
 
               <div className="mb-3 col ">
-                <div className="col col-auto">{t("Package.status")}</div>
+                <div className="col col-auto">{t("Expense.month")} {Expense.month}</div>
                 <div className="col col-auto">
       
 
                     <select
                     type="text"
-                    className={selectFieldClass( Package.status)}
-                    id="status"
-                    name="status"
-                    onChange={setStatus}
-                    value={ Package.status}
+                    className={selectFieldClass(Expense.month)}
+                    id="nonth"
+                    name="nonth"
+                    value={ Expense.nonth}
+                    onChange={(e) => setMonth(e)}
                   >
                     <option value=""> اخنر </option>
-                    <option value="Active">Active</option>
-                    <option value="In Active">In Active</option>
-                   
+                    {months.map((item) => (
+                      <option value={item}>{item}</option>
+                    ))}
+
+
                   </select>
+                    
 
                 </div>
               </div>
-
-
-              <div className="mb-3 col ">
-                <div className="col col-auto">{t("Package.price")}</div>
-                <div className="col col-auto">
-                <input
-                    type="text"
-                    className= {fieldClass(Package.price)}
-                    id="price"
-                    name="price"
-                    placeholder={t("Package.price")}
-                    onChange={setPrice}
-                    value={
-                      Package.price
-                    }
-                  />
-                </div>
-              </div>
-
-
-              <div className="mb-3 col ">
-                <div className="col col-auto">{t("Package.numberOfSet")}</div>
-                <div className="col col-auto">
-                <input
-                    type="text"
-                    className= {fieldClass(Package.numberOfSet)}
-                    id="numberOfSet"
-                    name="numberOfSet"
-                    placeholder={t("Package.numberOfSet")}
-                    onChange={setNumberOfSet}
-                    value={
-                      Package.numberOfSet
-                    }
-                  />
-                </div>
-              </div>
-
-              
-
-            </div>
-
-            <div className="mb-3 row ">
-
-            <div className="mb-3 col ">
-                <div className="col col-auto mb-2">{t("Package.frequency")}</div>
-                <div className="col col-auto">
-                <select
-                    onChanange={updateFrequency}
-                    className="form-select"
-                    placeholder={t("Package.frequency")}
-                    value={
-                      Package.frequency
-                    }
-                  >
-                    <option value="daily">Daily</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="monthly">Monthly</option>
-                    <option value="yearly">Yearly</option>
-                  </select>
-                </div>
-              </div>
-
 
 
             
 
-            <div className="mb-3 col ">
-                <div className="col col-auto mb-2">{t("Package.note")}</div>
+              <div className="mb-3 col ">
+                <div className="col col-auto mb-2">{t("Expense.note")}</div>
                 <div className="col col-auto">
                  
                 <textarea
@@ -287,19 +217,19 @@ const viewItemValidMessage = (message) => {
                     id="note"
                     name="note"
                     onChange={setNote}
-                    placeholder={t("Package.note")}
+                    placeholder={t("Expense.note")}
                   >
-                    {Package.note}
+                    {Expense.note}
                   </textarea>
 
                 </div>
               </div>
 
-              <div className="mb-3 col "></div>
-              <div className="mb-3 col "></div>
-              <div className="mb-3 col "></div>
+              
+
             </div>
 
+       
             <div class="row text-right action-bar">
               <div className="mb-3  col justify-content-end">
                 <Link className="btn btn-secondary btn-lg" to="/admin/Package">

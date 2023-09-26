@@ -5,7 +5,7 @@ const verifyToken = require('../../utils/auth');
 const Expenses = require('../models/Expenses');
 const { query } = require('express');
 
-function Expenses() {
+function ExpensesMethod() {
 
   this.getExpenseById = async function (id) {
     
@@ -20,4 +20,4 @@ function Expenses() {
   */
 
 }
-module.exports = new Expenses();  
+module.exports = new ExpensesMethod();  

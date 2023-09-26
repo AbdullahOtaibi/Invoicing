@@ -6,37 +6,36 @@ import { Link, useNavigate } from 'react-router-dom'
 import { getLocalizedText } from '../utils/utils'
 import { hasPermission } from '../utils/auth';
 import { Helmet } from "react-helmet";
-import { getPackages } from './ExpensesAPI'
+import {  getExpenses } from './ExpensesAPI'
 
 
 
 
 const ListExpenses = (props) => {
-
+  
     const { t, i18n } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [packages , setPackages] = useState([]) ; 
 
     const [contactsSort, setContactsSort] = useState('_idDesc');
-    const [packagesPage, setPackagesPage] = useState(0);
-    const [packagesPages, setpackagesPages] = useState(0);
+    const [expensesPage, setExpensesPage] = useState(0);
+    const [expensesPages, setExpensesPages] = useState(0);
     const loadNewPage = (newPage) => {
-        if (newPage < 0 || (newPage >= packagesPages && packagesPages > 0)) {
+        if (newPage < 0 || (newPage >= expensesPages && expensesPages > 0)) {
             return;
         }
     }
     useEffect( ()=> {
 
-        getPackages({
-            page: packagesPage,
+        getExpenses({
+            page: expensesPage,
             
         }).then(data => {
             setLoading(false);
             setPackages(data.items || []);
-            setPackagesPage(data.page);
-            //console.log("data.items:" + JSON.stringify(data.items));
+            setExpensesPage(data.page);
             console.log("data.pages:" + data.pages);
-            setpackagesPages(data.pages);
+            setExpensesPages(data.pages);
         }).catch(e => {
             setLoading(false);
             console.log(e);
@@ -49,7 +48,7 @@ const ListExpenses = (props) => {
     return (
         <div className="conatiner">
             <Helmet>
-                <title>{'Invoicing | Admin | Packages'} </title>
+                <title>{'Invoicing | Admin | Expenses'} </title>
             </Helmet>
             <div className="card">
                 <div className={"card-body"}>
@@ -58,14 +57,14 @@ const ListExpenses = (props) => {
                     <div className='row'>
                         <div className='col-md-8 col-sm-6'>
                             <h5 className="card-title"><MdCollections />
-                                <span className='text-info px-2'> {t("sidebar.Package")} </span>
+                                <span className='text-info px-2'> {t("sidebar.expenses")} </span>
                             </h5>
                         </div>
 
                         <div className='col-md-4 col-sm-6' style={{ textAlign: 'end' }}>
                             
                           
-                            <a className="add-btn btn-info btn-lg" href={"/admin/Package/create"}><MdAdd size={20} />  {t("dashboard.add")}</a>
+                            <a className="add-btn btn-info btn-lg" href={"/admin/Expenses/create"}><MdAdd size={20} />  {t("dashboard.add")}</a>
                             
                         </div>
                     </div>
@@ -163,11 +162,11 @@ const ListExpenses = (props) => {
                                         <nav aria-label="Page navigation example">
                                             <ul className="pagination">
 
-                                                {packagesPages > 1 ? (<li className="page-item"><label className="page-link" href="#" onClick={() => loadNewPage(packagesPage - 1)}>Previous</label></li>) : null}
+                                                {expensesPages > 1 ? (<li className="page-item"><label className="page-link" href="#" onClick={() => loadNewPage(expensesPage - 1)}>Previous</label></li>) : null}
 
-                                                {Array.from(Array(packagesPages), (e, i) => {
-                                                    console.log('i:' + i, "packagesPages:" + packagesPages);
-                                                    return <li className={i == packagesPage ? "page-item active" : "page-item"} key={i}>
+                                                {Array.from(Array(expensesPages), (e, i) => {
+                                                    console.log('i:' + i, "expensesPages:" + expensesPages);
+                                                    return <li className={i == expensesPage ? "page-item active" : "page-item"} key={i}>
                                                         <label className="page-link" onClick={() => loadNewPage(i)}>
                                                             {i + 1}
                                                         </label>
@@ -175,7 +174,7 @@ const ListExpenses = (props) => {
                                                 })}
 
 
-                                                {packagesPages > 1 ? (<li className="page-item"><label className="page-link" href="#" onClick={() => loadNewPage(packagesPage + 1)}>Next</label></li>) : null}
+                                                {expensesPages > 1 ? (<li className="page-item"><label className="page-link" href="#" onClick={() => loadNewPage(expensesPage + 1)}>Next</label></li>) : null}
 
                                             </ul>
                                         </nav>

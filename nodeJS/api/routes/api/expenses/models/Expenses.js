@@ -12,6 +12,10 @@ const ExpensesCategorySchema = new Schema({
     } ,
     year: Number,
     month: Number,
+    totalAmount: {
+        type: Number,
+        default: 0
+    },
     note: String,
     details: [{ 
         id: Number,
@@ -25,13 +29,7 @@ const ExpensesCategorySchema = new Schema({
     deleted: {
         type: Boolean,
         default: false
-    },
-    active: {
-        type: Boolean,
-        default: true
-    },
-    
-    
+    },    
 
 }, { collection: 'Expenses' });
 

@@ -93,6 +93,11 @@ app.use('/v1/receipt', receiptController);
 const contractsController = require('./routes/api/contracts/controllers/ContractsController');
 app.use('/v1/contracts', contractsController);
 
+
+const  expensesController = require('./routes/api/expenses/controllers/ExpensesController');
+app.use('/v1/expenses', expensesController);
+
+
 const articlesController = require('./routes/api/articles/controllers/ArticlesController');
 app.use('/v1/articles', articlesController);
 

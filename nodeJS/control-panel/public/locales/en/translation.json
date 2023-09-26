@@ -628,5 +628,13 @@
 "createReceipt" : "Create Receipt" 
 
 
+  } , 
+  "Expense" : {
+ "expenseInformation" : "Expense Information" ,
+ "month": "Month" ,
+  "year" : "Year" ,
+  "note":"Note" ,
+  "createExpense":"Create Expense" 
+
   }
 }

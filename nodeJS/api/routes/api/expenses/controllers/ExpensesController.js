@@ -180,6 +180,10 @@ function newSeq(x) {
 }
 
 router.post("/create", verifyToken, async (req, res, next) => {
+
+  
+  console.log("before create Expense");
+
   if (!req.user) {
     res.json({ message: "unauthorized access" });
   }
@@ -196,7 +200,10 @@ router.post("/create", verifyToken, async (req, res, next) => {
     },
     "company": { $eq: req.user.company, },
   });
+
   let newSerial = count + 1;
+  console.log("newSerial:" + newSerial);
+
   const newObject = new Expense({
     user: req.user.id,
     company: req.user.company,
@@ -204,7 +211,7 @@ router.post("/create", verifyToken, async (req, res, next) => {
     seqNumber: newSeq(newSerial),
     ...req.body
   });
-  console.log("after create");
+
   newObject.deleted = false;
   newObject._id = new mongoose.Types.ObjectId();
   let savedExpense = await newObject.save();
@@ -214,6 +221,7 @@ router.post("/create", verifyToken, async (req, res, next) => {
 
   console.log("savedExpense:" + savedExpense);
   res.json(savedExpense);
+  console.log("after create:" + JSON.stringify(savedExpense));
   next();
 
 });

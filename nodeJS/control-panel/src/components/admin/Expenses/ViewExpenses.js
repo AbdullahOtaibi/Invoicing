@@ -24,21 +24,23 @@ import { MdAdd, MdDelete } from "react-icons/md";
 import { RiRefund2Fill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getPackage, removePackage } from "./ExpensesAPI"
+import { getExpense , removeExpense } from "./ExpensesAPI"
 
 const ViewExpenses = (props) => {
 
+
   let navigate = useNavigate();
-  const { packageId } = useParams();
+  const { expenseId } = useParams();
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
-  const [Package, setPackage] = useState({});
+  const [Expense, setExpense] = useState({});
   useEffect(() => {
     setLoading(true);
-    console.log("packageId:" + packageId);
-    getPackage(packageId).then(
+    console.log("expenseId:" + expenseId);
+    getExpense(expenseId).then(
       (res) => {
-        setPackage(res)
+        setExpense(res)
+        console.log("res:" + res) ;
       }
     ).catch((error) => { console.log(error) })
     setLoading(false);
@@ -46,11 +48,11 @@ const ViewExpenses = (props) => {
 
 
   return (
-    (Package ? (<>
+    (Expense ? (<>
 
       <div className="card">
         <h5 className="card-header">
-          <MdCollections /> {t("Package.packageInformation")}   <span className="text-info px-1">  {Package.packageName}  <MdMoney size={20} />  {"  " + Package.price}</span>
+          <MdPayment /> {t("Expense.expenseInformation")}   <span className="text-info px-1">  {Expense.seqNumber}  <MdMoney size={20} />  {"  " + Expense.totalAmount}</span>
         </h5>
         <div className="card-body">
 
@@ -68,34 +70,34 @@ const ViewExpenses = (props) => {
           <div className="row">
 
             <div className="mb-3 col ">
-              <div className="col col-auto"> {t("Package.packageName")}</div>
+              <div className="col col-auto"> {t("Expense.ExpenseName")}</div>
 
               <div className="col">
-                {Package.packageName}
+                {Expense.seqNumber}
               </div>
             </div>
 
             <div className="mb-3 col ">
-              <div className="col col-auto"> {t("Package.status")}</div>
+              <div className="col col-auto"> {t("Expense.status")}</div>
 
               <div className="col">
-                {Package.status}
+                {Expense.status}
               </div>
             </div>
 
             <div className="mb-3 col ">
-              <div className="col col-auto"> {t("Package.price")}</div>
+              <div className="col col-auto"> {t("Expense.price")}</div>
 
               <div className="col">
-                {Package.price}
+                {Expense.price}
               </div>
             </div>
 
             <div className="mb-3 col ">
-              <div className="col col-auto"> {t("Package.numberOfSet")}</div>
+              <div className="col col-auto"> {t("Expense.numberOfSet")}</div>
 
               <div className="col">
-                {Package.numberOfSet}
+                {Expense.numberOfSet}
               </div>
             </div>
 
@@ -104,18 +106,18 @@ const ViewExpenses = (props) => {
           <div className="row">
 
             <div className="mb-3 col ">
-              <div className="col col-auto"> {t("Package.frequency")}</div>
+              <div className="col col-auto"> {t("Expense.frequency")}</div>
 
               <div className="col" style={{ textTransform: 'capitalize' }}>
-                {Package.frequency}
+                {Expense.frequency}
               </div>
             </div>
 
             <div className="mb-3 col ">
-              <div className="col col-auto"> {t("Package.note")}</div>
+              <div className="col col-auto"> {t("Expense.note")}</div>
 
               <div className="col">
-                {Package.note}
+                {Expense.note}
               </div>
             </div>
 
@@ -125,7 +127,7 @@ const ViewExpenses = (props) => {
             <div className="row ">
               <div className="col ">
                 <ConfirmButton
-                  onConfirm={() => { removePackage(packageId); navigate("/admin/Package/", { replace: true }); }}
+                  onConfirm={() => { removeExpense(expenseId); navigate("/admin/Expense/", { replace: true }); }}
                   onCancel={() => console.log("cancel")}
                   buttonText={t("dashboard.delete")}
                   confirmText={t("invoice.confirmDelete")}
@@ -145,14 +147,14 @@ const ViewExpenses = (props) => {
                 </ConfirmButton>
               </div>
               <div className="mb-3  col text-end">
-                <Link className="btn btn-secondary btn-lg mx-2" to={"/admin/Package"}>
+                <Link className="btn btn-secondary btn-lg mx-2" to={"/admin/Expense"}>
                   <MdClose size={20} /> &nbsp; {t("close")}
                 </Link>
                 &nbsp;
 
 
 
-                <Link className="btn btn-primary btn-lg" to={"/admin/Package/edit/" + Package._id}>
+                <Link className="btn btn-primary btn-lg" to={"/admin/Expense/edit/" + Expense._id}>
                   <MdEdit size={20} />
                   &nbsp; {t("dashboard.edit")}
                 </Link>
