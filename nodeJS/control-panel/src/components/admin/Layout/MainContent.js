@@ -143,6 +143,15 @@ const CreateContract = lazy(() => import(/* webpackChunkName: "CreateContract" *
 const EditContract = lazy(() => import(/* webpackChunkName: "EditContract" */'../Contracts/EditContract'))
 const ViewContract = lazy(() => import(/* webpackChunkName: "ViewContract" */'../Contracts/ViewContract'))
 
+
+const ListExpenses = lazy(() => import(/* webpackChunkName: "ListExpenses" */'../Expenses/ListExpenses'))
+const CreateExpenses = lazy(() => import(/* webpackChunkName: "CreateExpenses" */'../Expenses/CreateExpenses'))
+const EditExpenses = lazy(() => import(/* webpackChunkName: "EditExpenses" */'../Expenses/EditExpenses'))
+const ViewExpenses = lazy(() => import(/* webpackChunkName: "ViewExpenses" */'../Expenses/ViewExpenses'))
+
+
+
+
 const SignIn = lazy(() => import(/* webpackChunkName: "SignIn" */'../../SignIn/SignIn'));
 const ForgotPassword = lazy(() => import(/* webpackChunkName: "ForgotPassword" */'../../SignIn/ForgotPassword'));
 const ResetPassword = lazy(() => import(/* webpackChunkName: "ResetPassword" */'../../SignIn/ResetPassword'));
@@ -309,6 +318,11 @@ const MainContent = ({notification, onHandleNotification}) => {
                     <Route path="/Contract/create" element={<CreateContract/>} />
                     <Route path="/Contract/view/:contractId" element={<ViewContract />} />
                     <Route path="/Contract/edit/:contractId" element={<EditContract/>} />
+
+                    <Route path="/expenses" exact element={<ListExpenses/>} />
+                    <Route path="/expenses/create" element={<CreateExpenses/>} />
+                    <Route path="/expenses/view/:expenseId" element={<ViewExpenses />} />
+                    <Route path="/expenses/edit/:expenseId" element={<EditExpenses/>} />
 
                     <Route path="/shippingCompanies" exact element={<ListShippingCompanies />} />
                     <Route path="/shippingCompanies/create" element={<CreateShippingCompany />} />

@@ -164,7 +164,8 @@
     "Contact": "Contact",
     "Package": "Packages",
     "Receipt": "Receipts",
-    "contracts": "Contracts"
+    "contracts": "Contracts" ,
+    "expenses" : "Expenses"
   },
   "dashboard": {
     "code": "Code",
