@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { getLocalizedText } from '../utils/utils'
 import { hasPermission } from '../utils/auth';
 import { Helmet } from "react-helmet";
-import {  getExpenses } from './ExpensesAPI'
+import {  getExpenses } from './ExpensesCategoryAPI'
 
 
 

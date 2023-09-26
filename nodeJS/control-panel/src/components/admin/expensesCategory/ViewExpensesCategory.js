@@ -24,7 +24,7 @@ import { MdAdd, MdDelete } from "react-icons/md";
 import { RiRefund2Fill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getExpense , removeExpense } from "./ExpensesAPI"
+import { getExpense , removeExpense } from "./ExpensesCategoryAPI"
 
 const ViewExpenses = (props) => {
 

@@ -634,7 +634,11 @@
  "month": "Month" ,
   "year" : "Year" ,
   "note":"Note" ,
-  "createExpense":"Create Expense" 
+  "createExpense":"Create Expense" ,
+  "sequanceNumber":"Sequance Number" ,
+  "ExpenseDetails":"Expense Details" ,
+  "seqNumber":"Sequance Number",
+  "totalAmount":"Total Amount"
 
   }
 }

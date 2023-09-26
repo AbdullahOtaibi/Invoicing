@@ -22,7 +22,7 @@ router.post("/filter", verifyToken, async (req, res) => {
     let page = filters.page || 0;
     let pageSize = filters.pageSize || 20;
     let deleted = filters.deleted || false;
-    let status = filters.status || null;
+
    
     
 
@@ -35,12 +35,6 @@ router.post("/filter", verifyToken, async (req, res) => {
       _id: -1,
     };
 
-    
-    
-    
-      
-
-
 
     if (deleted) {
       queryParams["$and"].push({ deleted: { $eq: true } });
@@ -49,9 +43,6 @@ router.post("/filter", verifyToken, async (req, res) => {
     }
    
 
-    if (status) {
-      queryParams["$and"].push({ status: status });
-    }
 
     queryParams["$and"].push({
       "companyID": {
@@ -248,8 +239,6 @@ router.get("/search/:val", verifyToken, async (req, res) => {
 
 
     let query = ExpensesCategory.find(queryParams)
-      .populate("contact", "-password")
-      .populate("package")
       .sort({ "Sequance": 1 });
     result.items = await query.exec("find");
     res.json(result);
@@ -277,13 +266,10 @@ router.post("/search/", verifyToken, async (req, res) => {
     let queryParams = {
       deleted: false,
       company: req.user.company,
-      companyID: req.user.companyId,
-      contact: req.body.clientId
+      companyID: req.user.companyId
     };
     console.log(queryParams);
     let query = ExpensesCategory.find(queryParams)
-      .populate("contact", "-password")
-      .populate("package")
       .sort({ "Sequance": 1 });
     result.items = await query.exec("find");
    
