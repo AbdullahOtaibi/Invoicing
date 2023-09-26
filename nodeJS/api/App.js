@@ -98,6 +98,10 @@ const  expensesController = require('./routes/api/expenses/controllers/ExpensesC
 app.use('/v1/expenses', expensesController);
 
 
+const expensesCategoriesController = require('./routes/api/expensesCategory/controllers/ExpensesCategoryController');
+app.use('/v1/expensesCategories', expensesCategoriesController);
+
+
 const articlesController = require('./routes/api/articles/controllers/ArticlesController');
 app.use('/v1/articles', articlesController);
 

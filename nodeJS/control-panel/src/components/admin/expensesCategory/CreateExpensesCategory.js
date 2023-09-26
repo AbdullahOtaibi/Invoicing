@@ -10,7 +10,7 @@ import { CSSTransition } from 'react-transition-group';
 import  {createExpense} from './ExpensesCategoryAPI'
 import { use } from "i18next";
 
-const CreateExpenses = (props) => {
+const CreateExpensesCategory = (props) => {
 
   const [wasValidated, setWasValidated] = useState(false);
 
@@ -254,4 +254,4 @@ const viewItemValidMessage = (message) => {
                   
 };
 
-export default CreateExpenses;
+export default CreateExpensesCategory;

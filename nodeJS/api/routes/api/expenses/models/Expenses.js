@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
-const ExpensesCategorySchema = new Schema({
+const ExpensesSchema = new Schema({
     _id: ObjectId,
     seqNumber: String,
     companyID: String,
@@ -33,4 +33,4 @@ const ExpensesCategorySchema = new Schema({
 
 }, { collection: 'Expenses' });
 
-module.exports = ExpensesCategory = mongoose.model("ExpensesCategory", ExpensesCategorySchema);
+module.exports = Expenses = mongoose.model("Expenses",  ExpensesSchema);

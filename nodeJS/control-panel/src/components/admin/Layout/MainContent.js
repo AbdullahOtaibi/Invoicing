@@ -151,6 +151,14 @@ const ViewExpenses = lazy(() => import(/* webpackChunkName: "ViewExpenses" */'..
 
 
 
+const ListExpensesCategory = lazy(() => import(/* webpackChunkName: "ListExpensesCategory" */'../Expenses/ListExpensesCategory'))
+const CreateExpensesCategory = lazy(() => import(/* webpackChunkName: "CreateExpensesCategory" */'../Expenses/CreateExpensesCategory'))
+const EditExpensesCategory = lazy(() => import(/* webpackChunkName: "EditExpensesCategory" */'../Expenses/EditExpensesCategory'))
+const ViewExpensesCategory = lazy(() => import(/* webpackChunkName: "ViewExpensesCategory" */'../Expenses/ViewExpensesCategory'))
+
+
+
+
 
 const SignIn = lazy(() => import(/* webpackChunkName: "SignIn" */'../../SignIn/SignIn'));
 const ForgotPassword = lazy(() => import(/* webpackChunkName: "ForgotPassword" */'../../SignIn/ForgotPassword'));
@@ -323,6 +331,12 @@ const MainContent = ({notification, onHandleNotification}) => {
                     <Route path="/expenses/create" element={<CreateExpenses/>} />
                     <Route path="/expenses/view/:expenseId" element={<ViewExpenses />} />
                     <Route path="/expenses/edit/:expenseId" element={<EditExpenses/>} />
+
+
+                    <Route path="/expensesCategory" exact element={<ListExpensesCategory/>} />
+                    <Route path="/expensesCategory/create" element={<CreateExpensesCategory/>} />
+                    <Route path="/expensesCategory/view/:expenseCategoryId" element={<ViewExpensesCategory />} />
+                    <Route path="/expensesCategory/edit/:expenseCategoryId" element={<EditExpensesCategory/>} />
 
                     <Route path="/shippingCompanies" exact element={<ListShippingCompanies />} />
                     <Route path="/shippingCompanies/create" element={<CreateShippingCompany />} />

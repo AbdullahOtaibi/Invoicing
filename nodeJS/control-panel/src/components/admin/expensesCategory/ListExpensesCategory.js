@@ -11,7 +11,7 @@ import {  getExpenses } from './ExpensesCategoryAPI'
 
 
 
-const ListExpenses = (props) => {
+const ListExpensesCategory = (props) => {
   
     const { t, i18n } = useTranslation();
     const [loading, setLoading] = useState(false);
@@ -198,5 +198,5 @@ const ListExpenses = (props) => {
 
 };
 
-export default ListExpenses;
+export default ListExpensesCategory;
 

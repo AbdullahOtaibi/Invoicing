@@ -1,34 +1,34 @@
 
 import { getSecured, postSecured } from '../../../services/ApiClient'
-export const removeExpense = (contactId) => {
-    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/Expenses/remove/" + contactId);
+export const removeExpenseCategory = (contactId) => {
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/ExpensesCategory/remove/" + contactId);
 }
-export const getExpense = (contactId) => {
-    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/Expenses/get/" + contactId);
+export const getExpenseCategory = (contactId) => {
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/ExpensesCategory/get/" + contactId);
 
 }
-export const getExpenses = (filters) => {
-    console.log("url:" +process.env.REACT_APP_API_BASE_URL + "/v1/Expenses/filter") ;
-    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/Expenses/filter", filters);
+export const getExpensesCategory = (filters) => {
+    console.log("url:" +process.env.REACT_APP_API_BASE_URL + "/v1/ExpensesCategory/filter") ;
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/ExpensesCategory/filter", filters);
 }
 
-export const getCountExpenses = (filter) => {
+export const getCountExpensesCategory = (filter) => {
     
-    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/Expenses/count", filter);
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/ExpensesCategory/count", filter);
     //return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/packages/filter", {deleted:false , page:1});
 }
 
-export const createExpense = (expensObj) => {
-    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/Expenses/create", expensObj);
+export const createExpenseCategory = (expensCategoryObj) => {
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/ExpensesCategory/create", expensCategoryObj);
 }
 
-export const updateExpense = (expensObj) => {
-    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/Expenses/update", expensObj);
+export const updateExpenseCategory = (expensCategoryObj) => {
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/ExpensesCategory/update", expensCategoryObj);
 }
 
-export const searchExpenses = (filters) => {
+export const searchExpensesCategory = (filters) => {
     console.log("insert method searchPackage");
-    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/Expenses/search/" , filters);
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/ExpensesCategory/search/" , filters);
 
 }
 

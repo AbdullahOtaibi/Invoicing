@@ -10,11 +10,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import { CSSTransition } from 'react-transition-group';
 import { getPackage, updatePackage } from "./ExpensesCategoryAPI"
 
-const EditExpenses = (props) => {
+const EditExpensesCategory = (props) => {
 
   
 return "abd"
 
 };
 
-export default EditExpenses;
+export default EditExpensesCategory;

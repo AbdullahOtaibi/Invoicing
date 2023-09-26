@@ -21,6 +21,6 @@ const ExpensesCategorySchema = new Schema({
     },
     
 
-}, { collection: 'ExpensesCategory' });
-
+}, { collection: 'ExpensesCategories' });
+delete mongoose.connection.models['ExpensesCategory'];
 module.exports = ExpensesCategory = mongoose.model("ExpensesCategory", ExpensesCategorySchema);

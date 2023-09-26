@@ -26,7 +26,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getExpense , removeExpense } from "./ExpensesCategoryAPI"
 
-const ViewExpenses = (props) => {
+const ViewExpensesCategory = (props) => {
 
 
   let navigate = useNavigate();
@@ -181,4 +181,4 @@ const ViewExpenses = (props) => {
 
 };
 
-export default ViewExpenses
+export default ViewExpensesCategory
