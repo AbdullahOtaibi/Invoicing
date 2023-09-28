@@ -5,7 +5,7 @@ import {
     MdCollections, MdBurstMode, MdCollectionsBookmark
     , MdBusinessCenter, MdInsertLink, MdGroup, MdLocalShipping,
     MdOutlineCategory, MdOutlineCardGiftcard, MdOutlineDashboard,
-    MdOutlineReceiptLong, MdReduceCapacity, MdRealEstateAgent, MdOutlineMarkAsUnread, MdCalendarViewMonth, MdContacts, MdOutlineGroup, MdReceipt, MdReceiptLong, MdPayment
+    MdOutlineReceiptLong, MdReduceCapacity, MdRealEstateAgent, MdOutlineMarkAsUnread, MdCalendarViewMonth, MdContacts, MdOutlineGroup, MdReceipt, MdReceiptLong, MdPayment, MdCategory
 } from "react-icons/md";
 import { BsMenuButtonFill, BsCreditCard } from 'react-icons/bs';
 
@@ -139,10 +139,19 @@ const Sidebar = () => {
                         </Link >
                     </li>) : null}
 
+
                     {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("invoices.view") > -1 ? (
                     <li className={getClass('/admin/expenses')}>
                         <Link className="wave-effect waves-effect waves-button" to="/admin/expenses" >
                             <MdPayment size={18} /> &nbsp; {t("sidebar.expenses")}
+                        </Link >
+                    </li>) : null}
+
+
+     {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("invoices.view") > -1 ? (
+                    <li className={getClass('/admin/expensesCategory')}>
+                        <Link className="wave-effect waves-effect waves-button" to="/admin/expensesCategory" >
+                            <MdCategory size={18} /> &nbsp; {t("sidebar.expensesCategory")}
                         </Link >
                     </li>) : null}
 

@@ -135,7 +135,7 @@ const ViewExpenses = (props) => {
             <div className="row ">
               <div className="col ">
                 <ConfirmButton
-                  onConfirm={() => { removeExpense(expenseId); navigate("/admin/Expenses/", { replace: true }); }}
+                  onConfirm={() => { removeExpense(expenseId); navigate("/admin/expenses/", { replace: true }); }}
                   onCancel={() => console.log("cancel")}
                   buttonText={t("dashboard.delete")}
                   confirmText={t("invoice.confirmDelete")}

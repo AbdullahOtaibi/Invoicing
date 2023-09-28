@@ -3,8 +3,8 @@ import { getSecured, postSecured } from '../../../services/ApiClient'
 export const removeExpenseCategory = (contactId) => {
     return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/ExpensesCategory/remove/" + contactId);
 }
-export const getExpenseCategory = (contactId) => {
-    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/ExpensesCategory/get/" + contactId);
+export const getExpenseCategory = (id) => {
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/ExpensesCategory/get/" + id);
 
 }
 export const getExpensesCategory = (filters) => {

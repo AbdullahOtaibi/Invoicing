@@ -117,7 +117,7 @@ const countriesController = require('./routes/api/countries/controllers/Countrie
 app.use('/v1/countries', countriesController);
 
 const categoriesController = require('./routes/api/articles/controllers/CategoriesController');
-app.use('/v1/categories', categoriesController);
+app.use('/v1/ExpensesCategory', categoriesController);
 
 const siteMapController = require('./routes/api/sitemap/controllers/SiteMapController');
 app.use('/v1/sitemap', siteMapController);

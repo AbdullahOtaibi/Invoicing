@@ -15,7 +15,8 @@ import {
   MdContacts,
   MdPhone,
   MdCollections,
-  MdMoney
+  MdMoney,
+  MdCategory
 } from "react-icons/md";
 import { ThreeDots } from 'react-loader-spinner';
 import { useTranslation } from "react-i18next";
@@ -24,23 +25,23 @@ import { MdAdd, MdDelete } from "react-icons/md";
 import { RiRefund2Fill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getExpense , removeExpense } from "./ExpensesCategoryAPI"
+import { getExpenseCategory , removeExpenseCategory } from "./ExpensesCategoryAPI"
 
-const ViewExpensesCategory = (props) => {
+const ViewExpenseCategorysCategory = (props) => {
 
 
   let navigate = useNavigate();
-  const { expenseId } = useParams();
+  const { expenseCategoryId } = useParams();
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
-  const [Expense, setExpense] = useState({});
+  const [ExpenseCategory, setExpenseCategory] = useState({});
   useEffect(() => {
     setLoading(true);
-    console.log("expenseId:" + expenseId);
-    getExpense(expenseId).then(
+    console.log("expenseCategoryId:" + expenseCategoryId);
+    getExpenseCategory(expenseCategoryId).then(
       (res) => {
-        setExpense(res)
-        console.log("res:" + res) ;
+        setExpenseCategory(res)
+        console.log("res:" +  JSON.stringify(res)) ;
       }
     ).catch((error) => { console.log(error) })
     setLoading(false);
@@ -48,11 +49,11 @@ const ViewExpensesCategory = (props) => {
 
 
   return (
-    (Expense ? (<>
+    (ExpenseCategory ? (<>
 
       <div className="card">
         <h5 className="card-header">
-          <MdPayment /> {t("Expense.expenseInformation")}   <span className="text-info px-1">  {Expense.seqNumber}  <MdMoney size={20} />  {"  " + Expense.totalAmount}</span>
+          <MdPayment /> {t("ExpenseCategory.expenseInformation")}   <span className="text-info px-1">  {ExpenseCategory.categoryName}  <MdCategory size={20} />  {"  " + ExpenseCategory.defaultAmount}</span>
         </h5>
         <div className="card-body">
 
@@ -70,26 +71,26 @@ const ViewExpensesCategory = (props) => {
           <div className="row">
 
             <div className="mb-3 col ">
-              <div className="col col-auto"> {t("Expense.sequanceNumber")}</div>
+              <div className="col col-auto"> {t("ExpenseCategory.sequanceNumber")}</div>
 
               <div className="col">
-                {Expense.seqNumber}
+                {ExpenseCategory.seqNumber}
               </div>
             </div>
 
             <div className="mb-3 col ">
-              <div className="col col-auto"> {t("Expense.year")}</div>
+              <div className="col col-auto"> {t("ExpenseCategory.year")}</div>
 
               <div className="col">
-                {Expense.year}
+                {ExpenseCategory.year}
               </div>
             </div>
 
             <div className="mb-3 col ">
-              <div className="col col-auto"> {t("Expense.month")}</div>
+              <div className="col col-auto"> {t("ExpenseCategory.month")}</div>
 
               <div className="col">
-                {Expense.month}
+                {ExpenseCategory.month}
               </div>
             </div>
 
@@ -101,18 +102,18 @@ const ViewExpensesCategory = (props) => {
 
           
           <div className="mb-3 col ">
-              <div className="col col-auto"> {t("Expense.totalAmount")}</div>
+              <div className="col col-auto"> {t("ExpenseCategory.totalAmount")}</div>
 
               <div className="col">
-                {Expense.totalAmount}
+                {ExpenseCategory.totalAmount}
               </div>
             </div>
 
             <div className="mb-3 col ">
-              <div className="col col-auto"> {t("Expense.note")}</div>
+              <div className="col col-auto"> {t("ExpenseCategory.note")}</div>
 
               <div className="col">
-                {Expense.note}
+                {ExpenseCategory.note}
               </div>
             </div>
 
@@ -123,7 +124,7 @@ const ViewExpensesCategory = (props) => {
 
           <div className="mb-3 row ">
               <div className="col col-auto text-info">
-                {t("Expense.ExpenseDetails")}{" "}
+                {t("ExpenseCategory.ExpenseCategoryDetails")}{" "}
               </div>
               <div className="col">
                 <hr />
@@ -135,7 +136,7 @@ const ViewExpensesCategory = (props) => {
             <div className="row ">
               <div className="col ">
                 <ConfirmButton
-                  onConfirm={() => { removeExpense(expenseId); navigate("/admin/Expenses/", { replace: true }); }}
+                  onConfirm={() => { removeExpenseCategory(expenseCategoryId); navigate("/admin/expensesCategory/", { replace: true }); }}
                   onCancel={() => console.log("cancel")}
                   buttonText={t("dashboard.delete")}
                   confirmText={t("invoice.confirmDelete")}
@@ -155,14 +156,14 @@ const ViewExpensesCategory = (props) => {
                 </ConfirmButton>
               </div>
               <div className="mb-3  col text-end">
-                <Link className="btn btn-secondary btn-lg mx-2" to={"/admin/Expense"}>
+                <Link className="btn btn-secondary btn-lg mx-2" to={"/admin/ExpenseCategory"}>
                   <MdClose size={20} /> &nbsp; {t("close")}
                 </Link>
                 &nbsp;
 
 
 
-                <Link className="btn btn-primary btn-lg" to={"/admin/Expense/edit/" + Expense._id}>
+                <Link className="btn btn-primary btn-lg" to={"/admin/ExpenseCategory/edit/" + ExpenseCategory._id}>
                   <MdEdit size={20} />
                   &nbsp; {t("dashboard.edit")}
                 </Link>
@@ -181,4 +182,4 @@ const ViewExpensesCategory = (props) => {
 
 };
 
-export default ViewExpensesCategory
+export default ViewExpenseCategorysCategory

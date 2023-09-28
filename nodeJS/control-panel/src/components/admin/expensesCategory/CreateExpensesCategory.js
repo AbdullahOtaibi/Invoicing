@@ -4,62 +4,52 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThreeDots } from  'react-loader-spinner';
-import {  MdClose, MdCollections, MdContacts, MdPayment } from "react-icons/md";
+import {  MdCategory, MdClose, MdCollections, MdContacts, MdPayment } from "react-icons/md";
 import "react-datepicker/dist/react-datepicker.css";
 import { CSSTransition } from 'react-transition-group';
-import  {createExpense} from './ExpensesCategoryAPI'
+import  {createExpenseCategory} from './ExpensesCategoryAPI'
 import { use } from "i18next";
 
-const CreateExpensesCategory = (props) => {
+const CreateExpenseCategorysCategory = (props) => {
 
   const [wasValidated, setWasValidated] = useState(false);
 
-  const [Expense , setExpense] = useState( { 
+  const [ExpenseCategory , setExpenseCategory] = useState( { 
     deleted: false,
     companyID: localStorage.getItem("companyId"),
     company: localStorage.getItem("company"), 
-    totalAmount: 0.00,
+    categoryName: "" ,
+    defaultAmount: 0.00,
+    status: "active"
 
   }) ;  
   
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
-  const [months, setMonths] = useState([ 1,2,3,4,5,6,7,8,9,10,11,12]) ;
-  const [years, setYears] = useState([]) ;
-
-useEffect(() => {
-  let currentYear = new Date().getFullYear() ;
-  setYears([currentYear-1,currentYear,currentYear+1]) ;
-}, []);
 
 
 
 
-  const setNote = (event) => {
-    let cloned =JSON.parse(JSON.stringify(Expense)) ;
-    cloned.note = event.target.value; 
-    setExpense(cloned)
+
+
+
+  const setCategoryName = (event) => {
+    console.log("categoryName:"+ event.target.value) ;
+    let cloned =JSON.parse(JSON.stringify(ExpenseCategory)) ;
+    cloned.categoryName = event.target.value; 
+    setExpenseCategory(cloned)
+
   };
 
-  const setYear = (event) => {
-    console.log("year:"+ event.target.value) ;
-    let cloned =JSON.parse(JSON.stringify(Expense)) ;
-    cloned.year = event.target.value;
-    setExpense(cloned)
-    console.log("year:"+ cloned.year) ;
-  };
-
-  const setMonth = (event) => {
-    console.log("month:"+ event.target.value) ;
-    let cloned =JSON.parse(JSON.stringify(Expense)) ;
-    cloned.month = event.target.value;
-    setExpense(cloned); 
+  const setDefaultAmount = (event) => {
+    let cloned =JSON.parse(JSON.stringify(ExpenseCategory)) ;
+    cloned.defaultAmount = event.target.value; 
+    setExpenseCategory(cloned)
   };
 
 
   const fieldClass = (value, minQuantity) => {
     if (!wasValidated) return "form-control";
-    //console.log("minQuantity:"+ minQuantity) ;
     if (isNaN(minQuantity))
       return value ? "form-control is-valid" : "form-control is-invalid";
     else
@@ -90,9 +80,9 @@ useEffect(() => {
     setLoading(true) ;
 
     if(checkData()) {
-      createExpense(Expense).then((res)=> {
+      createExpenseCategory(ExpenseCategory).then((res)=> {
         toast("success!") ;
-         window.location.href = "/admin/Expenses/view/" + res._id;
+         window.location.href = "/admin/expensesCategory/view/" + res._id;
   
       }).catch((err)=> { console.log(err)}) ;
     }
@@ -104,17 +94,13 @@ function checkData()
   console.log( "insert checkdata ...") 
   let isValid= true;
 
- if (isBlank(Expense.year)) 
+ if (isBlank(ExpenseCategory.categoryName)) 
  {
-  viewItemValidMessage("Fill the Year") 
+  viewItemValidMessage("Fill the Category Name") 
   isValid = false ; 
  }
 
- if ( isBlank(Expense.month)) 
- {
-  viewItemValidMessage("Fill the Month") 
-  isValid = false ; 
- }
+
 
   return isValid; 
 };
@@ -129,7 +115,7 @@ const viewItemValidMessage = (message) => {
     <>
       <div className="card">
         <div className="card-body">
-          <h5 className="card-title"> <MdPayment size= {20} />   {t("Expense.createExpense")}</h5>
+          <h5 className="card-title"> <MdCategory size= {20} />   {t("ExpenseCategory.createExpenseCategory")}</h5>
           <div className="container text-center">
             <ThreeDots
               type="ThreeDots"
@@ -145,7 +131,7 @@ const viewItemValidMessage = (message) => {
 
           <div className="mb-3 row ">
               <div className="col col-auto text-info">
-                {t("Expense.expenseInformation")}{" "}
+                {t("ExpenseCategory.expenseInformation")}{" "}
               </div>
               <div className="col">
                 <hr />
@@ -155,75 +141,45 @@ const viewItemValidMessage = (message) => {
             <div className="mb-3 row">
                 
             <div className="mb-3 col ">
-                <div className="col col-auto">{t("Expense.year")}</div>
+                <div className="col col-auto">{t("ExpenseCategory.categoryName")}</div>
                 <div className="col col-auto">
-                <select
+                <input
                     type="text"
-                    className= {selectFieldClass(Expense.year)}
+                    className= {fieldClass(ExpenseCategory.categoryName)}
                     id="year"
                     name="year"
-                    placeholder={t("Expense.year")}
+                    placeholder={t("ExpenseCategory.categoryName")}
                     value={
-                      Expense.year
+                      ExpenseCategory.categoryName
                     }
-                    onChange={ (e) => setYear (e)}
-                    >
-                    <option value=""> اخنر </option>
-                    {years.map((item) => (
-                      <option value={item}>{item}</option>
-                    ))}
-                    
-
-
-                  </select>
+                    onChange={ (e) => setCategoryName (e)}
+                   
+                  />
                 </div>
               </div>
 
 
               <div className="mb-3 col ">
-                <div className="col col-auto">{t("Expense.month")} {Expense.month}</div>
+                <div className="col col-auto">{t("ExpenseCategory.defaultAmount")} </div>
                 <div className="col col-auto">
       
 
-                    <select
+                    <input
                     type="text"
-                    className={selectFieldClass(Expense.month)}
-                    id="nonth"
-                    name="nonth"
-                    value={ Expense.nonth}
-                    onChange={(e) => setMonth(e)}
-                  >
-                    <option value=""> اخنر </option>
-                    {months.map((item) => (
-                      <option value={item}>{item}</option>
-                    ))}
-
-
-                  </select>
+                    className="form-control"
+                    id="defaultAmount"
+                    name="defaultAmount"
+                    value={ ExpenseCategory.defaultAmount}
+                    onChange={(e) => setDefaultAmount(e)}
+                 />  
                     
-
                 </div>
               </div>
 
-
+              <div className="mb-3 col "></div>
             
 
-              <div className="mb-3 col ">
-                <div className="col col-auto mb-2">{t("Expense.note")}</div>
-                <div className="col col-auto">
-                 
-                <textarea
-                    className="form-control"
-                    id="note"
-                    name="note"
-                    onChange={setNote}
-                    placeholder={t("Expense.note")}
-                  >
-                    {Expense.note}
-                  </textarea>
-
-                </div>
-              </div>
+         
 
               
 
@@ -254,4 +210,4 @@ const viewItemValidMessage = (message) => {
                   
 };
 
-export default CreateExpensesCategory;
+export default CreateExpenseCategorysCategory;

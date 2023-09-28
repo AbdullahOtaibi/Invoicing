@@ -9,18 +9,18 @@ const ExpensesCategorySchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
     } ,
-    category:String,
+    categoryName:String,
     defaultAmount: Number,
     deleted: {
         type: Boolean,
         default: false
     },
-    active: {
+    status: {
         type: Boolean,
-        default: true
+        default: "active"
     },
     
-
 }, { collection: 'ExpensesCategories' });
+
 delete mongoose.connection.models['ExpensesCategory'];
 module.exports = ExpensesCategory = mongoose.model("ExpensesCategory", ExpensesCategorySchema);

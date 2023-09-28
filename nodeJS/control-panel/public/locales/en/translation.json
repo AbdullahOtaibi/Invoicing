@@ -165,7 +165,8 @@
     "Package": "Packages",
     "Receipt": "Receipts",
     "contracts": "Contracts" ,
-    "expenses" : "Expenses"
+    "expenses" : "Expenses",
+    "expensesCategory": "Expenses Category"
   },
   "dashboard": {
     "code": "Code",
@@ -639,6 +640,13 @@
   "ExpenseDetails":"Expense Details" ,
   "seqNumber":"Sequance Number",
   "totalAmount":"Total Amount"
+
+  } ,
+  "ExpenseCategory" : {
+"createExpenseCategory" :"Create Expense Category" ,
+"expenseInformation" : "Expense Information",
+"categoryName":"Category Name",
+"defaultAmount":"Default Amount"
 
   }
 }

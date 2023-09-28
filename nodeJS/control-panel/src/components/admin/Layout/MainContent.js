@@ -151,10 +151,10 @@ const ViewExpenses = lazy(() => import(/* webpackChunkName: "ViewExpenses" */'..
 
 
 
-const ListExpensesCategory = lazy(() => import(/* webpackChunkName: "ListExpensesCategory" */'../Expenses/ListExpensesCategory'))
-const CreateExpensesCategory = lazy(() => import(/* webpackChunkName: "CreateExpensesCategory" */'../Expenses/CreateExpensesCategory'))
-const EditExpensesCategory = lazy(() => import(/* webpackChunkName: "EditExpensesCategory" */'../Expenses/EditExpensesCategory'))
-const ViewExpensesCategory = lazy(() => import(/* webpackChunkName: "ViewExpensesCategory" */'../Expenses/ViewExpensesCategory'))
+const ListExpensesCategory = lazy(() => import(/* webpackChunkName: "ListExpensesCategory" */'../ExpensesCategory/ListExpensesCategory'))
+const CreateExpensesCategory = lazy(() => import(/* webpackChunkName: "CreateExpensesCategory" */'../ExpensesCategory/CreateExpensesCategory'))
+const EditExpensesCategory = lazy(() => import(/* webpackChunkName: "EditExpensesCategory" */'../ExpensesCategory/EditExpensesCategory'))
+const ViewExpensesCategory = lazy(() => import(/* webpackChunkName: "ViewExpensesCategory" */'../ExpensesCategory/ViewExpensesCategory'))
 
 
 

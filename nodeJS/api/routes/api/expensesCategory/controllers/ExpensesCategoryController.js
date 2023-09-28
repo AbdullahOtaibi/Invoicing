@@ -118,7 +118,8 @@ router.post("/count", verifyToken, async (req, res) => {
 //
 
 router.get("/get/:id", async (req, res) => {
-  console.log("before get Contract  info. ID: " + req.params.id);
+  
+  console.log("before get exp category  info. ID: " + req.params.id);
 
   let ExpensesCategory = await ExpensesCategoryies.getExpensesCategoryById(req.params.id);
   console.log("get ExpensesCategory  info.");
