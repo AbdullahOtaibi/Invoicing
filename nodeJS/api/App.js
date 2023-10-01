@@ -99,7 +99,7 @@ app.use('/v1/expenses', expensesController);
 
 
 const expensesCategoriesController = require('./routes/api/expensesCategory/controllers/ExpensesCategoryController');
-app.use('/v1/expensesCategories', expensesCategoriesController);
+app.use('/v1/ExpensesCategory', expensesCategoriesController);
 
 
 const articlesController = require('./routes/api/articles/controllers/ArticlesController');

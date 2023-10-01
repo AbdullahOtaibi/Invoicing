@@ -20,12 +20,14 @@ import {
 import { ThreeDots } from 'react-loader-spinner';
 import { useTranslation } from "react-i18next";
 import ConfirmButton from "react-confirmation-button";
-import { MdAdd, MdDelete } from "react-icons/md";
+import { MdAdd, MdDelete , MdCategory } from "react-icons/md";
 import { RiRefund2Fill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getExpense , removeExpense } from "./ExpensesAPI"
-
+import ExpCatNew from './ExpCatNew';
+import { Modal } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 const ViewExpenses = (props) => {
 
 
@@ -34,6 +36,10 @@ const ViewExpenses = (props) => {
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
   const [Expense, setExpense] = useState({});
+  const [show, setShow] = useState(false);
+  const [popUpEvent, setPopUpEvent] = useState("");
+  const handleClose = () => setShow(false);
+
   useEffect(() => {
     setLoading(true);
     console.log("expenseId:" + expenseId);
@@ -45,6 +51,13 @@ const ViewExpenses = (props) => {
     ).catch((error) => { console.log(error) })
     setLoading(false);
   }, []);
+
+  
+  const clickNew = () => {
+    console.log("clicknew ....");
+    setShow(true);
+    setPopUpEvent("new");
+  };
 
 
   return (
@@ -66,6 +79,22 @@ const ViewExpenses = (props) => {
             />
           </div>
           <br />
+
+          <div className="row">
+          <div class="col-md-12 text-right">
+          <Button
+            variant="primary"
+            onClick={clickNew}
+            className="btn btn-success  btn-lg mt-3 mb-3 shadow "
+          >
+             <MdCategory size={30} /> &nbsp;
+            {t("Expense.New")}
+           
+          </Button>
+          </div>
+         
+
+          </div>
 
           <div className="row">
 
@@ -174,6 +203,47 @@ const ViewExpenses = (props) => {
    
         </div>
       </div>
+
+      <Modal show={show} onHide={handleClose}   size="lg" >
+        <Modal.Header closeButton>
+          <div className="row">
+            <div className="col">
+              {popUpEvent == "new" ? (
+                <Modal.Title >{t("Expense.New")}</Modal.Title>
+              ) : (
+                ""
+              )}
+              {popUpEvent == "edit" ? (
+                <Modal.Title>{t("Expense.Edit")}</Modal.Title>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+        </Modal.Header>
+        <Modal.Body>
+          {popUpEvent == "new" ? (
+            <ExpCatNew
+              onSave={handleClose}
+             Expense={Expense}
+
+            />
+          ) : (
+            ""
+          )}
+
+          {/* {popUpEvent == "edit" ? (
+            <FullCalendarEdit
+              onSave={handleClose}
+              updateFullCalendar={reloadData}
+              getfullCalendarObj={fullCalendarObj}
+            />
+          ) : (
+            ""
+          )} */}
+        </Modal.Body>
+        <Modal.Footer></Modal.Footer>
+      </Modal>
 
 
     </>) : "No Data Found"));

@@ -19,6 +19,7 @@ export const getCountExpensesCategory = (filter) => {
 }
 
 export const createExpenseCategory = (expensCategoryObj) => {
+    console.log("expensCategoryObj:" + JSON.stringify(expensCategoryObj)); 
     return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/ExpensesCategory/create", expensCategoryObj);
 }
 

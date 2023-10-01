@@ -639,14 +639,19 @@
   "sequanceNumber":"Sequance Number" ,
   "ExpenseDetails":"Expense Details" ,
   "seqNumber":"Sequance Number",
-  "totalAmount":"Total Amount"
+  "totalAmount":"Total Amount" ,
+  "New":"New Expense Details" ,
+  "Edit":"Edit Expense Details" ,
+  "amount":"Amount" ,
+  "expensesCategory" : "Expenses Category" 
 
   } ,
   "ExpenseCategory" : {
 "createExpenseCategory" :"Create Expense Category" ,
 "expenseInformation" : "Expense Information",
 "categoryName":"Category Name",
-"defaultAmount":"Default Amount"
+"defaultAmount":"Default Amount" ,
+"editExpenseCategory" : "Edit Expense Category" 
 
   }
 }

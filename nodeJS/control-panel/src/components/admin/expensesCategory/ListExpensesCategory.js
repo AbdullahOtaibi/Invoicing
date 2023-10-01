@@ -91,38 +91,20 @@ const ListExpensesCategory = (props) => {
                                 <tr>
                                     <th>
                                       
-                                            {t("Expense.seqNumber")}
+                                            {t("ExpenseCategory.categoryName")}
                                     
 
                                     </th>
                                     <th>
                                      
-                                            {t("Expense.year")}
+                                            {t("ExpenseCategory.defaultAmount")}
                                   
 
                                     </th>
-                                    <th>
-                                     
-                                     {t("Expense.month")}
-                           
-
-                             </th>
-                             <th>
-                                     
-                                     {t("Expense.totalAmount")}
-                           
-
-                             </th>
-                                
-
                                    
-                                    <th>
-                                      
-                                            {t("Expense.note")}
-                                     
+                           
 
-                                    </th>
-
+                                  
 
 
 
@@ -138,20 +120,14 @@ const ListExpensesCategory = (props) => {
 
                                         <tr key={'' + item.id}>
                                             <td>
-                                                <Link to={'/admin/Expenses/view/' + item._id} className='text-info'>
-                                                    {item.seqNumber}
+                                                <Link to={'/admin/ExpensesCategory/view/' + item._id} className='text-info'>
+                                                    {item.categoryName}
 
                                                 </Link>
                                             </td>
 
-                                            <td> {item.year}</td>
-                                            <td> { item.month}</td>
-                                            <td> { item.totalAmount}</td>
-                                            
-                                            <td>
-                                                {item.note}
-                                            </td>
-                                  
+                                            <td> {item.defaultAmount}</td>
+                                          
 
                                         </tr>
                                     ))

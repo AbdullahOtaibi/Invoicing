@@ -148,91 +148,12 @@ const Sidebar = () => {
                     </li>) : null}
 
 
-     {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("invoices.view") > -1 ? (
-                    <li className={getClass('/admin/expensesCategory')}>
+                     <li className={getClass('/admin/expensesCategory')}>
                         <Link className="wave-effect waves-effect waves-button" to="/admin/expensesCategory" >
                             <MdCategory size={18} /> &nbsp; {t("sidebar.expensesCategory")}
                         </Link >
-                    </li>) : null}
+                    </li>
 
-
-
-
-
-
-
-
-                {/* {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("gallery.view") > -1 ? (
-                    <li className={getClass('/admin/gallery')}>
-                        <Link className="wave-effect waves-effect waves-button" to="/admin/gallery" >
-                            <MdCollections size={18} /> &nbsp; {t("sidebar.gallery")}
-                        </Link >
-                    </li>) : null}
-                {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("productCategories.view") > -1 ? (
-                    <li className={getClass('/admin/product-categories')}>
-                        <Link className="wave-effect waves-effect waves-button" to="/admin/product-categories" >
-                            <MdOutlineCategory size={18} /> &nbsp; {t("sidebar.productCategories")}
-                        </Link >
-                    </li>) : null}
-
-                {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("products.view") > -1 ? (
-                    <li className={getClass('/admin/products')}>
-                        <Link className="wave-effect waves-effect waves-button" to="/admin/products" >
-                            <MdOutlineCardGiftcard size={18} /> &nbsp; {t("sidebar.products")}
-                        </Link >
-                    </li>) : null}
-
-                {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("articles.view") > -1 ? (
-                    <li className={getClass('/admin/slider')}>
-                        <Link className="wave-effect waves-effect waves-button" to="/admin/slider" >
-                            <MdOutlineViewCarousel size={18} /> &nbsp; {t("sidebar.slider")}
-                        </Link >
-                    </li>) : null}
-
-                {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("partners.view") > -1 ? (
-                    <li className={getClass('/admin/partners')}>
-                        <Link className="wave-effect waves-effect waves-button" to="/admin/partners" >
-                            <MdBusinessCenter size={18} /> &nbsp; {t("sidebar.partners")}
-                        </Link >
-                    </li>) : null}
-
-                {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("orders.view") > -1 ? (
-                    <li className={getClass('/admin/quotations')}>
-                        <Link className="wave-effect waves-effect waves-button" to="/admin/quotations" >
-                            <MdBusinessCenter size={18} /> &nbsp; {t("dashboard.quotations")}
-                        </Link >
-                    </li>) : null}
-
-                {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("orders.view") > -1 ? (
-                    <li className={getClass('/admin/orders')}>
-                        <Link className="wave-effect waves-effect waves-button" to="/admin/orders" >
-                            <MdOutlineReceiptLong size={18} /> &nbsp; {t("sidebar.orders")}
-                        </Link >
-                    </li>) : null} */}
-                {/* --------------------------------------------------------- */}
-                {/* {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("settings.view") > -1 ? (<li className={getClass('/admin/payments')}>
-                    <Link to="#" className="wave-effect waves-effect waves-button" onClick={() => showPaymentsSubMenu(!paymentsExpanded)}>
-                        <BsCreditCard size={18} /> &nbsp; {t("payments.payments")}
-                    </Link>
-                    <ul className="list-unstyled" style={{ display: paymentsExpanded ? 'block' : 'none' }}>
-                        {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("settings.view") > -1 ? (
-                            <li className={getClass('/admin/outstanding-payments')}>
-                                <Link to="/admin/outstanding-payments" className="wave-effect waves-effect waves-button">
-                                    {t("payments.outstandingPayments")}
-                                </Link>
-
-                            </li>) : null}
-                        {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("settings.view") > -1 ? (
-                            <li className={getClass('/admin/received-payments')}>
-                                <Link to="/admin/received-payments" className="wave-effect waves-effect waves-button">
-                                    {t("payments.receivedPayments")}
-                                </Link>
-
-                            </li>) : null}
-                    </ul>
-                </li>) : null} */}
-
-                {/* -------------------------------------------------------------------- */}
 
                 {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("users.view") > -1 ? (
                     <li className={getClass('/admin/users')}>
@@ -244,7 +165,7 @@ const Sidebar = () => {
                 {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("vendors.view") > -1 ? (
                     <li className={getClass('/admin/companies')}>
                         <Link className="wave-effect waves-effect waves-button" to="/admin/companies" >
-                            <MdRealEstateAgent size={18} /> &nbsp; {t("sidebar.companies")}
+                             <MdRealEstateAgent size={18} /> &nbsp; {t("sidebar.companies")}
                         </Link >
                     </li>) : null}
 

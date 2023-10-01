@@ -25,7 +25,7 @@ import { MdAdd, MdDelete } from "react-icons/md";
 import { RiRefund2Fill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getExpenseCategory , removeExpenseCategory } from "./ExpensesCategoryAPI"
+import { getExpenseCategory , removeExpenseCategory ,  } from "./ExpensesCategoryAPI"
 
 const ViewExpenseCategorysCategory = (props) => {
 
@@ -53,7 +53,7 @@ const ViewExpenseCategorysCategory = (props) => {
 
       <div className="card">
         <h5 className="card-header">
-          <MdPayment /> {t("ExpenseCategory.expenseInformation")}   <span className="text-info px-1">  {ExpenseCategory.categoryName}  <MdCategory size={20} />  {"  " + ExpenseCategory.defaultAmount}</span>
+        <MdCategory size={20} />  {ExpenseCategory.categoryName}     <span className="text-info px-1">    {"  " + ExpenseCategory.defaultAmount}</span>
         </h5>
         <div className="card-body">
 
@@ -71,65 +71,31 @@ const ViewExpenseCategorysCategory = (props) => {
           <div className="row">
 
             <div className="mb-3 col ">
-              <div className="col col-auto"> {t("ExpenseCategory.sequanceNumber")}</div>
+              <div className="col col-auto"> {t("ExpenseCategory.categoryName")}</div>
 
               <div className="col">
-                {ExpenseCategory.seqNumber}
+                {ExpenseCategory.categoryName}
               </div>
             </div>
 
             <div className="mb-3 col ">
-              <div className="col col-auto"> {t("ExpenseCategory.year")}</div>
+              <div className="col col-auto"> {t("ExpenseCategory.defaultAmount")}</div>
 
               <div className="col">
-                {ExpenseCategory.year}
+                {ExpenseCategory.defaultAmount}
               </div>
             </div>
 
             <div className="mb-3 col ">
-              <div className="col col-auto"> {t("ExpenseCategory.month")}</div>
-
-              <div className="col">
-                {ExpenseCategory.month}
-              </div>
+             
             </div>
 
          
 
           </div>
 
-          <div className="row">
 
-          
-          <div className="mb-3 col ">
-              <div className="col col-auto"> {t("ExpenseCategory.totalAmount")}</div>
-
-              <div className="col">
-                {ExpenseCategory.totalAmount}
-              </div>
-            </div>
-
-            <div className="mb-3 col ">
-              <div className="col col-auto"> {t("ExpenseCategory.note")}</div>
-
-              <div className="col">
-                {ExpenseCategory.note}
-              </div>
-            </div>
-
-           
-            <div className="mb-3 col "></div>
-
-          </div>
-
-          <div className="mb-3 row ">
-              <div className="col col-auto text-info">
-                {t("ExpenseCategory.ExpenseCategoryDetails")}{" "}
-              </div>
-              <div className="col">
-                <hr />
-              </div>
-            </div>
+   
 
 
           <div className="row action-bar">
@@ -163,7 +129,7 @@ const ViewExpenseCategorysCategory = (props) => {
 
 
 
-                <Link className="btn btn-primary btn-lg" to={"/admin/ExpenseCategory/edit/" + ExpenseCategory._id}>
+                <Link className="btn btn-primary btn-lg" to={"/admin/expensesCategory/edit/" + ExpenseCategory._id}>
                   <MdEdit size={20} />
                   &nbsp; {t("dashboard.edit")}
                 </Link>

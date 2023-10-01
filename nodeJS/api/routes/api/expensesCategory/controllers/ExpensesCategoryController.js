@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const verifyToken = require("../../utils/auth");
-
 const ExpensesCategory = require("../models/ExpensesCategory");
 
 const { query } = require("express");
@@ -22,6 +21,7 @@ router.post("/filter", verifyToken, async (req, res) => {
     let page = filters.page || 0;
     let pageSize = filters.pageSize || 20;
     let deleted = filters.deleted || false;
+    //let Expense = filters.Expense ;
 
    
     
@@ -41,8 +41,17 @@ router.post("/filter", verifyToken, async (req, res) => {
     } else {
       queryParams["$and"].push({ deleted: { $ne: true } });
     }
-   
-
+   /*
+    console.log("Expense:" + Expense);
+    if(Expense) 
+    {
+      queryParams["$and"].push({
+        "_id": {
+          $eq: Expense,
+        },
+      });
+    }
+*/
 
     queryParams["$and"].push({
       "companyID": {
@@ -137,8 +146,9 @@ router.post("/create", verifyToken, async (req, res, next) => {
   if (req.user.role != "Administrator" && req.user.role != "Company") {
     res.json({ success: false, message: "Unauthorized" });
   }
-  console.log("before create");
+  console.log("before create exp category: ");
   console.log(req.body)
+
 
   const newObject = new ExpensesCategory({
     user: req.user.id,
@@ -156,7 +166,7 @@ router.post("/create", verifyToken, async (req, res, next) => {
 
   console.log("saved Exp category:" + saved);
   res.json(saved);
-  next();
+  //next();
 
 });
 

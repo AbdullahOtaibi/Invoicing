@@ -16,11 +16,12 @@ const ExpensesCategorySchema = new Schema({
         default: false
     },
     status: {
-        type: Boolean,
+        type: String,
         default: "active"
     },
     
 }, { collection: 'ExpensesCategories' });
 
-delete mongoose.connection.models['ExpensesCategory'];
+//module.exports = ExpensesCategory = mongoose.model("ExpensesCategory",  ExpensesCategorySchema);
+//delete mongoose.connection.models['ExpensesCategory'];
 module.exports = ExpensesCategory = mongoose.model("ExpensesCategory", ExpensesCategorySchema);

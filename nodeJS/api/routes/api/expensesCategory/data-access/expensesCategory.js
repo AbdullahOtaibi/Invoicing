@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const verifyToken = require('../../utils/auth');
 
-const expensesCategory = require('../models/expensesCategory');
+const expensesCategory = require('../models/ExpensesCategory');
 const { query } = require('express');
 
 function expensesCategoryMethod() {
