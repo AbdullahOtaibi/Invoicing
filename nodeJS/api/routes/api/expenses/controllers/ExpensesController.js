@@ -232,6 +232,11 @@ router.post("/update", verifyToken, async (req, res) => {
   }
 
   //TODO: if user is vendor check if item product belongs to the same vendor
+
+  console.log("before update Expense");
+  console.log("req.body._id:" + req.body._id);
+  console.log("req.body:" + JSON.stringify(req.body));
+
   Expense.findOneAndUpdate(
     { _id: req.body._id },
     req.body,

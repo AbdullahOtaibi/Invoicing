@@ -28,6 +28,7 @@ import { getExpense , removeExpense } from "./ExpensesAPI"
 import ExpCatNew from './ExpCatNew';
 import { Modal } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
+import moment from "moment";
 const ViewExpenses = (props) => {
 
 
@@ -46,7 +47,7 @@ const ViewExpenses = (props) => {
     getExpense(expenseId).then(
       (res) => {
         setExpense(res)
-        console.log("res:" + res) ;
+        console.log("res:" + JSON.stringify(res)) ;
       }
     ).catch((error) => { console.log(error) })
     setLoading(false);
@@ -201,6 +202,61 @@ const ViewExpenses = (props) => {
 
 
    
+          <div className="row">
+            <div className="col table-responsive">
+              <table className="table table-sm needs-validation ">
+                <thead>
+                  <tr className="table-light">
+                    <th width="10%">#</th>
+                    <th width="30%">{t("Expense.categoryName")} </th>
+                    <th width="20%">{t("Expense.amount")} </th>
+                    <th width="20%">{t("Expense.date")} </th>
+                   <th width="20%"></th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {Expense?.details?.map((item, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{item.category}</td>
+                      <td>{item.amount}</td>
+                      <td>{moment( item.createdDate).format("DD/MM/yyyy")}</td>
+                      <td>
+                      <td>
+                        <ConfirmButton
+                          onConfirm={() => console.log("remove category") /*removeItem(item.id)*/}
+                          onCancel={() => console.log("cancel")}
+                          buttonText={t("dashboard.delete")}
+                          confirmText={t("invoice.confirm")}
+                          cancelText={t("invoice.cancel")}
+                          loadingText={t("invoice.deleteingItem")}
+                          wrapClass=""
+                          buttonClass="btn d-print-none"
+                          mainClass="btn-danger"
+                          confirmClass="btn-warning"
+                          cancelClass=" btn-success"
+                          loadingClass="visually-hidden"
+                          disabledClass=""
+                          once
+                        >
+                          {"Delete "}
+                          <MdDelete />
+                        </ConfirmButton>
+                      </td>
+
+                      </td>
+                    </tr>
+                  ))}
+
+
+               
+                </tbody>
+                <tfoot></tfoot>
+              </table>
+            </div>
+          </div>
+
         </div>
       </div>
 

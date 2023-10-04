@@ -5,71 +5,82 @@ import "react-datepicker/dist/react-datepicker.css";
 import { MdWarning } from "react-icons/md";
 import { useDebugValue } from "react";
 import { updateExpense } from "./ExpensesAPI";
-import { ThreeDots } from 'react-loader-spinner';
-import  {getExpensesCategory}  from "../ExpensesCategory/ExpensesCategoryAPI";
+import { ThreeDots } from "react-loader-spinner";
+import { getExpensesCategory } from "../ExpensesCategory/ExpensesCategoryAPI";
+import { toast } from "react-toastify";
+
 const ExpCatNew = (props) => {
+  const [loading, setLoading] = useState(false);
 
-  const[loading, setLoading] = useState(false);
-
-   const [Expense, setExpense] = useState({});
-  const [ExpensesCategory, setExpensesCategory] = useState({});
+  const [Expense, setExpense] = useState({});
+  const [ExpensesCategory, setExpensesCategory] = useState([]);
+  const [categoryObj, setCategoryObj] = useState({
+    expensesCategory: "",
+    category: "",
+    amount: 0,
+  });
+  //const [amount, setAmount] = useState(0);
 
   useEffect(() => {
-setExpense(props.Expense);  
+    setExpense(props.Expense);
 
-console.log("props.Expense:" + JSON.stringify(props.Expense)) ;
+    console.log("props.Expense:" + JSON.stringify(props.Expense));
 
-console.log("expenseId:" + props.Expense._id);
-    let filters= {} 
+    console.log("expenseId:" + props.Expense._id);
+    let filters = {};
 
-    getExpensesCategory(filters).then(
-      (res) => {
-        setExpensesCategory(JSON.stringify(res.items) )
-        console.log("ExpensesCategory:" + JSON.stringify(res.items)) ;
-      }
-    ).catch((error) => { console.log(error) })
+    getExpensesCategory(filters)
+      .then((res) => {
+        setExpensesCategory(res.items);
+        console.log("ExpensesCategory:" + JSON.stringify(res.items));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [props.Expense]);
 
+  const selectedExpensesCategory = (event) => {
+    
+    console.log("selectedExpensesCategory:" + event.target.value);
+    let value = event.target.value;
 
-   }, [ props.Expense]);       
+    let filtered = ExpensesCategory.filter((item) => item._id === value);
 
-  
-useEffect(() => {
- // console.log("ExpensesCategory:" + JSON.stringify(ExpensesCategory)) ;
- //console.log("ExpensesCategory.length:" + ExpensesCategory.length) ;
- //console.log("ExpensesCategory[0]:" + ExpensesCategory[0]) ;
+    console.log("filtered:" + JSON.stringify(filtered));
 
- let arr = ExpensesCategory //JSON.parse(ExpensesCategory); 
-  console.log("arr:" + arr) ;
-  console.log("arr.length:" + arr.length) ;
-  console.log("arr[0]:" + arr[0]) ;
+    if (filtered.length > 0) {
+      console.log("inside if ...");
+      let obj = {};
+      obj.expensesCategory = filtered[0]._id;
+      obj.category = filtered[0].categoryName;
+      obj.amount = filtered[0].defaultAmount;
+      setCategoryObj(obj);
+      console.log("obj:" + JSON.stringify(obj));
 
-  console.log( "typeof arr" + typeof arr)
-  arr = JSON.parse(arr);
-  console.log( "typeof arr" + typeof arr)
-  console.log("arr.length:" + arr.length) ;
-  console.log("arr[0]:" + arr[0]) ;
-  
-  if(Array.isArray(arr))
-  {
-    arr.map((item) => (
-      console.log("item:" + item._id) 
-    ))
-  }
-  else
-  {
-    console.log("ExpensesCategory is not an array") ;
-  }
+    }
 
+  };
 
+  const changeAmount = (event) => {
 
-}, [ExpensesCategory]);
+    console.log("changeAmount:" + event.target.value);
+    let value = event.target.value;
+    categoryObj.amount = value;
+    setCategoryObj(categoryObj);
+    console.log("categoryObj after edit amount :" + JSON.stringify(categoryObj));
+    console.log("new  amount :" + JSON.stringify(categoryObj.amount));
 
- 
+  };
+
+  useEffect(() => { 
+
+    console.log("useEffect categoryObj:" + JSON.stringify(categoryObj));
+
+  }, [setCategoryObj , categoryObj]);
+
   const { t, i18n } = useTranslation();
 
   const [wasValidated, setWasValidated] = useState(false);
-
- 
 
   // const setContactName = (event) => {
   //   let cloned = JSON.parse(JSON.stringify(fullCalendar));
@@ -77,18 +88,27 @@ useEffect(() => {
   //   setFullCalendar(cloned);
   // };
 
-
-  
   const dopost = (event) => {
     console.log("dopost ....");
     //console.log(event);
     setWasValidated(true);
     if (checkDataIsValid()) {
       console.log("ready to add new calendar ...");
-      updateExpense(Expense._id, Expense)
+      let details = Expense.details;
+      console.log(" before fill details:" + JSON.stringify(details));
+      details.push(categoryObj);
+      Expense.details = details;
+      let total = 0;
+      for (let obj in Expense.details) {
+        console.log("Expense.details:" + JSON.stringify(obj));
+        total = total + obj.amount;
+      }
+      Expense.totalAmount = total;
+      console.log(" after fill details:" + JSON.stringify(details));
+      console.log(" before save Expense:" + JSON.stringify(Expense));
+      updateExpense( Expense)
         .then((res) => {
-
-          console.log("fullCalendar has been created ....");
+          console.log("Expense details has been added ....");
           if (props.onSave) {
             props.onSave();
           }
@@ -105,11 +125,29 @@ useEffect(() => {
     return !str || /^\s*$/.test(str);
   }
 
-  function checkDataIsValid() {
-    
-    return true;
-  }
+  const viewItemValidMessage = (message) => {
+    toast.warning(message, {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  };
 
+  function checkDataIsValid() {
+
+    let isValid =true ; 
+    if (isBlank(categoryObj.expensesCategory)) {
+        isValid = false;
+        viewItemValidMessage("Please select the category");
+      
+
+    }
+    if (isBlank(categoryObj.amount) || categoryObj.amount <= 0 ) {
+        isValid = false;
+        viewItemValidMessage("Please enter the amount");
+
+    }
+
+    return isValid;
+  }
 
   const fieldClass = (value, minQuantity) => {
     if (!wasValidated) return "form-control";
@@ -121,7 +159,7 @@ useEffect(() => {
         ? "form-control is-valid"
         : "form-control is-invalid";
   };
-  
+
   const selectFieldClass = (value, minQuantity) => {
     if (!wasValidated) return "form-select";
     //console.log("minQuantity:"+ minQuantity) ;
@@ -132,17 +170,11 @@ useEffect(() => {
         ? "form-select is-valid"
         : "form-select is-invalid";
   };
-  
-
-
-
-
 
   return (
     <>
       <form>
-
-      <div className="container text-center">
+        <div className="container text-center">
           <ThreeDots
             type="ThreeDots"
             color="#00BFFF"
@@ -151,29 +183,31 @@ useEffect(() => {
             visible={loading}
           />
         </div>
-      
+
         <div className="row">
           <div className="mb-3 col ">
             <div className="col col-auto">{t("Expense.expensesCategory")} </div>
             <div className="col">
-         {  ExpensesCategory.length >0 && <select className="form-control" id="expensesCategory" name="expensesCategory" 
-           //onChange={setExpensesCategory}
-           >
-             <option value="">أختر</option>
-             {Array.isArray(ExpensesCategory) ? ExpensesCategory.map((item) => (
-  <option key={item._id} value={item._id}>
-    {item._id}
-  </option>
-)
-) : console.log("ExpensesCategory is not an array")}
-              
-              </select>
-}
-</div>
+              {ExpensesCategory.length > 0 && (
+                <select
+                  className="form-control"
+                  id="expensesCategory"
+                  name="expensesCategory"
+                  onChange={selectedExpensesCategory}
+                >
+                  <option value="">أختر</option>
+                  {Array.isArray(ExpensesCategory)
+                    ? ExpensesCategory.map((item) => (
+                        <option key={item._id} value={item._id}>
+                          {item.categoryName}
+                        </option>
+                      ))
+                    : console.log("ExpensesCategory is not an array")}
+                </select>
+              )}
             </div>
           </div>
-    
-
+        </div>
 
         <div className="row">
           <div className="mb-3 col ">
@@ -184,13 +218,14 @@ useEffect(() => {
                 type="text"
                 //className={fieldClass(fullCalendar.title)}
                 className="form-control"
-               // className= {fieldClass(amount)}
+                // className= {fieldClass(amount)}
                 id="amount"
                 name="amount"
                 placeholder={t("Expense.amount")}
                 min={0.01}
                 type="number"
-               // onChange={setTitle}
+                onChange={changeAmount}
+               value={categoryObj?.amount}
               ></input>
             </div>
           </div>
@@ -198,20 +233,12 @@ useEffect(() => {
 
 
 
-      
-
-       
-
-  
-
-
-
-
-
-
-
-
-     
+        {/* <DatePicker
+                  className={fieldClass(invoice.issuedDate)}
+                  dateFormat="dd/MM/yyyy"
+                  selected={new Date(invoice.issuedDate)}
+                  onChange={(date) => updateIssuedDate(date)}
+                /> */}
 
         <div className="mb-3 row ">
           <div className="col">
@@ -227,7 +254,6 @@ useEffect(() => {
       </form>
     </>
   );
-
 };
 
 export default ExpCatNew;

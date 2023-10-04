@@ -19,6 +19,7 @@ const ExpensesSchema = new Schema({
     note: String,
     details: [{ 
         id: Number,
+        category: String,
         expensesCategory: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'ExpensesCategory'

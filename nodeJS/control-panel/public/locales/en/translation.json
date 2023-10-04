@@ -643,7 +643,9 @@
   "New":"New Expense Details" ,
   "Edit":"Edit Expense Details" ,
   "amount":"Amount" ,
-  "expensesCategory" : "Expenses Category" 
+  "expensesCategory" : "Expenses Category" ,
+  "date":"Date" ,
+  "categoryName":"Category Name"
 
   } ,
   "ExpenseCategory" : {
