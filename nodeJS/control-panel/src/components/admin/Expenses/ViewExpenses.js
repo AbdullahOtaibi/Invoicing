@@ -39,7 +39,13 @@ const ViewExpenses = (props) => {
   const [Expense, setExpense] = useState({});
   const [show, setShow] = useState(false);
   const [popUpEvent, setPopUpEvent] = useState("");
-  const handleClose = () => setShow(false);
+  const [itemToEdit, setItemToEdit] = useState({});
+  const handleClose = (updatedExpense) => {
+    if (updatedExpense) {
+      setExpense(updatedExpense);
+    }
+    setShow(false);
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -58,6 +64,13 @@ const ViewExpenses = (props) => {
     console.log("clicknew ....");
     setShow(true);
     setPopUpEvent("new");
+  };
+
+  const clickEdit = (expenseItem) => {
+    console.log("clickEdit ....");
+    setItemToEdit(expenseItem);
+    setShow(true);
+    setPopUpEvent("edit");
   };
 
 
@@ -91,7 +104,9 @@ const ViewExpenses = (props) => {
              <MdCategory size={30} /> &nbsp;
             {t("Expense.New")}
            
-          </Button>
+              </Button>
+              
+              
           </div>
          
 
@@ -222,30 +237,15 @@ const ViewExpenses = (props) => {
                       <td>{item.category}</td>
                       <td>{item.amount}</td>
                       <td>{moment( item.createdDate).format("DD/MM/yyyy")}</td>
-                      <td>
-                      <td>
-                        <ConfirmButton
-                          onConfirm={() => console.log("remove category") /*removeItem(item.id)*/}
-                          onCancel={() => console.log("cancel")}
-                          buttonText={t("dashboard.delete")}
-                          confirmText={t("invoice.confirm")}
-                          cancelText={t("invoice.cancel")}
-                          loadingText={t("invoice.deleteingItem")}
-                          wrapClass=""
-                          buttonClass="btn d-print-none"
-                          mainClass="btn-danger"
-                          confirmClass="btn-warning"
-                          cancelClass=" btn-success"
-                          loadingClass="visually-hidden"
-                          disabledClass=""
-                          once
-                        >
-                          {"Delete "}
-                          <MdDelete />
-                        </ConfirmButton>
+                      <td className="">
+                       
+                          <button type='button' className='btn btn-primary' onClick={() => { clickEdit(item); }}>
+                            Edit
+                          </button>
+                       
                       </td>
 
-                      </td>
+                      
                     </tr>
                   ))}
 
@@ -288,15 +288,15 @@ const ViewExpenses = (props) => {
             ""
           )}
 
-          {/* {popUpEvent == "edit" ? (
-            <FullCalendarEdit
+          {popUpEvent == "edit" ? (
+            <ExpCatNew
               onSave={handleClose}
-              updateFullCalendar={reloadData}
-              getfullCalendarObj={fullCalendarObj}
+              Expense={Expense}
+              Item={itemToEdit}
             />
           ) : (
             ""
-          )} */}
+          )}
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>

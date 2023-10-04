@@ -2,11 +2,12 @@ import { React, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { MdWarning } from "react-icons/md";
+import { MdWarning, MdDelete } from "react-icons/md";
 import { useDebugValue } from "react";
 import { updateExpense } from "./ExpensesAPI";
 import { ThreeDots } from "react-loader-spinner";
 import { getExpensesCategory } from "../ExpensesCategory/ExpensesCategoryAPI";
+import ConfirmButton from "react-confirmation-button";
 import { toast } from "react-toastify";
 
 const ExpCatNew = (props) => {
@@ -23,7 +24,9 @@ const ExpCatNew = (props) => {
 
   useEffect(() => {
     setExpense(props.Expense);
-
+    if (props.Item) {
+      setCategoryObj(props.Item);
+    }
     console.log("props.Expense:" + JSON.stringify(props.Expense));
 
     console.log("expenseId:" + props.Expense._id);
@@ -37,7 +40,39 @@ const ExpCatNew = (props) => {
       .catch((error) => {
         console.log(error);
       });
-  }, [props.Expense]);
+  }, [props.Expense, props.Item]);
+
+  const removeItem = (id) => {
+  
+   
+
+
+    //*****************************8 */
+    
+    let cloned = JSON.parse(JSON.stringify(Expense));
+    cloned.details = Expense.details.filter((item) => item._id !== id);
+    setCategoryObj(cloned);
+    let total = 0;
+    for (let obj of cloned.details) {
+      console.log("Expense.details:" + JSON.stringify(obj));
+      total = total + parseFloat(obj.amount);
+      console.log("Total : " + total);
+    }
+    cloned.totalAmount= total;;
+    setExpense(cloned);
+
+    //Expense.totalAmount = total;
+    //console.log(" after fill details:" + JSON.stringify(cloned));
+    //console.log(" before save Expense:" + JSON.stringify(cloned));
+    updateExpense(cloned)
+      .then((res) => {
+        console.log("Expense details has been added ....");
+        if (props.onSave) {
+          props.onSave(cloned);
+        }
+        //**************************** */
+      });
+  };
 
   const selectedExpensesCategory = (event) => {
     
@@ -64,11 +99,13 @@ const ExpCatNew = (props) => {
   const changeAmount = (event) => {
 
     console.log("changeAmount:" + event.target.value);
-    let value = event.target.value;
-    categoryObj.amount = value;
-    setCategoryObj(categoryObj);
-    console.log("categoryObj after edit amount :" + JSON.stringify(categoryObj));
-    console.log("new  amount :" + JSON.stringify(categoryObj.amount));
+    setCategoryObj({ ...categoryObj, amount: event.target.value });
+    // let value = event.target.value;
+    // let cloned = JSON.parse(JSON.stringify(categoryObj));
+    // cloned.amount = value;
+    // setCategoryObj(cloned);
+    // console.log("categoryObj after edit amount :" + JSON.stringify(categoryObj));
+    // console.log("new  amount :" + JSON.stringify(categoryObj.amount));
 
   };
 
@@ -99,18 +136,22 @@ const ExpCatNew = (props) => {
       details.push(categoryObj);
       Expense.details = details;
       let total = 0;
-      for (let obj in Expense.details) {
+      for (let obj of Expense.details) {
         console.log("Expense.details:" + JSON.stringify(obj));
-        total = total + obj.amount;
+        total = total + parseFloat(obj.amount);
+        console.log("Total : " + total);
       }
-      Expense.totalAmount = total;
+      let objectToSave = { ...Expense, totalAmount: total };
+      setExpense(objectToSave);
+   
+      //Expense.totalAmount = total;
       console.log(" after fill details:" + JSON.stringify(details));
       console.log(" before save Expense:" + JSON.stringify(Expense));
-      updateExpense( Expense)
+      updateExpense(objectToSave)
         .then((res) => {
           console.log("Expense details has been added ....");
           if (props.onSave) {
-            props.onSave();
+            props.onSave(objectToSave);
           }
         })
         .catch((e) => {
@@ -193,6 +234,7 @@ const ExpCatNew = (props) => {
                   className="form-control"
                   id="expensesCategory"
                   name="expensesCategory"
+                  value={categoryObj.expensesCategory}
                   onChange={selectedExpensesCategory}
                 >
                   <option value="">أختر</option>
@@ -215,7 +257,6 @@ const ExpCatNew = (props) => {
 
             <div className="col">
               <input
-                type="text"
                 //className={fieldClass(fullCalendar.title)}
                 className="form-control"
                 // className= {fieldClass(amount)}
@@ -249,6 +290,25 @@ const ExpCatNew = (props) => {
             >
               {t("dashboard.submit")}
             </button>
+            <ConfirmButton
+              onConfirm={() => {console.log("remove category"); removeItem(categoryObj._id);}}
+              onCancel={() => console.log("cancel")}
+              buttonText={t("dashboard.delete")}
+              confirmText={t("invoice.confirm")}
+              cancelText={t("invoice.cancel")}
+              loadingText={t("invoice.deleteingItem")}
+              wrapClass="my-2 text-center"
+              buttonClass="btn d-print-none"
+              mainClass="btn-danger w-100"
+              confirmClass="btn-warning w-25 mx-2"
+              cancelClass=" btn-success w-25 mx-2"
+              loadingClass="visually-hidden"
+              disabledClass=""
+              once
+            >
+              {"Delete "}
+              <MdDelete />
+            </ConfirmButton>
           </div>
         </div>
       </form>

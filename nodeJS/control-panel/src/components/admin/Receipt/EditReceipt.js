@@ -391,15 +391,16 @@ const viewItemValidMessage = (message) => {
                 </button>
 
                 { props.selectedReceiptObj &&  <ConfirmButton
-                    onConfirm={() => { removeReceipt(receipt._id).then((res) => { console.log("delete") ;  console.log( res) ;  props.onSave(); }) }} 
+                  
+                  onConfirm={() => { removeReceipt(receipt._id).then((res) => { console.log("delete"); console.log(res); props.onSave(); }) }} 
                     onCancel={() => console.log("cancel")}
                     buttonText={t("dashboard.delete")}
                     confirmText={t("invoice.confirmDelete")}
                     cancelText={t("invoice.cancelDelete")}
                     loadingText={t("contact.BeingDeleteingTheContact")}
-                    wrapClass="row"
+                    wrapClass="py-2 text-center"
                     buttonClass="btn btn-lg"
-                    mainClass="btn-warning  mx-3 w-100"
+                    mainClass="btn-warning  w-100  "
                     confirmClass="btn-danger mx-2 col col-auto order-2  w-25"
                     cancelClass=" btn-success col col-auto order-1 w-25"
                     loadingClass="visually-hidden"
