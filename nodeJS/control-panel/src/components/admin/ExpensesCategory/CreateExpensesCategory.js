@@ -82,7 +82,7 @@ const CreateExpenseCategorysCategory = (props) => {
     if(checkData()) {
       createExpenseCategory(ExpenseCategory).then((res)=> {
         toast("success!") ;
-         window.location.href = "/admin/expensesCategory/view/" + res._id;
+         window.location.href = "/admin/expenseCategories/view/" + res._id;
   
       }).catch((err)=> { console.log(err)}) ;
     }

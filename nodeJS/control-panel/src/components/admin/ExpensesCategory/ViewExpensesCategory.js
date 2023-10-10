@@ -102,7 +102,7 @@ const ViewExpenseCategorysCategory = (props) => {
             <div className="row ">
               <div className="col ">
                 <ConfirmButton
-                  onConfirm={() => { removeExpenseCategory(expenseCategoryId); navigate("/admin/expensesCategory/", { replace: true }); }}
+                  onConfirm={() => { removeExpenseCategory(expenseCategoryId); navigate("/admin/expenseCategories/", { replace: true }); }}
                   onCancel={() => console.log("cancel")}
                   buttonText={t("dashboard.delete")}
                   confirmText={t("invoice.confirmDelete")}
@@ -129,7 +129,7 @@ const ViewExpenseCategorysCategory = (props) => {
 
 
 
-                <Link className="btn btn-primary btn-lg" to={"/admin/expensesCategory/edit/" + ExpenseCategory._id}>
+                <Link className="btn btn-primary btn-lg" to={"/admin/expenseCategories/edit/" + ExpenseCategory._id}>
                   <MdEdit size={20} />
                   &nbsp; {t("dashboard.edit")}
                 </Link>

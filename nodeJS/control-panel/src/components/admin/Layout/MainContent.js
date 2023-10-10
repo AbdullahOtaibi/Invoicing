@@ -333,10 +333,10 @@ const MainContent = ({notification, onHandleNotification}) => {
                     <Route path="/expenses/edit/:expenseId" element={<EditExpenses/>} />
 
 
-                    <Route path="/expensesCategory" exact element={<ListExpensesCategory/>} />
-                    <Route path="/expensesCategory/create" element={<CreateExpensesCategory/>} />
-                    <Route path="/expensesCategory/view/:expenseCategoryId" element={<ViewExpensesCategory />} />
-                    <Route path="/expensesCategory/edit/:expenseCategoryId" element={<EditExpensesCategory/>} />
+                    <Route path="/expenseCategories" exact element={<ListExpensesCategory/>} />
+                    <Route path="/expenseCategories/create" element={<CreateExpensesCategory/>} />
+                    <Route path="/expenseCategories/view/:expenseCategoryId" element={<ViewExpensesCategory />} />
+                    <Route path="/expenseCategories/edit/:expenseCategoryId" element={<EditExpensesCategory/>} />
 
                     <Route path="/shippingCompanies" exact element={<ListShippingCompanies />} />
                     <Route path="/shippingCompanies/create" element={<CreateShippingCompany />} />

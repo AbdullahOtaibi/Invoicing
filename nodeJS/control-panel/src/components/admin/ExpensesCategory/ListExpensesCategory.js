@@ -6,16 +6,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import { getLocalizedText } from '../utils/utils'
 import { hasPermission } from '../utils/auth';
 import { Helmet } from "react-helmet";
-import {  getExpensesCategory } from './ExpensesCategoryAPI'
-
+import { getExpensesCategory, removeExpenseCategory } from './ExpensesCategoryAPI'
+import swal from 'sweetalert';
 
 
 
 const ListExpensesCategory = (props) => {
-  
+
     const { t, i18n } = useTranslation();
     const [loading, setLoading] = useState(false);
-    const [packages , setPackages] = useState([]) ; 
+    const [packages, setPackages] = useState([]);
 
     const [contactsSort, setContactsSort] = useState('_idDesc');
     const [expenseCategoryPage, setExpenseCategoryPage] = useState(0);
@@ -25,11 +25,11 @@ const ListExpensesCategory = (props) => {
             return;
         }
     }
-    useEffect( ()=> {
 
+    const loadData = () => {
         getExpensesCategory({
             page: expenseCategoryPage,
-            
+
         }).then(data => {
             setLoading(false);
             setPackages(data.items || []);
@@ -41,9 +41,35 @@ const ListExpensesCategory = (props) => {
             console.log(e);
         });
     }
+    useEffect(() => {
+        loadData();
+    }, []);
+
+    const handleDeleteCategory = (id) => {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this entry!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+
+                    removeExpenseCategory(id).then(data => {
+                        swal("entry has been deleted!", {
+                            icon: "success",
+                        });
+                        loadData();
+                    }).catch(e => {
+                    });
+                } else {
+
+                }
+            });
+    }
 
 
-    , []) 
 
     return (
         <div className="conatiner">
@@ -62,10 +88,10 @@ const ListExpensesCategory = (props) => {
                         </div>
 
                         <div className='col-md-4 col-sm-6' style={{ textAlign: 'end' }}>
-                            
-                          
-                            <a className="add-btn btn-info btn-lg" href={"/admin/expensesCategory/create"}><MdAdd size={20} />  {t("dashboard.add")}</a>
-                            
+
+
+                            <a className="add-btn btn-info btn-lg" href={"/admin/expenseCategories/create"}><MdAdd size={20} />  {t("dashboard.add")}</a>
+
                         </div>
                     </div>
 
@@ -81,7 +107,7 @@ const ListExpensesCategory = (props) => {
                     </div>
                     <br />
 
-               
+
 
                     <div className="table-responsive">
 
@@ -90,24 +116,14 @@ const ListExpensesCategory = (props) => {
                             <thead>
                                 <tr>
                                     <th>
-                                      
-                                            {t("ExpenseCategory.categoryName")}
-                                    
-
+                                        {t("ExpenseCategory.categoryName")}
                                     </th>
                                     <th>
-                                     
-                                            {t("ExpenseCategory.defaultAmount")}
-                                  
+                                        {t("ExpenseCategory.defaultAmount")}
+                                    </th>
+                                    <th>
 
                                     </th>
-                                   
-                           
-
-                                  
-
-
-
                                 </tr>
 
 
@@ -120,14 +136,22 @@ const ListExpensesCategory = (props) => {
 
                                         <tr key={'' + item.id}>
                                             <td>
-                                                <Link to={'/admin/ExpensesCategory/view/' + item._id} className='text-info'>
+                                                <Link to={'/admin/expenseCategories/view/' + item._id} className='text-info'>
                                                     {item.categoryName}
-
                                                 </Link>
                                             </td>
 
                                             <td> {item.defaultAmount}</td>
-                                          
+                                            <td className='text-end'>
+                                                <a href={'/admin/expenseCategories/edit/' + item._id} className='btn btn-primary'>
+                                                    <MdEdit size={20} />    {t("dashboard.edit")}
+                                                </a>
+                                                &nbsp;
+                                                <button type='button' className='btn btn-danger' onClick={() => { handleDeleteCategory(item._id) }}>
+                                                    <MdDelete size={20} />    {t("dashboard.delete")}
+                                                </button>
+                                            </td>
+
 
                                         </tr>
                                     ))
@@ -157,7 +181,7 @@ const ListExpensesCategory = (props) => {
                                         </nav>
                                     </th>
                                 </tr>
-                            </tfoot> 
+                            </tfoot>
                         </table>
                     </div>
 

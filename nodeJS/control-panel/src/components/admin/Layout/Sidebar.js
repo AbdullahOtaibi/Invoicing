@@ -148,8 +148,8 @@ const Sidebar = () => {
                     </li>) : null}
 
 
-                     <li className={getClass('/admin/expensesCategory')}>
-                        <Link className="wave-effect waves-effect waves-button" to="/admin/expensesCategory" >
+                <li className={getClass('/admin/expenseCategories')}>
+                    <Link className="wave-effect waves-effect waves-button" to="/admin/expenseCategories" >
                             <MdCategory size={18} /> &nbsp; {t("sidebar.expensesCategory")}
                         </Link >
                     </li>
