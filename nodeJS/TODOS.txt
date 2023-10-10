@@ -1,4 +1,5 @@
-http://localhost:6565/admin/Contract/view/64f8858a4e9bdbff3dce0fdd
+
+☑️ http://localhost:6565/admin/Contract/view/64f8858a4e9bdbff3dce0fdd
 Add Print Receipt Button for each item in the Receipts table
 
 Print only the posted or reverted invoices

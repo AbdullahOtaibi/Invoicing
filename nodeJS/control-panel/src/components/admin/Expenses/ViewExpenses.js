@@ -179,7 +179,7 @@ const ViewExpenses = (props) => {
           <div className="row action-bar">
             <div className="row ">
               <div className="col ">
-                <ConfirmButton
+                {!Expense.details || Expense.details.length == 0 ? (<ConfirmButton
                   onConfirm={() => { removeExpense(expenseId); navigate("/admin/expenses/", { replace: true }); }}
                   onCancel={() => console.log("cancel")}
                   buttonText={t("dashboard.delete")}
@@ -197,7 +197,8 @@ const ViewExpenses = (props) => {
                 >
                   {"Delete "}
                   <MdDelete />
-                </ConfirmButton>
+                </ConfirmButton>): null}
+                
               </div>
               <div className="mb-3  col text-end">
                 <Link className="btn btn-secondary btn-lg mx-2" to={"/admin/Expense"}>

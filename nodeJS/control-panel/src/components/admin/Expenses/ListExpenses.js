@@ -6,16 +6,19 @@ import { Link, useNavigate } from 'react-router-dom'
 import { getLocalizedText } from '../utils/utils'
 import { hasPermission } from '../utils/auth';
 import { Helmet } from "react-helmet";
-import {  getExpenses } from './ExpensesAPI'
+import { getExpenses, removeExpense } from './ExpensesAPI'
+import swal from 'sweetalert';
+
+
 
 
 
 
 const ListExpenses = (props) => {
-  
+
     const { t, i18n } = useTranslation();
     const [loading, setLoading] = useState(false);
-    const [packages , setPackages] = useState([]) ; 
+    const [packages, setPackages] = useState([]);
 
     const [contactsSort, setContactsSort] = useState('_idDesc');
     const [expensesPage, setExpensesPage] = useState(0);
@@ -25,11 +28,12 @@ const ListExpenses = (props) => {
             return;
         }
     }
-    useEffect( ()=> {
+
+    const loadData = () => {
 
         getExpenses({
             page: expensesPage,
-            
+
         }).then(data => {
             setLoading(false);
             setPackages(data.items || []);
@@ -41,10 +45,35 @@ const ListExpenses = (props) => {
             console.log(e);
         });
     }
+    useEffect(() => {
+        loadData();
+    }, []);
 
-
-    , []) 
-
+    const handleDeleteExpense = (id) => {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this entry!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    
+                    removeExpense(id).then(data => {
+                        swal("entry has been deleted!", {
+                            icon: "success",
+                        });
+                        loadData();
+                    }).catch(e => {
+                    });
+                    
+                   
+                } else {
+                   
+                }
+            });
+    }
     return (
         <div className="conatiner">
             <Helmet>
@@ -62,10 +91,10 @@ const ListExpenses = (props) => {
                         </div>
 
                         <div className='col-md-4 col-sm-6' style={{ textAlign: 'end' }}>
-                            
-                          
+
+
                             <a className="add-btn btn-info btn-lg" href={"/admin/Expenses/create"}><MdAdd size={20} />  {t("dashboard.add")}</a>
-                            
+
                         </div>
                     </div>
 
@@ -81,7 +110,7 @@ const ListExpenses = (props) => {
                     </div>
                     <br />
 
-               
+
 
                     <div className="table-responsive">
 
@@ -90,45 +119,23 @@ const ListExpenses = (props) => {
                             <thead>
                                 <tr>
                                     <th>
-                                      
-                                            {t("Expense.seqNumber")}
-                                    
-
+                                        {t("Expense.seqNumber")}
                                     </th>
                                     <th>
-                                     
-                                            {t("Expense.year")}
-                                  
-
+                                        {t("Expense.year")}
                                     </th>
                                     <th>
-                                     
-                                     {t("Expense.month")}
-                           
-
-                             </th>
-                             <th>
-                                     
-                                     {t("Expense.totalAmount")}
-                           
-
-                             </th>
-                                
-
-                                   
-                                    <th>
-                                      
-                                            {t("Expense.note")}
-                                     
-
+                                        {t("Expense.month")}
                                     </th>
-
-
-
-
+                                    <th>
+                                        {t("Expense.totalAmount")}
+                                    </th>
+                                    <th>
+                                        {t("Expense.note")}
+                                    </th>
+                                    <th>
+                                    </th>
                                 </tr>
-
-
                             </thead>
                             <tbody>
                                 {
@@ -145,13 +152,24 @@ const ListExpenses = (props) => {
                                             </td>
 
                                             <td> {item.year}</td>
-                                            <td> { item.month}</td>
-                                            <td> { item.totalAmount}</td>
-                                            
+                                            <td> {item.month}</td>
+                                            <td> {item.totalAmount}</td>
+
                                             <td>
                                                 {item.note}
                                             </td>
-                                  
+                                            <td className='text-end'>
+                                                <a href={'/admin/expenses/edit/' + item._id} className='btn btn-primary'>
+                                                    <MdEdit size={20} />    {t("dashboard.edit")}
+                                                </a>
+                                                &nbsp;
+                                                {!item.details || item.details.length == 0 ? (<button type='button' className='btn btn-danger' onClick={() => { handleDeleteExpense(item._id) }}>
+                                                    <MdDelete size={20} />    {t("dashboard.delete")}
+                                                </button>):null}
+                                                
+                                                
+                                            </td>
+
 
                                         </tr>
                                     ))
@@ -181,7 +199,7 @@ const ListExpenses = (props) => {
                                         </nav>
                                     </th>
                                 </tr>
-                            </tfoot> 
+                            </tfoot>
                         </table>
                     </div>
 

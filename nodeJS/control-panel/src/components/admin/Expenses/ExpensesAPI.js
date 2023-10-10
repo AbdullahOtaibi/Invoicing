@@ -1,7 +1,7 @@
 
 import { getSecured, postSecured } from '../../../services/ApiClient'
-export const removeExpense = (contactId) => {
-    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/Expenses/remove/" + contactId);
+export const removeExpense = (id) => {
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/Expenses/remove/" + id);
 }
 export const getExpense = (contactId) => {
     return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/Expenses/get/" + contactId);
