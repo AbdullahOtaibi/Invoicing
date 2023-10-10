@@ -5,9 +5,9 @@ Add Print Receipt Button for each item in the Receipts table
 Print only the posted or reverted invoices
 
 
-Check Edit/Delete Expenses 
+☑️ Check Edit/Delete Expenses 
 
-Check Edit/Delete Expenses Category
+☑️ Check Edit/Delete Expenses Category
 
 0.99999999999999 in trigger for invoices
 
