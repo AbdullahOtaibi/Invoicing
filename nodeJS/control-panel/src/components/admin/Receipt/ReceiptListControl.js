@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next"
-import {   MdAdd, MdReceipt } from "react-icons/md"
+import {   MdAdd, MdReceipt, MdPrint } from "react-icons/md"
 import { ThreeDots } from 'react-loader-spinner'
 import { Link } from 'react-router-dom'
 import { getLocalizedText } from '../utils/utils'
@@ -24,6 +24,20 @@ const ReceiptListControl = (props) => {
         if (newPage < 0 || (newPage >= receiptsPages && receiptsPages > 0)) {
             return;
         }
+    }
+
+    const printReceipt = (id) => {
+        let newWindow = window.open('/admin/Receipt/view/' + id);
+
+        // Wait for the page to load
+        newWindow.onload = function () {
+            // Print the page
+            newWindow.print();
+
+            // Close the window after printing
+            newWindow.close();
+        };
+
     }
     useEffect( ()=> {
 
@@ -52,10 +66,7 @@ const ReceiptListControl = (props) => {
             setLoading(false);
             console.log(e);
         });
-    }
-
-
-    , [props]) 
+    }, [props]) 
 
     const handleReceiptSelected = (item) => {
         if(props.handleReceiptSelected){
@@ -67,13 +78,6 @@ const ReceiptListControl = (props) => {
     return (
         <div className="conatiner">
           
-          
-               
-
-
-                
-
-
                     <div className="container text-center">
                         <ThreeDots
                             type="ThreeDots"
@@ -109,15 +113,7 @@ const ReceiptListControl = (props) => {
 
                                     </th>
                                     <th>{t("receipt.note")} </th>
-                                 
-                           
-
-                                   
-                                  
-                                  
-
-
-
+                                    <th></th>
                                 </tr>
 
 
@@ -141,6 +137,14 @@ const ReceiptListControl = (props) => {
                                              <td>{item.contract?.seqNumber}</td>
                                             <td>{item.receiptAmount}</td>
                                             <td>{item.note}</td>
+                                            <td className='text-end'>
+                                                <button type='button'
+                                                    onClick={() => { printReceipt(item._id); }}
+                                                    className='btn btn-sm btn-dark d-print-none'
+                                                    style={{ backgroundColor: 'black' }}>
+                                                    <MdPrint size={30} />
+                                               </button>
+                                            </td>
                                            
                                   
 

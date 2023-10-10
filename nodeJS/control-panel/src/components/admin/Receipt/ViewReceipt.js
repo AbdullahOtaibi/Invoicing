@@ -197,12 +197,12 @@ const ViewReceipt = (props) => {
                   
               <div class="row text-right">
                 <div className="mb-3  col justify-content-end">
-                  <Link className="btn btn-secondary btn-lg" to="/admin/Receipt">
+                  <Link className="btn btn-secondary btn-lg d-print-none" to="/admin/Receipt">
                     <MdClose size={20} /> &nbsp; {t("Cancel")}
                   </Link>{" "}
                   &nbsp;
              
-                  <Link className="btn btn-primary btn-lg" to={"/admin/Receipt/edit/" + receipt._id}>
+                  <Link className="btn btn-primary btn-lg d-print-none" to={"/admin/Receipt/edit/" + receipt._id}>
                       <MdEdit size={20} />
                       &nbsp; {t("dashboard.edit")}
                     </Link> 
@@ -217,7 +217,7 @@ const ViewReceipt = (props) => {
                 cancelText={t("invoice.cancelDelete")}
                 loadingText={t("contact.BeingDeleteingTheContact")}
                 wrapClass="pt-2"
-                buttonClass="btn btn-lg "
+                buttonClass="btn btn-lg d-print-none"
                 mainClass="btn-warning"
                 confirmClass="btn-danger mx-2 col col-auto order-2"
                 cancelClass=" btn-success col col-auto order-1 "
