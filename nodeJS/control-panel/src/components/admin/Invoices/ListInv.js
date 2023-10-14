@@ -198,10 +198,11 @@ const ListInv = (props) => {
                                       <><Link className="btn btn-primary d-print-none" to={"/admin/invoices/edit/" + item._id} title={t("dashboard.edit")}  
                                         style={{ pointerEvents: item.status=='posted' || item.status == 'reverted' ? 'none' : 'auto'
                                         , color:  item.status=='posted' || item.status == 'reverted'  ? 'gray' : '' }}>
-                                        Edit <MdEdit /> </Link> </>
-                                       <a href="#" onClick={() => {printExternal('/admin/invoices/ViewInvoice/' + item._id)}} className="btn btn-dark d-print-none" title={t("dashboard.print")} style={{ marginLeft: '5px' }}>
-                                        <MdPrint />
-                                        </a>
+                                            Edit <MdEdit /> </Link> </>
+                                        {item.status == "posted" || item.status == "reverted" ? (<a href="#" onClick={() => { printExternal('/admin/invoices/ViewInvoice/' + item._id) }} className="btn btn-dark d-print-none" title={t("dashboard.print")} style={{ marginLeft: '5px' }}>
+                                            <MdPrint />
+                                        </a>) :null}
+                                       
                                     </td>
                                     : ""
                                 }
