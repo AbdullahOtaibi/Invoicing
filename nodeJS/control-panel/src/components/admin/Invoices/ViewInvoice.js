@@ -323,10 +323,10 @@ const ViewInvoice = (props) => {
                 </div>
 
                 <div class="mb-3  col justify-content-end">
-
-                  <button type='button' className='btn btn-lg btn-dark d-print-none' onClick={() => { window.print() }}>
+                  {invoice.status == "posted" || invoice.status == "reverted" ? (<button type='button' className='btn btn-lg btn-dark d-print-none' onClick={() => { window.print() }}>
                     <MdPrint size={28} />
-                  </button>
+                  </button>):null}
+                  
 
 
                   {
