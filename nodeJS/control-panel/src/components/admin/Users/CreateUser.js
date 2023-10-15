@@ -168,18 +168,21 @@ const CreateUser = (props) => {
         setLoading(true);
 
         getCountries().then(res => {
-            setCountries(res.data);
+            if (res && res.data && res.data.length > 0) {
+                setCountries(res.data);
+            }
+            
         }).catch(e => {
             console.log(e);
         });
 
         getAllRoles().then(res => {
-            setRoles(res.data);
+            setRoles(res);
         });
 
         getCompanies().then(res => {
-            console.log(res.data);
-            setCompanies(res.data);
+            console.log(res);
+            setCompanies(res);
             setLoading(false);
         }).catch(e => {
             setLoading(false);

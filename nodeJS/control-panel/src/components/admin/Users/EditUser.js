@@ -97,8 +97,8 @@ const EditUser = (props) => {
     useEffect(() => {
 
         getCountries().then(res => {
-            if (res && res.length > 0) {
-                setCountries(res);
+            if (res && res.data &&  res.data.length > 0) {
+                setCountries(res.data);
             }
            
         }).catch(e => {
