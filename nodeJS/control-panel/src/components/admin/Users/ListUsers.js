@@ -59,11 +59,11 @@ const ListUsers = (props) => {
         }
         else{
             getUsers().then(res => {
-                if(!res.data){
-                    res.data = [];
+                if(!res){
+                    res = [];
                 }
-                setUsers(res.data);
-                setAllUsers(res.data);
+                setUsers(res);
+                setAllUsers(res);
                 setLoading(false);
             }).catch(e => {
                 setLoading(false);
@@ -81,7 +81,10 @@ const ListUsers = (props) => {
        
 
         getCompanies().then(res => {
-            setCompanies(res.data);
+            if (res ) {
+                setCompanies(res);
+            }
+            
         })
     }, []);
 

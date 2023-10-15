@@ -116,8 +116,10 @@ const EditUser = (props) => {
         });
 
         getCompanies().then(res => {
-            console.log(res.data);
-            setCompanies(res.data);
+            console.log(res);
+            if (res && res.data && res.data.length > 0) {
+                setCompanies(res.data);
+            }
             setLoading(false);
         }).catch(e => {
 
@@ -253,20 +255,15 @@ const EditUser = (props) => {
                                 <label htmlFor="company" className="form-label">{t("users.company")} </label>
                                 <select type="text" className="form-control" id="company" name="company" value={user.company} onChange={updatecompany} >
                                     <option value=''>{t("users.company")}</option>
-                                    {companies.map(v => (<option key={v._id} value={v._id}>{v.name.english}</option>))}
+                                    {companies && companies.length > 0 ? (<>
+                                        {companies.map(v => (<option key={v._id} value={v._id}>{v.name.english}</option>))}
+                                    </>) : null} 
+                                    
                                 </select>
 
                             </div>
 
-                            <div className="mb-3">
-                                <label htmlFor="shippingCompany" className="form-label">{t("shipping.shippingCompany")} </label>
-                                <select type="text" className="form-control" id="shippingCompany" name="shippingCompany" value={user.shippingCompany}
-                                    onChange={updateShippingCompany} >
-                                    <option value=''>{t("shipping.shippingCompany")}</option>
-                                    {shippingCompanies.map(v => (<option key={v._id} value={v._id}>{v.name.english}</option>))}
-                                </select>
-
-                            </div>
+                          
 
 
 
