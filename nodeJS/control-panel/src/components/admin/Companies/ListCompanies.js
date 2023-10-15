@@ -26,8 +26,8 @@ const ListCompanies = () => {
     useEffect(() => {
         setLoading(true);
         getCompanies().then(res => {
-            console.log(res.data);
-            setCompanies(res.data);
+            console.log(res);
+            setCompanies(res);
             setLoading(false);
         }).catch(e => {
             setLoading(false);

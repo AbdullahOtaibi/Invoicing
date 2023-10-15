@@ -112,21 +112,21 @@ const EditCompany = (props) => {
 
     useEffect(() => {
         getcompany(companyId).then(res => {
-            if (!res.data.description) {
-                res.data.description = {};
+            if (!res.description) {
+                res.description = {};
             }
-            if (!res.data.name) {
-                res.data.name = {};
+            if (!res.name) {
+                res.name = {};
             }
-            if (!res.data.contactDetails) {
-                res.data.contactDetails = {};
+            if (!res.contactDetails) {
+                res.contactDetails = {};
             }
-            if (!res.data.address) {
-                res.data.address = { country: {}, location: {} };
+            if (!res.address) {
+                res.address = { country: {}, location: {} };
             }
 
 
-            setcompany(res.data);
+            setcompany(res);
             setContentReady(true);
 
         });
