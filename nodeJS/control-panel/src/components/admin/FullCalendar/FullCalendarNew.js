@@ -42,7 +42,7 @@ const FullCalendarNew = (props) => {
 
   useEffect(() => {
     if (fullCalendar && fullCalendar.contact && fullCalendar.start && fullCalendar.end) {
-      checkForIntersection({ contactId: fullCalendar.contact, startDate: fullCalendar.start, endDate: fullCalendar.end }).then((res) => {
+      checkForIntersection({ startDate: fullCalendar.start, endDate: fullCalendar.end, employeeId: fullCalendar.employee }).then((res) => {
         console.log("checkForIntersection ....");
         console.log(res);
         setIntersection(res.exists);
@@ -263,7 +263,7 @@ const FullCalendarNew = (props) => {
           <div className="col">
             <div className="alert alert-warning" role="alert">
               <MdWarning size={40} />
-              Contact already has an appointment in the selected time range
+              User already has an appointment in the selected time range
             </div>
           </div>
         </div>) : null}

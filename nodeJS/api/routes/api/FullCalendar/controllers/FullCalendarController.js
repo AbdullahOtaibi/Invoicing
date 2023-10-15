@@ -136,14 +136,14 @@ router.post("/checkForIntersection", verifyToken, async (req, res) => {
   var result = {};
   try {
     let filters = req.body || {};
-    let contactId = filters.contactId || null;
+    let employeeId = filters.employeeId || null;
     let startDate = filters.startDate || null;
     let endDate = filters.endDate || null;
     let query = {
       $and: [],
     };
-    if (contactId) {
-      query["$and"].push({ contact: contactId });
+    if (employeeId) {
+      query["$and"].push({ employee: employeeId });
     } 
     if (startDate && endDate) {
       query["$and"].push({
@@ -162,7 +162,7 @@ router.post("/checkForIntersection", verifyToken, async (req, res) => {
         res.json(result);
       }
       result.data = doc;
-      result.exists = doc != null?true:false;
+      result.exists = doc != null && employeeId ?true:false;
       res.json(result);
     });
 
