@@ -131,13 +131,13 @@ const ListContract = (props) => {
                                         {t("contracts.contactName")}
                                     </th>
                                     <th>
-                                        {t("contracts.contractAmount")}
+                                        {t("contracts.contractAmount")   }   {"(JOD)"}
                                     </th>
                                     <th>
-                                        {t("contracts.contractTotalReceipts")}
+                                        {t("contracts.contractTotalReceipts")}   {"(JOD)"}
                                     </th>
                                     <th>
-                                        {t("contracts.contractTotalInvoiced")}
+                                        {t("contracts.contractTotalInvoiced")}   {"(JOD)"}
                                     </th>
 
 
@@ -154,7 +154,9 @@ const ListContract = (props) => {
 
 
                                     </th>
-
+<th>  
+    { t("contracts.contractBalance")    }   {"(JOD)"}
+</th>
 
 
                                 </tr>
@@ -182,7 +184,8 @@ const ListContract = (props) => {
 
                                             <td> {item.package?.packageName}</td>
                                             <td> {item.packagePrice}</td>
-
+                                            <td className={item.contractBalance > 0 ? "  text-success" : " text-warning"} > {item.contractBalance}</td>
+             
 
 
                                         </tr>

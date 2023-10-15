@@ -311,6 +311,7 @@ router.post("/search/", verifyToken, async (req, res) => {
     {
       contactTypeVal= ["Client"] ;
     }
+    
     let queryParams = {
       deleted: false,
       company: req.user.company,

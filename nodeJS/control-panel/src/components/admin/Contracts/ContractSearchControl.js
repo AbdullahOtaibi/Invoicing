@@ -30,6 +30,7 @@ const ContractSearchControl = (props) => {
     if (event.target.value.length >= 0) {
 
       let filter = {
+        
         val: event.target.value,
         clientId: props.clientId
       };

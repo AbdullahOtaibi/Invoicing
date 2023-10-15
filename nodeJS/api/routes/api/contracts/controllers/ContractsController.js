@@ -373,13 +373,31 @@ router.post("/search/", verifyToken, async (req, res) => {
       _id: -1,
     };
 
+    let val = req.body.val;
 
     let queryParams = {
       deleted: false,
       company: req.user.company,
       companyID: req.user.companyId,
-      contact: req.body.clientId
+     // contact: req.body.clientId
+     $or: [
+      { seqNumber: { $regex: val, $options: "i" } },
+      /*
+      { subContactName: { $regex: val, $options: "i" } },
+      { mobile: { $regex: val, $options: "i" } },
+      { subContactMobile: { $regex: val, $options: "i" } },
+      */
+    ],
+
     };
+    if(req.body.clientId) 
+    {
+      queryParams.contact = req.body.clientId;
+    }
+  
+
+
+
     console.log(queryParams);
     let query = Contract.find(queryParams)
       .populate("contact", "-password")
