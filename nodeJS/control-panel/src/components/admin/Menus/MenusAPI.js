@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { getSecured, postSecured } from '../../../services/ApiClient'
 
 //axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('jwt');
@@ -13,12 +12,11 @@ export const updateMenu = (menu) => {
 
 
 export const getMenus = () => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/menus/all", {headers:
-    {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/menus/all");
 }
 
 export const getMenu = (menuId) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/menus/get/" + menuId);
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/menus/get/" + menuId);
 }
 
 export const removeMenu = (menuId) => {
@@ -27,7 +25,7 @@ export const removeMenu = (menuId) => {
 
 
 export const getMenuItem = (menuItemId) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/menus/getItem/" + menuItemId);
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/menus/getItem/" + menuItemId);
 }
 
 export const updateMenuItem = (menuItem) => {

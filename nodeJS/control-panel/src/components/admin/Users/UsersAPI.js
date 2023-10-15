@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { getSecured, postSecured } from '../../../services/ApiClient'
 
 //axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('jwt');
@@ -18,11 +17,11 @@ export const updateUserRole = (role) => {
 
 
 export const getUserRole = (roleId) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/users/roles/get/" + roleId);
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/users/roles/get/" + roleId);
 }
 
 export const createTestPermission = () => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/users/per");
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/users/per");
 }
 
 
@@ -33,32 +32,28 @@ export const updateUser = (user) => {
 
 export const getUsers = () => {
   
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/users/all", {headers:
-    {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/users/all");
 }
 
 export const getUsersByCompany = (companyId) => {
   
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/users/byCompany/" + companyId, {headers:
-    {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/users/byCompany/" + companyId);
 }
 
 
 export const getAllRoles = () => {
   
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/users/roles", {headers:
-    {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/users/roles");
 }
 
 export const getAllPermissions = () => {
   
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/users/permissions", {headers:
-    {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/users/permissions");
 }
 
 
 export const getUser = (userId) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/users/get/" + userId);
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/users/get/" + userId);
 }
 
 export const removeUser = (userId) => {

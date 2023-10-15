@@ -1,16 +1,15 @@
-import axios from 'axios'
-import { getSecured, postSecured } from '../../../services/ApiClient'
+import { getSecured, postSecured, httpGet } from '../../../services/ApiClient'
 
 export const getMailTemplates = () => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/mail-templates/all");
+    return httpGet(process.env.REACT_APP_API_BASE_URL + "/v1/mail-templates/all");
 }
 
 export const getMailTemplate = (id) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/mail-templates/get/" + id);
+    return httpGet(process.env.REACT_APP_API_BASE_URL + "/v1/mail-templates/get/" + id);
 }
 
 export const removeMailTemplate = (id) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/mail-templates/delete/" + id);
+    return httpGet(process.env.REACT_APP_API_BASE_URL + "/v1/mail-templates/delete/" + id);
 }
 
 export const createMailTemplate = (mailTemplate) => {
@@ -27,7 +26,7 @@ export const getQueuedMessages = () => {
 }
 
 export const getQueuedMessage = (id) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/message-queue/get/" + id);
+    return httpGet(process.env.REACT_APP_API_BASE_URL + "/v1/message-queue/get/" + id);
 }
 
 export const deleteQueuedMessageItem = (id) => {

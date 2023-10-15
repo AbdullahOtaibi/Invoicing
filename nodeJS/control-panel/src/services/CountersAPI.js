@@ -1,8 +1,7 @@
-import axios from 'axios'
-
+import { getSecured } from './ApiClient'
 
 export const getCounters = () => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/counters/all");
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/counters/all");
 }
 
 

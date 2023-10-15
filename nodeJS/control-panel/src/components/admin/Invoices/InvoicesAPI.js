@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { getSecured, postSecured } from '../../../services/ApiClient'
 
 
@@ -112,11 +111,11 @@ export const closeInvoice = (invoiceId) => {
 }
 
 export const getPaymentsByInvoiceId = (id) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/payments/byInvoiceId/" + id);
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/payments/byInvoiceId/" + id);
 }
 
 export const getShipmentByInvoiceId = (id) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/shipments/byInvoiceNumber/" + id);
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/shipments/byInvoiceNumber/" + id);
 }
 
 
@@ -133,7 +132,7 @@ export const updateInvoice = (invoice) => {
 }
 
 export const customSearch = (searchText) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/search/" + searchText);
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/search/" + searchText);
 }
 
 

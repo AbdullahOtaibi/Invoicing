@@ -4,7 +4,6 @@ import { updatecompany, getcompany } from './CompaniesAPI'
 import { useTranslation } from "react-i18next"
 import { toast } from 'react-toastify'
 import { ThreeDots } from  'react-loader-spinner'
-import { getProductCategories } from '../ProductCategories/ProductCategoriesAPI';
 import { getLocalizedText } from '../utils/utils'
 import { hasPermission } from '../utils/auth';
 
@@ -47,11 +46,7 @@ const CompanyCategories = ({onPrev}) => {
             setcompany(res.data);
 
         });
-        getProductCategories().then(res => {
-            setCategories(res.data);
-        }).catch(e => {
-
-        });
+       
 
     }, []);
 

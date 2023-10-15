@@ -1,30 +1,25 @@
-import axios from 'axios'
+import { getSecured, postSecured } from '../../../services/ApiClient'
 
 export const createCategory = (category) => {
-    return axios.post(process.env.REACT_APP_API_BASE_URL + "/v1/categories/create", category,{headers:
-        {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/categories/create", category);
 }
 
 
 export const updateCategory = (category) => {
-    return axios.post(process.env.REACT_APP_API_BASE_URL + "/v1/categories/update", category,{headers:
-        {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/categories/update", category);
 }
 
 
 export const getCategories = () => {
-     return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/categories/all", {headers:
-     {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/categories/all");
  }
 
  export const getCategory = (id) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/categories/get/" + id, {headers:
-    {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+     return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/categories/get/" + id);
 }
 
 export const removeCategory = (id) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/categories/remove/" + id, {headers:
-    {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/categories/remove/" + id);
 }
 
 

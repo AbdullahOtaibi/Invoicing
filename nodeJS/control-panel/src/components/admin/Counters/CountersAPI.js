@@ -1,5 +1,3 @@
-
-import axios from 'axios'
 import { getSecured, postSecured } from '../../../services/ApiClient'
 
 
@@ -13,8 +11,7 @@ export const updateCounter = (counters) => {
 
 
 export const getCounters = () => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/counters/all", {headers:
-    {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/counters/all");
 }
 
 

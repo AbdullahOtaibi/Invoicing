@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { getSecured, postSecured } from '../../../services/ApiClient'
 
 
@@ -12,13 +11,11 @@ export const updateCountry = (country) => {
 
 
 export const getCountries = () => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/countries/all", {headers:
-    {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/countries/all");
 }
 
 export const initCountries = () => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/countries/init", {headers:
-    {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/countries/init");
 }
 
 

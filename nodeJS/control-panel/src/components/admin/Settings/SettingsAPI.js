@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { getSecured, postSecured } from '../../../services/ApiClient'
 
 
@@ -12,8 +11,7 @@ export const updateSettings = (settings) => {
 
 
 export const getSettings = () => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/settings/all", {headers:
-    {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/settings/all");
 }
 
 

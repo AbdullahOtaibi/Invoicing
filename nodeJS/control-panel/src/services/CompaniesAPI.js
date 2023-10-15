@@ -1,17 +1,16 @@
-import axios from 'axios'
-import { postSecured } from './ApiClient'
+import { postSecured, getSecured } from '../../../services/ApiClient'
 
 
 export const getCompanies = () => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/companies/all");
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/companies/all");
 }
 
 export const getHomePageCompanies = () => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/companies/homePage");
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/companies/homePage");
 }
 
 export const getcompany = (id) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/companies/get/" + id);
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/companies/get/" + id);
 }
 
 

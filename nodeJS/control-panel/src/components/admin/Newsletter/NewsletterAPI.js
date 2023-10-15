@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { getSecured, postSecured } from '../../../services/ApiClient'
 
 
@@ -13,12 +12,11 @@ export const updateSubscription = (subscription) => {
 
 
 export const getSubscriptions = () => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/newsletter/all", {headers:
-    {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/newsletter/all");
 }
 
 export const getSubscription = (email) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/newsletter/get/" + email);
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/newsletter/get/" + email);
 }
 
 export const removeSubscription = (email) => {

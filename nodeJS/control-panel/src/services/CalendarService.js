@@ -1,13 +1,12 @@
-import axios from 'axios'
-
+import { getSecured } from '../../../services/ApiClient'
 
 export const getCalendarEvent = (eventId) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/calendar/get/"+ eventId);
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/calendar/get/"+ eventId);
 }
 
 
 export const getCalendarEvents = () => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/calendar/all");
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/calendar/all");
 }
 
 

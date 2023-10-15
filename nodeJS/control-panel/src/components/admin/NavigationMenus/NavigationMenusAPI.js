@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { getSecured, postSecured } from '../../../services/ApiClient'
 
 //axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('jwt');
@@ -13,12 +12,11 @@ export const updateNavigationMenu = (menu) => {
 
 
 export const getNavigationMenus = () => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/navigation-menus/all", {headers:
-    {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/navigation-menus/all");
 }
 
 export const getNavigationMenu = (menuId) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/navigation-menus/get/" + menuId);
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/navigation-menus/get/" + menuId);
 }
 
 export const removeNavigationMenu = (menuId) => {
@@ -30,15 +28,15 @@ export const createNavigationMenuItem = (menuItem) => {
 }
 
 export const getNavigationMenuItem = (menuItemId) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/navigation-menus/getItem/" + menuItemId);
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/navigation-menus/getItem/" + menuItemId);
 }
 
 export const removeNavigationMenuSubItem = (menuItemId) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/navigation-menus/removeSubItem/" + menuItemId);
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/navigation-menus/removeSubItem/" + menuItemId);
 }
 
 export const removeNavigationMenuItem = (menuItemId) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/navigation-menus/removeItem/" + menuItemId);
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/navigation-menus/removeItem/" + menuItemId);
 }
 
 
@@ -55,6 +53,5 @@ export const reorderMenuItems = (data) => {
 
 export const getArticles = () => {
   
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/articles/all", {headers:
-    {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/articles/all");
 }

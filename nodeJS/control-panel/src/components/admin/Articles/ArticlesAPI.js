@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getSecured, postSecured } from '../../../services/ApiClient'
+import { getSecured, postSecured, httpGet } from '../../../services/ApiClient'
 
 //axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('jwt');
 
@@ -17,12 +17,11 @@ export const updateArticle = (article) => {
 
 export const getArticles = () => {
   
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/articles/all", {headers:
-    {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return httpGet(process.env.REACT_APP_API_BASE_URL + "/v1/articles/all");
 }
 
 export const getArticle = (articleId) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/articles/get/" + articleId);
+    return httpGet(process.env.REACT_APP_API_BASE_URL + "/v1/articles/get/" + articleId);
 }
 
 export const removeArticle = (articleId) => {

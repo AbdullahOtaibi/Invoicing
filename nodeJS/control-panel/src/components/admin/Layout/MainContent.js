@@ -63,8 +63,7 @@ const MessageQueue = lazy(() => import(/* webpackChunkName: "MessageQueue" */'..
 const MessageQueueItem = lazy(() => import(/* webpackChunkName: "MessageQueueItem" */'../Communications/MessageQueueItem'))
 const MyMessages = lazy(() => import(/* webpackChunkName: "MyMessages" */'../Communications/MyMessages'))
 
-const ListPayments = lazy(() => import(/* webpackChunkName: "ListPayments" */'../Payments/ListPayments'))
-const OutstandingPayments = lazy(() => import(/* webpackChunkName: "OutstandingPayments" */'../Payments/OutstandingPayments'))
+
 
 const ListTranslations = lazy(() => import(/* webpackChunkName: "ListTranslations" */'../Translations/ListTranslations'))
 const EditTranslation = lazy(() => import(/* webpackChunkName: "EditTranslation" */'../Translations/EditTranslation'))
@@ -154,8 +153,7 @@ const MainContent = ({notification, onHandleNotification}) => {
                     
 
 
-                    <Route path="/received-payments" exact element={<ListPayments />} />
-                    <Route path="/outstanding-payments" exact element={<OutstandingPayments />} />
+          
 
 
                     <Route path="/pages" element={<ListPages />} />

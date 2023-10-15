@@ -36,14 +36,16 @@ app.use(express.json());
 //app.use(express.static(publicDirPath, {extensions: ['html'], maxAge: '2629800000'}));
 //app.use(express.static(path.join(__dirname), {extensions: ['html','jpg', 'jpeg','png', 'svg', 'webp', 'js','css'], maxAge: '2629800000'}));
 
-app.use(function (req, res, next) {
+ app.use(function (req, res, next) {
   
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:6565');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin,Content-Type,Accept,authorization,Expires,Pragma,x-custom-header,user-agent');
+   res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin,Origin,Content-Type,Accept,authorization,Expires,Pragma,x-custom-header,user-agent');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PATCH');
   next();
 });
+
+
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 //app.get('/admin', (req, res) => {res.sendFile(publicDirPath + '/index.html');})

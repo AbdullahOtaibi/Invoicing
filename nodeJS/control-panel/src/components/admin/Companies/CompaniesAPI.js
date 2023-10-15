@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { getSecured, postSecured } from '../../../services/ApiClient'
 
 //axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('jwt');
@@ -16,12 +15,11 @@ export const updatecompany = (company) => {
 
 export const getCompanies = () => {
   
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/companies/all", {headers:
-    {"authorization": "Bearer " + localStorage.getItem("jwt")}, crossdomain:true});
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/companies/all");
 }
 
 export const getcompany = (companyId) => {
-    return axios.get(process.env.REACT_APP_API_BASE_URL + "/v1/companies/get/" + companyId);
+    return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/companies/get/" + companyId);
 }
 
 export const removecompany = (companyId) => {
