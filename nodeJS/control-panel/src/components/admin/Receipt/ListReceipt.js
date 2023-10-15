@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next"
-import {   MdAdd, MdReceipt } from "react-icons/md"
+import {   MdAdd, MdReceipt, MdSearch } from "react-icons/md"
 import { ThreeDots } from 'react-loader-spinner'
 import { Link } from 'react-router-dom'
 import { getLocalizedText } from '../utils/utils'
@@ -8,12 +8,11 @@ import { hasPermission } from '../utils/auth';
 import { Helmet } from "react-helmet";
 import { getReceipts } from './ReceiptAPI'
 import ReceiptListControl from './ReceiptListControl'
-
-
+import ReceiptSearch from './ReceiptSearch'
+import { use } from 'i18next'
 
 const ListReceipt = (props) => {
-    
-    
+    const [searchVisible , setSearchVisible] = useState(false) ;
     const { t, i18n } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [packages , setPackages] = useState([]) ; 
@@ -46,6 +45,33 @@ const ListReceipt = (props) => {
 
 
     , []) 
+ 
+    //************** */
+
+    const setSearchFilterChanged = () => {
+
+        if (props.setSearchFilterChanged) {
+
+                       console.log("call searchFilterChanged method from receipt search control ........");
+                       console.log(" filter inside ListReceipt:" + JSON.stringify(props.setSearchFilterChanged()));
+
+                      /* setSearchFilterChanged({
+                           seqNumber: seqNumber,
+                           contact: contact,
+                           contract: contract,
+                       });*/
+
+                   }
+                   else
+                   {
+                       console.log("list receipt: searchFilterChanged method not found in props");
+                   }
+               };
+
+               //useEffect(() => { console.log("abd") ; setSearchFilterChanged(); }, [props.setSearchFilterChanged]);
+
+
+    //****************** */
 
 
     return (
@@ -66,9 +92,11 @@ const ListReceipt = (props) => {
 
                         <div className='col-md-4 col-sm-6' style={{ textAlign: 'end' }}>
                             
-                          
+                        <button type="button" className="btn-success btn-lg mx-1" onClick={() => { setSearchVisible(!searchVisible); }} ><MdSearch size={20} />  {t("search")}</button>
+
                             <a className="add-btn btn-info btn-lg" href={"/admin/Receipt/create"}><MdAdd size={20} />  {t("dashboard.add")}</a>
                             
+
                         </div>
                     </div>
 
@@ -84,8 +112,11 @@ const ListReceipt = (props) => {
                     </div>
                     <br />
 
-               
-                    <ReceiptListControl/>
+                    <div className='row'>
+                    {searchVisible && <ReceiptSearch setSearchFilterChanged = {setSearchFilterChanged}/> }
+                    </div>
+
+                    <ReceiptListControl /*setSearchFilterChanged = {setSearchFilterChanged}*//>
                
 
 
