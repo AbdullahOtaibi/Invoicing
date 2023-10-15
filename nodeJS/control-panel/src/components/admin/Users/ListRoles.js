@@ -25,7 +25,7 @@ const ListRoles = () => {
         setLoading(true);
         getAllRoles().then(res => {
 
-            setRoles(res.data);
+            setRoles(res);
             setLoading(false);
         }).catch(e => {
             setLoading(false);

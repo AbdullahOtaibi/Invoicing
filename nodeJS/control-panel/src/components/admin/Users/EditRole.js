@@ -45,10 +45,10 @@ const EditRole = (props) => {
 
     useEffect(() => {
         getUserRole(roleId).then(res => {
-            setRole(res.data);
+            setRole(res);
         }).catch(e => { });
         getAllPermissions().then(res => {
-            setPermissions(res.data);
+            setPermissions(res);
         }).catch(e => { });
     }, []);
 

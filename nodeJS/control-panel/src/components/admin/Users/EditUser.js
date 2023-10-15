@@ -97,7 +97,10 @@ const EditUser = (props) => {
     useEffect(() => {
 
         getCountries().then(res => {
-            setCountries(res.data);
+            if (res && res.length > 0) {
+                setCountries(res);
+            }
+           
         }).catch(e => {
             console.log(e);
         });
@@ -109,16 +112,16 @@ const EditUser = (props) => {
         });
 
         getUser(userId).then(res => {
-            if (!res.data.roles) {
-                res.data.roles = [];
+            if (!res.roles) {
+                res.roles = [];
             }
-            setUser(res.data);
+            setUser(res);
         });
 
         getCompanies().then(res => {
             console.log(res);
-            if (res && res.data && res.data.length > 0) {
-                setCompanies(res.data);
+            if (res && res.length > 0) {
+                setCompanies(res);
             }
             setLoading(false);
         }).catch(e => {
@@ -126,7 +129,7 @@ const EditUser = (props) => {
         });
 
         getAllRoles().then(res => {
-            setRoles(res.data);
+            setRoles(res);
         });
 
     }, []);
