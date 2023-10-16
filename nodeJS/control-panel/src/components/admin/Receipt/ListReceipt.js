@@ -16,6 +16,7 @@ const ListReceipt = (props) => {
     const { t, i18n } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [packages , setPackages] = useState([]) ; 
+    const[filterSearch , setFilterSearch] = useState({}) ;
 
     //const [contactsSort, setContactsSort] = useState('_idDesc');
     const [receiptsPage, setReceiptsPage] = useState(0);
@@ -48,24 +49,18 @@ const ListReceipt = (props) => {
  
     //************** */
 
-    const setSearchFilterChanged = () => {
+    const setSearchFilterChanged = (filter) => {
 
-        if (props.setSearchFilterChanged) {
-
+                        console.log(filter);
                        console.log("call searchFilterChanged method from receipt search control ........");
-                       console.log(" filter inside ListReceipt:" + JSON.stringify(props.setSearchFilterChanged()));
-
+                       setFilterSearch(filter) ;
                       /* setSearchFilterChanged({
                            seqNumber: seqNumber,
                            contact: contact,
                            contract: contract,
                        });*/
 
-                   }
-                   else
-                   {
-                       console.log("list receipt: searchFilterChanged method not found in props");
-                   }
+                  
                };
 
                //useEffect(() => { console.log("abd") ; setSearchFilterChanged(); }, [props.setSearchFilterChanged]);
@@ -113,10 +108,10 @@ const ListReceipt = (props) => {
                     <br />
 
                     <div className='row'>
-                    {searchVisible && <ReceiptSearch setSearchFilterChanged = {setSearchFilterChanged}/> }
+                    {searchVisible && <ReceiptSearch  setSearchFilterChanged = {setSearchFilterChanged}/> }
                     </div>
 
-                    <ReceiptListControl /*setSearchFilterChanged = {setSearchFilterChanged}*//>
+                    <ReceiptListControl  filter= {filterSearch} />
                
 
 

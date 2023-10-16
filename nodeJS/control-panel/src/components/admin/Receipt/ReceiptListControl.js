@@ -39,6 +39,9 @@ const ReceiptListControl = (props) => {
         };
 
     }
+
+   
+
     useEffect( ()=> {
 
         var filter = {
@@ -52,6 +55,15 @@ const ReceiptListControl = (props) => {
             filter.contactId = props.contactId;
         }
         
+        if(props.filter)
+        {
+            console.log(" before set: props.filter:" + JSON.stringify(props.filter));
+
+            filter = {...filter , ...props.filter} ;
+            console.log(" after set: props.filter:" + JSON.stringify(filter));
+
+            
+        }
 
         getReceipts(
            filter

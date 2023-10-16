@@ -28,11 +28,14 @@ router.post("/filter", verifyToken, async (req, res) => {
     let status = filters.status || null;
     let contractId = filters.contractId || null;
     let contactId = filters.contactId || null;
+    //abd
+    let seqNumber  = filters.seqNumber || null;
 
     result.page = page;
     console.log("result.page:" + result.page);
     let queryParams = {
       $and: [],
+      $or: [],
     };
     let sortParams = {
       _id: -1,
@@ -77,6 +80,13 @@ router.post("/filter", verifyToken, async (req, res) => {
     console.log("queryParams:" + queryParams);
     console.log(JSON.stringify(queryParams["$and"]));
     console.log("abd:before find");
+
+    if(seqNumber)
+    queryParams["$or"].push({
+
+      "seqNumber": { $regex: seqNumber, $options: "i" },
+     }) 
+
     let query = Receipt.find(queryParams)
       .populate("user", "-password")
       .populate("contact")
@@ -338,6 +348,7 @@ router.post("/search/", verifyToken, async (req, res) => {
       companyID: req.user.companyId,
       contact: req.body.clientId
     };
+
     console.log(queryParams);
     let query = Receipt.find(queryParams)
       .populate("user", "-password")

@@ -52,8 +52,8 @@ const [searchFilterChanged , setSearchFilterChanged] = useState({});
                 console.log("call searchFilterChanged method from contract search control");
   let filter = {
     seqNumber: seqNumber,
-    contact: contact,
-    contract: contract,
+    contactId: contact,
+    contractId: contract,
 };
 console.log("filter:" + JSON.stringify(filter));
 
