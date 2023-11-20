@@ -1,13 +1,11 @@
+1 on search contracts, the contracts id appears more than one time.
+2 on contact record _ tab receipt, the new receipt appears only in case the contact type insurance 
+3 in case the invoice created and not linked with contract, the system will create a new receipt with same receipt value, this on new or edit invoice, you need to add invoice id on receipt entity to link, in case invoice removed you need to remove the linked receipt.
+4 when add new expense details add new field type text named المزود
+5 when add a new comp, check name lang.
+6. The expiration field transaction.
+7 on invoice search add search by insurance 
+8 on print receipt, there are missing data values a.g. receipt date and logo
 
-☑️ http://localhost:6565/admin/Contract/view/64f8858a4e9bdbff3dce0fdd
-Add Print Receipt Button for each item in the Receipts table
-
-Print only the posted or reverted invoices
-
-
-☑️ Check Edit/Delete Expenses 
-
-☑️ Check Edit/Delete Expenses Category
-
-0.99999999999999 in trigger for invoices
-
+9 export to excel not work 
+10 not able to print invoice in case not posted.
