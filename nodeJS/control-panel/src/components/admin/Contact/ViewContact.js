@@ -532,13 +532,14 @@ const ViewContact = (props) => {
                     title={t("Receipts")}
                     tabClassName="tab-item"
                   >
-                    <Link
+                    {contact && contact.contactType=="Insurance"?(<Link
                       className="btn btn-secondary btn-lg"
                       onClick={clickNewReceipt}
                     >
                       <MdReceipt size={20} /> &nbsp;{" "}
                       {t("contracts.createReceipt")}
-                    </Link>
+                    </Link>):null}
+                    
                     <ReceiptListControl
                       contactId={contact._id}
                       handleReceiptSelected={handleReceiptSelected}
