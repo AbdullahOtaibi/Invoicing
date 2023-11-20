@@ -1,6 +1,6 @@
 1 on search contracts, the contracts id appears more than one time.
 ---2 on contact record _ tab receipt, the new receipt appears only in case the contact type insurance 
-3 in case the invoice created and not linked with contract, the system will create a new receipt with same receipt value, 
+* 3 in case the invoice created and not linked with contract, the system will create a new receipt with same receipt value, 
   this on new or edit invoice, you need to add invoice id on receipt entity to link, 
   in case invoice removed you need to remove the linked receipt.
 4 when add new expense details add new field type text named المزود
