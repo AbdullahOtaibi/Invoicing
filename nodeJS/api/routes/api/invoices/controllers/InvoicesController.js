@@ -5,7 +5,6 @@ var ObjectId = mongoose.Types.ObjectId;
 const verifyToken = require("../../utils/auth");
 
 const Invoice = require("../models/Invoice");
-const Receipt = require("../../receipts/models/Receipt");
 const InvoiceStatus = require("../models/InvoiceStatus");
 
 const { query } = require("express");
@@ -689,11 +688,6 @@ function newSeq(x) {
   return "INV-" + "00000".substring(0, 5 - x.toString().length) + x.toString();
 }
 
-function newReceiptSeq(x) {
-  //d =new Date()
-  //return d.getFullYear() + '-' +parseInt(d.getMonth() + 1) + "-" +d.getDate() + '-'+"0000".substring(0,4-x.toString().length)+x.toString()
-  return "RCP-" + "00000".substring(0, 5 - x.toString().length) + x.toString();
-}
 
 router.post("/create", verifyToken, async (req, res, next) => {
   // console.log(req.user);
@@ -719,48 +713,24 @@ router.post("/create", verifyToken, async (req, res, next) => {
     "company" : { $eq: req.user.company,} ,
   });
   let newSerial = count + 1;
+  console.log("["+req.body.contract+"]");
+  if(req.body.contract.length == 0){
+    req.body.contract = null;
+  }
   const newObject = new Invoice({
     user: req.user.id,
     company: req.user.company,
-    //companyId: req.user.companyId,
+    companyId: req.user.companyId,
     serialNumber: newSerial,
-    seqNumber: newReceiptSeq(newSerial),
-    ...req.body
+    seqNumber: newSeq(newSerial),
+    ...req.body,
   });
-
+ 
   newObject.deleted = false;
   newObject._id = new mongoose.Types.ObjectId();
   //newObject.invoiceLines = req.body.items;
   let savedInvoice = await newObject.save();
-
-  if (!newObject.contract) {
-    //TODO: create new receipt
-    let count = await Receipt.countDocuments({
-      "companyID": {
-        $eq: req.user.companyId,
-      },
-      "company" : { $eq: req.user.company,} ,
-    });
-    let newSerial = count + 1;
-
-    const newReceipt = new Receipt({
-      user: req.user.id,
-      company: req.user.company,
-      companyId: req.user.companyId,
-      seqNumber: newSeq(newSerial),
-      ...req.body
-    });
-   // newReceipt.receiptAmount = newObject.totalAmount.amount;
-    newReceipt.receiptAmount = newObject.legalMonetaryTotal.payableAmount;
-    
-    console.log("after create");
-    newReceipt.deleted = false;
-    newReceipt._id = new mongoose.Types.ObjectId();
-    let savedReceipt = await newReceipt.save();
-  }
-  if(req.body.receipt){
-    
-  }
+ 
   res.json(savedInvoice);
 
   next();

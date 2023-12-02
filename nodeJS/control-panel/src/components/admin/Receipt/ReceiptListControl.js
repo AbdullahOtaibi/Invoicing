@@ -60,7 +60,7 @@ const ReceiptListControl = (props) => {
             console.log(" before set: props.filter:" + JSON.stringify(props.filter));
 
             filter = {...filter , ...props.filter} ;
-            console.log(" after set: props.filter:" + JSON.stringify(filter));
+            console.log(" receipt after set: props.filter:" + JSON.stringify(filter));
 
             
         }

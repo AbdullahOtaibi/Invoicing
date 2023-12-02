@@ -142,6 +142,7 @@ const InvoiceSchema = new Schema({
     updatedDate: Date,
     serialNumber: Number ,
     seqNumber: String ,
+    docNumber: String ,
     status:{
         type:String, 
         default: "new" 

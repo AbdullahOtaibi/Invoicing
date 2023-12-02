@@ -114,7 +114,7 @@ console.log("contractId paramter:" + contractId) ;
 
   } , [invoice])
   useEffect(() => {
-    if(sid){
+    if(sid && sid.length != 0){
       let cloned = JSON.parse(JSON.stringify(invoice));
       cloned.contract = sid;
       setInvoice(cloned);
@@ -465,7 +465,7 @@ const doPost = (data) => {
       //update contract balance
       updateContractBalance(); 
 
-    // window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
+    window.location.href = "/admin/invoices/ViewInvoice/" + res._id;
     })
     .catch((e) => {
       setLoading(false);

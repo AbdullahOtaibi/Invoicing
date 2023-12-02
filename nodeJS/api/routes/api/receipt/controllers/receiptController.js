@@ -35,7 +35,7 @@ router.post("/filter", verifyToken, async (req, res) => {
     console.log("result.page:" + result.page);
     let queryParams = {
       $and: [],
-      $or: [],
+     // $or: [],
     };
     let sortParams = {
       _id: -1,
@@ -82,10 +82,11 @@ router.post("/filter", verifyToken, async (req, res) => {
     console.log("abd:before find");
 
     if(seqNumber)
-    queryParams["$or"].push({
+    queryParams["$and"].push({
 
       "seqNumber": { $regex: seqNumber, $options: "i" },
      }) 
+     console.log( queryParams);
 
     let query = Receipt.find(queryParams)
       .populate("user", "-password")

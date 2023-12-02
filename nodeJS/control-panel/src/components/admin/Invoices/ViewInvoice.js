@@ -330,7 +330,7 @@ const ViewInvoice = (props) => {
 
 
                   {
-                    (invoice.status != "posted") &&
+                    (invoice.status != "posted" && invoice.reverted_Status != 'posted') &&
                     <button
                       type="button"
                       className="btn btn-success btn-lg mx-2"
@@ -753,7 +753,7 @@ const ViewInvoice = (props) => {
                 <div className="row action-bar">
                   <div className="row text-right">
 
-                    {invoice.status != "posted" ?
+                    {!(invoice.status == "posted" || invoice.reverted_Status == 'posted')  ?
                       <div className="col d-print-none">
                         <ConfirmButton
                           onConfirm={doPost}
@@ -785,7 +785,7 @@ const ViewInvoice = (props) => {
 
 
 
-                      {invoice.status != "posted" ? <Link className="btn btn-primary btn-lg d-print-none" to={"/admin/Invoices/edit/" + invoice._id}>
+                      { !(invoice.status == "posted" || invoice.reverted_Status == 'posted')  ? <Link className="btn btn-primary btn-lg d-print-none" to={"/admin/Invoices/edit/" + invoice._id}>
                         <MdEdit size={20} />
                         &nbsp; {t("dashboard.edit")}
                       </Link> : ""}
