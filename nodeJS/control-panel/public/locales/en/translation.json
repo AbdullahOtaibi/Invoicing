@@ -266,7 +266,9 @@
     "invoiceCategory": "Invoice Category",
     "clientId": "Client ID",
     "clientSecret": "Client Secret",
-    "contractExpiryDate": "Contract Expiry Date"
+    "contractExpiryDate": "Contract Expiry Date",
+    "vendor":"vendor"
+    
   },
   "countries": {
     "countryCode": "Country Code",
@@ -500,7 +502,8 @@
     "insurance" : "Insurance" , 
     "paymentMethod" : "Payment Method" , 
     "templateNo" :  "Template No." ,
-    "percentageOfCover" : "Percentage Of Cover %"
+    "percentageOfCover" : "Percentage Of Cover %",
+    "DocNo":"Doc No."
   },
   "FullCalendar": {
     "start": "Start",

@@ -549,11 +549,13 @@ const EditInvoice = (props) => {
     }
 
   //#endregion
-
+  function isKeyInJSONAndNotNull(jsonObject, keyToCheck) {
+    return jsonObject.hasOwnProperty(keyToCheck) && jsonObject[keyToCheck] !== null;
+  }
   return (
     <>
       {invoice.items ? (
-        <div className="card">
+        <div style={isKeyInJSONAndNotNull(invoice, "ObjectIdReceipt")==false?{display:''}:{display:'none'}} className="card">
           <div className="card-body">
             <h5 className="card-header" >   <MdEdit />  {t("invoice.editInvoice")}    <span className="text-info px-2">  ({  invoice.seqNumber} ) </span> </h5>
             <div className="container text-center">

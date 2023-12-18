@@ -48,10 +48,12 @@ const ViewReceipt = (props) => {
   setLoading(false) ; 
   } , []) ; 
 
+  function isKeyInJSONAndNotNull(jsonObject, keyToCheck) {
+    return jsonObject.hasOwnProperty(keyToCheck) && jsonObject[keyToCheck] !== null;
+  }
+  console.log("receipt:-------------------------------" )
 
-
-
-
+  console.log(receipt)
   moment.locale("en-GB");
   return (
    (receipt ?  (
@@ -201,12 +203,18 @@ const ViewReceipt = (props) => {
                     <MdClose size={20} /> &nbsp; {t("Cancel")}
                   </Link>{" "}
                   &nbsp;
-             
-                  <Link className="btn btn-primary btn-lg d-print-none" to={"/admin/Receipt/edit/" + receipt._id}>
-                      <MdEdit size={20} />
-                      &nbsp; {t("dashboard.edit")}
-                    </Link> 
 
+                  { isKeyInJSONAndNotNull(receipt, "ObjectIdinvoice") ? (
+                    <Link style={{display: 'none'}}className="btn btn-primary btn-lg d-print-none" to={"/admin/Receipt/notfound/" + receipt._id}>
+                    <MdEdit    size={20} />
+                    &nbsp; {t("dashboard.edit")}
+                  </Link> 
+              
+):(
+  <Link className="btn btn-primary btn-lg d-print-none" to={"/admin/Receipt/edit/" + receipt._id}>
+  <MdEdit size={20} />
+  &nbsp; {t("dashboard.edit")}
+</Link>  )}
                     { !props.selectedReceiptObj && 
                 
                 <ConfirmButton

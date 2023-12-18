@@ -26,12 +26,10 @@ const ListInv = (props) => {
         //console.log('********test ....');
         //console.log(JSON.stringify(newInvoices));
     }, [newInvoices]);
-
     const loadNewPage = (newPage) => {
         if (newPage < 0 || (newPage >= invoicesPages && invoicesPages > 0)) {
             return;
         }
-
         console.log("newPage:" + newPage);
         setLoading(true);
 
@@ -40,6 +38,9 @@ const ListInv = (props) => {
         let endDate = null;
         let clientId = null;
         let contractId=null 
+        let insurance = null;
+        let insuranceId=null
+
         if (status == "all") {
             if (props.filter && props.filter.status && props.filter.status != "all") {
                 status = props.filter.status;
@@ -47,7 +48,13 @@ const ListInv = (props) => {
                 status = null;
             }
         }
-
+        
+            if (props.filter && props.filter.contacttype && props.filter.contacttype != "all") {
+                insurance = props.filter.contacttype;
+            } else {
+                insurance =null
+            }
+        
             if (props.filter && props.filter.startDate) {
                 startDate = props.filter.startDate;
             }
@@ -57,13 +64,18 @@ const ListInv = (props) => {
             if (props.filter && props.filter.contact) {
                 clientId = props.filter.contact._id;
             }
+            if (props.filter && props.filter.insurance) {
+                insuranceId = props.filter.insurance._id;
+            }
 
             if (props.filter && props.filter.contractId) {
 
                 console.log("insert filter invoice contract ...");
                 contractId = props.filter.contractId;  
             }
+            console.log(insuranceId)
 
+            console.log(props)
         setInvoicesPage(newPage);
         getInvoices({
             page: newPage,
@@ -71,11 +83,14 @@ const ListInv = (props) => {
             startDate: startDate,
             endDate: endDate,
             clientId: clientId ,
-            contractId: contractId
+            contractId: contractId,
+            insurance:insurance,
+            insuranceId:insuranceId
         }).then(data => {
             setLoading(false);
             setNewInvoices(data.items || []);
             setInvoicesPage(data.page);
+
             //console.log("data.items:" + JSON.stringify(data.items));
             console.log("data.pages:" + data.pages);
             setInvoicesPages(data.pages);
@@ -86,32 +101,28 @@ const ListInv = (props) => {
             setLoading(false);
             console.log(e);
         });
-    }
 
+    }
+    
     useEffect(() => {
         loadNewPage(0);
     }, [props]);
-
-    function printExternal(url) {
+    const printExternal = (url) => {
         var printWindow = window.open( url);
-    
-        printWindow.addEventListener('load', function() {
-            this.setTimeout(function() {
-                if (Boolean(printWindow.chrome)) {
-                    printWindow.print();
-                    setTimeout(function(){
-                        printWindow.close();
-                    }, 500);
-                } else {
-                    printWindow.print();
-                    printWindow.close();
-                }
-            }, 1000);
-           
-        }, true);
-        
-    }
 
+        // Wait for the page to load
+        printWindow.addEventListener('DOMContentLoaded', () => {
+          // Introduce a delay of 2000 milliseconds (2 seconds) before printing
+          setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+
+          }, 10);
+        });
+      };
+   
+        
+    
 
     return (
         <>{loading ? (
@@ -139,6 +150,12 @@ const ListInv = (props) => {
                           
 
                         </th>
+                        <th>
+                          
+                          {t("invoice.DocNo")}
+                    
+
+                  </th>
                         <th>
                             {t("contracts.contractNo")}
                         </th>
@@ -177,6 +194,13 @@ const ListInv = (props) => {
 
                                     </Link>
                                 </td>
+
+                                <td>
+                                    <Link to={'/admin/invoices/ViewInvoice/' + item._id} className='text-info'>
+                                        {item.docNumber}
+
+                                    </Link>
+                                </td>
                                 <td>
                                     {item.contract?item.contract.seqNumber:null}
                                 </td>
@@ -199,9 +223,19 @@ const ListInv = (props) => {
                                         style={{ pointerEvents: item.status=='posted' || item.status == 'reverted' ? 'none' : 'auto'
                                         , color:  item.status=='posted' || item.status == 'reverted'  ? 'gray' : '' }}>
                                             Edit <MdEdit /> </Link> </>
-                                        {item.status == "posted" || item.status == "reverted" ? (<a href="#" onClick={() => { printExternal('/admin/invoices/ViewInvoice/' + item._id) }} className="btn btn-dark d-print-none" title={t("dashboard.print")} style={{ marginLeft: '5px' }}>
+                                     {item.status == "posted" || item.status == "reverted" ? (<a href="#" onClick={() => { printExternal('/admin/invoices/ViewInvoice/' + item._id) }} className="btn btn-dark d-print-none" title={t("dashboard.print")} style={{ marginLeft: '5px' }}>
                                             <MdPrint />
                                         </a>) :null}
+                                       
+                                    </td>
+                                    : ""
+                                }
+
+{item.insurance!=null ?
+                                    <td className="justify-content-end" style={{ textAlign: 'end' }}>
+                                      <><Link className="btn btn-primary "  title="apply invoice"  >
+                                            apply invoice <MdEdit /> </Link> </>
+                                     
                                        
                                     </td>
                                     : ""

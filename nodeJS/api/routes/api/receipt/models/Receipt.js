@@ -11,6 +11,8 @@ const ReceiptSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
     },
+    ObjectIdinvoice: mongoose.Schema.Types.ObjectId,
+
     seqNumber: String, 
     receiptAmount: Number, 
     receiptDate: {type:Date , default: Date.now} , 

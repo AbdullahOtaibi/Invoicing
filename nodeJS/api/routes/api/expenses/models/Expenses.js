@@ -20,11 +20,14 @@ const ExpensesSchema = new Schema({
     details: [{ 
         id: Number,
         category: String,
+
         expensesCategory: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'ExpensesCategory'
         },
         amount: Number,
+        vendor:String,
+
         createdDate: { type: Date, default: Date.now },
     }],
     deleted: {

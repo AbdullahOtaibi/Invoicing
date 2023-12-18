@@ -51,6 +51,7 @@ const ListInvoices = (props) => {
         const outputFilename = `${Date.now()}.xls`;
         downloadXLSFile('/v1/invoices/filterExcel').then(url => {
            // alert(url);
+           console.log()
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', outputFilename);

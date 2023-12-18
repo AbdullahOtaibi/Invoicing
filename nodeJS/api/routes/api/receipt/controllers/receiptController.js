@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const verifyToken = require("../../utils/auth");
 var ObjectId = mongoose.Types.ObjectId;
 const Receipt = require("../models/Receipt");
+const Invoices = require("../../invoices/data-access/Invoices");
+const Invoice = require("../../invoices/models/Invoice");
 
 
 const { query } = require("express");
@@ -14,9 +16,12 @@ router.post("/filter", verifyToken, async (req, res) => {
   if (!req.user) {
     res.json({ message: "unauthorized access" });
   }
+  
   if (req.user.role != "Administrator" && req.user.role != "Company") {
     res.json({ success: false, message: "Unauthorized" });
   }
+
+
   var result = {};
   try {
     let filters = req.body || {};
@@ -110,7 +115,7 @@ router.post("/filter", verifyToken, async (req, res) => {
       .exec("find");
 
     res.json(result);
-
+    console.log((result))
     console.log("out.....");
   } catch (ex) {
     console.log(ex);
@@ -163,6 +168,7 @@ router.post("/count", verifyToken, async (req, res) => {
 router.get("/get/:id", async (req, res) => {
   console.log("before get Receipt  info. ID: " + req.params.id);
   //ReferenceError: Cannot access 'Receipt' before initialization
+ 
     let receipt = await Receipt.findOne({ _id: req.params.id, deleted: false })
     .populate("user", "-password")
     .populate("contact")
@@ -187,10 +193,8 @@ router.post("/create", verifyToken, async (req, res, next) => {
     res.json({ success: false, message: "Unauthorized" });
   }
   console.log("before create");
-  console.log(req.body)
 
 
-  
   let count = await Receipt.countDocuments({
     "companyID": {
       $eq: req.user.companyId,
@@ -201,15 +205,18 @@ router.post("/create", verifyToken, async (req, res, next) => {
   const newObject = new Receipt({
     user: req.user.id,
     company: req.user.company,
-    companyId: req.user.companyId,
+    companyID: req.user.companyId,
     seqNumber: newSeq(newSerial),
     ...req.body
   });
   console.log("after create");
+  
   newObject.deleted = false;
   newObject._id = new mongoose.Types.ObjectId();
+  newObject.ObjectIdinvoice=null;
   let savedReceipt = await newObject.save();
   console.log("savedReceipt:" + savedReceipt);
+  consol.log()
   res.json( {
       success: true,
       receipt: savedReceipt,
@@ -255,13 +262,29 @@ router.post("/update/", verifyToken, async (req, res) => {
 // return x as result of updateGrandTotalForReletedCollections
 
 });
+function isKeyInJSONAndNotNull(userDocument, keyToCheck) {
+  const userObject = userDocument.toObject();
 
+  // Check if the key exists and is not null
+  return userObject.hasOwnProperty(keyToCheck) && userObject[keyToCheck] !== null;
+}
 router.get("/deleteItem/:id", verifyToken, async (req, res) => {
   if (req.user.role != "Administrator" && req.user.role != "Company") {
     res.json({ success: false, message: "Unauthorized" });
   }
   console.log("delete Receipt id:" + req.params.id);
-  await Receipt.findByIdAndDelete(req.params.id);
+  let rece=await Receipt.findByIdAndDelete( req.params.id,
+    { status: { deleted: true } },
+    function (err, item) {
+      console.log("marked as deleted...");
+      console.log(item);
+    }
+    
+  
+    );
+    console(rece.ObjectIdinvoice)
+ 
+
  let  updatedGrandTotal = await Receipts.updateGrandTotalForReletedCollections(req.params.id); 
   res.json({ success: true, message: "deleted" , updatedGrandTotal: updatedGrandTotal});
 
@@ -274,7 +297,9 @@ router.get("/remove/:id", verifyToken, async (req, res) => {
     res.json({ success: false, message: "Unauthorized" });
   }
   console.log("Soft Delete: remove Receipt id:" + req.params.id);
-  Receipt.findByIdAndUpdate(
+  let rece= await Receipt.findOne({ _id: req.params.id, deleted: false })
+
+ Receipt.findByIdAndUpdate(
     req.params.id,
     { deleted: true },
     async function (err, model) {
@@ -288,8 +313,21 @@ router.get("/remove/:id", verifyToken, async (req, res) => {
       }
 
     }
+    
   );
+  console.log(rece.ObjectIdinvoice)
 
+  if(isKeyInJSONAndNotNull(rece, "ObjectIdinvoice")){  
+   let INV= Invoice.findByIdAndUpdate(
+      rece.ObjectIdinvoice,
+      { deleted: true },
+      function (err, item) {
+        console.log("marked as deleted...");
+      }
+    );
+    await Invoices.recalculateTotals(INV.Invoice);
+
+  }
 });
 
 

@@ -11,6 +11,8 @@ const InvoiceSchema = new Schema({
     },
     invoiceSequance:String, 
     invoiceUUID: String,
+    ObjectIdReceipt:ObjectId,
+
     incomeSourceSequence: String,
     invoiceCategory: String,
     issuedDate: Date,
@@ -119,6 +121,10 @@ const InvoiceSchema = new Schema({
     },
    contact:{ 
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'Contact'
+    },
+    contactType:{ 
+        type: String,
         ref: 'Contact'
     },
     contract: {

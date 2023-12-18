@@ -223,12 +223,32 @@ const ViewInvoice = (props) => {
     ).catch((ex) => { console.log("Error:" + ex); })
 
   };
+
+  const isKeyInJSONAndNotNull = (jsonObject, keyToCheck) =>
+  jsonObject.hasOwnProperty(keyToCheck) && jsonObject[keyToCheck] !== null;
+  console.log("----------------------------")
+  console.log(invoice)
+  const renderContent = () => {
+    if (isKeyInJSONAndNotNull(invoice,"ObjectIdReceipt")) {
+       
+      return (<Link style={{display: 'none'}} className="btn btn-primary btn-lg d-print-none" to={"/admin/Invoices/notfound/" + invoice._id}>
+           <MdEdit size={20} />
+           &nbsp; {t("dashboard.edit")}
+         </Link> );
+    } else {
+       
+      return(<Link className="btn btn-primary btn-lg d-print-none" to={"/admin/Invoices/edit/" + invoice._id}>
+           <MdEdit size={20} />
+           &nbsp; {t("dashboard.edit")}
+         </Link> )
+    }
+  };
   return (
     <>
       {invoice ? (
         <div className="card">
           <h5 className="card-header">
-            <MdOutlineReceiptLong /> {t("invoice.InvoiceDetails")}   <span className="text-info px-1">  ({invoice.seqNumber} ) </span>
+            <MdOutlineReceiptLong /> {t("invoice.InvoiceDetails")} {invoice.seqNumber!=null? ( <span className="text-info px-1">  ({invoice.seqNumber} ) </span>):(<span className="text-info px-1"> {invoice.docNumber} </span>)}
 
           </h5>
           <div className="card-body">
@@ -783,12 +803,10 @@ const ViewInvoice = (props) => {
                       </Link>
                       &nbsp;
 
-
-
-                      { !(invoice.status == "posted" || invoice.reverted_Status == 'posted')  ? <Link className="btn btn-primary btn-lg d-print-none" to={"/admin/Invoices/edit/" + invoice._id}>
-                        <MdEdit size={20} />
-                        &nbsp; {t("dashboard.edit")}
-                      </Link> : ""}
+                   { !(invoice.status == "posted" || invoice.reverted_Status == 'posted')  ? 
+                    renderContent(): ""}
+          
+                   
 
                     </div>
 

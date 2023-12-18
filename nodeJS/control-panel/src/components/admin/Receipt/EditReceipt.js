@@ -198,12 +198,15 @@ const viewItemValidMessage = (message) => {
   });
 };
 
-
+function isKeyInJSONAndNotNull(jsonObject, keyToCheck) {
+  return jsonObject.hasOwnProperty(keyToCheck) && jsonObject[keyToCheck] !== null;
+}
 
   return (
     <>
-      <div className= { props.selectedReceiptObj == null ? "card" : ""}>
-        <div className="card-body">
+      <div style={isKeyInJSONAndNotNull(receipt, "ObjectIdinvoice")==false?{display:''}:{display:'none'}} className= { props.selectedReceiptObj == null 
+         ? "card" : ""  } >
+        <div   className="card-body">
           <h5 className="card-title"> <MdReceipt size= {20} />   {props.selectedReceiptObj ==null? t("receipt.editReceipt") : ""}  <span className='text-info'>({receipt.seqNumber})</span></h5>
           <div className="container text-center">
             <ThreeDots

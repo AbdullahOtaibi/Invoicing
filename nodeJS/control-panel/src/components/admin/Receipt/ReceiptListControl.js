@@ -27,18 +27,18 @@ const ReceiptListControl = (props) => {
     }
 
     const printReceipt = (id) => {
-        let newWindow = window.open('/admin/Receipt/view/' + id);
-
+        let newWindow = window.open('Receipt/view/' + id);
+      
         // Wait for the page to load
-        newWindow.onload = function () {
-            // Print the page
+        newWindow.addEventListener('DOMContentLoaded', () => {
+          // Introduce a delay of 2000 milliseconds (2 seconds) before printing
+          setTimeout(() => {
             newWindow.print();
-
-            // Close the window after printing
             newWindow.close();
-        };
 
-    }
+          }, 10);
+        });
+      };
 
    
 
@@ -86,7 +86,20 @@ const ReceiptListControl = (props) => {
         }
         return true;
     };
-
+    async function fetchLinkContent(link) {
+        try {
+          const response = await fetch(link);
+          
+          if (!response.ok) {
+            throw new Error(`Failed to fetch: ${response.statusText}`);
+          }
+      
+          return response
+        } catch (error) {
+          console.error('Error fetching link content:', error.message);
+          throw error;
+        }
+      }
     return (
         <div className="conatiner">
           
@@ -151,7 +164,7 @@ const ReceiptListControl = (props) => {
                                             <td>{item.note}</td>
                                             <td className='text-end'>
                                                 <button type='button'
-                                                    onClick={() => { printReceipt(item._id); }}
+                                                    onClick={() => { printReceipt(( item._id)); }}
                                                     className='btn btn-sm btn-dark d-print-none'
                                                     style={{ backgroundColor: 'black' }}>
                                                     <MdPrint size={30} />

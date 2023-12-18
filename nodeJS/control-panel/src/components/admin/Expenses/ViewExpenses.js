@@ -226,6 +226,8 @@ const ViewExpenses = (props) => {
                     <th width="10%">#</th>
                     <th width="30%">{t("Expense.categoryName")} </th>
                     <th width="20%">{t("Expense.amount")} </th>
+                    <th width="20%">{t("companies.vendor")} </th>
+
                     <th width="20%">{t("Expense.date")} </th>
                    <th width="20%"></th>
                   </tr>
@@ -237,6 +239,8 @@ const ViewExpenses = (props) => {
                       <td>{index + 1}</td>
                       <td>{item.category}</td>
                       <td>{item.amount}</td>
+                      <td>{item.vendor}</td>
+
                       <td>{moment( item.createdDate).format("DD/MM/yyyy")}</td>
                       <td className="">
                        

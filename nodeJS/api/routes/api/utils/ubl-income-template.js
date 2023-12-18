@@ -4,7 +4,11 @@ const https = require("https");
 var utf8 = require("utf8");
 const { Console } = require("console");
 const Invoice = require("../invoices/models/Invoice");
-
+function newSeq3(x) {
+  //d =new Date()
+  //return d.getFullYear() + '-' +parseInt(d.getMonth() + 1) + "-" +d.getDate() + '-'+"0000".substring(0,4-x.toString().length)+x.toString()
+  return "INV-" + "00000".substring(0, 5 - x.toString().length) + x.toString();
+}
 function getInvoiceDate(issuedDate) {
   let x = issuedDate.toString();
   let d = new Date(x);
@@ -63,11 +67,16 @@ async function postToTaxTypeIncome(invoice, user) {
         if (process.env.INCLUDE_REQUEST !== true) {
           _encryptPostedXML = "";
         }
-
+        let count = await Invoice.countDocuments({
+          status: { $in: ['reverted', 'posted'] } 
+          
+        });
+        let newSerial = count + 1;
 
         await Invoice.findOneAndUpdate(
           { _id: invoice._id },
           {
+            seqNumber:newSeq3(newSerial),
             status: newStatus,
             postedXML: _postedXml,
             encryptPostedXML: _encryptPostedXML,
@@ -84,6 +93,7 @@ async function postToTaxTypeIncome(invoice, user) {
       })
       .catch((e) => {
         if (e.response && e.response.status === 403) {
+          console.log("gg")
           console.log("Unauthorized");
           reject("Unauthorized")
         } else {

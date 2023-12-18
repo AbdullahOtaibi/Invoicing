@@ -136,7 +136,7 @@ export const downloadXLSFile = async (URL) => {
         try {
             axios(config).then(response => {
                 // const outputFilename = `${Date.now()}.xls`;
-
+                console.log(response)
                 // If you want to download file automatically using link attribute.
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 resolve(url);
@@ -144,6 +144,8 @@ export const downloadXLSFile = async (URL) => {
             // OR you can save/write file locally.
             // fs.writeFileSync(outputFilename, response.data);
         } catch (error) {
+            console.log(error)
+
             reject(error);
             //throw Error(error);
         }

@@ -34,8 +34,12 @@ const CreateCompany = (props) => {
         let result = '';
         if (contentLocale == 'en') {
             textObject.english = newValue;
+            textObject.arabic = newValue;
+
         } else if (contentLocale == 'ar') {
             textObject.arabic = newValue;
+            textObject.english = newValue;
+
         } else if (contentLocale == 'tr') {
             textObject.turkish = newValue;
         }

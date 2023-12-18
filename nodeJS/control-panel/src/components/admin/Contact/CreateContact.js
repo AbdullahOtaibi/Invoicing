@@ -162,29 +162,26 @@ if(isBlank(contact.mobile))
 return isValid
 }
 
-  const doPost = (event)=> {
-    setLoading(true);
-    setWasValidated(true);
-    if (checkContact()) 
-    {
-      createContact(contact).then( 
-        (res) => { 
-          setLoading(false);
-          toast.success(t("succeed"));
-          window.location.href = "/admin/Contact/view/" + res._id;
-        }
-      ).catch(
-(e) => { console.log(e) ; setLoading(false) ;}
+const doPost = async (event) => {
+  setLoading(true);
+  setWasValidated(true);
 
-      ) ;
-    }
-    else 
-    {
+  try {
+    if (await checkContact()) {
+      const res = await createContact(contact);
+      setLoading(false);
+      toast.success(t("succeed"));
+      console.log(res)
+
+      window.location.href = "/admin/Contact/view/" + res._id;
+    } else {
       setLoading(false);
     }
-
-
-  } ;
+  } catch (error) {
+    console.error(error);
+    setLoading(false);
+  }
+};
   return (
     <div className="card">
       <div className="card-body">

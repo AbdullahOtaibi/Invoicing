@@ -171,10 +171,11 @@ router.get("/get/:id", async (req, res) => {
 router.post("/create", verifyToken, async (req, res, next) => {
   // console.log(req.user);
   if (!req.user) {
-    res.json({ message: "unauthorized access" });
+    res.send({ message: "unauthorized access" });
   }
   if (req.user.role != "Administrator" && req.user.role != "Company") {
-    res.json({ success: false, message: "Unauthorized" });
+    console.log(req.user.role)
+    res.send({ success: false, message: "Unauthorized" });
   }
   console.log("before create");
   console.log(req.body)
@@ -190,14 +191,17 @@ router.post("/create", verifyToken, async (req, res, next) => {
   newObject._id = new mongoose.Types.ObjectId();
   let savedContact = await newObject.save();
   console.log("savedContact:" + savedContact);
-  res.json(savedContact);
+  res.send(savedContact);
   next();
+
 });
 
 router.post("/update/", verifyToken, async (req, res) => {
   if (req.user.role != "Administrator" && req.user.role != "Company") {
-    res.json({ success: false, message: "Unauthorized" });
+    console.log(req.user.role)
+    res.send({ success: false, message: "Unauthorized" });
   }
+
 
   //TODO: if user is vendor check if item product belongs to the same vendor
   Contact.findOneAndUpdate(

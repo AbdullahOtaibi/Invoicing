@@ -10,10 +10,19 @@ const InvoiceSearch = (props) => {
     const [endDate, setEndDate] = useState('');
     const [contact, setContact] = useState(null);
     const [status, setStatus] = useState('');
+    const [contacttype, setcontacttype] = useState('');
+    const [insurance, setInsurance] = useState('');
+
     const [searchVisible, setSearchVisible] = useState(props.searchVisible);
 
     const contactSelected = (selectedContact) => {
         setContact(selectedContact);
+    }
+    const InsuranceSelected = (selectedInsurance) => {
+        setInsurance(selectedInsurance);
+    }
+    const updateInsurance= (e) => {
+       setcontacttype(e.target.value);
     }
     const visiblityChanged = (show) => {
         if (props.visiblityChanged) {
@@ -39,7 +48,9 @@ const InvoiceSearch = (props) => {
                 contact: contact,
                 startDate: startDate,
                 endDate: endDate,
-                status: status
+                status: status,
+                contacttype:contacttype,
+                insurance:insurance
             });
            
             
@@ -63,6 +74,45 @@ const InvoiceSearch = (props) => {
                             />
                         </div>
                     </div>
+
+
+                    <div className="mb-3 col ">
+                        <div className="col col-auto">
+                        {t("invoice.insurance")}
+                    </div>
+                        <div className="col col">
+                        <ContactSearchControl
+                  handleSelectContact={InsuranceSelected}
+                  value = {insurance?.contactName}
+                    contactType = {["Insurance" ]}
+                />
+                        </div>
+                    </div>
+
+
+                    <div className="mb-3 col ">
+                        <div className="col col-auto">
+                            {t("contact.contactType")}
+                        </div>
+                        <div className="col col">
+                        <select
+                                type="text"
+                                className="form-select"
+                                value={contacttype}
+                                onChange={updateInsurance}>
+                                <option value="all"> {t("viewAll")}</option>
+
+                                <option value={t("invoice.insurance")}> {t("invoice.insurance")}</option>                              
+                              
+                            </select>
+
+                      
+                        </div>
+                    </div>
+                    
+
+
+                    
 
                     <div className="mb-3 col ">
                         <div className="col col-auto">
@@ -110,6 +160,9 @@ const InvoiceSearch = (props) => {
                             </select>
                         </div>
                     </div>
+
+
+                    
 
 
                 </div>

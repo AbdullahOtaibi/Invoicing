@@ -130,6 +130,7 @@ console.log("contractId paramter:" + contractId) ;
        cloned.accountingCustomerParty.registrationName =  res.contact.contactName;
        cloned.accountingCustomerParty.telephone = res.contact.mobile;
        cloned.contact  = res.contact._id ; 
+       cloned.contactType=res.contact.contactType
       setInvoice(cloned);
 
       console.log("contract id : " +res._id );
@@ -168,6 +169,7 @@ console.log("contractId paramter:" + contractId) ;
         cloned.accountingCustomerParty.registrationName = item.contactName;
         cloned.accountingCustomerParty.telephone = item.mobile;
         cloned.contact = item._id
+        cloned.contactType=item.contactType
         setInvoice(cloned);
       }
     catch (e) {

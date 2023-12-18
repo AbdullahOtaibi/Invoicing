@@ -108,6 +108,18 @@ const ExpCatNew = (props) => {
     // console.log("new  amount :" + JSON.stringify(categoryObj.amount));
 
   };
+  const changevendor = (event) => {
+
+    console.log("changevendor:" + event.target.value);
+    setCategoryObj({ ...categoryObj, vendor: event.target.value });
+    // let value = event.target.value;
+    // let cloned = JSON.parse(JSON.stringify(categoryObj));
+    // cloned.amount = value;
+    // setCategoryObj(cloned);
+    // console.log("categoryObj after edit amount :" + JSON.stringify(categoryObj));
+    // console.log("new  amount :" + JSON.stringify(categoryObj.amount));
+
+  };
 
   useEffect(() => { 
 
@@ -272,7 +284,25 @@ const ExpCatNew = (props) => {
           </div>
         </div>
 
+        <div className="row">
+          <div className="mb-3 col ">
+            <div className="col col-auto">{t("companies.vendor")} </div>
 
+            <div className="col">
+              <input
+                //className={fieldClass(fullCalendar.title)}
+                className="form-control"
+                // className= {fieldClass(amount)}
+                id="vendor"
+                name="vendor"
+                placeholder={t("companies.vendor")}
+                type="text"
+                onChange={changevendor}
+               value={categoryObj?.vendor}
+              ></input>
+            </div>
+          </div>
+        </div>
 
         {/* <DatePicker
                   className={fieldClass(invoice.issuedDate)}

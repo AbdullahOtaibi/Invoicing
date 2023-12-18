@@ -255,7 +255,8 @@
     "otherCategoriesMessage": "إذا كانت المنتجات أو العناصر الخاصة بك لا تتعلق بأي من هذه الفئات المذكورة ، فيرجى تحديد اسم الفئة لإضافتها",
     "CompanyCategoriesMessage": "الرجاء اختيار الفئة التي تنتمي إليها منتجاتك من القائمة.",
     "companyDetails": "معلومات الشركة",
-    "companyName":"اسم الشركة"
+    "companyName":"اسم الشركة",
+    "subscriptionExpiryDate":"تاريخ أنتهاء صلاحية الأشتراك"
   },
   "countries": {
     "countryCode": "رمز الدولة",

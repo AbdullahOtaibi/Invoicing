@@ -6,6 +6,8 @@ const verifyToken = require("../../utils/auth");
 
 const Invoice = require("../models/Invoice");
 const InvoiceStatus = require("../models/InvoiceStatus");
+const Receipt = require("../../receipt/models/Receipt");
+const Receipts = require("../../receipt/data-access/Receipt");
 
 const { query } = require("express");
 const Invoices = require("../data-access/Invoices");
@@ -17,6 +19,7 @@ const postToTaxTypeRevertedIncome = require("../../utils/ubl-income-Reverted-tem
 var json2xls = require('json2xls');
 const fs = require('fs');
 const { filter } = require("compression");
+const { object } = require("sharp/lib/is");
 
 const getNewStatus = (Invoice) => {
   let newStatusId = Invoice.status;
@@ -68,6 +71,8 @@ router.post("/filter", verifyToken, async (req, res) => {
   if (req.user.role != "Administrator" && req.user.role != "Company") {
     res.json({ success: false, message: "Unauthorized" });
   }
+  console.log("---------------------------------------------------")
+
   var result = {};
   try {
     let filters = req.body || {};
@@ -84,7 +89,7 @@ router.post("/filter", verifyToken, async (req, res) => {
     let InvoiceBy = filters.InvoiceBy || "_idDesc";
     let startDate = filters.startDate || null;
     let endDate = filters.endDate || null;
-
+    let insurance = filters.insurance || null;
 
     // companyID: localStorage.getItem("companyId"),
     //let companyId
@@ -123,12 +128,15 @@ router.post("/filter", verifyToken, async (req, res) => {
     if (clientId) {
       queryParams["$and"].push({ contact: clientId });
     }
-    
+
+    if (insurance) {
+      queryParams["$and"].push({ contactType: insurance });
+    }
+    console.log(insuranceId)
     if(insuranceId){
-      queryParams["$and"].push({ insurance: insuranceId });
+      queryParams["$and"].push({ insurance: ObjectId(insuranceId) });
     }
 
-      console.log("abd:contractId=" +contractId) ;
     if(contractId) 
     {
 
@@ -613,23 +621,30 @@ router.get("/clientInvoices", verifyToken, async (req, res) => {
 });
 
 router.get("/get/:id", async (req, res) => {
+
   let invoice = await Invoices.getInvoiceById(req.params.id);
   console.log("get invoice info.");
+
   res.json(invoice);
 });
 
 
 router.get("/postToTaxTypeIncome/:id", verifyToken, async (req, res, next) => {
+ 
 
   let result = { success: false };
+
   console.log("req.params.id: " + req.params.id);
   let invoice = await Invoices.getInvoiceById(req.params.id);
+
   if (invoice) {
+  
 
     let data = postToTaxTypeIncome(invoice, req.user).then(data => {
       result.success = true;
       console.log("data:" + data);
       result.data = data;
+
       res.json(result);
     }).catch(e => {
       result.message = e;
@@ -682,15 +697,22 @@ router.get("/getSubscriptionInvoices/:id", verifyToken, async (req, res, next) =
 });
 
 
+
 function newSeq(x) {
   //d =new Date()
   //return d.getFullYear() + '-' +parseInt(d.getMonth() + 1) + "-" +d.getDate() + '-'+"0000".substring(0,4-x.toString().length)+x.toString()
-  return "INV-" + "00000".substring(0, 5 - x.toString().length) + x.toString();
+  return "DOC-" + "00000".substring(0, 5 - x.toString().length) + x.toString();
+}
+function newSeq2(x) {
+  //d =new Date()
+  //return d.getFullYear() + '-' +parseInt(d.getMonth() + 1) + "-" +d.getDate() + '-'+"0000".substring(0,4-x.toString().length)+x.toString()
+  return "RCP-" + "00000".substring(0, 5 - x.toString().length) + x.toString();
 }
 
 
 router.post("/create", verifyToken, async (req, res, next) => {
   // console.log(req.user);
+  var RID=[]
   if (!req.user) {
     res.json({ message: "unauthorized access" });
   }
@@ -717,18 +739,63 @@ router.post("/create", verifyToken, async (req, res, next) => {
   if(req.body.contract.length == 0){
     req.body.contract = null;
   }
+ 
+  
   const newObject = new Invoice({
+    _id: new mongoose.Types.ObjectId(),
+
     user: req.user.id,
     company: req.user.company,
-    companyId: req.user.companyId,
+    companyID: req.user.companyId,
     serialNumber: newSerial,
-    seqNumber: newSeq(newSerial),
+    seqNumber: null ,
+    docNumber:newSeq(newSerial),
+    
     ...req.body,
   });
+
+  if(req.body.paymentMethod == "Cash" && req.body.contract== null){
+    let count2 = await Receipt.countDocuments({
+      "companyID": {
+        $eq: req.user.companyId,
+      },
+      "company" : { $eq: req.user.company,} ,
+    });
+    console.log(count2)
+    let newSerial2 = count2 + 1;
+
+
+    const newReceipt = new Receipt({
+      user: req.user.id,
+      company: req.user.company,
+      companyID: req.user.companyId,
+      seqNumber: newSeq2(newSerial2),
+      ...req.body
+    });
+   // newReceipt.receiptAmount = newObject.totalAmount.amount;
+    newReceipt.receiptAmount = newObject.legalMonetaryTotal.payableAmount;
+    newReceipt.ObjectIdinvoice=newObject._id
+    console.log("after create recip");
+    newReceipt.deleted = false;
+    
+    newReceipt._id = new mongoose.Types.ObjectId();
+   RID=newReceipt._id 
+
+  
+    let savedReceipt = await newReceipt.save();
+    
+   let c=await Receipts.updateGrandTotalForReletedCollections(savedReceipt._id)
+
+  }
+  if(!(req.body.paymentMethod == "Cash" && req.body.contract== null)){
+    RID=null
+  }
  
   newObject.deleted = false;
-  newObject._id = new mongoose.Types.ObjectId();
   //newObject.invoiceLines = req.body.items;
+  console.log("ddd")
+  console.log(RID)
+  newObject.ObjectIdReceipt=RID
   let savedInvoice = await newObject.save();
  
   res.json(savedInvoice);
@@ -751,14 +818,39 @@ router.get("/remove/:id", verifyToken, async (req, res) => {
     res.json({ success: false, message: "Unauthorized" });
   }
   //TODO: if user is vendor check if item product belongs to the same vendor
-  Invoice.findByIdAndUpdate(
+  let dd=await Invoices.getInvoiceById(req.params.id);
+ 
+  let INV=Invoice.findByIdAndUpdate(
     req.params.id,
     { deleted: true },
     function (err, item) {
       console.log("marked as deleted...");
+
       res.json({ success: true, message: "deleted" });
     }
+    
   );
+
+  console.log(dd)
+
+  if(isKeyInJSONAndNotNull(dd, "ObjectIdReceipt")){  
+    
+    let recei=Receipt.findByIdAndUpdate(
+      dd.ObjectIdReceipt,
+      { deleted: true },
+      async function (err, model) {
+        if (err) {
+          console.log("error remove item:" + e)
+        }
+        else if (model) {
+          console.log("marked as deleted..." + model)
+          await Receipts.updateGrandTotalForReletedCollections(dd.ObjectIdReceipt)
+        }
+  
+      }
+      
+    );}
+
 });
 
 //updte invoice added by abdullah ......
@@ -782,21 +874,32 @@ router.post("/update/", verifyToken, async (req, res) => {
     }
   );
 });
+function isKeyInJSONAndNotNull(userDocument, keyToCheck) {
+  const userObject = userDocument.toObject();
 
+  // Check if the key exists and is not null
+  return userObject.hasOwnProperty(keyToCheck) && userObject[keyToCheck] !== null;
+}
 router.get("/deleteItem/:id", verifyToken, async (req, res) => {
   if (req.user.role != "Administrator" && req.user.role != "Company") {
     res.json({ success: false, message: "Unauthorized" });
   }
   console.log("delete invoice id:" + req.params.id);
   //TODO: if user is vendor check if item product belongs to the same vendor
+  
   let deletedItem = await InvoiceItem.findByIdAndUpdate(
     req.params.id,
     { status: { deleted: true } },
     function (err, item) {
       console.log("marked as deleted...");
-      console.log(item);
     }
+    
   );
+
+ 
+ 
+
+
   await Invoices.recalculateTotals(deletedItem.Invoice);
   res.json({ success: true, message: "closed" });
 });
