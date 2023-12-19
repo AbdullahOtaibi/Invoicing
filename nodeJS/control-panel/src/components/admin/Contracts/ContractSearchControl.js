@@ -103,67 +103,57 @@ const ContractSearchControl = (props) => {
         />
       </div>
 
-      {contractItems && contractItems.length > 0 && !props.readOnly ? (
-        <div className="scrollbar p-2" style={{ maxHeight: '376px', overflowY: 'auto', position: 'absolute', width: '420px', zIndex: 99 }}>
-          <div className="row  mb-2">
-            <div className="col text-end">
-              <button type='button' className="btn btn-sm btn-outline-danger w-100" onClick={handleCloseSearch}>CLOSE</button>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <ul className="list-group scrollbar p-2" id="style-7">
-                {contractItems
-                  ? contractItems.map((item) => (
-                    <>
 
-                      <li
-                        className="searchItem  list-group-item list-group-item-light"
-                        onClick={() => {
-                          if (!props.readOnly)
-                            handleSelectContract(item);
-                        }}
-                      >
-                        {
-                          (
-                            <>
-                              <div className="row">
-                                <div className="mb-3 col ">
+{contractItems && contractItems.length > 0 && !props.readOnly ? (
+  <div className="scrollbar p-2" style={{ maxHeight: '376px', overflowY: 'auto', position: 'absolute', width: '420px', zIndex: 99 }}>
+    <div className="row  mb-2">
+      <div className="col text-end">
+        <button type='button' className="btn btn-sm btn-outline-danger w-100" onClick={handleCloseSearch}>CLOSE</button>
+      </div>
+    </div>
+    <div className="row">
+      <div className="col">
+        <ul className="list-group scrollbar p-2" id="style-7">
+          {contractItems.map((item) => (
+            <li
+              key={item._id} // Add a unique key to each item
+              className="searchItem  list-group-item list-group-item-light"
+              onClick={() => {
+                if (!props.readOnly)
+                  handleSelectContract(item);
+              }}
+            >
+              {
+                (
+                  <>
+                    <div className="row">
+                      <div className="mb-3 col ">
+                        <div>
+                          <span className="text-secondary">
+                            <LiaFileContractSolid size={25} className="text-info" />{" "}
+                            {item.seqNumber} {" "}
 
-                                  <div>
+                            <MdContactPage size={25} className="text-info" />{" "}
+                            {item.contact && item.contact.contactName} {" "} {/* Check if item.contact is defined before accessing contactName */}
+                            
+                            <MdMoney size={25} className="text-info" />{" "}
+                            {item.contractBalance} JOD
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )
+              }
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+) : null}
 
-                                    <span className="text-secondary">
-                                      <LiaFileContractSolid size={25} className="text-info" />{" "}
-                                      {item.seqNumber} {" "}
 
-                                      <MdContactPage size={25} className="text-info" />{" "}
-                                      {item.contact.contactName} {" "}
-
-                                      <MdMoney size={25} className="text-info" />{" "}
-                                      {item.contractBalance} JOD
-                                    </span>
-
-                                  </div>
-
-
-
-                                </div>
-
-
-                              </div>
-
-                            </>
-                          )
-                        }
-                      </li>
-                    </>
-                  ))
-                  : null}
-              </ul>
-            </div>
-          </div>
-        </div>
-      ) : null}
     </>
   );
 };

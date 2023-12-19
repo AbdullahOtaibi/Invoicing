@@ -207,6 +207,8 @@ router.post("/create", verifyToken, async (req, res, next) => {
     company: req.user.company,
     companyID: req.user.companyId,
     seqNumber: newSeq(newSerial),
+    
+
     ...req.body
   });
   console.log("after create");
@@ -214,9 +216,11 @@ router.post("/create", verifyToken, async (req, res, next) => {
   newObject.deleted = false;
   newObject._id = new mongoose.Types.ObjectId();
   newObject.ObjectIdinvoice=null;
+  newObject.receiptBalance=newObject.receiptAmount;
+
   let savedReceipt = await newObject.save();
   console.log("savedReceipt:" + savedReceipt);
-  consol.log()
+  console.log()
   res.json( {
       success: true,
       receipt: savedReceipt,
@@ -244,7 +248,7 @@ router.post("/update/", verifyToken, async (req, res) => {
     req.body, 
      async function (err, item) {
       console.log("marked  updated...");
-    
+      
       res.json({
         success: true,
         message: "updated successfully ....",

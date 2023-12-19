@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next"
 import { MdCollectionsBookmark, MdDelete, MdEdit, MdAdd, MdLocalShipping, MdPrint } from "react-icons/md"
-import { getInvoices }
+import { getInvoices,updateInvoice}
     from './InvoicesAPI'
 import { ThreeDots } from 'react-loader-spinner'
 import { Link, useNavigate } from 'react-router-dom'
@@ -9,7 +9,8 @@ import { getLocalizedText } from '../utils/utils'
 import { Tabs, Tab } from 'react-bootstrap'
 import { hasPermission } from '../utils/auth';
 import { Helmet } from "react-helmet";
-
+import  {getReceipts,updateReceipt  } from '../Receipt/ReceiptAPI'
+import { toast } from "react-toastify";
 
 
 const ListInv = (props) => {
@@ -97,13 +98,134 @@ const ListInv = (props) => {
             if (props.updateCount) {
                 props.updateCount(data.count);
             }
+            
+
         }).catch(e => {
             setLoading(false);
             console.log(e);
         });
 
     }
-    
+    const viewItemValidMessage = (message) => {
+        toast.warning(message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      };
+    const processReceipts = async (insuranceId,invtot,INV) => {
+        try {
+
+            let filter={
+                seqNumber: "",
+                contactId: insuranceId,
+                contractId: null,
+            };
+          // Call getReceipts to get the receipts data
+          const responseData = await getReceipts(filter);
+          // Extract the receipts array from the response data
+          const receipts = responseData.items;
+      
+          // Function to find the receipt with the smallest seqNumber
+          const findSmallestSeqNumber = (receipts) => {
+            return receipts.reduce((minReceipt, currentReceipt) => {
+              const minSeqNumber = parseInt(minReceipt.seqNumber.split('-')[1], 10);
+              const currentSeqNumber = parseInt(currentReceipt.seqNumber.split('-')[1], 10);
+          
+              // Check if receiptBalance is not equal to 0 before comparing seqNumbers
+              if (minReceipt.receiptBalance !== 0 && (minSeqNumber < currentSeqNumber || currentReceipt.receiptBalance === 0)) {
+                return minReceipt;
+              } else {
+                return currentReceipt;
+              }
+            });
+          };
+      
+          // Find the receipt with the smallest seqNumber
+          const smallestSeqNumberReceipt = findSmallestSeqNumber(receipts);
+      
+          // Log or use the smallestSeqNumberReceipt as needed
+          console.log('Receipt with the smallest seqNumber:', smallestSeqNumberReceipt);
+          const indexOfObject = receipts.findIndex(obj => obj === smallestSeqNumberReceipt );
+          console.log(indexOfObject)
+          if(smallestSeqNumberReceipt.receiptBalance<invtot ){ 
+            if (indexOfObject!== -1)
+            {
+            smallestSeqNumberReceipt.receiptAppliedAmount +=smallestSeqNumberReceipt.receiptBalance;
+            const resttot=invtot-smallestSeqNumberReceipt.receiptBalance // Change to the desired value
+            const invt2=smallestSeqNumberReceipt.receiptBalance;
+            smallestSeqNumberReceipt.receiptBalance = smallestSeqNumberReceipt.receiptBalance-smallestSeqNumberReceipt.receiptBalance;
+            const newlistOfAppliedInvoicis={"INVID":INV._id,"amount":invt2};
+            smallestSeqNumberReceipt.listOfAppliedInvoicis.push({newlistOfAppliedInvoicis})
+            receipts[indexOfObject+1].receiptAppliedAmount+=resttot
+            const newlistOfAppliedInvoicis2={"INVID":INV._id,"amount":resttot};
+            receipts[indexOfObject+1].receiptBalance = receipts[indexOfObject+1].receiptBalance-resttot;
+
+            receipts[indexOfObject+1].listOfAppliedInvoicis.push({newlistOfAppliedInvoicis2});
+
+
+            }
+            else
+            {
+
+                viewItemValidMessage("there is no balance insurance receipts to cover this invoice.") 
+
+
+
+            }
+            
+          
+        
+        
+
+          }
+          else{  
+            smallestSeqNumberReceipt.receiptAppliedAmount += invtot; // Change to the desired value
+            smallestSeqNumberReceipt.receiptBalance = smallestSeqNumberReceipt.receiptBalance-invtot;
+            const newlistOfAppliedInvoicis={"INVID":INV._id,"amount":invtot};
+            smallestSeqNumberReceipt.listOfAppliedInvoicis.push({newlistOfAppliedInvoicis})
+
+            INV.isApplied=true
+            console.log('Receipt with the smallest seqNumber after pro:', smallestSeqNumberReceipt);
+           /* updateReceipt(smallestSeqNumberReceipt).then(async (res) => {
+  
+              console.log("ABD: updated res :" + JSON.stringify(res)) ;
+              /*
+              let updatedContract = {} 
+              if (receipt.contract) {
+                updatedContract = await updateContractCalculation(receipt.contract);
+               
+              }
+      
+              if(props.onSave == null )
+              {
+                window.location.href = "/admin/invoices" ;
+              }
+              else 
+              {
+               
+              //  props.onSave(updatedContract);
+              props.onSave();
+      
+              }
+           
+        
+            }).catch((err)=> { console.log(err)}) ;
+            updateInvoice(INV);*/
+        
+        }
+         
+         
+
+        } catch (error) {
+          console.error('Error processing receipts:', error.message);
+          // Handle the error as needed
+          return [];
+        }
+      };
+      
+      // Call the function to process receipts
+
+      
+
     useEffect(() => {
         loadNewPage(0);
     }, [props]);
@@ -231,10 +353,10 @@ const ListInv = (props) => {
                                     : ""
                                 }
 
-{item.insurance!=null ?
-                                    <td className="justify-content-end" style={{ textAlign: 'end' }}>
-                                      <><Link className="btn btn-primary "  title="apply invoice"  >
-                                            apply invoice <MdEdit /> </Link> </>
+{item.insurance!=null && item.isApplied==false ?
+                                    <td className="justify-content-end" style={{ textAlign: 'end', width:"20px" ,height:"5px"}}>
+                                      <><Link href="#" onClick={() => processReceipts(item.insurance,item.legalMonetaryTotal.taxExclusiveAmount,item)}className="btn btn-primary "  title="apply invoice"  >
+                                            apply invoice  </Link> </>
                                      
                                        
                                     </td>

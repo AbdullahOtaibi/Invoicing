@@ -224,7 +224,7 @@ const viewItemValidMessage = (message) => {
                     handleSelectContact={setContact}
                     wasValidated= { props.contractObj || props.contactObj ? false: wasValidated}
                     value = {contactItem?.contactName}
-                    contactType = {["Client" , "Vendor"]}
+                    contactType = {["Client" , "Vendor","Insurance"]}
                     readOnly = { props.contractObj || props.contactObj  ?true: false}
                   />
                     </div>

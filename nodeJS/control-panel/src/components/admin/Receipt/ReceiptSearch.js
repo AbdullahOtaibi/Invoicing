@@ -95,7 +95,7 @@ console.log("filter:" + JSON.stringify(filter));
                     <div className="col col">
                         <ContactSearchControl
                             handleSelectContact={updateContact}
-                            contactType={["Client", "Vendor"]}
+                            contactType={["Client", "Vendor","Insurance"]}
 
                         />
                     </div>

@@ -12,9 +12,20 @@ const ReceiptSchema = new Schema({
         ref: 'Company'
     },
     ObjectIdinvoice: mongoose.Schema.Types.ObjectId,
-
+    listOfAppliedInvoicis: {
+        type: [
+          {
+            key1: {type:ObjectId} ,
+            key2: {type:Number}
+          },
+        ],
+        default: null
+      },
     seqNumber: String, 
     receiptAmount: Number, 
+    receiptBalance:Number,
+    receiptAppliedAmount:{type:Number, default:0},
+
     receiptDate: {type:Date , default: Date.now} , 
     note:String,
     status: {

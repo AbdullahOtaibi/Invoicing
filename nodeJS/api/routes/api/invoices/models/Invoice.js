@@ -171,7 +171,11 @@ const InvoiceSchema = new Schema({
     },
     templateNo:String, 
     percentageOfCover: Number, 
-
+    isApplied: {
+        type:Boolean,
+        default:false
+    },
+    restAmount:{type:Number,default:0}
 }, { collection: 'Invoices' });
 
 
