@@ -133,6 +133,7 @@
     "dimensions": "Dimensions"
   },
   "sidebar": {
+    "reports":"reports",
     "dashboard": "Dashboard",
     "settings": "Settings",
     "articles": "Articles",

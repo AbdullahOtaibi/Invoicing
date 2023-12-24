@@ -161,6 +161,7 @@ router.post("/checkForIntersection", verifyToken, async (req, res) => {
         result.error = err;
         res.json(result);
       }
+      
       result.data = doc;
       result.exists = doc != null && employeeId ?true:false;
       res.json(result);

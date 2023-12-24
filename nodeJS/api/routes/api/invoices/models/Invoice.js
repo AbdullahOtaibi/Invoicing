@@ -153,6 +153,7 @@ const InvoiceSchema = new Schema({
         type:String, 
         default: "new" 
     },
+
     note:String, 
     postedXML:String, 
     encryptPostedXML: String,

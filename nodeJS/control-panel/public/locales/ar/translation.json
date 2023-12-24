@@ -134,6 +134,7 @@
     "dimensions": "ابعاد المنتج"
   },
   "sidebar": {
+    "reports":"تفارير",
     "dashboard": "لوحة التحكم",
     "settings": "الاعدادات",
     "articles": "المقالات",

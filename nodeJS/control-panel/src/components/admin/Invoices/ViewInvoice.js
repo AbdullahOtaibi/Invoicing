@@ -584,7 +584,7 @@ const ViewInvoice = (props) => {
                     <div className="mb-3 col ">
                       <div className="col col-auto">{t("invoice.insurance")}</div>
                       <div className="col col-auto">
-                        {invoice.insurance.contactName}
+                        {invoice.contactName}
                       </div>
                     </div>
 

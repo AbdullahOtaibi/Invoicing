@@ -3,13 +3,14 @@ import { useTranslation } from "react-i18next"
 import { MdCollectionsBookmark, MdDelete, MdEdit, MdAdd, MdLocalShipping, MdPrint } from "react-icons/md"
 import { getInvoices,updateInvoice}
     from './InvoicesAPI'
+import  {getReceipt, getReceipts,updateReceipt  } from '../Receipt/ReceiptAPI'
+
 import { ThreeDots } from 'react-loader-spinner'
 import { Link, useNavigate } from 'react-router-dom'
 import { getLocalizedText } from '../utils/utils'
 import { Tabs, Tab } from 'react-bootstrap'
 import { hasPermission } from '../utils/auth';
 import { Helmet } from "react-helmet";
-import  {getReceipts,updateReceipt  } from '../Receipt/ReceiptAPI'
 import { toast } from "react-toastify";
 
 
@@ -111,6 +112,7 @@ const ListInv = (props) => {
           position: toast.POSITION.TOP_RIGHT,
         });
       };
+  
     const processReceipts = async (insuranceId,invtot,INV) => {
         try {
 
@@ -120,6 +122,7 @@ const ListInv = (props) => {
                 contractId: null,
             };
           // Call getReceipts to get the receipts data
+         
           const responseData = await getReceipts(filter);
           // Extract the receipts array from the response data
           const receipts = responseData.items;
@@ -171,6 +174,10 @@ const ListInv = (props) => {
 
 
             }
+
+
+
+
             
           
         
@@ -185,10 +192,10 @@ const ListInv = (props) => {
 
             INV.isApplied=true
             console.log('Receipt with the smallest seqNumber after pro:', smallestSeqNumberReceipt);
-           /* updateReceipt(smallestSeqNumberReceipt).then(async (res) => {
-  
+            updateReceipt(smallestSeqNumberReceipt).then(async (res) => {
+                /*
+
               console.log("ABD: updated res :" + JSON.stringify(res)) ;
-              /*
               let updatedContract = {} 
               if (receipt.contract) {
                 updatedContract = await updateContractCalculation(receipt.contract);
@@ -207,9 +214,9 @@ const ListInv = (props) => {
       
               }
            
-        
+        */
             }).catch((err)=> { console.log(err)}) ;
-            updateInvoice(INV);*/
+            updateInvoice(INV);
         
         }
          

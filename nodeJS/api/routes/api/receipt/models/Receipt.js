@@ -11,6 +11,8 @@ const ReceiptSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
     },
+    paymentMethod: String, 
+
     ObjectIdinvoice: mongoose.Schema.Types.ObjectId,
     listOfAppliedInvoicis: {
         type: [

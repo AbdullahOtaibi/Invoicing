@@ -2,7 +2,7 @@ import { React, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { creatFullCalendar, checkForIntersection } from "./FullCalendarAPI";
+import { creatFullCalendar, checkForIntersection,getFullCalendars } from "./FullCalendarAPI";
 import ContactSearchControl from "../Contact/ContactSearchControl";
 import ContractSearchControl from "../Contracts/ContractSearchControl";
 import { MdWarning } from "react-icons/md";
@@ -29,12 +29,13 @@ else {
 
 const FullCalendarNew = (props) => {
 
-  const [intersection, setIntersection] = useState(false);
+  const [intersection, setIntersection] = useState();
   const [fullCalendar, setFullCalendar] = useState({
     deleted: false,
     companyID: localStorage.getItem("companyId"),
     company: localStorage.getItem("company"),
     // status: "Scheduled" ,
+    
     start: startDate,
     end: endDate,
     allDay: false,
@@ -42,6 +43,9 @@ const FullCalendarNew = (props) => {
 
   useEffect(() => {
     if (fullCalendar && fullCalendar.contact && fullCalendar.start && fullCalendar.end) {
+      console.log("2341 ....");
+
+      console.log({ startDate: fullCalendar.start, endDate: fullCalendar.end, employeeId: fullCalendar.employee })
       checkForIntersection({ startDate: fullCalendar.start, endDate: fullCalendar.end, employeeId: fullCalendar.employee }).then((res) => {
         console.log("checkForIntersection ....");
         console.log(res);
@@ -185,6 +189,7 @@ const FullCalendarNew = (props) => {
     setWasValidated(true);
     if (checkFullCalendar()) {
       console.log("ready to add new calendar ...");
+      checkForIntersection2(fullCalendar.start,fullCalendar.end,)
       creatFullCalendar(fullCalendar)
         .then((res) => {
 
@@ -254,7 +259,17 @@ const FullCalendarNew = (props) => {
       setFullCalendar(cloned);
     }
   };
-
+  function checkForIntersection2(start,end,employeeId) {
+        
+    return getFullCalendars().some(calendar => {
+      // Check if input is not equal to start, end, and employeeId
+      return (
+        calendar.start !== start ||
+        calendar.end !== end ||
+        calendar.employeeId !== employeeId
+      );
+    });
+  }
 
   return (
     <>

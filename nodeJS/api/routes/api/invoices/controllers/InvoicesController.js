@@ -754,7 +754,7 @@ router.post("/create", verifyToken, async (req, res, next) => {
     ...req.body,
   });
 
-  if(req.body.paymentMethod == "Cash" && req.body.contract== null){
+  if((req.body.paymentMethod == "Cash"||req.body.paymentMethod == "Visa") && req.body.contract== null){
     let count2 = await Receipt.countDocuments({
       "companyID": {
         $eq: req.user.companyId,
@@ -770,6 +770,8 @@ router.post("/create", verifyToken, async (req, res, next) => {
       company: req.user.company,
       companyID: req.user.companyId,
       seqNumber: newSeq2(newSerial2),
+      paymentMethod:req.body.paymentMethod , 
+
       ...req.body
     });
    // newReceipt.receiptAmount = newObject.totalAmount.amount;
@@ -787,7 +789,7 @@ router.post("/create", verifyToken, async (req, res, next) => {
    let c=await Receipts.updateGrandTotalForReletedCollections(savedReceipt._id)
 
   }
-  if(!(req.body.paymentMethod == "Cash" && req.body.contract== null)){
+  if(!((req.body.paymentMethod == "Cash"||req.body.paymentMethod == "Visa") && req.body.contract== null)){
     RID=null
   }
  
@@ -894,6 +896,7 @@ router.get("/deleteItem/:id", verifyToken, async (req, res) => {
       console.log("marked as deleted...");
     }
     
+
   );
 
  

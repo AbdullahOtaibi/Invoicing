@@ -169,6 +169,13 @@ const Sidebar = () => {
                         </Link >
                     </li>) : null}
 
+                    {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("vendors.view") > -1 ? (
+                    <li className={getClass('/admin/reports')}>
+                        <Link className="wave-effect waves-effect waves-button" to="/admin/reports" >
+                             <MdRealEstateAgent size={18} /> &nbsp; {t("sidebar.reports")}
+                        </Link >
+                    </li>) : null}
+
                 {/* {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("users.view") > -1 ? (
                     <li className={getClass('/admin/clients')}>
                         <Link className="wave-effect waves-effect waves-button" to="/admin/clients" >
