@@ -1,7 +1,9 @@
 import { getSecured, postSecured } from '../../../services/ApiClient'
 
 
-
+export const sendWhatsApp = (invoiceId) => {
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/sendWhatsApp", { invoiceId: invoiceId });
+}
 export const removeInvoice = (invoiceId) => {
     return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/remove/" + invoiceId);
 }
@@ -71,6 +73,8 @@ export const getPostedInvoices = (filters) => {
     filters.status = 'posted';
     return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/filter", filters);
 }
+
+
 
 export const getIncompleteInvoices = (filters) => {
     filters.status = 'incomplete';

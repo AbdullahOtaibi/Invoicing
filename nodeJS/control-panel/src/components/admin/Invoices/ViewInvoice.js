@@ -2,7 +2,7 @@ import { CSSTransition } from 'react-transition-group';
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { hasPermission } from "../utils/auth";
-import { getInvoice, removeInvoice, updateInvoice, postToTaxTypeIncome, postToTaxTypeRevertedIncome, getSumInvoicesByContractId } from "./InvoicesAPI";
+import { getInvoice, removeInvoice, updateInvoice, postToTaxTypeIncome, postToTaxTypeRevertedIncome, getSumInvoicesByContractId, sendWhatsApp } from "./InvoicesAPI";
 import { Helmet } from "react-helmet";
 import {
   MdOutlineReceiptLong,
@@ -91,6 +91,10 @@ const ViewInvoice = (props) => {
     if (invoice.invoiceType == "011") return "انشاء فاتورة جديدة نقدية";
     else if (invoice.invoiceType == "021") return "أنشاء فاتورة ذمم";
     return "";
+  }
+
+  function sendInvoiceViaWhatsApp() {
+    sendWhatsApp(invoiceId);
   }
 
   function getInvoiceDate() {
@@ -343,6 +347,11 @@ const ViewInvoice = (props) => {
                 </div>
 
                 <div class="mb-3  col justify-content-end">
+
+                  <button onClick={sendInvoiceViaWhatsApp} type="button" className="btn btn-success btn-lg mx-2 d-print-none" >
+                    WhatsApp
+                  </button>
+
                   {invoice.status == "posted" || invoice.status == "reverted" ? (<button type='button' className='btn btn-lg btn-dark d-print-none' onClick={() => { window.print() }}>
                     <MdPrint size={28} />
                   </button>):null}
