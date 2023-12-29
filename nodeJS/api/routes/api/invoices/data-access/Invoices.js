@@ -13,15 +13,51 @@ const { query } = require('express');
 function Invoices() {
 
 
-  
+  this.sendWhatsApp = async function (invoiceId) {
+    var invoice = await Invoice.findOne({ _id: invoiceId, deleted: false });
+    console.log("invoice:" + invoice._id);
+    //var phoneNumber = invoice.contact.phone;
+    var phoneNumber = '962789129394';
+    var invoice_key = invoice._id;// "123456";
+
+
+    const axios = require('axios');
+
+    const url = 'https://graph.facebook.com/v17.0/106456999222197/messages';
+    const accessToken = 'EAAJ8wrVhB5gBO7rXBN7vqoj1PFbyGwDl3mOTafIlpFBVe8xPytMxPuPeW1ZBnz24JfCSIgpZCqHpFlTyLZAnJ3PHAZAG3i1BpCLRpiCh3Cr2eYA6R2t5ZBVYJDoweiWQ00O7FoLDiirAHFYMnazhTXhjLprQbYlPJkurvqPYUnVx3WVZCWZBWRKBb9nwUyeijARgZBjMVLX7iZAZAepZCkUIJwpNcDZByhjo';
+
+    const data = {
+      messaging_product: 'whatsapp',
+      to: '962789129394',
+      type: 'template',
+      template: {
+        name: 'hello_world',
+        language: {
+          code: 'en_US'
+        }
+      }
+    };
+
+    axios.post(url, data, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      console.log(response.data);
+    }).catch(error => {
+      console.error(error);
+    });
+  }
+
 
   this.getInvoiceById = async function (invoiceId) {
     let invoice = await Invoice.findOne({ _id: invoiceId, deleted: false })
-    .populate("user", "-password")
-    .populate("contact")
-    .populate("contract")
-    .populate("package") 
-    .populate("insurance") 
+      .populate("user", "-password")
+      .populate("contact")
+      .populate("contract")
+      .populate("package")
+      .populate("insurance")
 
     //console.log("invoice:")
     //console.log(invoice) 
@@ -153,7 +189,7 @@ function Invoices() {
         if (product && product.packaging && product.packaging.length && product.packaging.width && product.packaging.height) {
           result.items += item.qty;
           totalVolume += (item.qty * product.packaging.length * product.packaging.width * product.packaging.height);
-         // result.products.push(product);
+          // result.products.push(product);
         }
 
       }
@@ -165,9 +201,9 @@ function Invoices() {
     result.totalVolume = totalVolume.toFixed(2);
     //40ft: => 72 CBM
     //20ft: => 32 CBM
-    result.containers = parseInt(totalVolume / 32) + (totalVolume % 32 > 0?1:0);
-    result.percentge = parseInt(((totalVolume % 32.0)/32.0) * 100);
-    
+    result.containers = parseInt(totalVolume / 32) + (totalVolume % 32 > 0 ? 1 : 0);
+    result.percentge = parseInt(((totalVolume % 32.0) / 32.0) * 100);
+
 
     return result;
   }

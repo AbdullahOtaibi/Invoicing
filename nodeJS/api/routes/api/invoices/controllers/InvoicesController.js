@@ -61,7 +61,10 @@ const getNewStatus = (Invoice) => {
   return newStatusId;
 };
 
-
+router.post("/sendWhatsApp", verifyToken, async (req, res) => {
+  var invoiceId = req.body.invoiceId;
+  Invoices.sendWhatsApp(invoiceId);
+});
 
 router.post("/filter", verifyToken, async (req, res) => {
   console.log(" insert filter invoice method type post  ")
