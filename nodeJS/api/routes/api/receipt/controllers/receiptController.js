@@ -6,6 +6,7 @@ var ObjectId = mongoose.Types.ObjectId;
 const Receipt = require("../models/Receipt");
 const Invoices = require("../../invoices/data-access/Invoices");
 const Invoice = require("../../invoices/models/Invoice");
+const Contracts = require("../../contracts/data-access/Contracts");
 
 
 const { query } = require("express");
@@ -115,7 +116,6 @@ router.post("/filter", verifyToken, async (req, res) => {
       .exec("find");
 
     res.json(result);
-    console.log((result))
     console.log("out.....");
   } catch (ex) {
     console.log(ex);
@@ -183,6 +183,85 @@ function newSeq(x) {
   //return d.getFullYear() + '-' +parseInt(d.getMonth() + 1) + "-" +d.getDate() + '-'+"0000".substring(0,4-x.toString().length)+x.toString()
   return "RCP-" + "00000".substring(0, 5 - x.toString().length) + x.toString();
 }
+router.post("/generateReport", verifyToken, async (req, res) => {
+  try {
+    // Initial queryParams
+    let queryParams = {
+      deleted: false,
+      company: req.user.company,
+      companyID: req.user.companyId,
+    };
+
+    // Extract filters from the request body
+    const { paymentMethod, startDate, endDate } = req.body;
+    
+    console.log(req.body)
+    // Add filters to queryParams if they exist
+    if (paymentMethod) {
+      queryParams.paymentMethod = paymentMethod;
+    }
+
+    if (startDate) {
+      // Accumulate conditions in an array
+      queryParams.receiptDate = {
+        $gte: new Date(startDate + "T00:00:00.000Z"),
+      };
+    }
+
+    if (endDate) {
+      // Check if queryParams.dateCreated already exists
+      queryParams.receiptDate = {
+        
+       
+        $lte: new Date(endDate + "T23:59:59.999Z"),
+      };
+    }
+
+    console.log("start ...generate");
+
+    // Find the receipts by applying the queryParams
+    const receipts = await Receipt.find(queryParams);
+    var receiptli = [];
+    var invoiceli = [];
+    var contractli = [];
+
+    // Extract the invoice and contract information for each receipt
+    for (const receipt of receipts) {
+      receiptli.push(receipt);
+
+      if (receipt.ObjectIdinvoice != null) {
+        invoiceli.push(await Invoices.getInvoiceById(receipt.ObjectIdinvoice));
+      } else if (receipt.listOfAppliedInvoices != null) {
+        // Use a for...of loop with the 'async' keyword inside an async function
+        for (const element of receipt.listOfAppliedInvoices) {
+          invoiceli.push(await Invoices.getInvoiceById(element.key1));
+        }
+      } else {
+        invoiceli.push(null);
+      }
+
+      if (receipt.contract != null) {
+        contractli.push(await Contracts.getContractById(receipt.contract));
+      } else {
+        contractli.push(null);
+      }
+    }
+
+    // Return the result
+    const result = {
+      receipts: receiptli,
+      invoices: invoiceli,
+      contract: contractli,
+    };
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
+
 
 router.post("/create", verifyToken, async (req, res, next) => {
   // console.log(req.user);

@@ -13,7 +13,7 @@ const ReceiptSchema = new Schema({
     },
     paymentMethod: String, 
 
-    ObjectIdinvoice: mongoose.Schema.Types.ObjectId,
+    ObjectIdinvoice: {type:ObjectId,default :null, ref:'Invoice'},
     listOfAppliedInvoicis: {
         type: [
           {
@@ -56,6 +56,6 @@ const ReceiptSchema = new Schema({
         ref: 'User'
     }
 
-}, { collection: 'Receipts' });
+}, { collection: 'Receipts',strictPopulate: false  });
 
 module.exports = Receipt = mongoose.model("Receipt", ReceiptSchema);

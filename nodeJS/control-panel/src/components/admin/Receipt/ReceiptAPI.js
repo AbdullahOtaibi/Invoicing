@@ -13,6 +13,10 @@ export const getReceipts = (filters) => {
     console.log("url:" +process.env.REACT_APP_API_BASE_URL + "/v1/receipt/filter") ;
     return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/receipt/filter", filters);
 }
+export const getIncomeReport = (filters) => {
+    console.log("url:" +process.env.REACT_APP_API_BASE_URL + "/v1/receipt/generateReport") ;
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/receipt/generateReport", filters);
+}
 
 
 export const getCountReceipts = (filter) => {

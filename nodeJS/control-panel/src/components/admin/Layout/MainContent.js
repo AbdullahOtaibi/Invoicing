@@ -65,6 +65,7 @@ const MyMessages = lazy(() => import(/* webpackChunkName: "MyMessages" */'../Com
 
 const ReportsList = lazy(() => import(/* webpackChunkName: "MyMessages" */'../reports/ReportsList'))
 const IncomeReport = lazy(() => import(/* webpackChunkName: "MyMessages" */'../reports/IncomeReport'))
+const ExpansesReport = lazy(() => import(/* webpackChunkName: "MyMessages" */'../reports/ExpansesReport'))
 
 
 const ListTranslations = lazy(() => import(/* webpackChunkName: "ListTranslations" */'../Translations/ListTranslations'))
@@ -217,6 +218,7 @@ const MainContent = ({notification, onHandleNotification}) => {
                     
                     <Route path="/reports" exact element={<ReportsList/>} />
                     <Route path="/reports/incomereport" exact element={<IncomeReport/>} />
+                    <Route path="/reports/ExpansesReport" exact element={<ExpansesReport/>} />
 
 
                     <Route path="/users" exact element={<ListUsers />} />

@@ -163,6 +163,7 @@ const ListInv = (props) => {
             receipts[indexOfObject+1].receiptBalance = receipts[indexOfObject+1].receiptBalance-resttot;
 
             receipts[indexOfObject+1].listOfAppliedInvoicis.push({newlistOfAppliedInvoicis2});
+            INV.ObjectIdReceipt=receipts[indexOfObject+1]._id
 
 
             }
@@ -189,6 +190,7 @@ const ListInv = (props) => {
             smallestSeqNumberReceipt.receiptBalance = smallestSeqNumberReceipt.receiptBalance-invtot;
             const newlistOfAppliedInvoicis={"INVID":INV._id,"amount":invtot};
             smallestSeqNumberReceipt.listOfAppliedInvoicis.push({newlistOfAppliedInvoicis})
+            INV.ObjectIdReceipt=smallestSeqNumberReceipt._id
 
             INV.isApplied=true
             console.log('Receipt with the smallest seqNumber after pro:', smallestSeqNumberReceipt);

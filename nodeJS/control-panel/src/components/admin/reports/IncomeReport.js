@@ -1,163 +1,193 @@
 import React, { useEffect, useState } from 'react';
-import { getInvoices}
-    from '../Invoices/InvoicesAPI'
-import { getContract } from '../Contracts/ContractsAPI'
+import { getIncomeReport } from '../Receipt/ReceiptAPI';
 
-import  { getReceipts ,getReceipt } from '../Receipt/ReceiptAPI'
-const isKeyInJSONAndNotNull = (jsonObject, keyToCheck) =>
-jsonObject.hasOwnProperty(keyToCheck) && jsonObject[keyToCheck] !== null;
+const IncomeReport = () => {
+  const [reportData, setReportData] = useState([]);
+  const [paymentMethodFilter, setPaymentMethodFilter] = useState('');
+  const [startDateFilter, setStartDateFilter] = useState('');
+  const [endDateFilter, setEndDateFilter] = useState('');
 
-function findKeyByValue(obj, value) {
-    for (const key in obj) {
-      if (obj.hasOwnProperty(key) && obj[key] == value) {
-        return key;
-      }
-    }
-    return null; // Return null if the value is not found
-  }
-async function processInvoicesAndReceipts(invoices, receipts) {
-    const paymentMethodData = {};
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch data using the provided API function with filter parameters
+        const { receipts, invoices, contract } = await getIncomeReport({
+          paymentMethod: paymentMethodFilter,
+          startDate: startDateFilter,
+          endDate: endDateFilter,
+        });
 
-    if (!Array.isArray(invoices)) {
-        console.error('Invoices data is not an array:', invoices);
-        return [];
-    }
+        // Ensure all required arrays are defined
+        if (Array.isArray(receipts) && Array.isArray(invoices) && Array.isArray(contract)) {
+          // Check if arrays have the same length
+          if (receipts.length === invoices.length && invoices.length === contract.length) {
+            // Transform the data structure to match the expected format
+            const transformedData = receipts.map((entry, index) => {
+              // Extract corresponding invoice and receipt information
+              const invoiceInfo = invoices[index] || {};
+              const contractInfo = contract[index] || {};
 
-    await Promise.all(invoices.map(async (invoice) => {
-        const paymentMethod = invoice.paymentMethod || '';
-        if (['Visa', 'Cash','Insurance'].includes(paymentMethod)) {
-            const invoiceNumber = invoice.seqNumber;
-            var receiptNumber=''
-           var receiptAmount=0
-           console.log(invoice.ObjectIdReceipt);
-            if((isKeyInJSONAndNotNull(invoice,"ObjectIdReceipt")|| typeof invoice.ObjectIdReceipt != 'undefined' && paymentMethod !='Insurance' ) ){    
-                receiptNumber = (await getReceipt(invoice.ObjectIdReceipt)).seqNumber  ;
-                receiptAmount =(await getReceipt(invoice.ObjectIdReceipt)).receiptAmount ;
+              const paymentMethod = entry?.paymentMethod || '';
+              const receiptNumber = entry?.seqNumber || '';
+              const receiptAmount = entry?.receiptAmount || 0;
 
-            }
-            else if(paymentMethod =='Insurance' ){
-                let filter={
-                    seqNumber: "",
-                    contactId: invoice.insurance,
-                    contractId: null,
-                };
-              // Call getReceipts to get the receipts data
-             
-              const responseData = await getReceipts(filter);
-              // Extract the receipts array from the response data
-              const receipts = responseData.items;
-          console.log(receipts)
-              // Function to find the receipt with the smallest seqNumber
-              
+              const invoiceNumber = invoiceInfo?.seqNumber || '';
+              const invoiceDocNumber = invoiceInfo?.docNumber || '';
+              const invoiceAmount = invoiceInfo?.taxExclusiveAmount || 0;
+              const date = entry.receiptDate.split('T')[0] || '';
+              const contractNumber = contractInfo?.seqNumber || '';
 
-             
-                var receli=[]
-              const hasInvoiceId = receipts.some((receipt) => {
-                var index = receipt.listOfAppliedInvoicis.indexOf({_id:invoice._id}); // 1
-                if (typeof index === 'number' && Number.isInteger(index)) {receli.push(receipt)}
-
-                 
-              });
-              
-              console.log(receli);
-              receiptNumber=receli[0].seqNumber
-              receiptAmount=invoice.legalMonetaryTotal.taxExclusiveAmount 
-            }
-           
-            const docNumber = invoice.docNumber || '';
-
-            const matchingReceipt = receipts.find(receipt => receipt._id === invoice.ObjectIdReceipt);
-            if (matchingReceipt) {
-                receiptAmount = matchingReceipt.receiptAmount || 0;
-            }
-
-            if (!paymentMethodData[paymentMethod]) {
-                paymentMethodData[paymentMethod] = [];
-            }
-
-            paymentMethodData[paymentMethod].push({
+              return {
                 paymentMethod,
-                receiptNumber: receiptNumber,
-                invoiceNumber:invoiceNumber,
-                invoiceDocNumber: docNumber,
-                receiptAmount:receiptAmount,
-                invoiceAmount: invoice.legalMonetaryTotal.taxExclusiveAmount || 0,
+                receiptNumber,
+                invoiceNumber,
+                invoiceDocNumber,
+                contractNumber,
+                receiptAmount,
+                invoiceAmount,
+                date,
+              };
             });
-        }
-    }));
 
-    const grandTotal = {
-        paymentMethod: 'Grand Total',
-        receiptNumber: null,
-        invoiceNumber: null,
-        receiptAmount: Object.values(paymentMethodData).reduce((total, entries) =>
-            total + entries.reduce((subtotal, entry) => subtotal + entry.receiptAmount, 0), 0),
-        invoiceAmount: Object.values(paymentMethodData).reduce((total, entries) =>
-            total + entries.reduce((subtotal, entry) => subtotal + entry.invoiceAmount, 0), 0),
-        contractNumber: null
+            setReportData(transformedData);
+          } else {
+            console.error('Arrays have different lengths:', { receipts, invoices, contract });
+          }
+        } else {
+          console.error('Some arrays are undefined:', { receipts, invoices, contract });
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        // Handle the error
+      }
     };
 
-    Object.values(paymentMethodData).forEach(entries => entries.push({ ...grandTotal }));
-    console.log(paymentMethodData)
-    const result = Object.values(paymentMethodData).flat();
+    fetchData(); // Call the asynchronous function
+  }, [paymentMethodFilter, startDateFilter, endDateFilter]);
 
-    return result;
-}
-const IncomeReport = () => {
-    const [reportData, setReportData] = useState([]);
+  // Group data by payment method and calculate total amount for each group
+  const groupedData = reportData.reduce((groups, entry) => {
+    const { paymentMethod, receiptAmount } = entry;
+    if (!groups[paymentMethod]) {
+      groups[paymentMethod] = { totalAmount: 0, entries: [] };
+    }
+    groups[paymentMethod].totalAmount += receiptAmount;
+    groups[paymentMethod].entries.push(entry);
+    return groups;
+  }, {});
+
+  // Calculate grand total
+  const grandTotal = Object.values(groupedData).reduce(
+    (total, group) => total + group.totalAmount,
+    0
+  );
+
+  const handleStartDateChange = (e) => {
+    const selectedDate = e.target.value;
+    const formattedDate = formatDate(selectedDate);
+    setStartDateFilter(formattedDate);
+  };
+ 
   
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          // Fetch invoices and receipts data
-          const invoices = (await getInvoices()).items;
-          const receipts = (await getReceipts()).items;
-  
-          // Process invoices and receipts
-          const result = await processInvoicesAndReceipts(invoices, receipts);
-          console.log(result)
-          setReportData(result);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
-  
-      // Call the fetchData function
-      fetchData();
-    }, []); // Empty dependency array to run the effect only once when the component mounts
-  
-    return (
+  const formatDate2 = (inputDate) => {
+    const date = new Date(inputDate);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}T00:00:00.000Z`;
+  };
+
+  const handleEndDateChange = (e) => {
+    const selectedDate = e.target.value;
+    const formattedDate = formatDate(selectedDate);
+    setEndDateFilter(formattedDate);
+  };
+
+  const formatDate = (inputDate) => {
+    const date = new Date(inputDate);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  return (
+    <div>
+      <h1>Income Report</h1>
+      {/* Add filter input fields or date pickers here */}
       <div>
-        <h1>Income Report</h1>
-        <div className="table-responsive">  <table  className="table   table-hover">
+        <label>Payment Method:</label>
+        <select
+          value={paymentMethodFilter}
+          onChange={(e) => setPaymentMethodFilter(e.target.value)}
+        >
+          <option value="">Select Payment Method</option>
+          <option value="Cash">Cash</option>
+          <option value="Visa">Visa</option>
+          <option value="Insurance">Insurance</option>
+        </select>
+      </div>
+      <div>
+        <label>Start Date:</label>
+        <input
+          type="date"
+          value={startDateFilter}
+          onChange={handleStartDateChange}
+        />
+      </div>
+      <div>
+        <label>End Date:</label>
+        <input
+          type="date"
+          value={endDateFilter}
+          onChange={handleEndDateChange}
+        />
+      </div>
+      <div className="table-responsive">
+        <table className="table table-hover">
           <thead>
             <tr>
               <th>Payment Method</th>
               <th>Receipt Number</th>
               <th>Invoice Number</th>
               <th>Invoice docNumber</th>
-
+              <th>Contract Number</th>
               <th>Receipt Amount</th>
-              <th>Invoice Amount</th>
+              <th>Total Amount</th>
             </tr>
           </thead>
           <tbody>
-            {reportData.map((entry, index) => (
-              <tr key={index}>
-                <td>{entry.paymentMethod}</td>
-                <td>{entry.receiptNumber}</td>
-                <td>{entry.invoiceNumber}</td>
-                <td>{entry.invoiceDocNumber}</td>
-
-                <td>{entry.receiptAmount}</td>
-                <td>{entry.invoiceAmount}</td>
-              </tr>
-            ))}
+            {Object.keys(groupedData).map((paymentMethod) => {
+              const group = groupedData[paymentMethod];
+              return (
+                <React.Fragment key={paymentMethod}>
+                  {group.entries.map((entry, index) => (
+                    <tr key={index}>
+                      <td>{entry.paymentMethod}</td>
+                      <td>{entry.receiptNumber}</td>
+                      <td>{entry.invoiceNumber}</td>
+                      <td>{entry.invoiceDocNumber}</td>
+                      <td>{entry.contractNumber}</td>
+                      <td>{entry.receiptAmount}</td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td colSpan="5">Subtotal</td>
+                    <td colSpan="1">{group.totalAmount}</td>
+                    <td></td>
+                  </tr>
+                </React.Fragment>
+              );
+            })}
+            <tr>
+              <td colSpan="7">Grand Total</td>
+              <td>{grandTotal}</td>
+            </tr>
           </tbody>
-        </table></div>
-      
+        </table>
       </div>
-    );
-  };
-  
-  export default IncomeReport;
+    </div>
+  );
+};
+
+export default IncomeReport;

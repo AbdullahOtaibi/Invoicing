@@ -1,0 +1,26 @@
+/* ExpenseReport.css */
+
+.filter-container {
+    margin-bottom: 10px;
+  }
+  
+  .expense-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .expense-table th, .expense-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .expense-table th {
+    background-color: #f2f2f2;
+  }
+  
+  .expense-table tr:hover {
+    background-color: #f5f5f5;
+  }
+  

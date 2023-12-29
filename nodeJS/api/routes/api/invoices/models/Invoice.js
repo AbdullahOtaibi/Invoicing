@@ -11,7 +11,11 @@ const InvoiceSchema = new Schema({
     },
     invoiceSequance:String, 
     invoiceUUID: String,
-    ObjectIdReceipt:ObjectId,
+    ObjectIdReceipt:{type:ObjectId,
+        ref: 'Receipt',
+        default:null
+
+    },
 
     incomeSourceSequence: String,
     invoiceCategory: String,
