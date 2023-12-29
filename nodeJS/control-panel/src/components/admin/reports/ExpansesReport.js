@@ -29,13 +29,17 @@ const ExpenseReport = () => {
       const endDateCheck = !filter.endDate || new Date(expense.createdDate) <= new Date(filter.endDate);
       const monthCheck = !filter.month || expense.month === parseInt(filter.month, 10);
       const yearCheck = !filter.year || expense.year === parseInt(filter.year, 10);
-      const categoryCheck = !filter.category || expense.details.some(detail => detail.category.toLowerCase().includes(filter.category.toLowerCase()));
+  
+      // Category filter applied only to details
+      const categoryCheck = !filter.category || 
+        expense.details.some(detail => detail.category.toLowerCase().includes(filter.category.toLowerCase()));
   
       return startDateCheck && endDateCheck && monthCheck && yearCheck && categoryCheck;
     });
   
     setFilteredExpenses(filteredData);
   };
+  
   
 
   const calculateTotal = () => {
@@ -92,28 +96,34 @@ const ExpenseReport = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredExpenses.map(expense => (
-            <tr key={expense._id}>
-              <td>{expense.seqNumber}</td>
-              <td>{expense.year}</td>
-              <td>{expense.month}</td>
-              <td>{expense.totalAmount}</td>
-              <td>
-                {expense.details && expense.details.length > 0 && (
-                  <ul>
-                    {expense.details.map((detail, index) => (
-                      <li key={index}>
-                        Amount: {detail.amount}, Category: {detail.category}
-                        {/* Add more details fields as needed */}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </td>
-              {/* Add more cells as needed */}
-            </tr>
-          ))}
-        </tbody>
+  {filteredExpenses.map(expense => (
+    <React.Fragment key={expense._id}>
+      <tr>
+        <td>{expense.seqNumber}</td>
+        <td>{expense.year}</td>
+        <td>{expense.month}</td>
+        <td>{expense.totalAmount}</td>
+        <td>
+          {expense.details && expense.details.length > 0 && (
+            <ul>
+              {expense.details
+                .filter(detail => 
+                  !filter.category || 
+                  detail.category.toLowerCase().includes(filter.category.toLowerCase())
+                )
+                .map((detail, index) => (
+                  <li key={index}>
+                    Amount: {detail.amount}, Category: {detail.category}
+                    {/* Add more details fields as needed */}
+                  </li>
+                ))}
+            </ul>
+          )}
+        </td>
+      </tr>
+    </React.Fragment>
+  ))}
+</tbody>
       </table>
     </div>
   );
