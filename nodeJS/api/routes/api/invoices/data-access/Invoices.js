@@ -31,14 +31,26 @@ function Invoices() {
       to: phoneNumber,
       type: 'template',
       template: {
-        name: 'hello_world',
+        name: 'client_invoice_template',
         language: {
           code: 'en_US'
         },
-        components: [{
-          type: 'text',
-          text: invoice_key
-        }]
+        components: [
+          {
+            type: 'body',
+            parameters: [
+              {
+                type: 'text',
+                text: ''+invoice_key
+              },
+              {
+                type: 'text',
+                text: 'https://tax-jo.com/admin/invoices/PdfInvoice/' + invoice_key
+              }
+            ]
+          }
+
+        ]
 
       }
     };
