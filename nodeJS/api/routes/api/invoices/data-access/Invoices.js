@@ -35,6 +35,10 @@ function Invoices() {
         language: {
           code: 'en_US'
         },
+        components: [{
+          type: 'text',
+          text: invoice_key
+        }]
 
       }
     };
