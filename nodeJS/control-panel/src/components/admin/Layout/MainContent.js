@@ -76,6 +76,7 @@ const ListInvoices = lazy(() => import(/* webpackChunkName: "ListInvoices" */'..
 const CreateInvoice = lazy(() => import(/* webpackChunkName: "CreateInvoice" */'../Invoices/CreateInvoice'))
 const EditInvoice = lazy(() => import(/* webpackChunkName: "EditInvoice" */'../Invoices/EditInvoice'))
 const ViewInvoice = lazy(() => import(/* webpackChunkName: "ViewInvoice" */'../Invoices/ViewInvoice'))
+const PdfInvoice = lazy(() => import(/* webpackChunkName: "PdfInvoice" */'../Invoices/PdfInvoice'))
 
 
 const FullCalendarList = lazy(() => import(/* webpackChunkName: "FullCalendarList" */'../FullCalendar/FullCalendarList'));
@@ -230,6 +231,7 @@ const MainContent = ({notification, onHandleNotification}) => {
                     <Route path="/invoices" exact element={<ListInvoices />} />
                     <Route path="/invoices/create" element={<CreateInvoice />} />
                     <Route path="/invoices/ViewInvoice/:invoiceId" element={<ViewInvoice />} />
+                    <Route path="/invoices/PdfInvoice/:invoiceId" element={<PdfInvoice />} />
                     <Route path="/invoices/edit/:invoiceId" element={<EditInvoice />} />
                     <Route path="/invoices/createForContract/:contractId" element={<CreateInvoice />} />
                    

@@ -1,8 +1,8 @@
 import { getSecured, postSecured } from '../../../services/ApiClient'
 
 
-export const sendWhatsApp = (invoiceId) => {
-    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/sendWhatsApp", { invoiceId: invoiceId });
+export const sendWhatsApp = (invoiceId, phoneNumber) => {
+    return postSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/sendWhatsApp", { invoiceId: invoiceId, phoneNumber: phoneNumber });
 }
 export const removeInvoice = (invoiceId) => {
     return getSecured(process.env.REACT_APP_API_BASE_URL + "/v1/invoices/remove/" + invoiceId);

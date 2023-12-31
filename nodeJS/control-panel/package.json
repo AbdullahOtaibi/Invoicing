@@ -29,6 +29,7 @@
     "react-router-dom": "6.11.2",
     "react-router-sitemap-generator": "^0.0.8",
     "react-scripts": "^5.0.1",
+    "react-to-pdf": "^1.0.1",
     "react-toastify": "^9.1.3",
     "react-transition-group": "^4.4.5",
     "sweetalert": "^2.1.2",

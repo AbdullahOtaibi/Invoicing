@@ -13,28 +13,29 @@ const { query } = require('express');
 function Invoices() {
 
 
-  this.sendWhatsApp = async function (invoiceId) {
+  this.sendWhatsApp = async function (invoiceId, phoneNumber) {
     var invoice = await Invoice.findOne({ _id: invoiceId, deleted: false });
     console.log("invoice:" + invoice._id);
     //var phoneNumber = invoice.contact.phone;
-    var phoneNumber = '962789129394';
+    //phoneNumber = '962789129394';
     var invoice_key = invoice._id;// "123456";
 
 
     const axios = require('axios');
 
     const url = 'https://graph.facebook.com/v17.0/106456999222197/messages';
-    const accessToken = 'EAAJ8wrVhB5gBO7rXBN7vqoj1PFbyGwDl3mOTafIlpFBVe8xPytMxPuPeW1ZBnz24JfCSIgpZCqHpFlTyLZAnJ3PHAZAG3i1BpCLRpiCh3Cr2eYA6R2t5ZBVYJDoweiWQ00O7FoLDiirAHFYMnazhTXhjLprQbYlPJkurvqPYUnVx3WVZCWZBWRKBb9nwUyeijARgZBjMVLX7iZAZAepZCkUIJwpNcDZByhjo';
+    const accessToken = 'EAAJ8wrVhB5gBOxHYdXGsFhpoUPbH4cy0pnqXGYZCmrdYqpV66Dh8TCEXZCyg23LQkJGlPbg51xOVfKJRrY2dJIE23vLdqB87zCIXlhcPDQ7aKZCfqLtZCd1057gHYZCJeUHjiu2ZCY2aQbrXCgaT4zMG1oZAFx4WQPE1Fs1PpMP2ajg6dxdBI4OBKqKCRhEbIE3CD3g21SBqnvnECVyTRF4tvZBCoVcZD';
 
     const data = {
       messaging_product: 'whatsapp',
-      to: '962789129394',
+      to: phoneNumber,
       type: 'template',
       template: {
         name: 'hello_world',
         language: {
           code: 'en_US'
-        }
+        },
+
       }
     };
 

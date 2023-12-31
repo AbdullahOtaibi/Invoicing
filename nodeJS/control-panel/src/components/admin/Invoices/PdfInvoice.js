@@ -1,7 +1,7 @@
 import { CSSTransition } from 'react-transition-group';
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import swal from 'sweetalert';
+import { usePDF } from 'react-to-pdf';
 import { hasPermission } from "../utils/auth";
 import { getInvoice, removeInvoice, updateInvoice, postToTaxTypeIncome, postToTaxTypeRevertedIncome, getSumInvoicesByContractId, sendWhatsApp } from "./InvoicesAPI";
 import { Helmet } from "react-helmet";
@@ -32,7 +32,46 @@ import { getContract, updateContract } from "../Contracts/ContractsAPI";
 //const ViewOrder = (props) => {
 
 const ViewInvoice = (props) => {
+  const { toPDF, targetRef } = usePDF({ filename: 'page.pdf' });
+  const options = {
+    // default is `save`
+    method: 'open',
+    // default is Resolution.MEDIUM = 3, which should be enough, higher values
+    // increases the image quality but also the size of the PDF, so be careful
+    // using values higher than 10 when having multiple pages generated, it
+    // might cause the page to crash or hang.
+    
+    page: {
+       // margin is in MM, default is Margin.NONE = 0
+      // margin: Margin.SMALL,
+       // default is 'A4'
+       format: 'letter',
+       // default is 'portrait'
+       orientation: 'landscape',
+    },
+    canvas: {
+       // default is 'image/jpeg' for better size performance
+       mimeType: 'image/png',
+       qualityRatio: 1
+    },
+    // Customize any value passed to the jsPDF instance and html2canvas
+    // function. You probably will not need this and things can break, 
+    // so use with caution.
+    overrides: {
+       // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
+       pdf: {
+          compress: true
+       },
+       // see https://html2canvas.hertzen.com/configuration for more options
+       canvas: {
+          useCORS: true
+       }
+    },
+ };
 
+  useEffect(() => {
+    toPDF();
+  }, []);
 
   let navigate = useNavigate();
 
@@ -95,16 +134,7 @@ const ViewInvoice = (props) => {
   }
 
   function sendInvoiceViaWhatsApp() {
-    swal("Enter phone number here:", {
-      content: "input",
-    })
-      .then((value) => {
-        sendWhatsApp(invoiceId, value);
-        //  swal(`You typed: ${value}`);
-      });
-
-    // 
-
+    sendWhatsApp(invoiceId);
   }
 
   function getInvoiceDate() {
@@ -239,30 +269,31 @@ const ViewInvoice = (props) => {
   };
 
   const isKeyInJSONAndNotNull = (jsonObject, keyToCheck) =>
-    jsonObject.hasOwnProperty(keyToCheck) && jsonObject[keyToCheck] !== null;
+  jsonObject.hasOwnProperty(keyToCheck) && jsonObject[keyToCheck] !== null;
   console.log("----------------------------")
   console.log(invoice)
   const renderContent = () => {
-    if (isKeyInJSONAndNotNull(invoice, "ObjectIdReceipt")) {
-
-      return (<Link style={{ display: 'none' }} className="btn btn-primary btn-lg d-print-none" to={"/admin/Invoices/notfound/" + invoice._id}>
-        <MdEdit size={20} />
-        &nbsp; {t("dashboard.edit")}
-      </Link>);
+    if (isKeyInJSONAndNotNull(invoice,"ObjectIdReceipt")) {
+       
+      return (<Link style={{display: 'none'}} className="btn btn-primary btn-lg d-print-none" to={"/admin/Invoices/notfound/" + invoice._id}>
+           <MdEdit size={20} />
+           &nbsp; {t("dashboard.edit")}
+         </Link> );
     } else {
-
-      return (<Link className="btn btn-primary btn-lg d-print-none" to={"/admin/Invoices/edit/" + invoice._id}>
-        <MdEdit size={20} />
-        &nbsp; {t("dashboard.edit")}
-      </Link>)
+       
+      return(<Link className="btn btn-primary btn-lg d-print-none" to={"/admin/Invoices/edit/" + invoice._id}>
+           <MdEdit size={20} />
+           &nbsp; {t("dashboard.edit")}
+         </Link> )
     }
   };
   return (
     <>
+      <div ref={targetRef} >
       {invoice ? (
         <div className="card">
           <h5 className="card-header">
-            <MdOutlineReceiptLong /> {t("invoice.InvoiceDetails")} {invoice.seqNumber != null ? (<span className="text-info px-1">  ({invoice.seqNumber} ) </span>) : (<span className="text-info px-1"> {invoice.docNumber} </span>)}
+            <MdOutlineReceiptLong /> {t("invoice.InvoiceDetails")} {invoice.seqNumber!=null? ( <span className="text-info px-1">  ({invoice.seqNumber} ) </span>):(<span className="text-info px-1"> {invoice.docNumber} </span>)}
 
           </h5>
           <div className="card-body">
@@ -364,8 +395,8 @@ const ViewInvoice = (props) => {
 
                   {invoice.status == "posted" || invoice.status == "reverted" ? (<button type='button' className='btn btn-lg btn-dark d-print-none' onClick={() => { window.print() }}>
                     <MdPrint size={28} />
-                  </button>) : null}
-
+                  </button>):null}
+                  
 
 
                   {
@@ -792,7 +823,7 @@ const ViewInvoice = (props) => {
                 <div className="row action-bar">
                   <div className="row text-right">
 
-                    {!(invoice.status == "posted" || invoice.reverted_Status == 'posted') ?
+                    {!(invoice.status == "posted" || invoice.reverted_Status == 'posted')  ?
                       <div className="col d-print-none">
                         <ConfirmButton
                           onConfirm={doPost}
@@ -822,10 +853,10 @@ const ViewInvoice = (props) => {
                       </Link>
                       &nbsp;
 
-                      {!(invoice.status == "posted" || invoice.reverted_Status == 'posted') ?
-                        renderContent() : ""}
-
-
+                   { !(invoice.status == "posted" || invoice.reverted_Status == 'posted')  ? 
+                    renderContent(): ""}
+          
+                   
 
                     </div>
 
@@ -840,7 +871,8 @@ const ViewInvoice = (props) => {
         </div>
       ) : (
         <>No Data Found</>
-      )}
+        )}
+        </div>
     </>
   );
 };

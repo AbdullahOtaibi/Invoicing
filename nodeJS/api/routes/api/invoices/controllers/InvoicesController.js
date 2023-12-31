@@ -63,7 +63,8 @@ const getNewStatus = (Invoice) => {
 
 router.post("/sendWhatsApp", verifyToken, async (req, res) => {
   var invoiceId = req.body.invoiceId;
-  Invoices.sendWhatsApp(invoiceId);
+  var phoneNumber = req.body.phoneNumber;
+  Invoices.sendWhatsApp(invoiceId, phoneNumber);
 });
 
 router.post("/filter", verifyToken, async (req, res) => {
