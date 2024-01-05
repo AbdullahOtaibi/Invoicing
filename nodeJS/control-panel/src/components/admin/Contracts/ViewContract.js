@@ -126,22 +126,22 @@ return (
           <div className="row text-right">
             <div className="mb-3  col justify-content-end">
 
-              <Link className="btn btn-secondary btn-lg" onClick={clickNewReceipt}>
+              <Link className="btn btn-secondary btn-lg d-print-none" onClick={clickNewReceipt}>
                 <MdReceipt size={20} /> &nbsp; {t("contracts.createReceipt")}
               </Link>{" "}
               &nbsp;
 
-              <Link className="btn btn-success btn-lg" onClick={clickNewOppo}>
+              <Link className="btn btn-success btn-lg d-print-none" onClick={clickNewOppo}>
                 <MdAddTask size={20} /> &nbsp; {t("contracts.createAppointment")}
               </Link>{" "}
               &nbsp;
 
-              <Link className="btn btn-info btn-lg mx-1" to={"/invoices/createForContract/" + contract._id}>
+              <Link className="btn btn-info btn-lg mx-1 d-print-none" to={"/invoices/createForContract/" + contract._id}>
                 <MdCollectionsBookmark size={20} />
                 &nbsp; {t("invoice.createInvoice")}
               </Link>
 
-              <a href="#" className="btn btn-dark btn-lg mx-1" onClick={() => { window.print(); }}>
+              <a href="#" className="btn btn-dark btn-lg mx-1 d-print-none" onClick={() => { window.print(); }}>
                 <MdOutlineLocalPrintshop size={20} />
 
               </a>

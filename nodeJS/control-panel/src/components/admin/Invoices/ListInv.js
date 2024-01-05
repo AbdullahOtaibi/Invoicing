@@ -113,7 +113,7 @@ const ListInv = (props) => {
         });
       };
   
-    const processReceipts = async (insuranceId,invtot,INV) => {
+  /*  const processReceipts = async (insuranceId,invtot,INV) => {
         try {
 
             let filter={
@@ -216,7 +216,7 @@ const ListInv = (props) => {
       
               }
            
-        */
+       
             }).catch((err)=> { console.log(err)}) ;
             updateInvoice(INV);
         
@@ -229,7 +229,7 @@ const ListInv = (props) => {
           // Handle the error as needed
           return [];
         }
-      };
+      }; */
       
       // Call the function to process receipts
 
@@ -362,15 +362,7 @@ const ListInv = (props) => {
                                     : ""
                                 }
 
-{item.insurance!=null && item.isApplied==false ?
-                                    <td className="justify-content-end" style={{ textAlign: 'end', width:"20px" ,height:"5px"}}>
-                                      <><Link href="#" onClick={() => processReceipts(item.insurance,item.legalMonetaryTotal.taxExclusiveAmount,item)}className="btn btn-primary "  title="apply invoice"  >
-                                            apply invoice  </Link> </>
-                                     
-                                       
-                                    </td>
-                                    : ""
-                                }
+
                             </tr>
                         ))
                     }

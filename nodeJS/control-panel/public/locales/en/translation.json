@@ -588,6 +588,7 @@
     "contractInformation" : "Contract Information" 
   },
   "contracts": {
+    "grandTotals":"grandTotals",
     "contractNo": "Contract No.",
     "contracts": "Contracts",
     "addNewContract": "Add New Contract",

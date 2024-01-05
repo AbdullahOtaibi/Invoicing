@@ -12,6 +12,11 @@ const ReceiptListControl = (props) => {
     const [receiptsPage, setReceiptsPage] = useState(0);
     const [receiptsPages, setReceiptsPages] = useState(0);
 
+
+
+
+
+    
     const loadNewPage = (newPage) => {
         if (newPage < 0 || (newPage >= receiptsPages && receiptsPages > 0)) {
             return;

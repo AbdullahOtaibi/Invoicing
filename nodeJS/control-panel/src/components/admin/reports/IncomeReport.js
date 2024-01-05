@@ -112,78 +112,98 @@ const IncomeReport = () => {
   };
 
   return (
+
+
+    
     <div>
       <h1>Income Report</h1>
-      {/* Add filter input fields or date pickers here */}
-      <div>
-        <label>Payment Method:</label>
-        <select
-          value={paymentMethodFilter}
-          onChange={(e) => setPaymentMethodFilter(e.target.value)}
-        >
-          <option value="">Select Payment Method</option>
-          <option value="Cash">Cash</option>
-          <option value="Visa">Visa</option>
-          <option value="Insurance">Insurance</option>
-        </select>
-      </div>
-      <div>
-        <label>Start Date:</label>
-        <input
-          type="date"
-          value={startDateFilter}
-          onChange={handleStartDateChange}
-        />
-      </div>
-      <div>
-        <label>End Date:</label>
-        <input
-          type="date"
-          value={endDateFilter}
-          onChange={handleEndDateChange}
-        />
+
+      <div className="invoiceSearch mb-5">
+        <div className="card">
+          <form>
+            {/* Add filter input fields or date pickers here */}
+            <div className="row mb-3">
+              <div className="col-md-4">
+                <label className="form-label">Payment Method:</label>
+                <select
+                  className="form-select"
+                  value={paymentMethodFilter}
+                  onChange={(e) => setPaymentMethodFilter(e.target.value)}
+                >
+                  <option value="">Select Payment Method</option>
+                  <option value="Cash">Cash</option>
+                  <option value="Visa">Visa</option>
+                  <option value="Insurance">Insurance</option>
+                </select>
+              </div>
+
+              <div className="col-md-4">
+                <label className="form-label">Start Date:</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  value={startDateFilter}
+                  onChange={handleStartDateChange}
+                />
+              </div>
+
+              <div className="col-md-4">
+                <label className="form-label">End Date:</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  value={endDateFilter}
+                  onChange={handleEndDateChange}
+                />
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
       <div className="table-responsive">
         <table className="table table-hover">
-          <thead>
-            <tr>
-              <th>Payment Method</th>
-              <th>Receipt Number</th>
-              <th>Invoice Number</th>
-              <th>Invoice docNumber</th>
-              <th>Contract Number</th>
-              <th>Receipt Amount</th>
-              <th>Total Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.keys(groupedData).map((paymentMethod) => {
-              const group = groupedData[paymentMethod];
-              return (
-                <React.Fragment key={paymentMethod}>
-                  {group.entries.map((entry, index) => (
-                    <tr key={index}>
-                      <td>{entry.paymentMethod}</td>
-                      <td>{entry.receiptNumber}</td>
-                      <td>{entry.invoiceNumber}</td>
-                      <td>{entry.invoiceDocNumber}</td>
-                      <td>{entry.contractNumber}</td>
-                      <td>{entry.receiptAmount}</td>
-                    </tr>
-                  ))}
-                  <tr>
-                    <td colSpan="5">Subtotal</td>
-                    <td colSpan="1">{group.totalAmount}</td>
-                    <td></td>
-                  </tr>
-                </React.Fragment>
-              );
-            })}
-            <tr>
-              <td colSpan="7">Grand Total</td>
-              <td>{grandTotal}</td>
-            </tr>
-          </tbody>
+        <thead>
+  <tr>
+    <th colSpan="1">Payment Method</th>
+    <th colSpan="1">Receipt Number</th>
+    <th colSpan="1">Invoice Number</th>
+    <th colSpan="1">Invoice docNumber</th>
+    <th colSpan="1">Contract Number</th>
+    <th colSpan="1">Receipt Amount</th>
+    <th colSpan="1"></th> {/* Empty cell for consistency */}
+  </tr>
+</thead>
+        <tbody>
+  {Object.keys(groupedData).map((paymentMethod) => {
+    const group = groupedData[paymentMethod];
+    return (
+      <React.Fragment key={paymentMethod}>
+        {group.entries.map((entry, index) => (
+          <tr key={index}>
+            <td colSpan="1">{entry.paymentMethod}</td>
+            <td colSpan="1">{entry.receiptNumber}</td>
+            <td colSpan="1">{entry.invoiceNumber}</td>
+            <td colSpan="1">{entry.invoiceDocNumber}</td>
+            <td colSpan="1">{entry.contractNumber}</td>
+            <td colSpan="1">{entry.receiptAmount}</td>
+            <td colSpan="1"></td> {/* Empty cell for consistency */}
+          </tr>
+        ))}
+        <tr>
+          <td colSpan="5">Subtotal</td>
+          <td colSpan="1">{group.totalAmount}</td>
+          <td colSpan="1"></td> {/* Empty cell for consistency */}
+        </tr>
+        
+      </React.Fragment>
+    );
+  })}
+  <tr>
+    <td colSpan="5">Grand Total</td>
+    <td colSpan="1">{grandTotal}</td>
+    <td colSpan="1"></td> {/* Empty cell for consistency */}
+  </tr>
+</tbody>
         </table>
       </div>
     </div>

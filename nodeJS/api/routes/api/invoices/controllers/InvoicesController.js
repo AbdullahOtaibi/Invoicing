@@ -95,6 +95,7 @@ router.post("/filter", verifyToken, async (req, res) => {
     let endDate = filters.endDate || null;
     let insurance = filters.insurance || null;
 
+
     // companyID: localStorage.getItem("companyId"),
     //let companyId
     //pending, 1=new, 2=Partially Confirmed, 3=All Items Confirmed, 4=Partially Available, 5=All Items Available, 100=Closed
@@ -166,6 +167,7 @@ router.post("/filter", verifyToken, async (req, res) => {
         $eq: req.user.companyId,
       },
     });
+    
 
     queryParams["$and"].push({
       "company": {

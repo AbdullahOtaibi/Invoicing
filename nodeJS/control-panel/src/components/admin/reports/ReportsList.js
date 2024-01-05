@@ -9,7 +9,8 @@ const ReportList = () => {
         {/* Add links to different reports */}
         <li><Link to="/reports/IncomeReport">Income Report</Link></li>
         <li><Link to="/reports/ExpansesReport">Expanses Report</Link></li>
-
+        <li><Link to="/reports/InvoiceReport">Invoice Report</Link></li>
+        <li><Link to="/reports/ContractReport">Contract Report</Link></li>
         {/* Add more links for other reports */}
       </ul>
     </div>
