@@ -270,13 +270,13 @@ const ViewReceipt = (props) => {
   &nbsp; {t("dashboard.edit")}
 </Link>  )}
 
-{receipt && receipt.contact && receipt.contact.contactType === "Insurance" && receipt.receiptBalance !== 0 && (
-  <td className="justify-content-end" style={{ textAlign: 'end', width: "20px", height: "5px" }}>
-    <Link href="#" onClick={() => processReceipts(receipt)} className="btn btn-primary btn-lg d-print-none" title="apply invoice">
-      Apply Invoice
-    </Link>
-  </td>
-)}
+{//receipt && receipt.contact && receipt.contact.contactType === "Insurance" && receipt.receiptBalance !== 0 && 
+//(<td className="justify-content-end" style={{ textAlign: 'end', width: "20px", height: "5px" }}>
+   // <Link href="#" onClick={() => processReceipts(receipt)} className="btn btn-primary btn-lg d-print-none" title="apply invoice">
+     // Apply Invoice
+    //</Link>
+// </td>)
+}
                     { !props.selectedReceiptObj && 
                 
                 <ConfirmButton
