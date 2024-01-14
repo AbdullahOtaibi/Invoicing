@@ -87,10 +87,7 @@ const ListReceipt = (props) => {
 
                         <div className='col-md-4 col-sm-6' style={{ textAlign: 'end' }}>
                             
-                        <button type="button" className="btn-success btn-lg mx-1" onClick={() => { setSearchVisible(!searchVisible); }} ><MdSearch size={20} />  {t("search")}</button>
-
-                            <a className="add-btn btn-info btn-lg" href={"/admin/Receipt/create"}><MdAdd size={20} />  {t("dashboard.add")}</a>
-                            
+                      
 
                         </div>
                     </div>

@@ -291,6 +291,8 @@ const EditCompany = (props) => {
     const imageUploaded = uploadedImage => {
         let cloned = JSON.parse(JSON.stringify(company));
         cloned.logoUrl = uploadedImage.url;
+        localStorage.setItem("logoUrl", uploadedImage.url)
+
         setcompany(cloned);
 
     }
@@ -316,7 +318,7 @@ const EditCompany = (props) => {
                 <form>
 
                     <div className="mb-3">
-                        <img src={company.logoUrl ? "/uploads/" + company.logoUrl : "/images/no-image.png"}
+                        <img src={(company.logoUrl ? "/uploads/" + company.logoUrl : "/images/no-image.png")}
                             style={{ width: '200px', hwight: '200px' }}
                             alt="Logo"
                         />

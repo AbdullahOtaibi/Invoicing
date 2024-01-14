@@ -8,6 +8,7 @@ import {
     MdOutlineReceiptLong, MdReduceCapacity, MdRealEstateAgent, MdOutlineMarkAsUnread, MdCalendarViewMonth, MdContacts, MdOutlineGroup, MdReceipt, MdReceiptLong, MdPayment, MdCategory
 } from "react-icons/md";
 import { BsMenuButtonFill, BsCreditCard } from 'react-icons/bs';
+import { TbReportAnalytics } from "react-icons/tb";
 
 import { useTranslation } from "react-i18next";
 import '../../../assets/css/dark-side-style.css'
@@ -172,7 +173,7 @@ const Sidebar = () => {
                     {localStorage.getItem("permissions") != null && localStorage.getItem("permissions").indexOf("vendors.view") > -1 ? (
                     <li className={getClass('/admin/reports')}>
                         <Link className="wave-effect waves-effect waves-button" to="/admin/reports" >
-                             <MdRealEstateAgent size={18} /> &nbsp; {t("sidebar.reports")}
+                             <TbReportAnalytics size={18} /> &nbsp; {t("sidebar.reports")}
                         </Link >
                     </li>) : null}
 

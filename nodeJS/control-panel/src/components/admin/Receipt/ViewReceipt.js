@@ -2,7 +2,8 @@ import { CSSTransition } from 'react-transition-group';
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { hasPermission } from "../utils/auth";
-
+import { getInvoices,updateInvoice}
+    from '../Invoices/InvoicesAPI'
 import { Helmet } from "react-helmet";
 import {
   MdOutlineReceiptLong,
@@ -24,8 +25,58 @@ import { MdAdd, MdDelete, MdReceipt } from "react-icons/md";
 import { RiRefund2Fill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {getReceipt , removeReceipt } from "./ReceiptAPI"
+import  {getReceipt, updateReceipt ,getReceipts, removeReceipt} from './ReceiptAPI'
 import moment from "moment";
+ 
+
+/*const processReceipts = async (receipt) => {
+  const invoices = await getInvoices({
+    insuranceId: receipt.contact._id
+  });
+  let filter={
+    seqNumber: "",
+    contactId: receipt.contact._id,
+    contractId: null,
+};
+// Call getReceipts to get the receipts data
+
+const responseData = await getReceipts(filter);
+// Extract the receipts array from the response data
+const receiptslist = responseData.items;
+  
+  // Filter invoices where isApplied is false
+  const filteredInvoices = invoices.items.filter(invoice => !invoice.isApplied);
+
+  // Sort the filteredInvoices based on serialNumber
+  filteredInvoices.sort((a, b) => {
+    return a.serialNumber - b.serialNumber;
+  });
+  console.log("before:")
+
+  console.log(receipt)
+  console.log(filteredInvoices);
+
+  // Loop through filteredInvoices and update values
+  for (const invoice of filteredInvoices) {
+  if(receipt.receiptBalance>invoice.legalMonetaryTotal.payableAmount){  invoice.isApplied = true;
+    invoice.ObjectIdReceipt = receipt._id
+    receipt.receiptBalance=receipt.receiptBalance-invoice.legalMonetaryTotal.payableAmount
+    const newlistOfAppliedInvoicis={"INVID":invoice._id,"amount":invoice.legalMonetaryTotal.payableAmount};
+    receipt.listOfAppliedInvoicis.push({newlistOfAppliedInvoicis})}
+  else{
+if(receiptslist.length>1){}
+
+  }
+  
+  }
+  console.log("after:")
+
+  console.log(receipt)
+
+  console.log(filteredInvoices);
+
+
+};*/
 
 
 const ViewReceipt = (props) => {
@@ -43,6 +94,7 @@ const ViewReceipt = (props) => {
       setReceipt(res)
       console.log("receipt:" )
       console.log( JSON.stringify(res)) ;
+
     }
   ).catch((error) =>{ console.log(error)}) 
   setLoading(false) ; 
@@ -51,10 +103,12 @@ const ViewReceipt = (props) => {
   function isKeyInJSONAndNotNull(jsonObject, keyToCheck) {
     return jsonObject.hasOwnProperty(keyToCheck) && jsonObject[keyToCheck] !== null;
   }
+  
   console.log("receipt:-------------------------------" )
 
   console.log(receipt)
   moment.locale("en-GB");
+   
   return (
    (receipt ?  (
       <>
@@ -215,6 +269,14 @@ const ViewReceipt = (props) => {
   <MdEdit size={20} />
   &nbsp; {t("dashboard.edit")}
 </Link>  )}
+
+{receipt && receipt.contact && receipt.contact.contactType === "Insurance" && receipt.receiptBalance !== 0 && (
+  <td className="justify-content-end" style={{ textAlign: 'end', width: "20px", height: "5px" }}>
+    <Link href="#" onClick={() => processReceipts(receipt)} className="btn btn-primary btn-lg d-print-none" title="apply invoice">
+      Apply Invoice
+    </Link>
+  </td>
+)}
                     { !props.selectedReceiptObj && 
                 
                 <ConfirmButton

@@ -61,17 +61,22 @@ const ReceiptListControl = (props) => {
     };
 
     const printReceipt = (id) => {
-        let newWindow = window.open('Receipt/view/' + id);
+        const baseUrl = window.location.origin;
 
-        // Wait for the page to load
-        newWindow.addEventListener('DOMContentLoaded', () => {
-            // Introduce a delay of 2000 milliseconds (2 seconds) before printing
+        // Append the relative URL to the base URL
+        const url = `${baseUrl}/Receipt/view/${id}`;
+    
+        let newWindow = window.open(url);    
+        // Wait for the page to fully load
+        newWindow.addEventListener('load', () => {
+            // Introduce a longer delay (e.g., 2000 milliseconds) before printing
             setTimeout(() => {
                 newWindow.print();
                 newWindow.close();
             }, 10);
         });
     };
+    
 
     useEffect(() => {
         loadNewPage(0);

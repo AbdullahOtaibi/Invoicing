@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getIncomeReport } from '../Receipt/ReceiptAPI';
+import { MdEdit, MdClose, MdAddTask, MdCollectionsBookmark, MdOutlineLocalPrintshop } from "react-icons/md";
 
 const IncomeReport = () => {
   const [reportData, setReportData] = useState([]);
@@ -116,6 +117,21 @@ const IncomeReport = () => {
 
     
     <div>
+      <a href="#" className="btn btn-dark btn-lg mx-1 d-print-none" onClick={() => { window.print(); }}>
+    <MdOutlineLocalPrintshop size={20} />
+
+  </a>
+      <div className='row p-3 d-none d-print-flex'>
+                <div className='col col-auto'>
+                  {/* <img src='https://www.tailorbrands.com/wp-content/uploads/2020/07/mcdonalds-logo.jpg' style={{width:'100px'}} /> */}
+                  <img src={process.env.REACT_APP_MEDIA_BASE_URL + '/uploads/' + localStorage.getItem("logoUrl")} style={{ width: '100px' }} />
+                </div>
+                <div className='col'>
+                  <h5>
+                    {localStorage.getItem("companyName")}
+                                      </h5>
+          </div>
+          </div>
       <h1>Income Report</h1>
 
       <div className="invoiceSearch mb-5">
@@ -130,7 +146,7 @@ const IncomeReport = () => {
                   value={paymentMethodFilter}
                   onChange={(e) => setPaymentMethodFilter(e.target.value)}
                 >
-                  <option value="">Select Payment Method</option>
+                  <option value="">all</option>
                   <option value="Cash">Cash</option>
                   <option value="Visa">Visa</option>
                   <option value="Insurance">Insurance</option>

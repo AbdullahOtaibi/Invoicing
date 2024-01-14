@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getExpenses } from '../Expenses/ExpensesAPI';
 import './ExpansesReport.css'; // Import CSS file for styling
+import { MdEdit, MdClose, MdAddTask, MdCollectionsBookmark, MdOutlineLocalPrintshop } from "react-icons/md";
 
 const ExpenseReport = () => {
   const [expenses, setExpenses] = useState([]);
@@ -47,7 +48,25 @@ const ExpenseReport = () => {
   };
 
   return (
-    <div className="invoiceSearch mb-5">
+    <div>
+      <a href="#" className="btn btn-dark btn-lg mx-1 d-print-none" onClick={() => { window.print(); }}>
+    <MdOutlineLocalPrintshop size={20} />
+
+  </a>
+      <div className='row p-3 d-none d-print-flex'>
+                <div className='col col-auto'>
+                  {/* <img src='https://www.tailorbrands.com/wp-content/uploads/2020/07/mcdonalds-logo.jpg' style={{width:'100px'}} /> */}
+                  <img src={process.env.REACT_APP_MEDIA_BASE_URL + '/uploads/' + localStorage.getItem("logoUrl")} style={{ width: '100px' }} />
+                </div>
+                <div className='col'>
+                  <h5>
+                    {localStorage.getItem("companyName")}
+                                      </h5>
+          </div>
+          </div>
+                  <h1>Expanses Report</h1>
+
+      <div className="invoiceSearch mb-5">
     <div className="card">
         <div className="row g-3">
           <div className="col-md-2">
@@ -101,16 +120,14 @@ const ExpenseReport = () => {
             />
           </div>
           <div className="col-md-2 align-self-end">
-  <button className="btn btn-primary" onClick={applyFilter}>
+  <button className="btn btn-primary d-print-none" onClick={applyFilter}>
     Apply Filter
   </button>
 </div>
         </div>
       </div>
 
-      <div className="total-container mb-3">
-        <p>Total Amount: {totalAmount}</p>
-      </div>
+     
 
       <table className="table table-hover">
         <thead>
@@ -147,11 +164,28 @@ const ExpenseReport = () => {
                   )}
                 </td>
               </tr>
+
             </React.Fragment>
+            
           ))}
+          
+
         </tbody>
+       <tfoot> <tr>
+       <th  className="text-right">
+                                    Grand total:
+                                </th>
+                                <th colSpan={4} className="text-truncate">
+                                {totalAmount.toFixed(3)}
+                                </th>
+                            </tr>
+                            
+                            </tfoot> 
+      
       </table>
-    </div>
+    
+    </div></div>
+    
   );
 };
 

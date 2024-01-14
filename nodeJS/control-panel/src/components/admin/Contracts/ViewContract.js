@@ -24,6 +24,7 @@ import CreateReceipt from "../Receipt/CreateReceipt"
 import EditReceipt from "../Receipt/EditReceipt"
 import ReceiptListControl from "../Receipt/ReceiptListControl"
 
+
 const ViewContract = (props) => {
 
 

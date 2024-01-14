@@ -6,16 +6,8 @@ import { ThreeDots } from 'react-loader-spinner';
 import { Helmet } from 'react-helmet';
 import { getContracts } from '../Contracts/ContractsAPI';
 import ContractSearch from '../Contracts/ContractSearch';
-import {
-  MdCollectionsBookmark,
-  MdDelete,
-  MdEdit,
-  MdAdd,
-  MdSearch,
-  MdContacts,
-  MdCollections,
-  MdReceipt,
-} from 'react-icons/md';
+import { MdEdit, MdClose, MdAddTask, MdCollectionsBookmark, MdOutlineLocalPrintshop } from "react-icons/md";
+
 
 const ContractReport = () => {
   const { t, i18n } = useTranslation();
@@ -88,7 +80,26 @@ const ContractReport = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container"
+    > <a href="#" className="btn btn-dark btn-lg mx-1 d-print-none" onClick={() => { window.print(); }}>
+    <MdOutlineLocalPrintshop size={20} />
+
+  </a>
+  <div className='row p-3 d-none d-print-flex'>
+                <div className='col col-auto'>
+                  {/* <img src='https://www.tailorbrands.com/wp-content/uploads/2020/07/mcdonalds-logo.jpg' style={{width:'100px'}} /> */}
+                  <img src={process.env.REACT_APP_MEDIA_BASE_URL + '/uploads/' + localStorage.getItem("logoUrl")} style={{ width: '100px' }} />
+                </div>
+                <div className='col'>
+                  <h5>
+                    {localStorage.getItem("companyName")}
+                                      </h5>
+          </div>
+          </div>
+
+
+            <h1>Contact Report</h1>
+
       <Helmet>
         <title>{'Invoicing | Admin | Contracts'} </title>
       </Helmet>

@@ -116,6 +116,11 @@ const MainHeader = ({ notification, onHandleNotification }) => {
  <div className='col col-auto' style={{color:'white'}}>
 البريد الالكتروني:  {localStorage.getItem("email")}
 </div> 
+<div className='col col-auto' style={{color:'white'}}>
+                  <img src={process.env.REACT_APP_MEDIA_BASE_URL + '/uploads/' + localStorage.getItem("logoUrl")} style={{ width: '50px' }} 
+                            alt="Logo"
+                        />
+</div> 
 
 
       {/* <input className="form-control form-control-light w-100" type="text" placeholder="Search" aria-label="Search" /> */}

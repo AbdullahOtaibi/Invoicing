@@ -183,8 +183,8 @@ const ContractSearch = (props) => {
 
                 <div className='row mb-3'>
                     <div className='col text-end px-4 mb-2'>
-                        <button type='button' className='btn btn-secondary' onClick={handleCloseSearch}><MdClose /> {t("close")}</button>
-                        <button type='button' className='btn btn-primary mx-2' onClick={doSearch}><MdSearch /> {t("search")}</button>
+                        <button type='button' className='btn btn-secondary d-print-none' onClick={handleCloseSearch}><MdClose /> {t("close")}</button>
+                        <button type='button' className='btn btn-primary mx-2 d-print-none' onClick={doSearch}><MdSearch /> {t("search")}</button>
                     </div>
                 </div>
             </form>

@@ -242,13 +242,13 @@ const ListInv = (props) => {
         var printWindow = window.open( url);
 
         // Wait for the page to load
-        printWindow.addEventListener('DOMContentLoaded', () => {
+        printWindow.addEventListener('load', () => {
           // Introduce a delay of 2000 milliseconds (2 seconds) before printing
           setTimeout(() => {
             printWindow.print();
             printWindow.close();
 
-          }, 10);
+          }, 200);
         });
       };
    

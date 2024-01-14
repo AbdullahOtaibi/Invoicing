@@ -23,6 +23,7 @@ const CreateReceipt = (props) => {
     company: localStorage.getItem("company"), 
     receiptDate: new Date(), 
     receiptAmount:0.00 ,
+    paymentMethod:'Cash',
   }) ;  
 
   
@@ -96,6 +97,11 @@ const CreateReceipt = (props) => {
   const setNote = (event) => {
     let cloned =JSON.parse(JSON.stringify(receipt)) ;
     cloned.note = event.target.value; 
+    setReceipt(cloned)
+  };
+  const setPaymentMethod = (event) => {
+    let cloned =JSON.parse(JSON.stringify(receipt)) ;
+    cloned.paymentMethod = event.target.value; 
     setReceipt(cloned)
   };
 
@@ -250,7 +256,23 @@ const viewItemValidMessage = (message) => {
     
                     </div>
                   </div>
-    
+                  <div className="mb-3 col ">
+                  <div className="col col-auto">{t("invoice.paymentMethod")} </div>
+
+<div className="col col-auto">
+  <select
+    type="text"
+    className={selectFieldClass(receipt.paymentMethod)}
+    id="paymentMethod"
+    name="paymentMethod"
+    onChange={setPaymentMethod}
+  >
+    <option value="Cash"> Cash </option>
+    <option value="Visa">Visa </option>
+    <option value="Insurance"> Insurance </option>
+  </select>
+</div>
+                  </div>
     
                   <div className="mb-3 col ">
                     <div className="col col-auto"></div>
