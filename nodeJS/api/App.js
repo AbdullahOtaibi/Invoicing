@@ -74,6 +74,9 @@ Modules.getEnabledModules().then(modules => {
 const invoicesController = require('./routes/api/invoices/controllers/InvoicesController');
 app.use('/v1/invoices', invoicesController);
 
+const excelController = require('./routes/api/excel/controllers/ExcelController');
+app.use('/v1/excel', excelController);
+
 
 const FullCalendarController = require('./routes/api/FullCalendar/controllers/FullCalendarController');
 app.use('/v1/FullCalendars', FullCalendarController);
